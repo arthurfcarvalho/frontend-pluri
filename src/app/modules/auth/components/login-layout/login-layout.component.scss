@@ -6,7 +6,7 @@ main {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-
+    
     section {
         height: 100%;
         display: flex;
@@ -66,19 +66,21 @@ main {
                     opacity: 0.6;
                     cursor: default;
                 }
-
-                &.btn-primary {
+                
+                &.btn-primary{
                     background-color: $primary-color;
                     color: white;
-                    box-shadow: 0px 8px 12px rgba(148.23, 64.34, 255, 0.2);;
+                    box-shadow: 0px 8px 12px rgba(148.23, 64.34, 255, 0.2);
                 }
-
-                &.btn-secondary {
+    
+                &.btn-secondary{
                     border: 1px solid $primary-color;
                     color: $primary-color;
                 }
             }
         }
+
+
     }
 
     .main-section {

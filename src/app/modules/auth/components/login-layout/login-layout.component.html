@@ -1,9 +1,11 @@
 <main>
     <section class="form-section">
         <h2> {{ title }}</h2>
+        <ng-content></ng-content>
         <div class="btn-wrapper">
             <button 
                 class="btn-primary"
+                (click)="submit()"
                 [disabled]="disablePrimaryBtn"
                 >{{ primaryBtnText }}
             </button>
@@ -12,7 +14,7 @@
                 <span>ou</span>
                 <div></div>
             </div>
-            <button class="btn-secondary">{{ secondaryBtnText }}</button>
+            <button class="btn-secondary" (click)="navigate()">{{ secondaryBtnText }}</button>
         </div>
     </section>
     <section class="main-section">
