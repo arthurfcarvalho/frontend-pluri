@@ -4,6 +4,7 @@ import { AuthInputComponent } from '../../components/auth-input/auth-input.compo
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../../services/login.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface loginForm {
   login: FormControl,
@@ -27,7 +28,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private toastService: ToastrService
   ) {
     this.loginForm = new FormGroup({
       login: new FormControl('', Validators.required),
@@ -40,7 +42,7 @@ export class LoginComponent {
       next: () => {
         this.router.navigate([""]); //home
       },
-      error: () => console.log("Erro ao realizar login! Verifique seu usuário e sua senha e tente novamente.")//substituir por toaster
+      error: () => this.toastService.error("Erro ao realizar login! Verifique seu usuário e sua senha e tente novamente.")//substituir por toaster
     })
   }
 

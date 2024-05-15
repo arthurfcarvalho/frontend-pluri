@@ -4,6 +4,7 @@ import { LoginLayoutComponent } from '../../components/login-layout/login-layout
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SignupService } from '../../../../services/signup.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface signupForm {
   nome: FormControl,
@@ -31,7 +32,8 @@ export class SignupComponent {
 
   constructor(
     private router: Router,
-    private signupService: SignupService
+    private signupService: SignupService,
+    private toastService: ToastrService
   ) {
     this.signupForm = new FormGroup({
       nome: new FormControl('', Validators.required),
@@ -45,9 +47,8 @@ export class SignupComponent {
 
   submit() {
 
-    // substituir os console.log por toaster
     if(this.signupForm.value.senha !== this.signupForm.value.confirmarSenha) {
-      console.log("As senhas não coincidem. Verifique e tente novamente."); 
+      this.toastService.error("As senhas não coincidem. Verifique e tente novamente."); 
       return;
     }
 
@@ -58,8 +59,8 @@ export class SignupComponent {
       this.signupForm.value.senha,
       this.signupForm.value.data_nascimento
     ).subscribe({
-      next: () => console.log("Cadastro realizado com sucesso!"),
-      error: () => console.log("Erro ao realizar cadastro! Verifique os dados inseridos e tente novamente.")
+      next: () => this.toastService.success("Cadastro realizado com sucesso!"),
+      error: () => this.toastService.error("Erro ao realizar cadastro! Verifique os dados inseridos e tente novamente.")
     })
   }
 
