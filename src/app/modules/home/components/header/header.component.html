@@ -1,0 +1,35 @@
+<header>
+    <p-menubar [model]="items">
+        <ng-template pTemplate="start">
+          <img src="assets/images/pluri-logo.png" alt="Logo do Pluri" loading="eager" height="100px"/>
+        </ng-template>
+        
+        <ng-template pTemplate="item" let-item let-root="root">
+          @if(!item.perm || userHasPermission(item.perm)){
+            <a [routerLink]="item.route">
+              {{ item.label }}
+            </a>
+          }
+        </ng-template>
+      
+        <ng-template pTemplate="end">
+          <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
+            {{user.name}}
+          </span>
+          <mat-menu #menu="matMenu" class="user-profile-menu">
+            <button mat-menu-item>
+              <span class="user-profile-item">Editar perfil</span>
+            </button>
+            <span mat-menu-item disabled class="user-profile-item">Perfis:
+              @for (perfil of user.perfis; track perfil.name) {
+                <br><span class="user-profile-perfis">{{perfil.name}}</span>
+              }
+            </span>
+            <button mat-menu-item>
+              <span class="user-profile-item">Sair</span>
+            </button>
+          </mat-menu>
+        
+        </ng-template>
+      </p-menubar>
+</header>
