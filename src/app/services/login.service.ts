@@ -8,10 +8,15 @@ import { LoginResponse } from '../types/login-response.type';
 })
 export class LoginService {
 
+  baseUrl = 'http://localhost:8080/usuario/';
+
   constructor(private httpClient: HttpClient) { }
 
   login(login: string, senha: string) {
-    return this.httpClient.post<LoginResponse>("https://localhost:8080/usuario/login", {login, senha}).pipe(
+
+    const url = this.baseUrl + 'login';
+
+    return this.httpClient.post<LoginResponse>(url, {login, senha}).pipe(
       tap((value) => {
         sessionStorage.setItem("auth-token", value.token);
       })
