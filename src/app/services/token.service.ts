@@ -9,14 +9,14 @@ export class TokenService {
 
   saveToken(token: string){
     console.log('token: ', token)
-    return localStorage.setItem(KEY, token);
+    return sessionStorage.setItem(KEY, token);
   }
   deleteToken(){
-    return localStorage.removeItem(KEY);
+    return sessionStorage.removeItem(KEY);
   }
   returnToken(){
     console.log(KEY)
-    return localStorage.getItem(KEY) ?? "";
+    return sessionStorage.getItem(KEY) ?? "";
   }
   hasToken(){
     return !!this.returnToken();
