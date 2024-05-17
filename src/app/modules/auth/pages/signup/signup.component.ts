@@ -6,12 +6,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../services/user.service';
-import { ResponseApi } from '../../../../types/response.type';
+import { ApiResponse } from '../../../../types/api-response.type';
 
-
-export interface res{
-  responseType: String;
-}
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -27,10 +23,7 @@ export interface res{
 export class SignupComponent {
 
   signupForm: FormGroup;
-  
   signupData!: SignupUser
-
-
 
   constructor(
     private router: Router,
@@ -48,18 +41,11 @@ export class SignupComponent {
   }
 
   submit() {
-   
 
     if(this.signupForm.value.senha !== this.signupForm.value.confirmarSenha) {
       this.toastService.error("As senhas não coincidem. Verifique e tente novamente."); 
       return;
     }
-5   
-
-    // this.userService.signup(this.signupForm.value).subscribe({
-    //   next: () => this.toastService.success("Cadastro realizado com sucesso!"),
-    //   error: () => this.toastService.error("Erro ao realizar cadastro! Verifique os dados inseridos e tente novamente.")
-    // })
 
     this.signupData = {
       nome: this.signupForm.value.nome,
@@ -70,15 +56,14 @@ export class SignupComponent {
     }
     
     this.userService.signup(this.signupData).subscribe({
-      next: (response: ResponseApi) => {
+      next: (response: ApiResponse) => {
           this.toastService.success(response.mensagem);
           this.router.navigate(['/login'])
-    },
-      error:
-      (error: any)=>{
+      },
+      error: (error: any) => {
         this.toastService.error("Erro ao realizar cadastro! Verifique os dados inseridos e tente novamente.")
-    }
-  })
+      }
+    })
   }
 
   navigate() {

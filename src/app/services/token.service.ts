@@ -9,14 +9,12 @@ const KEY = 'token';
 export class TokenService {
 
   saveToken(token: string){
-    console.log('token: ', token)
     return sessionStorage.setItem(KEY, token);
   }
   deleteToken(){
     return sessionStorage.removeItem(KEY);
   }
   returnToken(){
-    console.log(KEY)
     return sessionStorage.getItem(KEY) ?? "";
   }
   hasToken(){

@@ -6,10 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { TokenService } from './token.service';
 import { User } from '../models/User.model';
 import { Role } from '../models/Role.model';
-import { ResponseApi } from '../types/response.type';
-
-
-
+import { ApiResponse } from '../types/api-response.type';
 
 @Injectable({
   providedIn: 'root'
@@ -25,23 +22,26 @@ export class UserService {
   }
 
   decodeJWT(){
-    const token = this.tokenService.returnToken()
-    const usuario = jwtDecode(token) as User
-    this.userSubject.next(usuario)
+    const usuario = jwtDecode(this.tokenService.returnToken()) as User;
+    this.userSubject.next(usuario);
   }
+
   returnUsuario(){
     return this.userSubject.asObservable();
   }
+
   saveToken(token: string){ 
-    this.tokenService.saveToken(token)
+    this.tokenService.saveToken(token);
     this.decodeJWT();
   }
+
   logout(){
     this.tokenService.deleteToken();
-    this.userSubject.next(null)
+    this.userSubject.next(null);
   }
-  isAuthenticated (){
-    return this.tokenService.hasToken()
+
+  isAuthenticated(){
+    return this.tokenService.hasToken();
   }
 
   searchUserById(id: number): Observable<User> {
@@ -57,9 +57,8 @@ export class UserService {
     );
   }
 
-  signup(user: SignupUser): Observable<ResponseApi>{
+  signup(user: SignupUser): Observable<ApiResponse>{
     const url = 'http://localhost:8080/usuario/registrar';
-    return this.http.post<ResponseApi>(url,user)
-
+    return this.http.post<ApiResponse>(url, user);
   }
 }

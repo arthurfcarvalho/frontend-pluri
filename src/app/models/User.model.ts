@@ -1,7 +1,5 @@
 import { Role } from "./Role.model";
 
-;
-
 export interface User {
     id: number;
     nome: string;
@@ -10,5 +8,4 @@ export interface User {
     data_nascimento: Date;
     email: string;
     perfis: Role[];
-    //data_nascimento: new DatePipe('en-US').transform(data_nascimento, 'yyyy-MM-ddTHH:mm:ss')
 }

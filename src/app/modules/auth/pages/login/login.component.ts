@@ -23,6 +23,7 @@ interface loginForm {
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
+
 export class LoginComponent {
   
   loginForm!: FormGroup;
@@ -44,7 +45,7 @@ export class LoginComponent {
       next: () => {
         this.router.navigate(["/home"]);
       },
-      error: () => this.toastService.error("Erro ao realizar login! Verifique seu usuário e sua senha e tente novamente.")//substituir por toaster
+      error: () => this.toastService.error("Erro ao realizar login! Verifique seu usuário e sua senha e tente novamente.")
     })
   }
 

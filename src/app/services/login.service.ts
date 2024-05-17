@@ -19,7 +19,7 @@ export class LoginService {
 
     return this.httpClient.post<LoginResponse>(url, {login, senha}).pipe(
       tap((value) => {
-        const authToken = value.token || ''
+        const authToken = value.token || '';
         this.userService.saveToken(authToken);
       })
     )
