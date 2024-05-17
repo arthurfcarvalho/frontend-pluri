@@ -22,11 +22,13 @@ export class UserService {
   }
 
   decodeJWT(){
-    const usuario = jwtDecode(this.tokenService.returnToken()) as User;
-    this.userSubject.next(usuario);
+    if(this.tokenService.hasToken()){
+      const user = jwtDecode(this.tokenService.returnToken()!) as User;
+      this.userSubject.next(user);
+    }
   }
 
-  returnUsuario(){
+  returnUser(){
     return this.userSubject.asObservable();
   }
 
