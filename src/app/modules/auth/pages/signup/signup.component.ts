@@ -1,19 +1,12 @@
+import { SignupUser } from './../../../../models/SignupUser.model';
 import { Component } from '@angular/core';
 import { AuthInputComponent } from '../../components/auth-input/auth-input.component';
 import { LoginLayoutComponent } from '../../components/login-layout/login-layout.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SignupService } from '../../../../services/signup.service';
 import { ToastrService } from 'ngx-toastr';
-
-interface signupForm {
-  nome: FormControl,
-  email: FormControl,
-  login: FormControl,
-  senha: FormControl,
-  confirmarSenha: FormControl,
-  data_nascimento: FormControl
-}
+import { UserService } from '../../../../services/user.service';
+import { ApiResponse } from '../../../../types/api-response.type';
 
 @Component({
   selector: 'app-signup',
@@ -26,14 +19,16 @@ interface signupForm {
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
+
 export class SignupComponent {
 
-  signupForm!: FormGroup <signupForm>;
+  signupForm: FormGroup;
+  signupData!: SignupUser
 
   constructor(
     private router: Router,
-    private signupService: SignupService,
-    private toastService: ToastrService
+    private userService: UserService,
+    private toastService: ToastrService,
   ) {
     this.signupForm = new FormGroup({
       nome: new FormControl('', Validators.required),
@@ -52,15 +47,22 @@ export class SignupComponent {
       return;
     }
 
-    this.signupService.signup(
-      this.signupForm.value.nome,
-      this.signupForm.value.email,
-      this.signupForm.value.login,
-      this.signupForm.value.senha,
-      this.signupForm.value.data_nascimento
-    ).subscribe({
-      next: () => this.toastService.success("Cadastro realizado com sucesso!"),
-      error: () => this.toastService.error("Erro ao realizar cadastro! Verifique os dados inseridos e tente novamente.")
+    this.signupData = {
+      nome: this.signupForm.value.nome,
+      email: this.signupForm.value.email,
+      login: this.signupForm.value.login,
+      senha: this.signupForm.value.senha,
+      data_nascimento: this.signupForm.value.data_nascimento
+    }
+    
+    this.userService.signup(this.signupData).subscribe({
+      next: (response: ApiResponse) => {
+          this.toastService.success(response.mensagem);
+          this.router.navigate(['/login'])
+      },
+      error: (error: any) => {
+        this.toastService.error("Erro ao realizar cadastro! Verifique os dados inseridos e tente novamente.")
+      }
     })
   }
 
