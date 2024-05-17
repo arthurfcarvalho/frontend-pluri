@@ -5,6 +5,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { LoginService } from '../../../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../../../services/user.service';
 
 interface loginForm {
   login: FormControl,
@@ -29,18 +30,19 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private loginService: LoginService,
+    private userService: UserService,
     private toastService: ToastrService
   ) {
     this.loginForm = new FormGroup({
       login: new FormControl('', Validators.required),
-      senha: new FormControl('', [Validators.required, Validators.minLength(6)])
+      senha: new FormControl('', [Validators.required, Validators.minLength(4)])
     })
   }
 
   submit() {
     this.loginService.login(this.loginForm.value.login, this.loginForm.value.senha).subscribe({
       next: () => {
-        this.router.navigate([""]); //home
+        this.router.navigate(["/home"]);
       },
       error: () => this.toastService.error("Erro ao realizar login! Verifique seu usuário e sua senha e tente novamente.")//substituir por toaster
     })
