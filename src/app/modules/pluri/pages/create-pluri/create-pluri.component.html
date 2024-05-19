@@ -1,0 +1,29 @@
+<app-create-layout
+    title="Login"
+    primaryBtnText="Entrar"
+    secondaryBtnText="Cadastrar"
+    (submit)="submit()"
+    (navigate)="navigate()"
+    [disablePrimaryBtn]="!informacoesGeraisForm.valid"
+>
+    <form [formGroup]="informacoesGeraisForm">
+        <app-create-layout
+            formControlName="login"
+            inputName="login"
+            type="text"
+            label="Usuário"
+            placeholder="Nome de Usuário"
+        >
+            <img src="assets/icons/user-icon.svg" />
+        </app-create-layout>
+        <app-pluri-input
+            formControlName="senha"
+            inputName="senha"
+            type="password"
+            label="Senha"
+        >
+            <img src="assets/icons/password-icon.svg" />
+        </app-pluri-input>
+        <span>Esqueceu a senha?</span>
+    </form>
+</app-create-layout>
