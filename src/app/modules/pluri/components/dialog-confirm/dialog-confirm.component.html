@@ -1,0 +1,30 @@
+<div class="teste">
+    <p-toast />
+    <p-confirmDialog #cd header="Confirmação" icon="pi pi-exclamation-triangle">
+        <ng-template class="box-template" pTemplate="headless" let-message>
+            <div class="box">
+                <div class="icon">
+                    <i class="pi pi-question text-5xl"></i>
+                </div>
+                <span>
+                    {{ message.header }}
+                </span>
+                <p>{{ message.message }}</p>
+                <div class="box-buttons">
+                    <button 
+                        pButton 
+                        label="Salvar" 
+                        (click)="cd.accept()" 
+                        >
+                    </button>
+                    <button 
+                        pButton 
+                        label="Cancelar"
+                        (click)="cd.reject()" 
+                        >
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </p-confirmDialog>
+</div>

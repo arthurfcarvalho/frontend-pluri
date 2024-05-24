@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { TokenService } from "./token.service";
 import { HttpClient } from "@angular/common/http";
-import { catchError, map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { DadosPluriInformacoesGerais } from "../modules/pluri/models/GeneralInformationDataPluri.model";
 import { DadosDetalhamentoPluri } from "../modules/pluri/models/DetailingPluriData.model";
 import { DadosAtividadesDaComissao } from "../modules/pluri/models/ActivitisOfComissionData.model";
@@ -32,7 +32,7 @@ export class PluriService{
         return this.http.put(url,dados);
     }
     atualizarInformacoesAplicacao(dados: DadosAplicacaoPluri){
-        const url = this.baseUrl + '/atualizar-informacoes-aplicacao'
+        const url = this.baseUrl + '/atualizar-informacoes-aplicacao';
         return this.http.put(url, dados)
     }
 

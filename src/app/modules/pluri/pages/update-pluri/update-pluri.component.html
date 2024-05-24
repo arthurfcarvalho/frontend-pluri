@@ -1,0 +1,70 @@
+<app-header></app-header>
+<mat-stepper #stepper>
+    <mat-step [stepControl]="informacoesGeraisForm" errorMessage="{{messageError}}">
+        <p-card header="Dados Informações Gerais">
+            <form [formGroup]="informacoesGeraisForm">
+                <div class="input-container">
+                    <div *ngFor="let item of listaInputsInformacoesGerais">
+                        <label for="item.label">{{ item.label}}</label><br>
+                        <input 
+                            [formControlName]="item.formControlName"
+                            [placeholder]="item.placeholder"
+                            [type]="item.type"  
+                        >   
+                    </div>    
+                </div>
+                <div class="botoes">
+                    <button mat-button matStepperPrevious>{{textBack}}</button>
+                    <button mat-button matStepperNext>{{textNext}}</button>
+                    <button mat-button (click)="updateInformacoesGerais()">Salvar</button>
+                </div>  
+            </form>
+        </p-card>
+    </mat-step>
+    <mat-step [stepControl]="atividadesComissaoForm" errorMessage="{{messageError}}">
+        <p-card header="Dados Atividades Comissao">
+            <form [formGroup]="atividadesComissaoForm">
+                <div class="input-container">
+                    <div *ngFor="let item of listaInputsAtualizarAtividades">
+                        <label for="item.label">{{ item.label}}</label><br>
+                        <input 
+                            [formControlName]="item.formControlName"
+                            [placeholder]="item.placeholder"
+                            [type]="item.type"  
+                        >   
+                    </div>
+                </div>
+                <div class="botoes">
+                    <button mat-button matStepperPrevious>{{textBack}}</button>
+                    <button mat-button matStepperNext>{{textNext}}</button>
+                    <button mat-button (click)="updateAtividadesDaComissaoForm()">Salvar</button>
+                </div>  
+            </form>
+        </p-card>
+    </mat-step>
+    <mat-step [stepControl]="informacoesAplicacaoForm" errorMessage="{{messageError}}">
+      <ng-template matStepLabel>Done</ng-template>
+      <p-card header="Dados Informações Pluri">
+        <form [formGroup]="informacoesAplicacaoForm">
+            <div class="input-container">
+                <div *ngFor="let item of listaInputsInformacoesAplicacao">
+                    <label for="item.label">{{ item.label}}</label><br>
+                    <input 
+                        [formControlName]="item.formControlName"
+                        [placeholder]="item.placeholder"
+                        [type]="item.type"  
+                    >   
+                </div>
+            </div>
+            <div class="botoes">
+                <button mat-button matStepperPrevious>{{textBack}}</button>
+                <button mat-button matStepperNext>{{textNext}}</button>
+                <button mat-button (click)="updateInformacoesAplicacaoForm()">Salvar</button>  
+            </div>  
+        </form>
+    </p-card>
+    </mat-step>
+  </mat-stepper>
+  <mat-calendar [(selected)]="selected"></mat-calendar>
+<p>Selected date: {{formattedDate}}</p>
+<app-dialog-confirm></app-dialog-confirm>

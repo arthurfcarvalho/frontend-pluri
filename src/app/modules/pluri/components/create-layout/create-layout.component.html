@@ -3,12 +3,15 @@
         <h2> {{ title }}</h2>
         <ng-content></ng-content>
         <div class="btn-wrapper">
-            <button 
+            <div>
+                <button 
                 class="btn-primary"
                 (click)="submit()"
                 [disabled]="disablePrimaryBtn"
                 >{{ primaryBtnText }}
             </button>
+            </div>
+            
             <div class="divider">
                 <div></div>
                 <span>ou</span>

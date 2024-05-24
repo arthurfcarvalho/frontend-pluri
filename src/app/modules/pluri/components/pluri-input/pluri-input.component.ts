@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormControlName, ReactiveFormsModule } from '@angular/forms';
 
 
 type InputTypes = "text" | "email" | "password" | "date"
@@ -11,8 +11,9 @@ type InputTypes = "text" | "email" | "password" | "date"
   templateUrl: './pluri-input.component.html',
   styleUrl: './pluri-input.component.scss'
 })
-export class PluriInputComponent {
+export class PluriInputComponent implements ControlValueAccessor{
 
+  @Input() formControlName: string = "";   
   @Input() type: InputTypes = "text";
   @Input() placeholder: string = "";
   @Input() label: string = "";
@@ -27,5 +28,9 @@ export class PluriInputComponent {
     this.onChange(value);
   }
 
+  writeValue(obj: any): void { }
+  registerOnChange(fn: any): void { }
+  registerOnTouched(fn: any): void { }
+  setDisabledState?(isDisabled: boolean): void { }
 
 }

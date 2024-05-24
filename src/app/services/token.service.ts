@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InvalidTokenError } from 'jwt-decode';
 
-const AUTH_TOKEN_KEY = 'auth-token';
+const AUTH_TOKEN_KEY = 'token';
 
 @Injectable({
   providedIn: 'root'
