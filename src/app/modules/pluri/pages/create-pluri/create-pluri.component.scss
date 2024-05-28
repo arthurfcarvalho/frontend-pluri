@@ -83,16 +83,23 @@ p-card {
 }
 .calendar-container {
   display: flex;
-  justify-content: start;
   flex-direction: column;
   margin-left: 15px;
-  width: 400px;
+  width: 100%;
+  mwl-calendar-month-view{
+    width: 400px;
+  }
+  
   .container-btn{
-    background-color: gray;
+    background-color: rgba(242, 238, 238, 0.519);
     height: auto;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
     button {
-       background-color: aqua;
+       background-color: $primary-color;
+       color: #FFFFFF;
        margin: 5px;
     }
   }
