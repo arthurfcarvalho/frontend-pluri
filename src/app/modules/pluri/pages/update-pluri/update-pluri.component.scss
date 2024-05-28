@@ -1,0 +1,87 @@
+@import "../../../../../styles/variables.scss";
+
+
+$columns: 5; 
+$gap: 16px;
+$items-per-column: 2; 
+
+p-card {
+  form {
+    div {
+      margin-left: 15px;
+      padding: 5px;
+    }
+  }
+}
+.botoes{
+  button {
+    margin-right: 3px;
+  }
+}
+.botoes button:nth-child(3){
+  background: $primary-color;
+  color: white;
+}
+.botoes button:nth-child(3):hover{
+  transform: scale(0.9);
+}
+  
+
+
+.input-container {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+.input-item {
+  margin-bottom: $gap;
+}
+
+// Estilo para cada coluna
+@for $i from 1 through $columns {
+  .column-#{$i} {
+    @for $j from 0 through ($items-per-column - 1) {
+      &:nth-child(#{$columns * $j + $i}) {
+        grid-column: $i;
+      }
+    }
+  }
+}
+
+@mixin respond-to($media) {
+  @if $media == 'tablet' {
+    @media (max-width: 768px) {
+      .input-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  } @else if $media == 'mobile' {
+    @media (max-width: 480px) {
+      .input-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+@include respond-to('tablet');
+@include respond-to('mobile');
+
+.mat-calendar-body-cell.custom-date1 .mat-calendar-body-cell-content {
+  background-color: #fb5f5cb6; 
+}
+
+.mat-calendar-body-cell.custom-date2 .mat-calendar-body-cell-content {
+  background-color: #88fc88be; 
+}
+
+.mat-calendar-body-cell.custom-date3 .mat-calendar-body-cell-content {
+  background-color: #4242f399; 
+}
+.calendar-container {
+  display: flex;
+  justify-content: start;
+  margin-left: 15px;
+  margin-top: 20px;
+}
