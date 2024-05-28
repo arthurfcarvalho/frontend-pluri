@@ -1,6 +1,6 @@
 import { DialogConfirmComponent } from './../../components/dialog-confirm/dialog-confirm.component';
 import { HeaderComponent } from './../../../home/components/header/header.component';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, LOCALE_ID, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -30,7 +30,11 @@ import { addMonths, format, subMonths } from 'date-fns';
 import { CalendarEvent } from 'angular-calendar';
 import moment from 'moment';
 import { ptBR } from 'date-fns/locale';
+import flatpickr from 'flatpickr';
+import localePt from '@angular/common/locales/pt';
+import localePtExtra from '@angular/common/locales/extra/pt';
 
+registerLocaleData(localePt, 'pt-BR', localePtExtra);
 
 
 type InputTypes = "text" | "email" | "password" | "date" | "number"
@@ -75,8 +79,12 @@ interface eventoPluri{
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {showError: true}
+    },
+    { 
+      provide: LOCALE_ID, useValue: 'pt-BR' 
     }
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
   
 })
 export class CreatePluriComponent implements OnInit{
@@ -91,6 +99,9 @@ export class CreatePluriComponent implements OnInit{
   messageError: String = 'Campos sem preencher'
   textNext: string = 'Proximo'
   textBack: string = 'Voltar'
+
+  
+  locale: string = 'pt-BR';
   
   selected: Date | null = null;
   viewDate: Date = new Date();

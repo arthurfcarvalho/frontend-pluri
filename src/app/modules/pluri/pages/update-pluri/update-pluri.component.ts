@@ -1,6 +1,6 @@
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { ChangeDetectorRef, Component, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Pluri } from '../../models/Pluri.model';
@@ -24,6 +24,9 @@ import { CustomCalendarModule } from '../../components/custom-calendar.module';
 import moment from 'moment-timezone';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import localePt from '@angular/common/locales/pt';
+import localePtExtra from '@angular/common/locales/extra/pt';
+
 
 type InputTypes = "text" | "email" | "password" | "date" | "number";
 interface eventoPluri{
@@ -34,6 +37,8 @@ interface eventoPluri{
     secondary: string
   }
 }
+
+registerLocaleData(localePt, 'pt-BR', localePtExtra);
 @Component({
   selector: 'app-update-pluri',
   standalone: true,
@@ -62,6 +67,9 @@ interface eventoPluri{
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {showError: true}
     },
+    { 
+      provide: LOCALE_ID, useValue: 'pt-BR' 
+    }
     ],
   templateUrl: './update-pluri.component.html',
   styleUrls: ['./update-pluri.component.scss'],
@@ -78,6 +86,8 @@ export class UpdatePluriComponent implements OnInit {
   messageError: string = 'Campos sem preencher';
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
+
+  locale: string = 'pt-BR';
   
   atualizarInformacoesGeraisForm!: FormGroup;
   dateString = '2024-05-11'; 

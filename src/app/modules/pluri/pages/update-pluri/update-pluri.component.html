@@ -68,8 +68,7 @@
     </p-card>
     </mat-step>
   </mat-stepper>
-  <div>
-    <h3>Calendário de Atividades</h3>
+  <div class="container-box">
     <div class="calendar-container">
         <div class="container-btn">
             <button mat-button (click)="prevMonth()">Mês Anterior</button>
@@ -79,6 +78,7 @@
         <mwl-calendar-month-view
             [viewDate]="viewDate"
             [events]="events"
+            [locale]="locale"
         ></mwl-calendar-month-view>    
   </div>  
 <app-dialog-confirm></app-dialog-confirm>
