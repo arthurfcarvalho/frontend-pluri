@@ -11,6 +11,7 @@
                             [formControlName]="item.formControlName"
                             [placeholder]="item.placeholder"
                             [type]="item.type"  
+                            (change)="onDateChange(informacoesGeraisForm.get(item.formControlName)?.value, item.formControlName)"  
                         >   
                         <div *ngIf="informacoesGeraisForm.get(item.formControlName)?.invalid && (informacoesGeraisForm.get(item.formControlName)?.touched || informacoesGeraisForm.get(item.formControlName)?.dirty)">
                             <small class="error" *ngIf="informacoesGeraisForm.get(item.formControlName)?.errors?.['required']">Este campo deve ser preenchido.</small>
@@ -18,7 +19,7 @@
                     </div>    
                 </div>
                 <div class="botoes">
-                    <button mat-button matStepperPrevious>{{textBack}}</button>
+                    <button mat-button routerLink="/home" routerLinkActive="router-link-active">{{textBack}}</button>
                     <button mat-button matStepperNext>{{textNext}}</button>
                     <button mat-button (click)="sendInformacoesGeraisForm()">Salvar</button>
                 </div>  
@@ -35,6 +36,7 @@
                             [formControlName]="item.formControlName"
                             [placeholder]="item.placeholder"
                             [type]="item.type"  
+                            (change)="onDateChange(atividadesComissaoForm.get(item.formControlName)?.value, item.formControlName)"  
                         >
                     </div>
                     
@@ -48,7 +50,7 @@
         </p-card>
     </mat-step>
     <mat-step [stepControl]="informacoesAplicacaoForm" errorMessage="{{messageError}}">
-      <ng-template matStepLabel>Done</ng-template>
+      <ng-template matStepLabel>Feito</ng-template>
       <p-card header="Dados Informações Pluri">
         <form [formGroup]="informacoesAplicacaoForm">
             <div class="input-container">
@@ -57,7 +59,8 @@
                     <input 
                         [formControlName]="item.formControlName"
                         [placeholder]="item.placeholder"
-                        [type]="item.type"  
+                        [type]="item.type"
+                        (change)="onDateChange(informacoesAplicacaoForm.get(item.formControlName)?.value, item.formControlName)"    
                     >   
                 </div>
             </div>
@@ -70,6 +73,16 @@
     </p-card>
     </mat-step>
   </mat-stepper>
-  <mat-calendar [(selected)]="selected"></mat-calendar>
-<p>Selected date: {{formattedDate}}</p>
+  
+    <div class="calendar-container">
+        <div class="container-btn">
+            <button mat-button (click)="prevMonth()">Mês Anterior</button>
+            <span>{{ getMonthName() }}</span>
+            <button mat-button  (click)="nextMonth()">Próximo Mês</button>
+        </div>
+        <mwl-calendar-month-view
+            [viewDate]="viewDate"
+            [events]="events"
+        ></mwl-calendar-month-view> 
+    </div>
 <app-dialog-confirm></app-dialog-confirm>

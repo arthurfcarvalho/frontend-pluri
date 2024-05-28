@@ -1,7 +1,7 @@
 import { DialogConfirmComponent } from './../../components/dialog-confirm/dialog-confirm.component';
 import { HeaderComponent } from './../../../home/components/header/header.component';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
 import { CreateLayoutComponent } from '../../components/create-layout/create-layout.component';
@@ -25,10 +25,23 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { CustomCalendarModule } from '../../components/custom-calendar.module';
+import { addMonths, format, subMonths } from 'date-fns';
+import { CalendarEvent } from 'angular-calendar';
+import moment from 'moment';
+import { ptBR } from 'date-fns/locale';
 
 
 
 type InputTypes = "text" | "email" | "password" | "date" | "number"
+interface eventoPluri{
+  start: Date,
+  title: string
+  color: {
+    primary: string,
+    secondary: string
+  }
+}
 @Component({
   selector: 'app-create-pluri',
   standalone: true,
@@ -52,7 +65,9 @@ type InputTypes = "text" | "email" | "password" | "date" | "number"
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    RouterModule,
+    CustomCalendarModule
   ],
   templateUrl: './create-pluri.component.html',
   styleUrl: './create-pluri.component.scss',
@@ -78,10 +93,9 @@ export class CreatePluriComponent implements OnInit{
   textBack: string = 'Voltar'
   
   selected: Date | null = null;
+  viewDate: Date = new Date();
+  events: CalendarEvent[] = [];
 
-  get formattedDate(): string{
-      return this.selected ? this.datePipe.transform(this.selected, 'dd/MM/yyyy') ?? '' : '';
-  }
 
   
   listaInputsInformacoesGerais: { formControlName: string, type: InputTypes; placeholder: string; label: string }[] = [
@@ -225,6 +239,61 @@ export class CreatePluriComponent implements OnInit{
   }
   navigate() {
     this.router.navigate([""]);
+  }
+  adicionarEventoAoCalendario(evento: CalendarEvent) {
+    const indexEventoExistente = this.events.findIndex(e => e.title === evento.title);
+    if (indexEventoExistente !== -1) {   
+        this.events.splice(indexEventoExistente, 1);
+    }
+    this.events.push(evento);
+    this.atualizarCalendario();
+  }
+  prevMonth() {
+    this.viewDate = subMonths(this.viewDate, 1); 
+  } 
+
+  nextMonth() {
+    this.viewDate = addMonths(this.viewDate, 1); 
+  }
+  
+  atualizarCalendario() {  
+    this.events = [...this.events];
+  }
+  getMonthName(): string {
+    return format(this.viewDate, 'MMMM yyyy', { locale: ptBR });
+  }
+  
+  get formattedDate(): string{
+    return this.selected ? this.datePipe.transform(this.selected, 'dd/MM/yyyy') ?? '' : '';
+  }
+  
+
+  onDateChange(dateString: string, formControlName: string): void {
+    console.log("olá");
+    console.log("DateString: ", dateString);
+
+    if (dateString) {
+        let dateTimeString: string = dateString + 'T15:00:00';
+
+        let newDate: moment.Moment = moment.utc(dateTimeString);
+
+        console.log("New date: ", newDate);
+
+        console.log("Date: ", dateString);
+        console.log("Events: ", this.events);
+
+        const evento: eventoPluri = {
+            start: newDate.toDate(),
+            title: formControlName,
+            color: {
+                primary: '#ad2121',
+                secondary: '#FAE3E3'
+            }
+        };
+
+        this.adicionarEventoAoCalendario(evento);
+        this.atualizarCalendario();
+    }
   }
 
   sendInformacoesGeraisForm(){

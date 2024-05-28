@@ -68,7 +68,20 @@ p-card {
 @include respond-to('tablet');
 @include respond-to('mobile');
 
-mat-calendar {
-  width: 300px;
+.mat-calendar-body-cell.custom-date1 .mat-calendar-body-cell-content {
+  background-color: #fb5f5cb6; 
 }
 
+.mat-calendar-body-cell.custom-date2 .mat-calendar-body-cell-content {
+  background-color: #88fc88be; 
+}
+
+.mat-calendar-body-cell.custom-date3 .mat-calendar-body-cell-content {
+  background-color: #4242f399; 
+}
+.calendar-container {
+  display: flex;
+  justify-content: start;
+  margin-left: 15px;
+  margin-top: 20px;
+}

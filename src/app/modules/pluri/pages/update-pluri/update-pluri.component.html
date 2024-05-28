@@ -9,12 +9,13 @@
                         <input 
                             [formControlName]="item.formControlName"
                             [placeholder]="item.placeholder"
-                            [type]="item.type"  
+                            [type]="item.type"
+                            (change)="onDateChange(informacoesGeraisForm.get(item.formControlName)?.value, item.formControlName)"  
                         >   
                     </div>    
                 </div>
                 <div class="botoes">
-                    <button mat-button matStepperPrevious>{{textBack}}</button>
+                    <button mat-button routerLink="/pluri/list" routerLinkActive="router-link-active">{{textBack}}</button>
                     <button mat-button matStepperNext>{{textNext}}</button>
                     <button mat-button (click)="updateInformacoesGerais()">Salvar</button>
                 </div>  
@@ -30,7 +31,8 @@
                         <input 
                             [formControlName]="item.formControlName"
                             [placeholder]="item.placeholder"
-                            [type]="item.type"  
+                            [type]="item.type" 
+                            (change)="onDateChange(atividadesComissaoForm.get(item.formControlName)?.value, item.formControlName)"  
                         >   
                     </div>
                 </div>
@@ -52,7 +54,8 @@
                     <input 
                         [formControlName]="item.formControlName"
                         [placeholder]="item.placeholder"
-                        [type]="item.type"  
+                        [type]="item.type"
+                        (change)="onDateChange(informacoesAplicacaoForm.get(item.formControlName)?.value, item.formControlName)"  
                     >   
                 </div>
             </div>
@@ -65,6 +68,17 @@
     </p-card>
     </mat-step>
   </mat-stepper>
-  <mat-calendar [(selected)]="selected"></mat-calendar>
-<p>Selected date: {{formattedDate}}</p>
+  <div>
+    <h3>Calendário de Atividades</h3>
+    <div class="calendar-container">
+        <div class="container">
+            <button mat-button (click)="prevMonth()">Mês Anterior</button>
+            <span>{{ getMonthName() }}</span>
+            <button mat-button  (click)="nextMonth()">Próximo Mês</button>
+        </div>
+        <mwl-calendar-month-view
+            [viewDate]="viewDate"
+            [events]="events"
+        ></mwl-calendar-month-view>    
+  </div>  
 <app-dialog-confirm></app-dialog-confirm>

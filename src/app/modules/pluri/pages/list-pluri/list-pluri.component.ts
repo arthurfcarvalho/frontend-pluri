@@ -4,6 +4,8 @@ import { PluriService } from '../../../../services/pluri.service';
 import { AfterViewInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from '../../../home/components/header/header.component';
+import { MatButton } from '@angular/material/button';
 
 
 
@@ -13,7 +15,9 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     CardModule,
-    RouterModule
+    RouterModule,
+    HeaderComponent,
+    MatButton
   ],
   templateUrl: './list-pluri.component.html',
   styleUrl: './list-pluri.component.scss'
@@ -21,9 +25,6 @@ import { RouterModule } from '@angular/router';
 export class ListPluriComponent implements AfterViewInit{
 
   dados: DadosDetalhamentoPluri[] = [];
-  
-
-
   constructor(private pluriService: PluriService){
 
   }

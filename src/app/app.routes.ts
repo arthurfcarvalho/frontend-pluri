@@ -5,7 +5,6 @@ import { HomeComponent } from './modules/home/pages/home/home.component';
 import { CreatePluriComponent } from './modules/pluri/pages/create-pluri/create-pluri.component';
 import { ListPluriComponent } from './modules/pluri/pages/list-pluri/list-pluri.component';
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
-import { StepperComponent } from './modules/pluri/pages/stepper/stepper.component';
 
 export const routes: Routes = [
     {
@@ -44,9 +43,4 @@ export const routes: Routes = [
         component: UpdatePluriComponent,
         title: "Update - Pluri"
     },
-    {
-        path: "stepper",
-        component: StepperComponent,
-        title: " - Pluri"
-    }
 ];

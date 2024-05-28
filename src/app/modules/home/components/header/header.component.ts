@@ -33,6 +33,11 @@ export class HeaderComponent {
             perm: 'CRIAR_PLURI'
           },
           {
+            label: 'Listar Pluris',
+            route: '/pluri/list',
+            perm: 'CRIAR_PLURI'
+          },
+          {
             label: 'Pesquisar',
             route: '/pesquisar',
             perm: 'PESQUISAR_PLURI'

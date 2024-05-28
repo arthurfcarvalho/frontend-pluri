@@ -1,12 +1,12 @@
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Pluri } from '../../models/Pluri.model';
 import { UserService } from '../../../../services/user.service';
 import { PluriService } from '../../../../services/pluri.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
@@ -18,9 +18,25 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { DialogConfirmComponent } from '../../components/dialog-confirm/dialog-confirm.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
+import { CalendarEvent, CalendarModule, CalendarMonthViewDay, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CustomCalendarModule } from '../../components/custom-calendar.module';
+import moment from 'moment-timezone';
+import { addMonths, format, subMonths } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+
+
 
 type InputTypes = "text" | "email" | "password" | "date" | "number";
-
+interface eventoPluri{
+  start: Date,
+  title: string
+  color: {
+    primary: string,
+    secondary: string
+  }
+}
 @Component({
   selector: 'app-update-pluri',
   standalone: true,
@@ -36,16 +52,19 @@ type InputTypes = "text" | "email" | "password" | "date" | "number";
     MatFormFieldModule,
     MatInputModule,
     DialogConfirmComponent,
-    MatButtonModule
+    MatButtonModule,
+    CustomCalendarModule,
+    RouterModule
   ],
    providers: [
      {
-      provide: MAT_DATE_LOCALE, useValue: 'pt-BR'},
-       provideMomentDateAdapter(),
-      {
-        provide: STEPPER_GLOBAL_OPTIONS,
-        useValue: {showError: true}
-      }
+      provide: MAT_DATE_LOCALE, useValue: 'pt-BR'
+    },
+    provideMomentDateAdapter(),
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {showError: true}
+    },
     ],
   templateUrl: './update-pluri.component.html',
   styleUrls: ['./update-pluri.component.scss'],
@@ -60,6 +79,8 @@ export class UpdatePluriComponent implements OnInit {
   informacoesAplicacaoForm!: FormGroup;
   selected: Date | null = null;
   messageError: string = 'Campos sem preencher';
+  viewDate: Date = new Date();
+  events: CalendarEvent[] = [];
   
   atualizarInformacoesGeraisForm!: FormGroup;
   dateString = '2024-05-11'; 
@@ -67,12 +88,7 @@ export class UpdatePluriComponent implements OnInit {
   trimestreSelecionado: string = '';
   textNext: string = 'Proximo'
   textBack: string = 'Voltar'
-  
-  
 
-  get formattedDate(): string{
-    return this.selected ? this.datePipe.transform(this.selected, 'dd/MM/yyyy') ?? '' : '';
-  }
 
   pluri: Pluri = {
     id: 0,
@@ -126,6 +142,8 @@ export class UpdatePluriComponent implements OnInit {
     { formControlName: 'data_divulgacao_notas', type: 'date', placeholder: 'Data Divulgacao Notas', label: 'Data Divulgação Notas' },
   ];
 
+  
+
   constructor(
     private usuarioService: UserService,
     private formBuilder: FormBuilder,
@@ -134,21 +152,80 @@ export class UpdatePluriComponent implements OnInit {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private toastService: ToastrService,
+    private cdr: ChangeDetectorRef
+
   ) {}
 
+  
   ngOnInit(): void {
-    this.inicializarFormularios();
-    const id = this.route.snapshot.paramMap.get('id');
+  this.inicializarFormularios();
+  const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const idNumero = Number(id);
       this.pluriService.listarPorId(idNumero).subscribe(pluriRetorno => {
         this.pluri = pluriRetorno;
         this.trimestreSelecionado = String(this.pluri.trimestre);
+
         this.preencherFormulariosComDados();
       });
     }
   }
+  adicionarEventoAoCalendario(evento: CalendarEvent) {
+    const indexEventoExistente = this.events.findIndex(e => e.title === evento.title);
+    if (indexEventoExistente !== -1) {   
+        this.events.splice(indexEventoExistente, 1);
+    }
+    this.events.push(evento);
+    this.atualizarCalendario();
+  }
+  prevMonth() {
+    this.viewDate = subMonths(this.viewDate, 1); 
+  } 
 
+  nextMonth() {
+    this.viewDate = addMonths(this.viewDate, 1); 
+  }
+
+  
+  atualizarCalendario() {  
+    this.events = [...this.events];
+  }
+  getMonthName(): string {
+    return format(this.viewDate, 'MMMM yyyy', { locale: ptBR });
+  }
+  
+  get formattedDate(): string{
+    return this.selected ? this.datePipe.transform(this.selected, 'dd/MM/yyyy') ?? '' : '';
+  }
+  
+
+  onDateChange(dateString: string, formControlName: string): void {
+    console.log("olá");
+    console.log("DateString: ", dateString);
+
+    if (dateString) {
+        let dateTimeString: string = dateString + 'T15:00:00';
+
+        let newDate: moment.Moment = moment.utc(dateTimeString);
+
+        console.log("New date: ", newDate);
+
+        console.log("Date: ", dateString);
+        console.log("Events: ", this.events);
+
+        const evento: eventoPluri = {
+            start: newDate.toDate(),
+            title: formControlName,
+            color: {
+                primary: '#ad2121',
+                secondary: '#FAE3E3'
+            }
+        };
+
+        this.adicionarEventoAoCalendario(evento);
+        this.atualizarCalendario();
+    }
+  }
   inicializarFormularios(): void {
     this.informacoesGeraisForm = this.formBuilder.group({
       id: 0,
@@ -237,8 +314,7 @@ export class UpdatePluriComponent implements OnInit {
               });
             } else {
               this.toastService.error(`${err.error.mensagem}`, 'Erro');
-            }
-            
+            } 
           }
         });
       } else {
