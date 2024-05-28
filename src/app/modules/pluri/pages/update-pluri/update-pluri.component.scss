@@ -68,6 +68,14 @@ p-card {
 @include respond-to('tablet');
 @include respond-to('mobile');
 
+
+.calendar-container {
+  display: flex;
+  justify-content: start;
+  margin-left: 15px;
+  margin-top: 20px;
+}
+
 .mat-calendar-body-cell.custom-date1 .mat-calendar-body-cell-content {
   background-color: #fb5f5cb6; 
 }
@@ -81,7 +89,24 @@ p-card {
 }
 .calendar-container {
   display: flex;
-  justify-content: start;
+  flex-direction: column;
   margin-left: 15px;
-  margin-top: 20px;
+  width: 100%;
+  mwl-calendar-month-view{
+    width: 400px;
+  }
+  
+  .container-btn{
+    background-color: rgba(242, 238, 238, 0.519);
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    button {
+       background-color: $primary-color;
+       color: #FFFFFF;
+       margin: 5px;
+    }
+  }
 }
