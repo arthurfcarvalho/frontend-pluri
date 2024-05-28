@@ -25,9 +25,6 @@ import moment from 'moment-timezone';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-
-
-
 type InputTypes = "text" | "email" | "password" | "date" | "number";
 interface eventoPluri{
   start: Date,
