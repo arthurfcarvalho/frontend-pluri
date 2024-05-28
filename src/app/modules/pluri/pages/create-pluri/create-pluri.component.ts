@@ -302,6 +302,7 @@ export class CreatePluriComponent implements OnInit{
         this.pluriService.criarPluri(this.informacoesGeraisForm.value).subscribe({
           next: (value) => {            
             this.toastService.success('Pluri Criado', 'Sucesso');
+            this.router.navigate(["/pluri/list"])
           },
           error: (err) => {
             if (Array.isArray(err.error)) {

@@ -20,13 +20,12 @@
                 </div>
                 <div class="botoes">
                     <button mat-button routerLink="/home" routerLinkActive="router-link-active">{{textBack}}</button>
-                    <button mat-button matStepperNext>{{textNext}}</button>
                     <button mat-button (click)="sendInformacoesGeraisForm()">Salvar</button>
                 </div>  
             </form>
         </p-card>
     </mat-step>
-    <mat-step [stepControl]="atividadesComissaoForm" errorMessage="{{messageError}}">
+    <!-- <mat-step [stepControl]="atividadesComissaoForm" errorMessage="{{messageError}}">
         <p-card header="Dados Atividades Comissao">
             <form [formGroup]="atividadesComissaoForm">
                 <div class="input-container">
@@ -71,7 +70,7 @@
             </div>  
         </form>
     </p-card>
-    </mat-step>
+    </mat-step> -->
   </mat-stepper>
   
     <div class="calendar-container">
