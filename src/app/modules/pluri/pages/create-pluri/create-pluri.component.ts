@@ -1,12 +1,25 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PluriService } from '../../../../services/pluri.service';
 import { ToastrService } from 'ngx-toastr';
+import { HeaderComponent } from '../../../home/components/header/header.component';
+import { StepperModule } from 'primeng/stepper';
+import { CalendarModule } from 'primeng/calendar';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-create-pluri',
   standalone: true,
   imports: [
+    HeaderComponent,
+    StepperModule,
+    ReactiveFormsModule,
+    CalendarModule,
+    FloatLabelModule,
+    DropdownModule,
+    InputTextModule
   ],
   templateUrl: './create-pluri.component.html',
   styleUrl: './create-pluri.component.scss'
@@ -16,6 +29,12 @@ export class CreatePluriComponent {
   informacoesGeraisForm: FormGroup;
   atividadesComissaoForm: FormGroup;
   informacoesAplicacaoForm: FormGroup;
+  trimestreOptions = [
+    {label: '1º Trimestre', value: 1},
+    {label: '2º Trimestre', value: 2},
+    {label: '3º Trimestre', value: 3},
+    {label: '4º Trimestre', value: 4}
+  ]
 
   constructor(
     private pluriService: PluriService,
@@ -44,9 +63,9 @@ export class CreatePluriComponent {
     })
 
     this.informacoesAplicacaoForm = new FormGroup({
-      data_aplicacao: new FormControl('', Validators.required),
-      data_reaplicacao: new FormControl('', Validators.required),
-      data_divulgacao_notas: new FormControl('', Validators.required)
+      data_aplicacao: new FormControl(''),
+      data_reaplicacao: new FormControl(''),
+      data_divulgacao_notas: new FormControl('')
     })
   }
 

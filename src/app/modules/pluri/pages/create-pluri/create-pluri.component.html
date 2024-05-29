@@ -1,1 +1,136 @@
-<p>create-pluri works!</p>
+<app-header />
+<main>
+    
+</main>
+<p-stepper [linear]="true">
+    <p-stepperPanel header="Informações Gerais">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+            <div class="stepper-panel-content">
+                <div class="form-container">
+                    <form [formGroup]="informacoesGeraisForm">
+                        <p-floatLabel>
+                            <input type="text" pInputText formControlName="codigo"/>
+                            <label for="codigo">Código</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-dropdown 
+                                formControlName="trimestre"
+                                [options]="trimestreOptions"
+                            />
+                            <label for="trimestre">Trimestre</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="ano_aplicacao"
+                                view="year"
+                                dateFormat="yy"
+                            />
+                            <label for="ano_aplicacao">Ano de Aplicação</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_inicio_pluri"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_inicio_pluri">Data de Início do Pluri</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_inicio_recuperacao"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_inicio_recuperacao">Data de Início da Recuperação</label>
+                        </p-floatLabel>
+                    </form>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="next-button" (click)="nextCallback.emit()">Avançar</button>
+                    <button class="submit-button">Salvar</button>
+                </div>
+            </div>
+        </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Atividades da Comissão">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+            <div class="stepper-panel-content">
+                <div class="form-container">
+                    <form [formGroup]="informacoesGeraisForm">
+                        <p-floatLabel>
+                            <input type="text" pInputText formControlName="codigo"/>
+                            <label for="codigo">Código</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-dropdown 
+                                formControlName="trimestre"
+                                [options]="trimestreOptions"
+                            />
+                            <label for="trimestre">Trimestre</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="ano_aplicacao"
+                                view="year"
+                                dateFormat="yy"
+                            />
+                            <label for="ano_aplicacao">Ano de Aplicação</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_inicio_pluri"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_inicio_pluri">Data de Início do Pluri</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_inicio_recuperacao"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_inicio_recuperacao">Data de Início da Recuperação</label>
+                        </p-floatLabel>
+                    </form>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="back-button" (click)="prevCallback.emit()">Voltar</button>
+                    <button class="next-button" (click)="nextCallback.emit()">Avançar</button>
+                    <button class="submit-button">Salvar</button>
+                </div>
+            </div>
+        </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Informações da Aplicação">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+            <div class="stepper-panel-content">
+                <div class="form-container">
+                    <form [formGroup]="informacoesAplicacaoForm">
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_aplicacao"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_aplicacao">Data de Aplicação</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_reaplicacao"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_reaplicacao">Data da Reaplicação do Pluri</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="data_divulgacao_notas"
+                                dateFormat="dd.mm.yy"
+                            />
+                            <label for="data_divulgacao_notas">Data de Divulgação das Notas</label>
+                        </p-floatLabel>
+                    </form>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="back-button" (click)="prevCallback.emit()">Voltar</button>
+                    <button class="submit-button">Salvar</button>
+                </div>
+            </div>
+        </ng-template>
+    </p-stepperPanel>
+</p-stepper>
