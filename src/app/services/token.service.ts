@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InvalidTokenError } from 'jwt-decode';
 
-const AUTH_TOKEN_KEY = 'auth-token';
+const KEY = 'token';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class TokenService {
     }
     
     try {
-      sessionStorage.setItem(AUTH_TOKEN_KEY, token);
+      sessionStorage.setItem(KEY, token);
     } catch (error) {
       console.error('Error saving token:', error);
     }
@@ -23,14 +23,14 @@ export class TokenService {
 
   deleteToken() {
     try {
-      sessionStorage.removeItem(AUTH_TOKEN_KEY);
+      sessionStorage.removeItem(KEY);
     } catch (error) {
       console.error('Error deleting token:', error);
     }
   }
 
   returnToken(): string | null {
-    return sessionStorage.getItem(AUTH_TOKEN_KEY) ?? null;
+    return sessionStorage.getItem(KEY) ?? null;
   }
 
   hasToken(){
