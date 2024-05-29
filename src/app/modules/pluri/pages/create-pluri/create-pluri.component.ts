@@ -34,7 +34,7 @@ export class CreatePluriComponent {
     {label: '2º Trimestre', value: 2},
     {label: '3º Trimestre', value: 3},
     {label: '4º Trimestre', value: 4}
-  ]
+  ];
 
   constructor(
     private pluriService: PluriService,
@@ -69,10 +69,6 @@ export class CreatePluriComponent {
     })
   }
 
-  private formatDate(date: string): string {
-    return new Date(date).toISOString().split('T')[0];
-  }
-
   private extractYear(date: string): string {
     return new Date(date).getFullYear().toString();
   }
@@ -82,8 +78,6 @@ export class CreatePluriComponent {
     const formValue = this.informacoesGeraisForm.value;
 
     formValue.ano_aplicacao = this.extractYear(formValue.ano_aplicacao);
-    formValue.data_inicio_pluri = this.formatDate(formValue.data_inicio_pluri);
-    formValue.data_inicio_recuperacao = this.formatDate(formValue.data_inicio_recuperacao);
 
     this.pluriService.createPluri(this.informacoesGeraisForm.value).subscribe({
       next: (value) => {
