@@ -69,4 +69,29 @@ export class CreatePluriComponent {
     })
   }
 
+  private formatDate(date: string): string {
+    return new Date(date).toISOString().split('T')[0];
+  }
+
+  private extractYear(date: string): string {
+    return new Date(date).getFullYear().toString();
+  }
+
+  submitInformacoesGerais(){
+
+    const formValue = this.informacoesGeraisForm.value;
+
+    formValue.ano_aplicacao = this.extractYear(formValue.ano_aplicacao);
+    formValue.data_inicio_pluri = this.formatDate(formValue.data_inicio_pluri);
+    formValue.data_inicio_recuperacao = this.formatDate(formValue.data_inicio_recuperacao);
+
+    this.pluriService.createPluri(this.informacoesGeraisForm.value).subscribe({
+      next: (value) => {
+        this.toastService.success("Pluri criado com sucesso!");
+      },
+      error: (e) => {
+        this.toastService.error("Erro ao criar o Pluri!");
+      }
+    })
+  }
 }
