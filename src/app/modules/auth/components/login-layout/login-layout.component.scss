@@ -88,28 +88,3 @@ main {
         background-color: $gray-bg;
     }
 }
-@mixin respond-to($media) {
-    @if $media == 'tablet' {
-      @media (max-width: 768px) {
-           .input-container {
-           grid-template-columns: repeat(2, 1fr);
-         }
-         .main-section{
-            display: none;
-         }
-            
-       }
-     } @else if $media == 'mobile' {
-       @media (max-width: 480px) {
-         .input-container {
-           grid-template-columns: 1fr;
-         }
-         .main-section{
-            display: none;
-         }
-       }
-     }
-   }
-   
-   @include respond-to('tablet');
-   @include respond-to('mobile');
