@@ -1,4 +1,4 @@
-import { SignupUser } from './../../../../models/SignupUser.model';
+import { SignupUser } from '../../models/SignupUser.model';
 import { Component } from '@angular/core';
 import { AuthInputComponent } from '../../components/auth-input/auth-input.component';
 import { LoginLayoutComponent } from '../../components/login-layout/login-layout.component';

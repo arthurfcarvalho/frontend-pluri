@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { SignupUser } from '../models/SignupUser.model';
+import { SignupUser } from '../modules/auth/models/SignupUser.model';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
 import { TokenService } from './token.service';
