@@ -24,5 +24,20 @@ export const routes: Routes = [
         path: "home",
         component: HomeComponent,
         title: "Pluri"
+    },
+    {
+        path: "criar-pluri",
+        component: CreatePluriComponent,
+        title: "Criar Pluri - Pluri"
+    },
+    {
+        path: "pesquisar-pluri",
+        component: SearchPluriComponent,
+        title: "Pesquisar Pluri - Pluri"
+    },
+    {
+        path: "editar-pluri/:id",
+        component: UpdatePluriComponent,
+        title: "Editar Pluri - Pluri"
     }
 ];
