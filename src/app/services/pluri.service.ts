@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import { Pluri } from '../models/Pluri.model';
 import { PluriInformacoesGeraisDAO } from '../modules/pluri/models/PluriInformacoesGeraisDAO.model';
 import { PluriAtividadesComissaoDAO } from '../modules/pluri/models/PluriAtividadesComissaoDAO.model';
+import { ApiResponsePageable } from '../types/api-response-pageable.type';
 
 @Injectable({
   providedIn: 'root'
@@ -35,16 +36,16 @@ export class PluriService {
     return this.httpClient.put(url, data);
   }
 
-  searchUnfinishedPluris(){
+  searchUnfinishedPluris(): Observable<ApiResponsePageable>{
     const url = this.baseUrl + `/listar-pluris-nao-realizados`;
-    return this.httpClient.get(url).pipe(map(
+    return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
   }
 
   searchPluriById(id: number){
     const url = this.baseUrl + `/listar-pluri/${id}`;
-    return this.httpClient.get(url).pipe(map(
+    return this.httpClient.get<Pluri>(url).pipe(map(
       obj => obj
     ));
   }
