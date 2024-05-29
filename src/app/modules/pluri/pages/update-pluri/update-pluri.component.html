@@ -1,0 +1,84 @@
+<app-header></app-header>
+<mat-stepper #stepper>
+    <mat-step [stepControl]="informacoesGeraisForm" errorMessage="{{messageError}}">
+        <p-card header="Dados Informações Gerais">
+            <form [formGroup]="informacoesGeraisForm">
+                <div class="input-container">
+                    <div *ngFor="let item of listaInputsInformacoesGerais">
+                        <label for="item.label">{{ item.label}}</label><br>
+                        <input 
+                            [formControlName]="item.formControlName"
+                            [placeholder]="item.placeholder"
+                            [type]="item.type"
+                            (change)="onDateChange(informacoesGeraisForm.get(item.formControlName)?.value, item.formControlName)"  
+                        >   
+                    </div>    
+                </div>
+                <div class="botoes">
+                    <button mat-button routerLink="pluri/list" routerLinkActive="router-link-active">{{textBack}}</button>
+                    <button mat-button matStepperNext>{{textNext}}</button>
+                    <button mat-button (click)="updateInformacoesGerais()">Salvar</button>
+                </div>  
+            </form>
+        </p-card>
+    </mat-step>
+    <mat-step [stepControl]="atividadesComissaoForm" errorMessage="{{messageError}}">
+        <p-card header="Dados Atividades Comissao">
+            <form [formGroup]="atividadesComissaoForm">
+                <div class="input-container">
+                    <div *ngFor="let item of listaInputsAtualizarAtividades">
+                        <label for="item.label">{{ item.label}}</label><br>
+                        <input 
+                            [formControlName]="item.formControlName"
+                            [placeholder]="item.placeholder"
+                            [type]="item.type" 
+                            (change)="onDateChange(atividadesComissaoForm.get(item.formControlName)?.value, item.formControlName)"  
+                        >   
+                    </div>
+                </div>
+                <div class="botoes">
+                    <button mat-button matStepperPrevious>{{textBack}}</button>
+                    <button mat-button matStepperNext>{{textNext}}</button>
+                    <button mat-button (click)="updateAtividadesDaComissaoForm()">Salvar</button>
+                </div>  
+            </form>
+        </p-card>
+    </mat-step>
+    <mat-step [stepControl]="informacoesAplicacaoForm" errorMessage="{{messageError}}">
+      <ng-template matStepLabel>Done</ng-template>
+      <p-card header="Dados Informações Pluri">
+        <form [formGroup]="informacoesAplicacaoForm">
+            <div class="input-container">
+                <div *ngFor="let item of listaInputsInformacoesAplicacao">
+                    <label for="item.label">{{ item.label}}</label><br>
+                    <input 
+                        [formControlName]="item.formControlName"
+                        [placeholder]="item.placeholder"
+                        [type]="item.type"
+                        (change)="onDateChange(informacoesAplicacaoForm.get(item.formControlName)?.value, item.formControlName)"  
+                    >   
+                </div>
+            </div>
+            <div class="botoes">
+                <button mat-button matStepperPrevious>{{textBack}}</button>
+                <button mat-button matStepperNext>{{textNext}}</button>
+                <button mat-button (click)="updateInformacoesAplicacaoForm()">Salvar</button>  
+            </div>  
+        </form>
+    </p-card>
+    </mat-step>
+  </mat-stepper>
+  <div class="container-box">
+    <div class="calendar-container">
+        <div class="container-btn">
+            <button mat-button (click)="prevMonth()">Mês Anterior</button>
+            <span>{{ getMonthName() }}</span>
+            <button mat-button  (click)="nextMonth()">Próximo Mês</button>
+        </div>
+        <mwl-calendar-month-view
+            [viewDate]="viewDate"
+            [events]="events"
+            [locale]="locale"
+        ></mwl-calendar-month-view>    
+  </div>  
+<app-dialog-confirm></app-dialog-confirm>

@@ -1,6 +1,11 @@
 @import 'ngx-toastr/toastr';
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeng/resources/themes/saga-blue/theme.css"; 
+@import "../node_modules/primeicons/primeicons.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
 
 * {
     margin: 0;
@@ -11,4 +16,13 @@
 
 html, body {
     height: 100%;
+}
+.p-stepper {
+    flex-basis: 40rem;
+} 
+.error {
+    color: red;
+}
+.p-card{
+    padding: 10px;
 }
