@@ -93,7 +93,7 @@
                 <div class="btn-wrapper">
                     <button class="back-button" (click)="prevCallback.emit()">Voltar</button>
                     <button class="next-button" (click)="nextCallback.emit()">Avançar</button>
-                    <button class="submit-button">Salvar</button>
+                    <button class="submit-button" (click)="submitAtividadesComissao()">Salvar</button>
                 </div>
             </div>
         </ng-template>
@@ -128,7 +128,7 @@
                 </div>
                 <div class="btn-wrapper">
                     <button class="back-button" (click)="prevCallback.emit()">Voltar</button>
-                    <button class="submit-button">Salvar</button>
+                    <button class="submit-button" (click)="submitInformacoesAplicacaoForm()">Salvar</button>
                 </div>
             </div>
         </ng-template>

@@ -92,6 +92,28 @@ export class CreatePluriComponent {
       error: (e) => {
         this.toastService.error("Erro ao criar o Pluri!");
       }
-    })
+    });
+  }
+
+  submitAtividadesComissao(){
+    this.pluriService.updateAtividadesComissao(this.atividadesComissaoForm.value).subscribe({
+      next: (value) => {
+        this.toastService.success("Informações das atividades da comissão atualizadas com sucesso!");
+      },
+      error: (e) => {
+        this.toastService.error("Erro ao atualizar informações do Pluri");
+      }
+    });
+  }
+
+  submitInformacoesAplicacaoForm(){
+    this.pluriService.updateInformacoesAplicacao(this.informacoesAplicacaoForm.value).subscribe({
+      next:(value) => {
+        this.toastService.success("Informações das atividades da aplicação do Pluri atualizadas com sucesso!");
+      },
+      error: (e) => {
+        this.toastService.error("Erro ao atualizar informações do Pluri");
+      }
+    });
   }
 }
