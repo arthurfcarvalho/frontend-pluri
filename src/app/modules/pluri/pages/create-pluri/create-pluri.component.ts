@@ -109,36 +109,41 @@ export class CreatePluriComponent implements OnInit{
 
 
   
-  listaInputsInformacoesGerais: { formControlName: string, type: InputTypes; placeholder: string; label: string }[] = [
+  listaInputsInformacoesGerais: { formControlName: string, type: InputTypes; placeholder: string; label: string, disabled: boolean }[] = [
     {
       formControlName: 'codigo', 
       type: 'text',
-      placeholder: 'Codigo',
+      placeholder: 'Gerado Automaticamente',
       label: 'Codigo',
+      disabled: true
     },
     {
       formControlName: 'trimestre', 
       type: 'number',
       placeholder: 'Trimestre',
       label: 'Trimestre',
+      disabled: false
     },
     {
       formControlName: 'ano_aplicacao', 
       type: 'text',
       placeholder: 'Ano Aplicacao',
       label: 'Ano de Aplicação',
+      disabled: false
     },
     {
       formControlName: 'data_inicio_pluri', 
       type: 'date',
       placeholder: 'Data inicio',
       label: 'Data inicio',
+      disabled: false
     },
     {
       formControlName: 'data_inicio_recuperacao', 
       type: 'date',
       placeholder: 'Data inicio recuperação',
       label: 'Data Inicio Recuperação',
+      disabled: false
     },
   ]
   listaInputsAtualizarAtividades: { formControlName: string, type: InputTypes; placeholder: string; label: string }[] = [
@@ -389,9 +394,9 @@ export class CreatePluriComponent implements OnInit{
 
   inicializarFormulario() {
     this.informacoesGeraisForm = this.formBuilder.group({
-      codigo: ['', Validators.required],
-      trimestre: [,Validators.required],
-      ano_aplicacao: [,Validators.required],
+      codigo: [{ value: '', disabled: true }, Validators.required],
+      trimestre: [null,Validators.required],
+      ano_aplicacao: [null,Validators.required],
       data_inicio_pluri: [,Validators.required],
       data_inicio_recuperacao: [,Validators.required]});
     this.atividadesComissaoForm = this.formBuilder.group({

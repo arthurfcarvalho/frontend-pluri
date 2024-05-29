@@ -5,6 +5,8 @@
             <div *ngFor="let item of listaInputsInformacoesGerais">
                 <label for="item.label">{{ item.label}}</label><br>
                 <input 
+                    
+                    [attr.disabled]="item.disabled"
                     mat-input
                     [formControlName]="item.formControlName"
                     [placeholder]="item.placeholder"
