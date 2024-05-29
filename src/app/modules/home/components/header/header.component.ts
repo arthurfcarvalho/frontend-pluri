@@ -29,12 +29,7 @@ export class HeaderComponent {
         items: [
           {
             label: 'Criar Pluri',
-            route: '/pluri/create-pluri',
-            perm: 'CRIAR_PLURI'
-          },
-          {
-            label: 'Listar Pluris',
-            route: '/pluri/list',
+            route: '/criar-pluri',
             perm: 'CRIAR_PLURI'
           },
           {

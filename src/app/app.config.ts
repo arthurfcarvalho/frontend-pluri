@@ -1,27 +1,18 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { CustomCalendarModule } from './modules/pluri/components/custom-calendar.module';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(withFetch(),withInterceptors([AuthInterceptor])),
     provideToastr(),
-    provideAnimations(), provideAnimationsAsync(),
-    MatNativeDateModule,
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
-    CustomCalendarModule
+    provideAnimations(), provideAnimationsAsync()
   ]
 };
