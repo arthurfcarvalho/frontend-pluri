@@ -5,6 +5,7 @@ import { HomeComponent } from './modules/home/pages/home/home.component';
 import { CreatePluriComponent } from './modules/pluri/pages/create-pluri/create-pluri.component';
 import { SearchPluriComponent } from './modules/pluri/pages/search-pluri/search-pluri.component';
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
+import { SearchUsersComponent } from './modules/user/pages/search-users/search-users.component';
 
 export const routes: Routes = [
     {
@@ -42,5 +43,10 @@ export const routes: Routes = [
         path: "editar-pluri/:id",
         component: UpdatePluriComponent,
         title: "Editar Pluri - Pluri"
-    }
+    },
+    {
+        path: "pesquisar-usuarios",
+        component: SearchUsersComponent,
+        title: "Pesquisar Usuários - Pluri"
+    },
 ];
