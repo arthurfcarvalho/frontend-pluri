@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { User } from '../../../../models/User.model';
+import { RoleAssignComponent } from '../../../role-assignment/pages/role-assign/role-assign.component';
 
 @Component({
   selector: 'app-search-users',
@@ -13,7 +14,8 @@ import { User } from '../../../../models/User.model';
     TableModule,
     HeaderComponent,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    RoleAssignComponent
   ],
   providers: [DialogService],
   templateUrl: './search-users.component.html',
