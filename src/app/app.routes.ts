@@ -5,7 +5,7 @@ import { HomeComponent } from './modules/home/pages/home/home.component';
 import { CreatePluriComponent } from './modules/pluri/pages/create-pluri/create-pluri.component';
 import { SearchPluriComponent } from './modules/pluri/pages/search-pluri/search-pluri.component';
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
-import { SearchUsersComponent } from './modules/user/pages/search-users/search-users.component';
+import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 
 export const routes: Routes = [
     {
