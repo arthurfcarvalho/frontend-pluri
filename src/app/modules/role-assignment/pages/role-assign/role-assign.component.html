@@ -1,0 +1,21 @@
+<p-pickList 
+    [source]="availableRoles" 
+    [target]="selectedRoles" 
+    sourceHeader="Disponíveis" 
+    targetHeader="Selecionados" 
+    [dragdrop]="true" 
+    [responsive]="true" 
+    [sourceStyle]="{  }"
+    [targetStyle]="{  }" 
+    filterBy="nome" 
+    sourceFilterPlaceholder="Pesquisar pelo nome" 
+    targetFilterPlaceholder="Pesquisar pelo nome"
+    keepSelection="false"
+    stripedRows="true"
+    breakpoint="1400px">
+        <ng-template let-availableRoles pTemplate="item">
+            <span class="font-bold">
+                {{ availableRoles.nome }}
+            </span>
+        </ng-template>
+</p-pickList>
