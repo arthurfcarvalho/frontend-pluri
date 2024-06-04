@@ -1,0 +1,44 @@
+<app-header/>
+<div class="container">
+    <p-table
+        [value]="users"
+        styleClass="p-datatable-striped"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 20]"
+        [tableStyle]="{'min-width': '50rem'}"
+        sortField="nome"
+        [sortOrder]="1"
+        (selectionChange)="onSelect($event)"
+    >
+        <ng-template pTemplate="caption">
+            <div>
+                Usuários
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
+                <th pSortableColumn="email">E-mail<p-sortIcon field="email"/></th>
+                <th pSortableColumn="data_nascimento">Data de Nascimento<p-sortIcon field="data_nascimento"/></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ user.nome }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ formatDate(user.data_nascimento) }}</td>
+                <td>
+                    <button pButton type="button" label="Atribuir Perfis" (click)="showModalRoleAssignment(user)">
+                        <span class="pi pi-user-edit"></span>
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="showRoleAssignmentDialog" [header]="getUserDialogHeader()">
+        <!-- <app-atribuir-perfis [selectedUser]="selectedUser"/> -->
+    </p-dialog>
+</div>
