@@ -1,9 +1,6 @@
-import { User } from './../../../../models/User.model';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 import { MatMenuModule } from '@angular/material/menu';
-import { UserService } from '../../../../services/user.service';
-import { UserRoleBoxMessage } from '../../../../models/UserRoleBoxMensage.model';
 
 @Component({
   selector: 'app-header',
@@ -16,22 +13,11 @@ import { UserRoleBoxMessage } from '../../../../models/UserRoleBoxMensage.model'
   styleUrl: './header.component.scss'
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   items: any[];
-  user =  {
-    name: "",
-    perfis: [{
-      name: ""
-    }]}
-  teste: any
-  login: any;
-  listaPerfis = []
-
-
+  user: any;
   // objetos de teste, por ora!
-  constructor(
-    private userService: UserService
-  ) {
+  constructor() {
 
     this.items = [
       {
@@ -54,31 +40,34 @@ export class HeaderComponent implements OnInit {
         ]
       }
     ];
+
+    this.user = {
+      name: 'Arthur Carvalho',
+      perfis: [
+        {
+          name: 'Administrador do Sistema',
+          permissoes: [
+            {
+              name: 'CRIAR_PLURI'
+            },
+             {
+              name: 'PESQUISAR_PLURI'
+            }
+          ],
+        },
+        {
+          name: 'Professor',
+          permissoes: [
+            {
+              name: 'CRIAR_PLURI'
+            }
+          ]
+        }
+      ]
+    };
   }
 
-  ngOnInit(): void {
-    this.userService.returnUser().subscribe(
-      (user: any | null) => {
-        console.log(user);
-        this.login = user.sub
-      }
-    )
-    this.userService.returnUserRole(this.login).subscribe(
-      (retorno)=>{
-        console.log(retorno),
-        this.teste = retorno
-        console.log("Teste",this.teste)
-        console.log("Teste",this.teste.perfis)
-        const perfisNomes = this.teste.perfis.map((perfil: { nome: any; }) => perfil.nome);
-        console.log("nomes",perfisNomes)
-        this.listaPerfis = perfisNomes
-        this.user = {
-          name: this.teste.nome,
-          perfis: perfisNomes
-        };
-        console.log(this.user)
-      }
-    )
+  ngAfterViewInit(){
     const userDiv = document.querySelector('.p-menubar-end') as HTMLElement;
     if(userDiv) {
       userDiv.style.marginLeft = 'auto';
