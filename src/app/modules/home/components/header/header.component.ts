@@ -4,6 +4,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/User.model';
 import { CommonModule } from '@angular/common';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -18,43 +19,67 @@ import { CommonModule } from '@angular/common';
 })
 
 export class HeaderComponent {
-  menuItems: any[];
+  menuItems!: MenuItem[];
   user!: User;
 
   constructor(private userService: UserService) {
-    this.menuItems = [
-      {
-        label: 'Início',
-        route: '/home',
-      },
-      {
-        label: 'Pluri',
-        items: [
-          {
-            label: 'Criar Pluri',
-            route: '/criar-pluri',
-            perm: 'CRIAR_PLURI'
-          },
-          {
-            label: 'Pesquisar',
-            route: '/pesquisar-pluri',
-            perm: 'PESQUISAR_PLURI'
-          }
-        ]
-      }
-    ];
   }
 
   ngOnInit(){
+
     this.userService.returnUserLogin().subscribe(
       (login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe(
           (user) => {
             this.user = user;
+            this.menuItems = [
+              {
+                label: 'Início',
+                routerLink: '/home'
+              },
+              {
+                label: 'Pluri',
+                visible: this.userHasPermission(["CRIAR_PLURI", "PESQUISAR_PLURI"]),
+                items: [
+                  {
+                    label: 'Criar Pluri',
+                    routerLink: '/criar-pluri',
+                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  },
+                  {
+                    label: 'Pesquisar Pluri',
+                    routerLink: '/pesquisar-pluri',
+                    visible: this.userHasPermission(["PESQUISAR_PLURI"])
+                  },
+                  {
+                    label: 'Solicitar Questões'
+                  }
+                ]
+              },
+              {
+                label: 'Administração',
+                visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
+                items: [
+                  {
+                    label: 'Usuários',
+                    visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
+                    items: [
+                      {
+                        label: 'Pesquisar Usuários',
+                        visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
+                        routerLink: '/pesquisar-usuarios'
+                      }
+                    ]
+                  }
+                ]
+              },
+            ]
           }
         )
       }
     )
+
+    
   }
 
   ngAfterViewInit(){
@@ -66,11 +91,15 @@ export class HeaderComponent {
     if(menubar){
       menubar.style.borderRadius = '0';
     }
+
+    console.log(this.menuItems);
   }
 
-  userHasPermission(perm: string): boolean {
-    return this.user.perfis.some((perfil) => 
-      perfil.permissoes && perfil.permissoes.some((p) => p.nome === perm)
-    );
+  userHasPermission(requiredPermissions: string[]): boolean {
+
+    return this.user.perfis.some((perfil) => {
+      return perfil.permissoes && perfil.permissoes.some((perm) => requiredPermissions.includes(perm.codigo));
+    })
   }
+  
 }
