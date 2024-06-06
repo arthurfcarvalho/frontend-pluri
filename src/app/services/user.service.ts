@@ -28,8 +28,13 @@ export class UserService {
     }
   }
 
-  returnUser(){
+  returnUserLogin(){
     return this.userSubject.asObservable();
+  }
+
+  returnUserByLogin(login: string){
+    const url = `http://localhost:8080/usuario/listar-usuario/${login}`;
+    return this.http.get<User>(url);
   }
 
   saveToken(token: string){ 

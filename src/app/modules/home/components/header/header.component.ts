@@ -1,28 +1,31 @@
 import { Component } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 import { MatMenuModule } from '@angular/material/menu';
+import { UserService } from '../../../../services/user.service';
+import { User } from '../../../../models/User.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
     MenubarModule,
-    MatMenuModule
+    MatMenuModule,
+    CommonModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 
 export class HeaderComponent {
-  items: any[];
-  user: any;
-  // objetos de teste, por ora!
-  constructor() {
+  menuItems: any[];
+  user!: User;
 
-    this.items = [
+  constructor(private userService: UserService) {
+    this.menuItems = [
       {
         label: 'Início',
-        route: '/inicio',
+        route: '/home',
       },
       {
         label: 'Pluri',
@@ -34,37 +37,24 @@ export class HeaderComponent {
           },
           {
             label: 'Pesquisar',
-            route: '/pesquisar',
+            route: '/pesquisar-pluri',
             perm: 'PESQUISAR_PLURI'
           }
         ]
       }
     ];
+  }
 
-    this.user = {
-      name: 'Arthur Carvalho',
-      perfis: [
-        {
-          name: 'Administrador do Sistema',
-          permissoes: [
-            {
-              name: 'CRIAR_PLURI'
-            },
-             {
-              name: 'PESQUISAR_PLURI'
-            }
-          ],
-        },
-        {
-          name: 'Professor',
-          permissoes: [
-            {
-              name: 'CRIAR_PLURI'
-            }
-          ]
-        }
-      ]
-    };
+  ngOnInit(){
+    this.userService.returnUserLogin().subscribe(
+      (login: any | null) => {
+        this.userService.returnUserByLogin(login.sub).subscribe(
+          (user) => {
+            this.user = user;
+          }
+        )
+      }
+    )
   }
 
   ngAfterViewInit(){
@@ -79,8 +69,8 @@ export class HeaderComponent {
   }
 
   userHasPermission(perm: string): boolean {
-    return this.user.perfis.some((perfil: any) => 
-      perfil.permissoes && perfil.permissoes.some((p: any) => p.name === perm)
+    return this.user.perfis.some((perfil) => 
+      perfil.permissoes && perfil.permissoes.some((p) => p.nome === perm)
     );
   }
 }

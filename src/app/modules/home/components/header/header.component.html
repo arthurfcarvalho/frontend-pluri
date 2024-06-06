@@ -1,29 +1,37 @@
 <header>
-    <p-menubar [model]="items">
+    <p-menubar [model]="menuItems">
         <ng-template pTemplate="start">
           <img src="assets/images/pluri-logo.png" alt="Logo do Pluri" loading="eager" height="100px"/>
         </ng-template>
         
-        <ng-template pTemplate="item" let-item let-root="root">
-          @if(!item.perm || userHasPermission(item.perm)){
-            <a [routerLink]="item.route">
-              {{ item.label }}
-            </a>
-          }
+        <ng-container *ngIf="user != undefined">
+          <ng-template pTemplate="item" let-item let-root="root">
+            @if(!item.perm || userHasPermission(item.perm)){
+              <a [routerLink]="item.route">
+                {{ item.label }}
+              </a>
+            }
         </ng-template>
+        </ng-container>
+        
       
         <ng-template pTemplate="end">
           <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
-            {{user.name}}
+            <ng-container *ngIf="user != undefined">
+              {{ user.nome }}
+            </ng-container>
+            
           </span>
           <mat-menu #menu="matMenu" class="user-profile-menu">
             <button mat-menu-item>
               <span class="user-profile-item">Editar perfil</span>
             </button>
             <span mat-menu-item disabled class="user-profile-item">Perfis:
-              @for (perfil of user.perfis; track perfil.name) {
-                <br><span class="user-profile-perfis">{{perfil.name}}</span>
-              }
+              <ng-container *ngIf="user != undefined">
+                @for (perfil of user.perfis; track perfil.nome) {
+                  <br><span class="user-profile-perfis">{{ perfil.nome }}</span>
+                }
+              </ng-container>
             </span>
             <button mat-menu-item>
               <span class="user-profile-item">Sair</span>
