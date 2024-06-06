@@ -6,6 +6,7 @@ import { Pluri } from '../models/Pluri.model';
 import { PluriInformacoesGeraisDAO } from '../modules/pluri/models/PluriInformacoesGeraisDAO.model';
 import { PluriAtividadesComissaoDAO } from '../modules/pluri/models/PluriAtividadesComissaoDAO.model';
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
+import { indicacaoDocentesDAO } from '../modules/ajuntador/models/IndicacaoDocentesDAO.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,11 @@ export class PluriService {
     return this.httpClient.get<Pluri>(url).pipe(map(
       obj => obj
     ));
+  }
+
+  submitIndicacaoDocentes(data: indicacaoDocentesDAO){
+    const url = this.baseUrl + `pedir-questoes`;
+    return this.httpClient.post(url, data);
   }
 
 }
