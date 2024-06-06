@@ -7,6 +7,7 @@ import { TokenService } from './token.service';
 import { User } from '../models/User.model';
 import { Role } from '../models/Role.model';
 import { ApiResponse } from '../types/api-response.type';
+import { UserRoleBoxMessage } from '../models/UserRoleBoxMensage.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,14 @@ export class UserService {
     const url = `http://localhost:8080/usuario/listar/${id}`;
     return this.http.get<User>(url);
   }
+
+  returnUserRole(login: String): Observable<UserRoleBoxMessage>{
+
+    const url = `http://localhost:8080/usuario/listar-usuario`;
+
+    return  this.http.post<UserRoleBoxMessage>(url,login)
+  }
+
 
   assignRoles(id: number, role: Role[]): Observable<any> {
     const url = 'http://localhost:8080/usuario/atualizar-perfis';

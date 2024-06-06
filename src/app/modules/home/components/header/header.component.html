@@ -21,8 +21,8 @@
               <span class="user-profile-item">Editar perfil</span>
             </button>
             <span mat-menu-item disabled class="user-profile-item">Perfis:
-              @for (perfil of user.perfis; track perfil.name) {
-                <br><span class="user-profile-perfis">{{perfil.name}}</span>
+              @for (perfil of listaPerfis; track perfil) {
+                <br><span class="user-profile-perfis">{{perfil}}</span>
               }
             </span>
             <button mat-menu-item>
