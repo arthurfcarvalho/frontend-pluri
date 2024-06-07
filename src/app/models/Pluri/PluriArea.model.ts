@@ -1,4 +1,4 @@
-import { Area } from "./Area.model";
+import { Area } from "../Area.model";
 import { Pluri } from "./Pluri.model";
 
 export interface PluriArea{

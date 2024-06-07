@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
 import { Observable, map } from 'rxjs';
-import { Pluri } from '../models/Pluri.model';
-import { PluriInformacoesGeraisDAO } from '../modules/pluri/models/PluriInformacoesGeraisDAO.model';
-import { PluriAtividadesComissaoDAO } from '../modules/pluri/models/PluriAtividadesComissaoDAO.model';
+import { Pluri } from '../models/Pluri/Pluri.model';
+import { PluriInformacoesGeraisDAO } from '../models/Pluri/PluriInformacoesGeraisDAO.model';
+import { PluriAtividadesComissaoDAO } from '../models/Pluri/PluriAtividadesComissaoDAO.model';
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
 import { indicacaoDocentesDAO } from '../modules/ajuntador/models/IndicacaoDocentesDAO.model';
+import { PluriInfoDAO } from '../models/Pluri/PluriInfoDAO.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,13 +54,13 @@ export class PluriService {
 
   getPluriGeneralInfo(id: number){
     const url = this.baseUrl + `/listar-informacoes-gerais/${id}`;
-    return this.httpClient.get(url).pipe(map(
+    return this.httpClient.get<PluriInfoDAO>(url).pipe(map(
       obj => obj
     ));
   }
 
   submitIndicacaoDocentes(data: indicacaoDocentesDAO){
-    const url = this.baseUrl + `pedir-questoes`;
+    const url = this.baseUrl + `/pedir-questoes`;
     return this.httpClient.post(url, data);
   }
 

@@ -9,7 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { PluriService } from '../../../../services/pluri.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
-import { Pluri } from '../../../../models/Pluri.model';
+import { Pluri } from '../../../../models/Pluri/Pluri.model';
 
 @Component({
   selector: 'app-update-pluri',
