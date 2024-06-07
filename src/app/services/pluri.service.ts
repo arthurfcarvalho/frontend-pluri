@@ -51,6 +51,13 @@ export class PluriService {
     ));
   }
 
+  getPluriGeneralInfo(id: number){
+    const url = this.baseUrl + `/listar-informacoes-gerais/${id}`;
+    return this.httpClient.get(url).pipe(map(
+      obj => obj
+    ));
+  }
+
   submitIndicacaoDocentes(data: indicacaoDocentesDAO){
     const url = this.baseUrl + `pedir-questoes`;
     return this.httpClient.post(url, data);

@@ -1,20 +1,26 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Pluri } from '../../../../models/Pluri.model';
 import { PluriService } from '../../../../services/pluri.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { FieldsetModule } from 'primeng/fieldset';
+import { HeaderComponent } from '../../../home/components/header/header.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-indicacao-docentes',
   standalone: true,
-  imports: [],
+  imports: [
+    FieldsetModule,
+    HeaderComponent,
+    CommonModule
+  ],
   templateUrl: './indicacao-docentes.component.html',
   styleUrl: './indicacao-docentes.component.scss'
 })
 export class IndicacaoDocentesComponent {
 
-  pluri!: Pluri;
+  pluri!: any;
   indicacaoDocentesForm: FormGroup;
 
   constructor(
@@ -33,8 +39,9 @@ export class IndicacaoDocentesComponent {
   ngOnInit(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if(id){
-      this.pluriService.searchPluriById(id).subscribe(pluri => {
+      this.pluriService.getPluriGeneralInfo(id).subscribe(pluri => {
         this.pluri = pluri;
+        console.log(pluri);
       })
     }
   }

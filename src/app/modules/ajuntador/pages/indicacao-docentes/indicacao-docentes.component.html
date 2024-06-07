@@ -1,1 +1,11 @@
-<p>indicacao-docentes works!</p>
+<app-header/>
+
+<div class="container">
+    <ng-container *ngIf="pluri != undefined">
+        <p-fieldset legend="Informações do Pluri">
+            <p>Nome: {{ pluri.nome }}</p>
+            <p>Trimestre: {{ pluri.trimestre }}</p>
+        </p-fieldset>
+    </ng-container>
+    
+</div>
