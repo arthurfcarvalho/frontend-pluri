@@ -1,4 +1,4 @@
-<app-header/>
+<app-header></app-header>
 
 <div class="container">
     <ng-container *ngIf="pluri != undefined">
@@ -9,6 +9,7 @@
             <p>Ano de Aplicação: {{ pluri.anoAplicacao }}</p>
         </p-fieldset>
     </ng-container>    
+
     <form [formGroup]="indicacaoDocentesForm">
         <p-fieldset legend="Indicação de Docente(s)">
             <p-dropdown
@@ -22,19 +23,26 @@
                 tooltip='Selecione a área que pretende indicar o docente para o Pluri {{pluri.nome}}'
                 tooltipPosition="top"
                 (onChange)="onAreaSelect($event)"
-            />
+            ></p-dropdown>
             <p-dropdown 
+                formControlName="selectedTeacher"
                 [options]="teachers"
                 optionLabel="nome"
                 placeholder="Selecione o docente"
                 [filter]="true"
-                filterBy="name"
+                filterBy="nome"
                 filterPlaceholder="Nenhum docente encontrado!"
                 tooltip="Selecione o docente que deseja solicitar questões para o Pluri {{pluri.nome}}"
                 tooltipPosition="top"
                 (onChange)="onTeacherSelect($event)"
-            />
-            <div id="professor-questions-container"></div>
+            ></p-dropdown>
+            <div id="professor-questions-container">
+                <div *ngFor="let pair of teacherQuestionPairs; let i = index">
+                    <p>{{ pair.teacher.nome }}: </p>
+                    <p-inputNumber [(ngModel)]="pair.amount" [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    <p-button pButton label="Indicar" (click)="saveAmount(pair.teacher.id, pair.amount)" size="small"></p-button>
+                </div>
+            </div>
         </p-fieldset>
     </form>
 </div>

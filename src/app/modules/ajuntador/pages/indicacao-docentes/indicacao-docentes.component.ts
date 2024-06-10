@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PluriService } from '../../../../services/pluri.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FieldsetModule } from 'primeng/fieldset';
 import { HeaderComponent } from '../../../home/components/header/header.component';
@@ -10,6 +10,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PluriArea } from '../../../../models/Pluri/PluriArea.model';
 import { PluriInfoDAO } from '../../../../models/Pluri/PluriInfoDAO.model';
 import { User } from '../../../../models/User.model';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -19,7 +21,10 @@ import { User } from '../../../../models/User.model';
     HeaderComponent,
     CommonModule,
     DropdownModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InputNumberModule,
+    ButtonModule,
+    FormsModule
   ],
   templateUrl: './indicacao-docentes.component.html',
   styleUrl: './indicacao-docentes.component.scss'
@@ -88,9 +93,9 @@ export class IndicacaoDocentesComponent {
   ){
     this.indicacaoDocentesForm = new FormGroup({
       id_pluri: new FormControl(),
-      id_usuario: new FormControl(Validators.required),
-      id_pluri_area: new FormControl(Validators.required),
-      quant_questoes_pedidas: new FormControl(Validators.required)
+      id_usuario: new FormControl(null, Validators.required),
+      id_pluri_area: new FormControl(null, Validators.required),
+      quant_questoes_pedidas: new FormControl(null, Validators.required)
     })
   }
 
@@ -109,7 +114,17 @@ export class IndicacaoDocentesComponent {
   }
 
   onTeacherSelect(event: any) {
-    this.selectedTeacher = event.value;
+
+    const selectedTeacher = event.value;
+
+    if(selectedTeacher) {
+      this.teacherQuestionPairs.push({
+        teacher: selectedTeacher,
+        amount: 0
+      });
+    }
+
+    /* this.selectedTeacher = event.value;
     if(this.selectedTeacher){
       this.teacherQuestionPairs.push({
         teacher: this.selectedTeacher,
@@ -119,7 +134,8 @@ export class IndicacaoDocentesComponent {
       const teacherElement = document.createElement('p');
       teacherElement.textContent = `${this.selectedTeacher.nome}: `;
 
-      const amountInput = document.createElement('input');
+      const amountInput = document.createElement('p-inputNumber');
+      amountInput.[(ngModel)] = 'questionAmount';
       amountInput.type = 'number';
       amountInput.min = '1';
       amountInput.value = '0';
@@ -138,18 +154,25 @@ export class IndicacaoDocentesComponent {
 
       teacherElement.appendChild(amountInput);
       teacherElement.appendChild(submitButton);
-      document.getElementById('professor-questions-container')!.appendChild(teacherElement);
+      document.getElementById('professor-questions-container')!.appendChild(teacherElement); */
+    }
+
+  saveAmount(teacherId: number, amount: number){
+    console.log(amount);
+    if(amount > 0) {
+      this.indicacaoDocentesForm.patchValue({
+        id_pluri: this.pluri.id,
+        id_usuario: teacherId,
+        id_pluri_area: this.selectedAreaId,
+        quant_questoes_pedidas: amount
+      });
+      this.submitIndicacaoDocentes();
+    } else {
+      this.toastService.error("Selecione uma quantidade válida de questões!");
     }
   }
 
-  submitIndicacaoDocentes(teacherId: number, amount: number){
-    this.indicacaoDocentesForm.patchValue({
-      id_pluri: this.pluri.id,
-      id_usuario: teacherId,
-      id_pluri_area: this.selectedAreaId,
-      quant_questoes_pedidas: amount
-    })
-    console.log(this.indicacaoDocentesForm.value);
+  submitIndicacaoDocentes(){
     this.pluriService.submitIndicacaoDocentes(this.indicacaoDocentesForm.value).subscribe({
       next: (value) => {
         this.toastService.success("Docente indicado com sucesso!");
@@ -157,7 +180,7 @@ export class IndicacaoDocentesComponent {
       error: (e) => {
         this.toastService.error("Erro ao indicar docente. Tente novamente!");
       },
-    })
+    });
   }
   
 }
