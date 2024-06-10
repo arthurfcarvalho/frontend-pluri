@@ -9,7 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { PluriService } from '../../../../services/pluri.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
-import { Pluri } from '../../../../models/Pluri.model';
+import { Pluri } from '../../../../models/Pluri/Pluri.model';
 
 @Component({
   selector: 'app-update-pluri',
@@ -86,31 +86,31 @@ export class UpdatePluriComponent {
         //atribuindo os valores recuperados ao Form, no momento está manual, mas no futuro fazer essa conversão de maneira automática
         this.informacoesGeraisForm.patchValue({
           ...this.pluri,
-          ano_aplicacao: new Date(pluri.ano_aplicacao, 0, 1), // convertendo pra data pois o componente p-calendar exige que seja uma data
-          data_inicio_pluri: this.pluri.data_inicio_pluri ? this.convertISODateToDateObject(pluri.data_inicio_pluri!.toString()) : null,
-          data_inicio_recuperacao: this.pluri.data_inicio_recuperacao ? this.convertISODateToDateObject(pluri.data_inicio_recuperacao!.toString()) : null
+          ano_aplicacao: new Date(pluri.anoAplicacao, 0, 1), // convertendo pra data pois o componente p-calendar exige que seja uma data
+          data_inicio_pluri: this.pluri.dataInicioPluri ? this.convertISODateToDateObject(pluri.dataInicioPluri!.toString()) : null,
+          data_inicio_recuperacao: this.pluri.dataReaplicacao ? this.convertISODateToDateObject(pluri.dataReaplicacao!.toString()) : null
         });
         
         this.atividadesComissaoForm.patchValue({
           ...this.pluri,
-          data_indicacao_docentes: this.pluri.data_indicacao_docentes ? this.convertISODateToDateObject(pluri.data_indicacao_docentes!.toString()) : null,
-          data_envio_questoes: this.pluri.data_envio_questoes ? this.convertISODateToDateObject(pluri.data_envio_questoes!.toString()) : null,
-          data_diagramacao: this.pluri.data_diagramacao ? this.convertISODateToDateObject(pluri.data_diagramacao!.toString()) : null,
-          data_revisao: this.pluri.data_revisao ? this.convertISODateToDateObject(pluri.data_revisao!.toString()) : null,
-          data_impressao: this.pluri.data_impressao ? this.convertISODateToDateObject(pluri.data_impressao!.toString()) : null,
-          data_ensalamento: this.pluri.data_ensalamento ? this.convertISODateToDateObject(pluri.data_ensalamento!.toString()) : null,
-          data_lancamento_notas: this.pluri.data_lancamento_notas ? this.convertISODateToDateObject(pluri.data_lancamento_notas!.toString()) : null,
-          data_correcao_redacao: this.pluri.data_correcao_redacao ? this.convertISODateToDateObject(pluri.data_correcao_redacao!.toString()) : null,
-          data_enviar_recurso: this.pluri.data_enviar_recurso ? this.convertISODateToDateObject(pluri.data_enviar_recurso!.toString()) : null,
-          data_analise_recurso: this.pluri.data_analise_recurso ? this.convertISODateToDateObject(pluri.data_analise_recurso!.toString()) : null,
-          data_atualizacao_notas: this.pluri.data_atualizacao_notas ? this.convertISODateToDateObject(pluri.data_atualizacao_notas!.toString()) : null
+          data_indicacao_docentes: this.pluri.dataInicioIndicacaoDocentes ? this.convertISODateToDateObject(pluri.dataInicioIndicacaoDocentes!.toString()) : null,
+          data_envio_questoes: this.pluri.dataInicioEnvioQuestoes ? this.convertISODateToDateObject(pluri.dataInicioEnvioQuestoes!.toString()) : null,
+          data_diagramacao: this.pluri.dataInicioDiagramacao ? this.convertISODateToDateObject(pluri.dataInicioDiagramacao!.toString()) : null,
+          data_revisao: this.pluri.dataInicioRevisao ? this.convertISODateToDateObject(pluri.dataInicioRevisao!.toString()) : null,
+          data_impressao: this.pluri.dataInicioImpressao ? this.convertISODateToDateObject(pluri.dataInicioImpressao!.toString()) : null,
+          data_ensalamento: this.pluri.dataInicioEnsalamento ? this.convertISODateToDateObject(pluri.dataInicioEnsalamento!.toString()) : null,
+          data_lancamento_notas: this.pluri.dataInicioLancamentoNotas ? this.convertISODateToDateObject(pluri.dataInicioLancamentoNotas!.toString()) : null,
+          data_correcao_redacao: this.pluri.dataInicioCorrecaoRedacao ? this.convertISODateToDateObject(pluri.dataInicioCorrecaoRedacao!.toString()) : null,
+          data_enviar_recurso: this.pluri.dataInicioEnviarRecurso ? this.convertISODateToDateObject(pluri.dataInicioEnviarRecurso!.toString()) : null,
+          data_analise_recurso: this.pluri.dataInicioAnaliseRecurso ? this.convertISODateToDateObject(pluri.dataInicioAnaliseRecurso!.toString()) : null,
+          data_atualizacao_notas: this.pluri.dataInicioAtualizacaoNotas ? this.convertISODateToDateObject(pluri.dataInicioAtualizacaoNotas!.toString()) : null
         });
         
         this.informacoesAplicacaoForm.patchValue({
           ...this.pluri,
-          data_aplicacao: this.pluri.data_aplicacao ? this.convertISODateToDateObject(pluri.data_aplicacao!.toString()) : null,
-          data_reaplicacao: this.pluri.data_reaplicacao ? this.convertISODateToDateObject(pluri.data_reaplicacao!.toString()) : null,
-          data_divulgacao_notas: this.pluri.data_divulgacao_notas ? this.convertISODateToDateObject(pluri.data_divulgacao_notas!.toString()) : null
+          data_aplicacao: this.pluri.dataAplicacao ? this.convertISODateToDateObject(pluri.dataAplicacao!.toString()) : null,
+          data_reaplicacao: this.pluri.dataReaplicacao ? this.convertISODateToDateObject(pluri.dataReaplicacao!.toString()) : null,
+          data_divulgacao_notas: this.pluri.dataDivulgacaoNotas ? this.convertISODateToDateObject(pluri.dataDivulgacaoNotas!.toString()) : null
         });
       })
     }

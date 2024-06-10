@@ -1,0 +1,48 @@
+<app-header></app-header>
+
+<div class="container">
+    <ng-container *ngIf="pluri != undefined">
+        <p-fieldset legend="Informações do Pluri">
+            <p>Nome: {{ pluri.nome }}</p>
+            <p>Código: {{ pluri.codigo }}</p>
+            <p>Trimestre: {{ pluri.trimestre }}</p>
+            <p>Ano de Aplicação: {{ pluri.anoAplicacao }}</p>
+        </p-fieldset>
+    </ng-container>    
+
+    <form [formGroup]="indicacaoDocentesForm">
+        <p-fieldset legend="Indicação de Docente(s)">
+            <p-dropdown
+                formControlName="id_pluri_area"
+                [options]="areas"
+                optionLabel="nome"
+                placeholder="Selecione a área"
+                [filter]="true"
+                filterBy="nome"
+                filterPlaceholder="Nenhum resultado encontrado!"
+                tooltip='Selecione a área que pretende indicar o docente para o Pluri {{pluri.nome}}'
+                tooltipPosition="top"
+                (onChange)="onAreaSelect($event)"
+            ></p-dropdown>
+            <p-dropdown 
+                formControlName="selectedTeacher"
+                [options]="teachers"
+                optionLabel="nome"
+                placeholder="Selecione o docente"
+                [filter]="true"
+                filterBy="nome"
+                filterPlaceholder="Nenhum docente encontrado!"
+                tooltip="Selecione o docente que deseja solicitar questões para o Pluri {{pluri.nome}}"
+                tooltipPosition="top"
+                (onChange)="onTeacherSelect($event)"
+            ></p-dropdown>
+            <div id="professor-questions-container">
+                <div *ngFor="let pair of teacherQuestionPairs; let i = index">
+                    <p>{{ pair.teacher.nome }}: </p>
+                    <p-inputNumber [(ngModel)]="pair.amount" [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    <p-button pButton label="Indicar" (click)="saveAmount(pair.teacher.id, pair.amount)" size="small"></p-button>
+                </div>
+            </div>
+        </p-fieldset>
+    </form>
+</div>

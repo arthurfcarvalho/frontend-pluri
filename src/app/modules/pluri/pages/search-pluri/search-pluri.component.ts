@@ -3,7 +3,7 @@ import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { ButtonModule } from 'primeng/button';
 import { PluriService } from '../../../../services/pluri.service';
-import { Pluri } from '../../../../models/Pluri.model';
+import { Pluri } from '../../../../models/Pluri/Pluri.model';
 import { RouterModule } from '@angular/router';
 import { DatePipe } from '@angular/common';
 

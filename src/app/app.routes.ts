@@ -6,6 +6,7 @@ import { CreatePluriComponent } from './modules/pluri/pages/create-pluri/create-
 import { SearchPluriComponent } from './modules/pluri/pages/search-pluri/search-pluri.component';
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
+import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
 
 export const routes: Routes = [
     {
@@ -49,4 +50,9 @@ export const routes: Routes = [
         component: SearchUsersComponent,
         title: "Pesquisar Usuários - Pluri"
     },
+    {
+        path: "indicar-docentes/:id",
+        component: IndicacaoDocentesComponent,
+        title: "Indicar Docentes - Pluri"
+    }
 ];
