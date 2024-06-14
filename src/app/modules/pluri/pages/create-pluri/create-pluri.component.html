@@ -7,8 +7,12 @@
                 <div class="form-container">
                     <form [formGroup]="informacoesGeraisForm">
                         <p-floatLabel>
-                            <input type="text" pInputText formControlName="codigo"/>
+                            <input type="text" pInputText formControlName="codigo" [readOnly]="true"/>
                             <label for="codigo">Código</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <input type="text" pInputText formControlName="nome"/>
+                            <label for="nome">Nome</label>
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-dropdown 
@@ -28,14 +32,14 @@
                         <p-floatLabel>
                             <p-calendar
                                 formControlName="data_inicio_pluri"
-                                dateFormat="dd.mm.yy"
+                                dateFormat="dd/mm/yy"
                             />
                             <label for="data_inicio_pluri">Data de Início do Pluri</label>
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-calendar
                                 formControlName="data_inicio_recuperacao"
-                                dateFormat="dd.mm.yy"
+                                dateFormat="dd/mm/yy"
                             />
                             <label for="data_inicio_recuperacao">Data de Início da Recuperação</label>
                         </p-floatLabel>
@@ -54,47 +58,47 @@
                 <div class="form-container">
                     <form [formGroup]="atividadesComissaoForm">
                         <p-floatLabel>
-                            <p-calendar formControlName="data_indicacao_docentes" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_indicacao_docentes" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_indicacao_docentes">Data de Indicação dos Docentes</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_envio_questoes" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_envio_questoes" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_envio_questoes">Data de Envio das Questões</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_diagramacao" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_diagramacao" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_diagramacao">Data de Diagramação</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_revisao" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_revisao" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_revisao">Data de Revisão</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_impressao" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_impressao" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_impressao">Data de Impressão</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_ensalamento" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_ensalamento" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_ensalamento">Data de Ensalamento</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_lancamento_notas" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_lancamento_notas" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_lancamento_notas">Data de Lançamento das Notas</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_correcao_redacao" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_correcao_redacao" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_correcao_redacao">Data de Correção da Redação</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_enviar_recurso" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_enviar_recurso" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_enviar_recurso">Data para Enviar Recurso</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_analise_recurso" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_analise_recurso" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_analise_recurso">Data de Análise de Recurso</label>
                           </p-floatLabel>
                           <p-floatLabel>
-                            <p-calendar formControlName="data_atualizacao_notas" dateFormat="dd.mm.yy" required></p-calendar>
+                            <p-calendar formControlName="data_atualizacao_notas" dateFormat="dd/mm/yy" required></p-calendar>
                             <label for="data_atualizacao_notas">Data de Atualização das Notas</label>
                           </p-floatLabel>
                     </form>
@@ -115,21 +119,21 @@
                         <p-floatLabel>
                             <p-calendar
                                 formControlName="data_aplicacao"
-                                dateFormat="dd.mm.yy"
+                                dateFormat="dd/mm/yy"
                             />
                             <label for="data_aplicacao">Data de Aplicação</label>
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-calendar
                                 formControlName="data_reaplicacao"
-                                dateFormat="dd.mm.yy"
+                                dateFormat="dd/mm/yy"
                             />
                             <label for="data_reaplicacao">Data da Reaplicação do Pluri</label>
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-calendar
                                 formControlName="data_divulgacao_notas"
-                                dateFormat="dd.mm.yy"
+                                dateFormat="dd/mm/yy"
                             />
                             <label for="data_divulgacao_notas">Data de Divulgação das Notas</label>
                         </p-floatLabel>

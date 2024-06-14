@@ -42,10 +42,10 @@ export class CreatePluriComponent {
   ){
     this.informacoesGeraisForm = new FormGroup({
       codigo: new FormControl('', Validators.required),
+      nome: new FormControl('', Validators.required),
       trimestre: new FormControl('', Validators.required),
       ano_aplicacao: new FormControl('', Validators.required),
       data_inicio_pluri: new FormControl('', Validators.required),
-      data_inicio_recuperacao: new FormControl('', Validators.required)
     });
 
     this.atividadesComissaoForm = new FormGroup({
