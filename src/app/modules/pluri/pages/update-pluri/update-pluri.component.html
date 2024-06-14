@@ -6,8 +6,12 @@
                 <div class="form-container">
                     <form [formGroup]="informacoesGeraisForm">
                         <p-floatLabel>
-                            <input type="text" pInputText formControlName="codigo"/>
+                            <input type="text" pInputText formControlName="codigo" [readOnly]="true"/>
                             <label for="codigo">Código</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <input type="text" pInputText formControlName="nome"/>
+                            <label for="nome">Nome</label>
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-dropdown 
@@ -18,27 +22,33 @@
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-calendar
-                                formControlName="ano_aplicacao"
+                                formControlName="anoAplicacao"
                                 view="year"
                                 dateFormat="yy"
                             />
-                            <label for="ano_aplicacao">Ano de Aplicação</label>
+                            <label for="anoAplicacao">Ano de Aplicação</label>
                         </p-floatLabel>
                         <p-floatLabel>
                             <p-calendar
-                                formControlName="data_inicio_pluri"
-                                dateFormat="dd.mm.yy"
+                                formControlName="dataInicioPluri"
+                                dateFormat="dd/mm/yy"
                             />
-                            <label for="data_inicio_pluri">Data de Início do Pluri</label>
-                        </p-floatLabel>
-                        <p-floatLabel>
-                            <p-calendar
-                                formControlName="data_inicio_recuperacao"
-                                dateFormat="dd.mm.yy"
-                            />
-                            <label for="data_inicio_recuperacao">Data de Início da Recuperação</label>
+                            <label for="dataInicioPluri">Data de Início do Pluri</label>
                         </p-floatLabel>
                     </form>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="next-button" (click)="nextCallback.emit()">Avançar</button>
+                    <button class="submit-button" (click)="submitInformacoesGerais()">Salvar</button>
+                </div>
+            </div>
+        </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Definir Áreas do Pluri">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+            <div class="stepper-panel-content">
+                <div class="form-container">
+                    <!-- implementar submit das áreas aqui -->
                 </div>
                 <div class="btn-wrapper">
                     <button class="next-button" (click)="nextCallback.emit()">Avançar</button>
@@ -51,52 +61,92 @@
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
             <div class="stepper-panel-content">
                 <div class="form-container">
-                    <form [formGroup]="atividadesComissaoForm">
-                        <p-floatLabel>
-                            <p-calendar formControlName="data_indicacao_docentes" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_indicacao_docentes">Data de Indicação dos Docentes</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_envio_questoes" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_envio_questoes">Data de Envio das Questões</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_diagramacao" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_diagramacao">Data de Diagramação</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_revisao" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_revisao">Data de Revisão</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_impressao" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_impressao">Data de Impressão</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_ensalamento" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_ensalamento">Data de Ensalamento</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_lancamento_notas" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_lancamento_notas">Data de Lançamento das Notas</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_correcao_redacao" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_correcao_redacao">Data de Correção da Redação</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_enviar_recurso" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_enviar_recurso">Data para Enviar Recurso</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_analise_recurso" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_analise_recurso">Data de Análise de Recurso</label>
-                          </p-floatLabel>
-                          <p-floatLabel>
-                            <p-calendar formControlName="data_atualizacao_notas" dateFormat="dd.mm.yy" required></p-calendar>
-                            <label for="data_atualizacao_notas">Data de Atualização das Notas</label>
-                          </p-floatLabel>
-                    </form>
+                    <p-fieldset legend="Coleta de questões" [toggleable]="true">
+                        <div class="fieldset-container">
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="indDocentesRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Indicação dos Docentes</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="envQuestoesRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Envio das Questões</label>
+                            </p-floatLabel>
+                        </div>
+                        
+                    </p-fieldset>
+                    
+                    <p-fieldset legend="Criação das provas" [toggleable]="true">
+                        <div class="fieldset-container">
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="diagRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Diagramação das Provas</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="revRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Revisão Gramatical</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="impRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Impressão das Provas</label>
+                            </p-floatLabel>
+                        </div>
+                    </p-fieldset>
+
+                    <p-fieldset legend="Aplicação da prova" [toggleable]="true">
+                        <div class="fieldset-container">
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="ensalamentoRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Ensalamento</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="aplDate" dateFormat="dd/mm/yy" required></p-calendar>
+                                <label>Data de Aplicação da Prova</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="lancNotasRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Lançamento das Notas</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="corRedacaoRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Correção da Redação</label>
+                            </p-floatLabel>
+                        </div>
+                    </p-fieldset>
+
+                    <p-fieldset legend="Reaplicação da prova" [toggleable]="true">
+                        <div class="fieldset-con">
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="reaplDate" dateFormat="dd/mm/yy" required></p-calendar>
+                                <label>Data de Reaplicação da Prova</label>
+                            </p-floatLabel>
+                        </div>
+                    </p-fieldset>
+
+                    <p-fieldset legend="Período de Recursos" [toggleable]="true">
+                        <div class="fieldset-container">
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="envRecursoRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Envio de Recursos</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="analRecursoRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Análise dos Recursos</label>
+                            </p-floatLabel>
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="attNotasRange" dateFormat="dd/mm/yy" required selectionMode="range"></p-calendar>
+                                <label>Período de Atualização das Notas</label>
+                            </p-floatLabel>
+                        </div>
+                    </p-fieldset>
+
+                    <p-fieldset legend="Divulgação" [toggleable]="true">
+                        <div class="fieldset-container">
+                            <p-floatLabel>
+                                <p-calendar [(ngModel)]="divulgNotasDate" dateFormat="dd/mm/yy" required></p-calendar>
+                                <label>Data de Divulgação das Notas</label>
+                            </p-floatLabel>
+                        </div>
+                    </p-fieldset>
                 </div>
                 <div class="btn-wrapper">
                     <button class="back-button" (click)="prevCallback.emit()">Voltar</button>
