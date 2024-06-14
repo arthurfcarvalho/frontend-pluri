@@ -10,6 +10,7 @@ import { PluriService } from '../../../../services/pluri.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Pluri } from '../../../../models/Pluri/Pluri.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-update-pluri',
@@ -94,37 +95,48 @@ export class UpdatePluriComponent {
     if(id) {
       this.pluriService.searchPluriById(Number(id)).subscribe(pluri => {
         this.pluri = pluri;
+        console.log(this.pluri);
         
         //atribuindo os valores recuperados ao Form, no momento está manual, mas no futuro fazer essa conversão de maneira automática
         this.informacoesGeraisForm.patchValue({
           ...this.pluri,
-          ano_aplicacao: new Date(pluri.anoAplicacao, 0, 1), // convertendo pra data pois o componente p-calendar exige que seja uma data
-          data_inicio_pluri: this.pluri.dataInicioPluri ? this.convertISODateToDateObject(pluri.dataInicioPluri!.toString()) : null,
-          data_inicio_recuperacao: this.pluri.dataReaplicacao ? this.convertISODateToDateObject(pluri.dataReaplicacao!.toString()) : null
+          anoAplicacao: new Date(pluri.anoAplicacao, 0, 1), // convertendo pra data pois o componente p-calendar exige que seja uma data
+          dataInicioPluri: this.convertISODateToDateObject(pluri.dataInicioPluri!)
         });
+
+        this.definirAreasPluriForm.patchValue({
+          ...this.pluri
+        })
         
         this.atividadesComissaoForm.patchValue({
           ...this.pluri,
-          data_indicacao_docentes: this.pluri.dataInicioIndicacaoDocentes ? this.convertISODateToDateObject(pluri.dataInicioIndicacaoDocentes!.toString()) : null,
-          data_envio_questoes: this.pluri.dataInicioEnvioQuestoes ? this.convertISODateToDateObject(pluri.dataInicioEnvioQuestoes!.toString()) : null,
-          data_diagramacao: this.pluri.dataInicioDiagramacao ? this.convertISODateToDateObject(pluri.dataInicioDiagramacao!.toString()) : null,
-          data_revisao: this.pluri.dataInicioRevisao ? this.convertISODateToDateObject(pluri.dataInicioRevisao!.toString()) : null,
-          data_impressao: this.pluri.dataInicioImpressao ? this.convertISODateToDateObject(pluri.dataInicioImpressao!.toString()) : null,
-          data_ensalamento: this.pluri.dataInicioEnsalamento ? this.convertISODateToDateObject(pluri.dataInicioEnsalamento!.toString()) : null,
-          data_lancamento_notas: this.pluri.dataInicioLancamentoNotas ? this.convertISODateToDateObject(pluri.dataInicioLancamentoNotas!.toString()) : null,
-          data_correcao_redacao: this.pluri.dataInicioCorrecaoRedacao ? this.convertISODateToDateObject(pluri.dataInicioCorrecaoRedacao!.toString()) : null,
-          data_enviar_recurso: this.pluri.dataInicioEnviarRecurso ? this.convertISODateToDateObject(pluri.dataInicioEnviarRecurso!.toString()) : null,
-          data_analise_recurso: this.pluri.dataInicioAnaliseRecurso ? this.convertISODateToDateObject(pluri.dataInicioAnaliseRecurso!.toString()) : null,
-          data_atualizacao_notas: this.pluri.dataInicioAtualizacaoNotas ? this.convertISODateToDateObject(pluri.dataInicioAtualizacaoNotas!.toString()) : null
+          dataInicioIndicacaoDocentes: this.convertISODateToDateObject(pluri.dataInicioIndicacaoDocentes!),
+          dataFimIndicacaoDocentes: this.convertISODateToDateObject(pluri.dataFimIndicacaoDocentes!),
+          dataInicioEnvioQuestoes: this.convertISODateToDateObject(pluri.dataInicioEnvioQuestoes!),
+          dataFimEnvioQuestoes: this.convertISODateToDateObject(pluri.dataFimEnvioQuestoes!),
+          dataInicioDiagramacao: this.convertISODateToDateObject(pluri.dataInicioDiagramacao!),
+          dataFimDiagramacao: this.convertISODateToDateObject(pluri.dataFimDiagramacao!),
+          dataInicioRevisao: this.convertISODateToDateObject(pluri.dataInicioRevisao!),
+          dataFimRevisao: this.convertISODateToDateObject(pluri.dataFimRevisao!),
+          dataInicioImpressao: this.convertISODateToDateObject(pluri.dataInicioImpressao!),
+          dataFimImpressao: this.convertISODateToDateObject(pluri.dataFimImpressao!),
+          dataInicioEnsalamento: this.convertISODateToDateObject(pluri.dataInicioEnsalamento!),
+          dataFimEnsalamento: this.convertISODateToDateObject(pluri.dataFimEnsalamento!),
+          dataInicioLancamentoNotas: this.convertISODateToDateObject(pluri.dataInicioLancamentoNotas!),
+          dataFimLancamentoNotas: this.convertISODateToDateObject(pluri.dataFimLancamentoNotas!),
+          dataInicioCorrecaoRedacao: this.convertISODateToDateObject(pluri.dataInicioCorrecaoRedacao!),
+          dataFimCorrecaoRedacao: this.convertISODateToDateObject(pluri.dataFimCorrecaoRedacao!),
+          dataInicioEnviarRecurso: this.convertISODateToDateObject(pluri.dataInicioEnviarRecurso!),
+          dataFimEnviarRecurso: this.convertISODateToDateObject(pluri.dataFimEnviarRecurso!),
+          dataInicioAnaliseRecurso: this.convertISODateToDateObject(pluri.dataInicioAnaliseRecurso!),
+          dataFimAnaliseRecurso: this.convertISODateToDateObject(pluri.dataFimAnaliseRecurso!),
+          dataInicioAtualizacaoNotas: this.convertISODateToDateObject(pluri.dataInicioAtualizacaoNotas!),
+          dataFimAtualizacaoNotas: this.convertISODateToDateObject(pluri.dataFimAtualizacaoNotas!),
+          dataAplicacao: this.convertISODateToDateObject(pluri.dataAplicacao!),
+          dataReaplicacao: this.convertISODateToDateObject(pluri.dataReaplicacao!),
+          dataDivulgacaoNotas: this.convertISODateToDateObject(pluri.dataDivulgacaoNotas!),
         });
-        
-        this.informacoesAplicacaoForm.patchValue({
-          ...this.pluri,
-          data_aplicacao: this.pluri.dataAplicacao ? this.convertISODateToDateObject(pluri.dataAplicacao!.toString()) : null,
-          data_reaplicacao: this.pluri.dataReaplicacao ? this.convertISODateToDateObject(pluri.dataReaplicacao!.toString()) : null,
-          data_divulgacao_notas: this.pluri.dataDivulgacaoNotas ? this.convertISODateToDateObject(pluri.dataDivulgacaoNotas!.toString()) : null
-        });
-      })
+      });
     }
   }
 
@@ -132,11 +144,9 @@ export class UpdatePluriComponent {
     return new Date(date).getFullYear().toString();
   }
 
-  private convertISODateToDateObject(isoDate: string | null): Date | null {
+  private convertISODateToDateObject(isoDate: Date): Date | null {
     if(!isoDate) return null;
-
-    const timestamp = Date.parse(isoDate);
-    return new Date(timestamp);
+    return moment(isoDate).utc().toDate();
   }
 
   submitInformacoesGerais(){
@@ -168,16 +178,4 @@ export class UpdatePluriComponent {
     });
   }
 
-  submitInformacoesAplicacaoForm(){
-
-    this.informacoesAplicacaoForm.value.id = this.pluri.id;
-    this.pluriService.updateInformacoesAplicacao(this.informacoesAplicacaoForm.value).subscribe({
-      next:(value) => {
-        this.toastService.success("Informações das atividades da aplicação do Pluri atualizadas com sucesso!");
-      },
-      error: (e) => {
-        this.toastService.error("Erro ao atualizar informações do Pluri");
-      }
-    });
-  }
 }
