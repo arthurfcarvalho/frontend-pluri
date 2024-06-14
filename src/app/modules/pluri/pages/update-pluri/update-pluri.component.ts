@@ -30,8 +30,8 @@ export class UpdatePluriComponent {
 
   pluri!: Pluri;
   informacoesGeraisForm: FormGroup;
+  definirAreasPluriForm: FormGroup;
   atividadesComissaoForm: FormGroup;
-  informacoesAplicacaoForm: FormGroup;
   trimestreOptions = [
     {label: '1º Trimestre', value: 1},
     {label: '2º Trimestre', value: 2},
@@ -46,33 +46,46 @@ export class UpdatePluriComponent {
   ){
     this.informacoesGeraisForm = new FormGroup({
       id: new FormControl(),
+      nome: new FormControl('', Validators.required),
       codigo: new FormControl('', Validators.required),
       trimestre: new FormControl('', Validators.required),
-      ano_aplicacao: new FormControl('', Validators.required),
-      data_inicio_pluri: new FormControl('', Validators.required),
-      data_inicio_recuperacao: new FormControl('', Validators.required)
+      anoAplicacao: new FormControl('', Validators.required),
+      dataInicioPluri: new FormControl('', Validators.required)
+    });
+
+    this.definirAreasPluriForm = new FormGroup({
+      id_pluri: new FormControl(),
+      id_area: new FormControl(),
+      quantidade_questoes: new FormControl('', Validators.required)
     });
 
     this.atividadesComissaoForm = new FormGroup({
       id: new FormControl(),
-      data_indicacao_docentes: new FormControl('', Validators.required),
-      data_envio_questoes: new FormControl('', Validators.required),
-      data_diagramacao: new FormControl('', Validators.required),
-      data_revisao: new FormControl('', Validators.required),
-      data_impressao: new FormControl('', Validators.required),
-      data_ensalamento: new FormControl('', Validators.required),
-      data_lancamento_notas: new FormControl('', Validators.required),
-      data_correcao_redacao: new FormControl('', Validators.required),
-      data_enviar_recurso: new FormControl('', Validators.required),
-      data_analise_recurso: new FormControl('', Validators.required),
-      data_atualizacao_notas: new FormControl('', Validators.required)
-    })
-
-    this.informacoesAplicacaoForm = new FormGroup({
-      id: new FormControl(),
-      data_aplicacao: new FormControl(''),
-      data_reaplicacao: new FormControl(''),
-      data_divulgacao_notas: new FormControl('')
+      dataInicioIndicacaoDocentes: new FormControl('', Validators.required),
+      dataFimIndicacaoDocentes: new FormControl('', Validators.required),
+      dataInicioEnvioQuestoes: new FormControl('', Validators.required),
+      dataFimEnvioQuestoes: new FormControl('', Validators.required),
+      dataInicioDiagramacao: new FormControl('', Validators.required),
+      dataFimDiagramacao: new FormControl('', Validators.required),
+      dataInicioRevisao: new FormControl('', Validators.required),
+      dataFimRevisao: new FormControl('', Validators.required),
+      dataInicioImpressao: new FormControl('', Validators.required),
+      dataFimImpressao: new FormControl('', Validators.required),
+      dataInicioEnsalamento: new FormControl('', Validators.required),
+      dataFimEnsalamento: new FormControl('', Validators.required),
+      dataInicioLancamentoNotas: new FormControl('', Validators.required),
+      dataFimLancamentoNotas: new FormControl('', Validators.required),
+      dataInicioCorrecaoRedacao: new FormControl('', Validators.required),
+      dataFimCorrecaoRedacao: new FormControl('', Validators.required),
+      dataInicioEnviarRecurso: new FormControl('', Validators.required),
+      dataFimEnviarRecurso: new FormControl('', Validators.required),
+      dataInicioAnaliseRecurso: new FormControl('', Validators.required),
+      dataFimAnaliseRecurso: new FormControl('', Validators.required),
+      dataInicioAtualizacaoNotas: new FormControl('', Validators.required),
+      dataFimAtualizacaoNotas: new FormControl('', Validators.required),
+      dataAplicacao: new FormControl('', Validators.required),
+      dataReaplicacao: new FormControl('', Validators.required),
+      dataDivulgacaoNotas: new FormControl('', Validators.required)
     })
   }
 
@@ -81,7 +94,6 @@ export class UpdatePluriComponent {
     if(id) {
       this.pluriService.searchPluriById(Number(id)).subscribe(pluri => {
         this.pluri = pluri;
-        console.log(pluri);
         
         //atribuindo os valores recuperados ao Form, no momento está manual, mas no futuro fazer essa conversão de maneira automática
         this.informacoesGeraisForm.patchValue({
