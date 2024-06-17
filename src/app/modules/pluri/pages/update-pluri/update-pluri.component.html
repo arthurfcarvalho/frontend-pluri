@@ -48,11 +48,36 @@
         <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
             <div class="stepper-panel-content">
                 <div class="form-container">
-                    <!-- implementar submit das áreas aqui -->
+                    <p-floatLabel>
+                        <p-dropdown [options]="areasOptions" optionLabel="nome" [(ngModel)]="selectedArea"></p-dropdown>
+                        <label for="area">Selecionar Área</label>
+                    </p-floatLabel>
+                    <button pButton type="button" label="Adicionar Área"(click)="addArea()"></button>
+                </div>
+                <div class="form-container" *ngIf="areas.length">
+                    <p-table [value]="areas">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Área</th>
+                                <th>Quantidade de Questões</th>
+                                <th>Ação</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-area let-i="rowIndex">
+                            <tr>
+                                <td>{{area.nome}}</td>
+                                <td>
+                                    <p-inputNumber [(ngModel)]="area.quantidadeQuestoes" [min]="0"></p-inputNumber>
+                                </td>
+                                <td>
+                                    <button pButton type="button" label="Salvar" (click)="saveArea(i)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
                 <div class="btn-wrapper">
                     <button class="next-button" (click)="nextCallback.emit()">Avançar</button>
-                    <button class="submit-button" (click)="submitInformacoesGerais()">Salvar</button>
                 </div>
             </div>
         </ng-template>

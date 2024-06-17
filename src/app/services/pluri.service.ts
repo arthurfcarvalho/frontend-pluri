@@ -64,4 +64,9 @@ export class PluriService {
     return this.httpClient.post(url, data);
   }
 
+  defineArea(data: any){
+    const url = this.baseUrl + '/definir-questoes-area';
+    return this.httpClient.put(url, data);
+  }
+
 }

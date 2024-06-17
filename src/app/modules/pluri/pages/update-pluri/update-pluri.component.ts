@@ -11,8 +11,14 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Pluri } from '../../../../models/Pluri/Pluri.model';
 import { FieldsetModule } from 'primeng/fieldset';
-
 import moment from 'moment';
+import { Area } from '../../../../models/Area.model';
+import { AreaQuestoesDTO } from '../../models/AreaQuestoesDTO.model';
+import { AreaService } from '../../../../services/area.service';
+import { TableModule } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PluriArea } from '../../../../models/Pluri/PluriArea.model';
 
 @Component({
   selector: 'app-update-pluri',
@@ -26,7 +32,10 @@ import moment from 'moment';
     InputTextModule,
     CalendarModule,
     FormsModule,
-    FieldsetModule
+    FieldsetModule,
+    TableModule,
+    CommonModule,
+    InputNumberModule
   ],
   templateUrl: './update-pluri.component.html',
   styleUrl: './update-pluri.component.scss'
@@ -44,6 +53,8 @@ export class UpdatePluriComponent {
     {label: '3º Trimestre', value: 3},
     {label: '4º Trimestre', value: 4}
   ];
+  areasOptions!: Area[];
+
   indDocentesRange!: Date[];
   envQuestoesRange!: Date[];
   diagRange!: Date[];
@@ -58,11 +69,16 @@ export class UpdatePluriComponent {
   aplDate!: Date;
   reaplDate!: Date;
   divulgNotasDate!: Date;
+  
+  selectedArea: any;
+  //areas: AreaQuestoesDTO[] = [];
+  areas: PluriArea[] = [];
 
   constructor(
     private pluriService: PluriService,
     private toastService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private areaService: AreaService
   ){
     this.informacoesGeraisForm = new FormGroup({
       id: new FormControl(),
@@ -124,10 +140,8 @@ export class UpdatePluriComponent {
           anoAplicacao: new Date(pluri.anoAplicacao, 0, 1), // convertendo pra data pois o componente p-calendar exige que seja uma data
           dataInicioPluri: this.convertISODateToDateObject(pluri.dataInicioPluri!)
         });
-
-        this.definirAreasPluriForm.patchValue({
-          ...this.pluri
-        })
+        
+        this.areas = this.pluri.areasPluri || [];
         
         this.atividadesComissaoForm.patchValue({
           ...this.pluri,
@@ -159,6 +173,9 @@ export class UpdatePluriComponent {
         });
       });
     }
+    this.areaService.returnAllAreas().subscribe(areas => {
+      this.areasOptions = areas.content;
+    })
   }
 
   private extractYear(date: string): string {
@@ -221,6 +238,24 @@ export class UpdatePluriComponent {
     this.atividadesComissaoForm.get('dataDivulgacaoNotas')?.setValue(this.divulgNotasDate ? this.divulgNotasDate : null);
   }
 
+  addArea() {
+    if (this.selectedArea) {
+      const area = this.areasOptions.find(option => option.id === this.selectedArea.id);
+      if (area) {
+        this.areas.push({
+          id: 0, // ou outro valor apropriado, se necessário
+          pluri: this.pluri,
+          area: area,
+          quantidadeQuestoes: 0,
+          quantidadeQuestoesRecebidas: 0,
+          areaCompleta: false
+        });
+      }
+      this.selectedArea = null;
+    }
+  }
+  
+
   submitInformacoesGerais(){
 
     this.informacoesGeraisForm.value.id = this.pluri.id;
@@ -236,6 +271,25 @@ export class UpdatePluriComponent {
       }
     });
   }
+
+  saveArea(index: number) {
+    const area = this.areas[index];
+    this.definirAreasPluriForm.patchValue({
+      id_pluri: this.pluri.id,
+      id_area: area.area.id,
+      quantidade_questoes: area.quantidadeQuestoes
+    });
+  
+    this.pluriService.defineArea(this.definirAreasPluriForm.value).subscribe({
+      next: (value) => {
+        this.toastService.success(`Área ${area.area.nome} adicionada com sucesso!`);
+      },
+      error: (e) => {
+        this.toastService.error('Erro ao adicionar a área. Tente novamente!');
+      }
+    });
+  }
+  
 
   submitAtividadesComissao(){
     this.atividadesComissaoForm.value.id = this.pluri.id;
