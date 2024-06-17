@@ -6,6 +6,21 @@ import { User } from '../../../../models/User.model';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 
+
+
+// export interface UserHeader {
+//     id: number;
+//     nome: string;
+//     DadosPerfis:{
+//       id: number,
+//       nome: String
+//       Permissoes: {
+
+//       }
+//     },
+// }
+
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -20,7 +35,7 @@ import { MenuItem } from 'primeng/api';
 
 export class HeaderComponent {
   menuItems!: MenuItem[];
-  user!: User;
+  user: any;
 
   constructor(private userService: UserService) {
   }
@@ -32,6 +47,7 @@ export class HeaderComponent {
         this.userService.returnUserByLogin(login.sub).subscribe(
           (user) => {
             this.user = user;
+            console.log(user)
             this.menuItems = [
               {
                 label: 'Início',
@@ -78,8 +94,6 @@ export class HeaderComponent {
         )
       }
     )
-
-    
   }
 
   ngAfterViewInit(){
@@ -97,8 +111,8 @@ export class HeaderComponent {
 
   userHasPermission(requiredPermissions: string[]): boolean {
 
-    return this.user.perfis.some((perfil) => {
-      return perfil.permissoes && perfil.permissoes.some((perm) => requiredPermissions.includes(perm.codigo));
+    return this.user.dadosPerfil.some((perfil: any) => {
+      return perfil.permissoes && perfil.permissoes.some((perm: any) => requiredPermissions.includes(perm.codigo));
     })
   }
   
