@@ -28,9 +28,9 @@
     <ng-template pTemplate="body" let-pluri>
         <tr>
             <td>{{ pluri.codigo }}</td>
-            <td>{{ datePipe.transform(pluri.data_inicio_pluri, 'dd/MM/yyyy') }}</td>
+            <td>{{ datePipe.transform(pluri.dataInicioPluri, 'dd/MM/yyyy') }}</td>
             <td>{{ formatTrimestre(pluri.trimestre) }}</td>
-            <td>{{ pluri.ano_aplicacao }}</td>
+            <td>{{ pluri.anoAplicacao }}</td>
             <td>{{ pluri.realizado ? 'Sim' : 'Não' }}</td>
             <td>
                 <button pButton type="button" label="Editar" routerLink="/editar-pluri/{{pluri.id}}"></button>
