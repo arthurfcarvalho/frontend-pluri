@@ -6,11 +6,12 @@
       
       <ng-container *ngIf="user != undefined">
         <ng-template pTemplate="item" let-item let-root="root">
-          @if(!item.perm || userHasPermission(item.perm)){
-            <a [routerLink]="item.route">
-              {{ item.label }}
-            </a>
-          }
+          <!-- @if(!item.perm || userHasPermission(item.perm)){
+            
+          } -->
+          <a [routerLink]="item.route">
+            {{ item.label }}
+          </a>
         </ng-template>
       </ng-container>
       
@@ -28,7 +29,7 @@
           </button>
           <span mat-menu-item disabled class="user-profile-item">Perfis:
             <ng-container *ngIf="user != undefined">
-              @for (perfil of user.perfis; track perfil.nome) {
+              @for (perfil of user.dadosPerfil; track perfil.nome) {
                 <br><span class="user-profile-perfis">{{ perfil.nome }}</span>
               }
             </ng-container>
