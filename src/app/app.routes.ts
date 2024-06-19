@@ -7,6 +7,7 @@ import { SearchPluriComponent } from './modules/pluri/pages/search-pluri/search-
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
+import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
 
 export const routes: Routes = [
     {
@@ -54,5 +55,10 @@ export const routes: Routes = [
         path: "indicar-docentes/:id",
         component: IndicacaoDocentesComponent,
         title: "Indicar Docentes - Pluri"
+    },
+    {
+        path: "criar-questao",
+        component: CreateQuestionsComponent,
+        title: "Criar Questao - Questao"
     }
 ];

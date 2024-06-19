@@ -1,0 +1,6 @@
+<h1>Editar Conteúdo</h1>
+<div [ngxSummernote]="config" [ngxSummernoteView]="data.content" [(summernoteModel)]="data.content"></div>
+<div class="dialog-actions">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-button (click)="onSave()">Salvar</button>
+</div>

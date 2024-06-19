@@ -1,0 +1,41 @@
+<div class="box-questoes-sup">
+    <div class="alt">
+      <h1>Corpo</h1>
+      <button mat-button (click)="openDialog('corpo')">Editar Corpo</button>
+      <div [innerHTML]="corpo"></div>
+    </div>
+    <div class="alt">
+      <h3>Pré-visualização do PDF</h3>
+      <div class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview" ></div>
+      <button (click)="saveContent()">Salvar em PDF</button>
+    </div>
+  </div>
+  
+  <div class="box-questoes">
+    <div class="box-questoes-sup">
+      <div class="alt">
+        <h2>Alternativa 1</h2>
+        <button mat-button (click)="openDialog('alternativa1')">Editar Alternativa 1</button>
+        <div [innerHTML]="alternativa1"></div>
+      </div>
+      <div class="alt">
+        <h2>Alternativa 2</h2>
+        <button mat-button (click)="openDialog('alternativa2')">Editar Alternativa 2</button>
+        <div [innerHTML]="alternativa2"></div>
+      </div>
+    </div>
+  
+    <div class="box-questoes-sup">
+      <div class="alt">
+        <h2>Alternativa 3</h2>
+        <button mat-button (click)="openDialog('alternativa3')">Editar Alternativa 3</button>
+        <div [innerHTML]="alternativa3"></div>
+      </div>
+      <div class="alt">
+        <h2>Alternativa 4</h2>
+        <button mat-button (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
+        <div [innerHTML]="alternativa4"></div>
+      </div>
+    </div>
+  </div>
+  <div [ngxSummernote]="config"></div>
