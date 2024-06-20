@@ -1,15 +1,23 @@
+import { QuestionService } from './../../../../services/question.service';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer } from '@angular/platform-browser';
-import {NgxSummernoteModule} from 'ngx-summernote';
+import { NgxSummernoteModule } from 'ngx-summernote';
 
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { MatDialog } from '@angular/material/dialog';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogQuestionomponent } from '../dialog-questao/dialog-questao.component';
+import { StepperModule } from 'primeng/stepper';
+import { CalendarModule } from 'primeng/calendar';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 interface DynamicFields {
   corpo: string;
@@ -25,26 +33,18 @@ interface DynamicFields {
   imports: [
     HeaderComponent,
     NgxSummernoteModule,
+    HeaderComponent,
+    StepperModule,
+    ReactiveFormsModule,
+    CalendarModule,
+    FloatLabelModule,
+    DropdownModule,
+    InputTextModule
   ],
   templateUrl: './criar-questoes.component.html',
-  styleUrl: './criar-questoes.component.scss'
+  styleUrls: ['./criar-questoes.component.scss']
 })
-
 export class CreateQuestionsComponent implements OnInit, DynamicFields {
-  
-  ngOnInit(): void {
-      
-  }
-
-  constructor(private sanitizer: DomSanitizer, private dialog: MatDialog){}
-
-  public form: FormGroup = new FormGroup({
-    html: new FormControl('', Validators.required)
-  });
-
-  get f() {
-    return this.form.controls;
-  }
 
   content = "Digite";
   corpo = "Digite o corpo";
@@ -53,55 +53,74 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   alternativa3 = "Digite o conteúdo";
   alternativa4 = "Digite o conteúdo";
 
+  previewContent = '';
 
-  previewContent = ` 
-    <div>
-      <div>${this.corpo}</div><br>
-      <p><strong>1)</strong> ${this.alternativa1}</p>
-      <p><strong>2)</strong> ${this.alternativa2}</p>
-      <p><strong>3)</strong> ${this.alternativa3}</p>
-      <p><strong>4)</strong> ${this.alternativa4}</p>
-    </div>`;
+  criarQuestaoForm: FormGroup;
 
+  ngOnInit(): void {
+    this.updatePreview();
+  }
 
-    public configPre: SummernoteOptions = {
-      airMode: false,
-      toolbar: [      
-        ['print', ['print']]
-      ],
-    };
-
-    public config: SummernoteOptions = {
-      airMode: false,
-      popover: {
-        table: [
-          ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
-          ['delete', ['deleteRow', 'deleteCol', 'deleteTable']]
+  constructor(private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
+    private router: Router) {
+    this.criarQuestaoForm = this.fb.group({
+      corpo: new FormControl('', Validators.required),
+      alternativa1: [''],
+      alternativa2: new FormControl('', Validators.required),
+      alternativa3: new FormControl('', Validators.required),
+      alternativa4: new FormControl('', Validators.required),
+      codigo_assuntos: [ []
         ],
-        image: [
-          ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
-          ['float', ['floatLeft', 'floatRight', 'floatNone']],
-          ['remove', ['removeMedia']]
-        ],
-        link: [['link', ['linkDialogShow', 'unlink']]],
-        air: [
-          [
-            'font',
-            [
-              'bold',
-              'italic',
-              'underline',
-              'strikethrough',
-              'superscript',
-              'subscript',
-              'clear'
-            ]
-          ]
-        ]
+      id_area: ['']
+    });
+  }
+
+  get f() {
+    return this.criarQuestaoForm.controls;
+  }
+
+  onSubmit() {
+    const formData = this.criarQuestaoForm.value;
+    console.log(formData);
+  }
+
+  submitCriarQuestao(){
+
+    const formValue = this.criarQuestaoForm.value;
+    
+
+    this.questaoService.createQuestion(this.criarQuestaoForm.value).subscribe({
+      next: (value) => {
+        this.toastService.success("Questao criada com sucesso!");
+        this.router.navigate(['/', value]);
       },
-      uploadImagePath: '/api/upload',
-      toolbar: [
-        ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+      error: (e) => {
+        this.toastService.error("Erro ao criar o Questão!");
+      }
+    });
+  }
+
+  public configPre: SummernoteOptions = {
+    airMode: false,
+    toolbar: [
+      ['print', ['print']]
+    ],
+  };
+
+  public config: SummernoteOptions = {
+    airMode: false,
+    popover: {
+      table: [
+        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']]
+      ],
+      image: [
+        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+        ['remove', ['removeMedia']]
+      ],
+      link: [['link', ['linkDialogShow', 'unlink']]],
+      air: [
         [
           'font',
           [
@@ -113,69 +132,73 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
             'subscript',
             'clear'
           ]
-        ],
-        ['fontsize', ['fontname', 'fontsize', 'color']],
-        ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-        ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-        ['customButtons', ['testBtn']],
-        ['view', ['fullscreen', 'codeview', 'help']],
-        ['print', ['print']]
+        ]
+      ]
+    },
+    uploadImagePath: '/api/upload',
+    toolbar: [
+      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+      [
+        'font',
+        [
+          'bold',
+          'italic',
+          'underline',
+          'strikethrough',
+          'superscript',
+          'subscript',
+          'clear'
+        ]
       ],
-      fontNames: ['Arial', 'Times New Roman', 'Inter', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times', 'MangCau', 'BayBuomHep', 'BaiSau', 'BaiHoc', 'CoDien', 'BucThu', 'KeChuyen', 'MayChu', 'ThoiDai', 'ThuPhap-Ivy', 'ThuPhap-ThienAn'],
-      buttons: { }
-    };
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+      ['customButtons', ['testBtn']],
+      ['view', ['fullscreen', 'codeview', 'help']],
+      ['print', ['print']]
+    ],
+    fontNames: ['Arial', 'Times New Roman', 'Inter', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times', 'MangCau', 'BayBuomHep', 'BaiSau', 'BaiHoc', 'CoDien', 'BucThu', 'KeChuyen', 'MayChu', 'ThoiDai', 'ThuPhap-Ivy', 'ThuPhap-ThienAn'],
+    buttons: {}
+  };
 
-    updatePreview(){
-      console.log(this.previewContent)
-      this.previewContent = this.getPreviewContent();
-      console.log(this.previewContent)
-    }
+  updatePreview() {
+    this.previewContent = this.getPreviewContent();
+  }
 
-    getPreviewContent(): string {
-      return `
-        <div>
-          <div>${this.corpo}</div><br>
-          <p><strong>1)</strong> ${this.alternativa1}</p>
-          <p><strong>2)</strong> ${this.alternativa2}</p>
-          <p><strong>3)</strong> ${this.alternativa3}</p>
-          <p><strong>4)</strong> ${this.alternativa4}</p>
-        </div>
-      `;
-    }
-    htmlContentSend(texto: string) {
-      console.log(texto);
-    }
-
-    openDialog(field: keyof DynamicFields): void {
-      
-      const dialogRef = this.dialog.open(DialogQuestionomponent, {
-        width: '80%',
-        data: { content: this[field] }
-      });
-    
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-
-          this[field] = result.content;
-          this.updatePreview()
-        }
-      });
-    }
-
-  saveContent() {
-    const content = `
+  getPreviewContent(): string {
+    const { corpo, alternativa1, alternativa2, alternativa3, alternativa4 } = this.criarQuestaoForm.value;
+    return `
       <div>
-        <div>${this.corpo}</div>
-        <br>
-        <span>(1) ${this.alternativa1}</span><br>
-        <span>(2) ${this.alternativa2}</span><br>
-        <span>(3) ${this.alternativa3}</span><br>
-        <span>(4) ${this.alternativa4}</span><br>
+        <div>${corpo || this.corpo}</div><br>
+        <p><strong>1)</strong> ${alternativa1 || this.alternativa1}</p>
+        <p><strong>2)</strong> ${alternativa2 || this.alternativa2}</p>
+        <p><strong>3)</strong> ${alternativa3 || this.alternativa3}</p>
+        <p><strong>4)</strong> ${alternativa4 || this.alternativa4}</p>
       </div>
     `;
+  }
 
+  htmlContentSend(texto: string) {
+    console.log(texto);
+  }
 
-  
+  openDialog(field: keyof DynamicFields): void {
+    const dialogRef = this.dialog.open(DialogQuestionomponent, {
+      width: '80%',
+      data: { content: this[field] }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this[field] = result.content;
+        this.criarQuestaoForm.controls[field].setValue(result.content);
+        this.updatePreview();
+      }
+    });
+  }
+
+  saveContent() {
+    const content = this.previewContent;
 
     const tempElement = document.createElement('div');
     tempElement.innerHTML = content;
