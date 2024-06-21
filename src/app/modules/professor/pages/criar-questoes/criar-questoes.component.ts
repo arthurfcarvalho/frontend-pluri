@@ -84,11 +84,13 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     console.log(formData);
   }
 
+  
+
   submitCriarQuestao(){
 
     const formValue = this.criarQuestaoForm.value;
     
-
+    console.log(formValue)
     this.questaoService.createQuestion(this.criarQuestaoForm.value).subscribe({
       next: (value) => {
         this.toastService.success("Questao criada com sucesso!");
@@ -200,20 +202,20 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   saveContent() {
     const content = this.previewContent;
 
+    console.log(content);
+
     const tempElement = document.createElement('div');
     tempElement.innerHTML = content;
     document.body.appendChild(tempElement);
-
     html2canvas(tempElement).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
       const doc = new jsPDF('p', 'mm', 'a4');
       const imgProps = doc.getImageProperties(imgData);
       const pdfWidth = doc.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
       doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      doc.save('conteudo.pdf');
-      document.body.removeChild(tempElement);
+      doc.save('conteudo.pdf');document.body.removeChild(tempElement);
     });
+    
   }
 }

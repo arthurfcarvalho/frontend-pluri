@@ -1,10 +1,12 @@
-<form [formGroup]="criarQuestaoForm" (ngSubmit)="onSubmit()" >
+<form [formGroup]="criarQuestaoForm" >
 <div class="box-questoes-sup">
     <div class="alt">
       <h1>Corpo</h1>
       <button (click)="openDialog('corpo')">Editar Corpo</button>
       <div [innerHTML]="corpo"></div>
-      <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
+      <p-floatLabel>
+        <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
+      </p-floatLabel>
     </div>
     <div class="alt">
       <h3>Pré-visualização do PDF</h3>

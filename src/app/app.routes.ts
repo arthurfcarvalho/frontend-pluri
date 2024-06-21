@@ -8,6 +8,7 @@ import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
 import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
+import { ListaQuestoesUsuarioComponent } from './modules/professor/pages/lista-questoes-usuario/lista-questoes-usuario.component';
 
 export const routes: Routes = [
     {
@@ -60,5 +61,10 @@ export const routes: Routes = [
         path: "criar-questao",
         component: CreateQuestionsComponent,
         title: "Criar Questao - Questao"
+    },
+    {
+        path: "questao/listar-questoes-usuario/:id",
+        component: ListaQuestoesUsuarioComponent,
+        title: "Listar Questao - Questao"
     }
 ];
