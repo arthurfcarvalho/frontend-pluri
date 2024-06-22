@@ -63,7 +63,7 @@ export const routes: Routes = [
         title: "Criar Questao - Questao"
     },
     {
-        path: "questao/listar-questoes-usuario/:id",
+        path: "minhas-questoes",
         component: ListaQuestoesUsuarioComponent,
         title: "Listar Questao - Questao"
     }
