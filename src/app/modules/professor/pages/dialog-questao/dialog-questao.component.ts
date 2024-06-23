@@ -14,7 +14,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './dialog-questao.component.html',
   styleUrl: './dialog-questao.component.scss'
 })
-export class DialogQuestionomponent {
+export class DialogQuestionComponent {
 
   public config: SummernoteOptions = {
     airMode: false,
@@ -32,7 +32,7 @@ export class DialogQuestionomponent {
   
 
   constructor(
-    public dialogRef: MatDialogRef<DialogQuestionomponent>,
+    public dialogRef: MatDialogRef<DialogQuestionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { content: string }
   ) {}
 

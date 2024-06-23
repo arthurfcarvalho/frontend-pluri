@@ -1,3 +1,4 @@
+import { EditarQuestaoComponent } from './modules/professor/pages/editar-questao/editar-questao.component';
 import { Routes } from '@angular/router';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { SignupComponent } from './modules/auth/pages/signup/signup.component';
@@ -66,5 +67,9 @@ export const routes: Routes = [
         path: "minhas-questoes",
         component: ListaQuestoesUsuarioComponent,
         title: "Listar Questao - Questao"
+    },
+    {
+        path: "editar-questao/:id",
+        component: EditarQuestaoComponent
     }
 ];

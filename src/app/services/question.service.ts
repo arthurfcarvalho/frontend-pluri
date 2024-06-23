@@ -5,6 +5,7 @@ import { map, Observable } from "rxjs";
 import { Questao } from "../modules/professor/models/Question.model";
 import { Injectable } from "@angular/core";
 import { ApiResponsePageable } from "../types/api-response-pageable.type";
+import { DadosAtualizarQuestao } from "../modules/professor/models/DadosAtualizarQuestao.model";
 
 @Injectable({
   providedIn: 'root'
@@ -27,4 +28,14 @@ export class QuestionService {
     ));
   }
 
+  listById(id: number){
+    const url = this.baseUrl + `/listar-questao/${id}`
+    return this.httpClient.get<Questao>(url).pipe(map(
+      obj => obj
+    ));
+  }
+  updateQuestion(questao: DadosAtualizarQuestao){
+    const url = this.baseUrl + `/atualizar-questao`
+    return this.httpClient.put(url,questao);
+  }
 }

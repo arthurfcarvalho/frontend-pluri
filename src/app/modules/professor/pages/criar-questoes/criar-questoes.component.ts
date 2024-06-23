@@ -10,7 +10,7 @@ import jsPDF from 'jspdf';
 import { MatDialog } from '@angular/material/dialog';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogQuestionomponent } from '../dialog-questao/dialog-questao.component';
+import { DialogQuestionComponent } from '../dialog-questao/dialog-questao.component';
 import { StepperModule } from 'primeng/stepper';
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -32,8 +32,7 @@ interface DynamicFields {
   standalone: true,
   imports: [
     HeaderComponent,
-    NgxSummernoteModule,
-    HeaderComponent,
+    NgxSummernoteModule, 
     StepperModule,
     ReactiveFormsModule,
     CalendarModule,
@@ -185,7 +184,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   }
 
   openDialog(field: keyof DynamicFields): void {
-    const dialogRef = this.dialog.open(DialogQuestionomponent, {
+    const dialogRef = this.dialog.open(DialogQuestionComponent, {
       width: '80%',
       data: { content: this[field] }
     });
