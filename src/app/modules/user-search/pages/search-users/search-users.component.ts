@@ -34,7 +34,6 @@ export class SearchUsersComponent {
   ){
     this.userService.returnAllUsers().subscribe(users => {
       this.users = users;
-      console.log(this.users);
     })
   }
 
