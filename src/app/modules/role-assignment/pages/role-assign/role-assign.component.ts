@@ -27,7 +27,6 @@ export class RoleAssignComponent {
   constructor(private roleService: RoleService, private userService: UserService, private toastService: ToastrService) {
     this.roleService.returnAllRoles().subscribe(roles => {
       this.availableRoles = roles;
-      console.log(this.availableRoles)
     })
   }
   
