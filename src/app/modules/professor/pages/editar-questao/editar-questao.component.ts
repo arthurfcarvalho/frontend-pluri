@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Questao } from './../../models/Question.model';
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
@@ -14,8 +15,11 @@ import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { QuestionService } from '../../../../services/question.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DadosAtualizarQuestao } from '../../models/DadosAtualizarQuestao.model';
+import Assunto from '../../../../models/Assunto.model';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { AssuntoService } from '../../../../services/assunto.service';
 
 interface DynamicFields {
   corpo: string;
@@ -36,7 +40,8 @@ interface DynamicFields {
     CalendarModule,
     FloatLabelModule,
     DropdownModule,
-    InputTextModule
+    InputTextModule,
+    MultiSelectModule
   ],
   templateUrl: './editar-questao.component.html',
   styleUrls: ['./editar-questao.component.scss']
@@ -46,8 +51,9 @@ export class EditarQuestaoComponent {
   atualizarQuestaoForm: FormGroup;
   questao!: DadosAtualizarQuestao;
   previewContent = '';
-
-  constructor(private dialog: MatDialog, private questaoService: QuestionService, private route: ActivatedRoute) {
+  assuntos!: Assunto[];
+  
+  constructor(private router: Router, private toastService: ToastrService,private assuntoService: AssuntoService,private dialog: MatDialog, private questaoService: QuestionService, private route: ActivatedRoute) {
     this.atualizarQuestaoForm = new FormGroup({
       id: new FormControl(),
       titulo: new FormControl(),
@@ -57,29 +63,50 @@ export class EditarQuestaoComponent {
       alternativa1: new FormControl(),
       alternativa2: new FormControl(),
       alternativa3: new FormControl(),
-      alternativa4: new FormControl()
+      alternativa4: new FormControl(),
+      codigo_assuntos: new FormControl()
     });
   }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.questaoService.listById(Number(id)).subscribe(questao => {
-        this.questao = questao;
-        console.log(questao)
-        this.atualizarQuestaoForm.patchValue({
-          ...this.questao,
-        });
-        this.updatePreview();
+      this.questaoService.listById(Number(id)).subscribe(questaoRecebida => {
+        this.questao = questaoRecebida;
+
+        this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
+          this.assuntos = assuntosRecebidos.content;
+
+          this.atualizarQuestaoForm.patchValue({
+            ...this.questao,
+            codigo_assuntos: this.questao.assuntos,
+          });
+          this.updatePreview();
+        });  
       });
     }
   }
 
+  
+  
+
   submitAtualizarQuestao() {
     if (this.atualizarQuestaoForm.valid) {
+
       const questaoAtualizada = this.atualizarQuestaoForm.value;
-      this.questaoService.updateQuestion(questaoAtualizada).subscribe(() => {
-        console.log('Questão atualizada com sucesso!');
+      
+      const assuntosCodigosSelecionados = this.atualizarQuestaoForm.value.codigo_assuntos.map((assunto: any ) => assunto.codigo)
+
+      questaoAtualizada.codigo_assuntos = assuntosCodigosSelecionados
+
+      this.questaoService.updateQuestion(questaoAtualizada).subscribe({ 
+        next: (value) => {
+          this.toastService.success("Questao criada com sucesso!");
+          this.router.navigate(['/', value]);
+        },
+        error: (e) => {
+          this.toastService.error("Erro ao criar o Questão!");
+        }
       });
     }
   }

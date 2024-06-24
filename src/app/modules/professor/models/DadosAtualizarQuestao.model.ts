@@ -1,5 +1,7 @@
+import Assunto from "../../../models/Assunto.model";
+
 export interface DadosAtualizarQuestao{
-    id_questao: number;
+    id: number;
     corpo: string,
     titulo: string,
     alternativa1: string,
@@ -9,8 +11,8 @@ export interface DadosAtualizarQuestao{
     opcaoCorreta: string,
     dataCriacao: Date,
     dificuldade: string,
-    aprovada: boolean,
-    codigo_assuntos: string[]
+    aprovada: boolean, 
+    assuntos: Assunto[];
     //List<String> codigo_assuntos,
     //Long id_area
 }

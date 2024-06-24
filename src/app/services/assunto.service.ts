@@ -10,32 +10,17 @@ import { DadosAtualizarQuestao } from "../modules/professor/models/DadosAtualiza
 @Injectable({
   providedIn: 'root'
 })
-export class QuestionService {
+export class AssuntoService {
 
-  baseUrl = "http://localhost:8080/questao";
+  baseUrl = "http://localhost:8080/assunto";
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 
-  createQuestion(data: PluriInformacoesGeraisDAO): Observable<Questao> {
-    const url = this.baseUrl + '/criar-questao';
-    return this.httpClient.post<Questao>(url, data);
-  }
   
-  listQuestionsUser(id: number){
-    const url = this.baseUrl + `/listar-questoes-usuario/${id}`
+  listarAssuntos(){
+    const url = this.baseUrl + `/listar-assuntos`
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
-  }
-
-  listById(id: number){
-    const url = this.baseUrl + `/listar-questao/${id}`
-    return this.httpClient.get<DadosAtualizarQuestao>(url).pipe(map(
-      obj => obj
-    ));
-  }
-  updateQuestion(questao: DadosAtualizarQuestao){
-    const url = this.baseUrl + `/atualizar-questao`
-    return this.httpClient.put(url,questao);
   }
 }

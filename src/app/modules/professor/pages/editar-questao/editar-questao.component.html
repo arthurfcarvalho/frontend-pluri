@@ -1,6 +1,15 @@
 <app-header></app-header>
 <form [formGroup]="atualizarQuestaoForm" >
 <div class="box-questoes-sup">
+
+  
+  <p-multiSelect 
+      [options]="assuntos" 
+      formControlName="codigo_assuntos"
+      optionLabel="codigo" 
+      placeholder="Selecione os assuntos"
+      />
+
     <div class="alt">
       <h1>Corpo</h1>
       <button (click)="openDialog('corpo')">Editar Corpo</button>

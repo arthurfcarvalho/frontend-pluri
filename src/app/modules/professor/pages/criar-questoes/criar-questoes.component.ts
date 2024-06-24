@@ -1,3 +1,5 @@
+import { map } from 'rxjs';
+import { AssuntoService } from './../../../../services/assunto.service';
 import { QuestionService } from './../../../../services/question.service';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
@@ -18,6 +20,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import Assunto from '../../../../models/Assunto.model';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 interface DynamicFields {
   corpo: string;
@@ -38,7 +42,8 @@ interface DynamicFields {
     CalendarModule,
     FloatLabelModule,
     DropdownModule,
-    InputTextModule
+    InputTextModule,
+    MultiSelectModule
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
@@ -53,15 +58,21 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   alternativa4 = "Digite o conteúdo";
 
   previewContent = '';
-
+  assuntos!: Assunto[];
   criarQuestaoForm: FormGroup;
+
 
   ngOnInit(): void {
     this.updatePreview();
   }
 
-  constructor(private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
+  constructor(private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
     private router: Router) {
+
+    this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
+      this.assuntos = assuntosRecebidos.content;
+    })
+
     this.criarQuestaoForm = this.fb.group({
       corpo: new FormControl('', Validators.required),
       alternativa1: [''],
@@ -88,9 +99,13 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   submitCriarQuestao(){
 
     const formValue = this.criarQuestaoForm.value;
+  
     
-    console.log(formValue)
-    this.questaoService.createQuestion(this.criarQuestaoForm.value).subscribe({
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any ) => assunto.codigo)
+    
+    formValue.codigo_assuntos = assuntosCodigosSelecionados
+  
+    this.questaoService.createQuestion(this.criarQuestaoForm.value).subscribe({ 
       next: (value) => {
         this.toastService.success("Questao criada com sucesso!");
         this.router.navigate(['/', value]);
