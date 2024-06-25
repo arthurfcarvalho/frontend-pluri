@@ -2,13 +2,18 @@
 <form [formGroup]="criarQuestaoForm" >
 <div class="box-questoes-sup">
 
+  <p-floatLabel>
+    <input type="text" pInputText formControlName="titulo"/>
+    <label for="titulo">Titulo</label>
+  </p-floatLabel>
+
   <p-multiSelect 
       [options]="assuntos" 
       formControlName="codigo_assuntos"
       optionLabel="codigo" 
       placeholder="Selecione os assuntos"
       />
-      
+
     <div class="alt">
       <h1>Corpo</h1>
       <button (click)="openDialog('corpo')">Editar Corpo</button>
@@ -44,101 +49,12 @@
         <button  (click)="openDialog('alternativa3')">Editar Alternativa 3</button>
         <div [innerHTML]="alternativa3"></div>
       </div>
-      <div class="alt">
-        <h2>Alternativa 4</h2>
-        <button  (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
-        <div [innerHTML]="alternativa4"></div>
+        <div class="alt">
+          <h2>Alternativa 4</h2>
+          <button  (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
+          <div [innerHTML]="alternativa4"></div>
+        </div>
       </div>
     </div>
-  </div>
-<button (click)="submitCriarQuestao()">enviar</button>
+  <button (click)="submitCriarQuestao()">enviar</button>
 </form>
-  
-<!--
-<form [formGroup]="criarQuestaoForm">
-  <p-floatLabel>
-      <input type="text" pInputText formControlName="codigo" [readOnly]="true"/>
-      <label for="codigo">Código</label>
-  </p-floatLabel>
-  <p-floatLabel>
-      <input type="text" pInputText formControlName="nome"/>
-      <label for="nome">Nome</label>
-  </p-floatLabel>
-  <p-floatLabel>
-      <p-dropdown 
-          formControlName="trimestre"
-          [options]=""
-      />
-      <label for="trimestre">Trimestre</label>
-  </p-floatLabel>
-  <p-floatLabel>
-      <p-calendar
-          formControlName="anoAplicacao"
-          view="year"
-          dateFormat="yy"
-      />
-      <label for="anoAplicacao">Ano de Aplicação</label>
-  </p-floatLabel>
-  <p-floatLabel>
-      <p-calendar
-          formControlName="dataInicioPluri"
-          dateFormat="dd/mm/yy"
-      />
-      <label for="dataInicioPluri">Data de Início do Pluri</label>
-  </p-floatLabel>
-</form>
-
-  <div class="box-questoes-sup">
-    <div class="alt">
-      <h1>Corpo</h1>
-      <button mat-button (click)="openDialog('corpo')">Editar Corpo</button>
-      <div [innerHTML]="corpo"></div>
-      <input type="hidden" name="corpo" [value]="corpo">
-    </div>
-    <div class="alt">
-      <h3>Pré-visualização do PDF</h3>
-      <div class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview"></div>
-      <button (click)="saveContent()">Salvar em PDF</button>
-    </div>
-  </div>
-  
-  <div class="box-questoes">
-    <div class="box-questoes-sup">
-      <div class="alt">
-        <h2>Alternativa 1</h2>
-        <button mat-button (click)="openDialog('alternativa1')">Editar Alternativa 1</button>
-        <div [innerHTML]="alternativa1"></div>
-        <input type="hidden" name="alternativa1" [value]="alternativa1">
-      </div>
-      <div class="alt">
-        <h2>Alternativa 2</h2>
-        <button mat-button (click)="openDialog('alternativa2')">Editar Alternativa 2</button>
-        <div [innerHTML]="alternativa2"></div>
-        <input type="hidden" name="alternativa2" [value]="alternativa2">
-      </div>
-    </div>
-  
-    <div class="box-questoes-sup">
-      <div class="alt">
-        <h2>Alternativa 3</h2>
-        <button mat-button (click)="openDialog('alternativa3')">Editar Alternativa 3</button>
-        <div [innerHTML]="alternativa3"></div>
-        <input type="hidden" name="alternativa3" [value]="alternativa3">
-      </div>
-      <div class="alt">
-        <h2>Alternativa 4</h2>
-        <button mat-button (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
-        <div [innerHTML]="alternativa4"></div>
-        <input type="hidden" name="alternativa4" [value]="alternativa4">
-      </div>
-    </div>
-  </div>
-  <div [ngxSummernote]="config"></div>
-
-  <button type="submit">Enviar</button>
-
-
-
-
-
--->

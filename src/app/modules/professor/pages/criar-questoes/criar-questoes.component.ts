@@ -22,8 +22,14 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Assunto from '../../../../models/Assunto.model';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { Area } from '../../../../models/Area.model';
+import { ListboxModule } from 'primeng/listbox';
+import { AreaService } from '../../../../services/area.service';
+import { HttpClient } from '@angular/common/http';
+
 
 interface DynamicFields {
+  titulo: string,
   corpo: string;
   alternativa1: string;
   alternativa2: string;
@@ -43,14 +49,17 @@ interface DynamicFields {
     FloatLabelModule,
     DropdownModule,
     InputTextModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ListboxModule
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
 })
 export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
+
   content = "Digite";
+  titulo =  'Digite o titulo';
   corpo = "Digite o corpo";
   alternativa1 = "Digite o conteúdo";
   alternativa2 = "Digite o conteúdo";
@@ -59,21 +68,29 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
   previewContent = '';
   assuntos!: Assunto[];
+  areas!: Area[];
   criarQuestaoForm: FormGroup;
+  areaSelecionada!: number;
 
 
   ngOnInit(): void {
     this.updatePreview();
   }
-
-  constructor(private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
+  
+  constructor(private http: HttpClient,private areaService: AreaService, private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
     private router: Router) {
 
     this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
       this.assuntos = assuntosRecebidos.content;
     })
+    this.areaService.returnAllAreas().subscribe(areaRecebidas => {
+      console.log(areaRecebidas.content)
+      this.areas = areaRecebidas.content;
+      console.log("areas", this.areas)
+    })
 
     this.criarQuestaoForm = this.fb.group({
+      titulo: new FormControl(''),
       corpo: new FormControl('', Validators.required),
       alternativa1: [''],
       alternativa2: new FormControl('', Validators.required),
@@ -99,6 +116,8 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   submitCriarQuestao(){
 
     const formValue = this.criarQuestaoForm.value;
+
+    console.log(formValue)
   
     
     const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any ) => assunto.codigo)
@@ -220,10 +239,15 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
     const tempElement = document.createElement('div');
     tempElement.innerHTML = content;
+
     document.body.appendChild(tempElement);
+
+    
     html2canvas(tempElement).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
+
       const doc = new jsPDF('p', 'mm', 'a4');
+
       const imgProps = doc.getImageProperties(imgData);
       const pdfWidth = doc.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;

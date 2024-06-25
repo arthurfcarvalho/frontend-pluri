@@ -11,6 +11,5 @@ export interface Questao{
     dificuldade: string,
     aprovada: boolean,
     codigo_assuntos: string[]
-    //List<String> codigo_assuntos,
-    //Long id_area
+    id_area?: number
 }
