@@ -51,8 +51,6 @@
     </div>
     <button pButton (click)="submitCriarQuestao()">enviar</button>
 </form>
-<div class="alt">
-  <h3>Pré-visualização do PDF</h3>
+  Pré-visualização do PDF
   <div  class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview" ></div>
   <button pButton (click)="saveContent()">Salvar em PDF</button>
-</div>
