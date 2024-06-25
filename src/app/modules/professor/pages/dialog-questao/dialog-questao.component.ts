@@ -46,13 +46,7 @@ export class DialogQuestionComponent {
       ['insert', ['link', 'picture', 'video']],
       ['view', ['fullscreen', 'codeview', 'help']]
     ],
-    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar",
-    /*callbacks: {
-      onImageUpload: (files: File[]) => {
-        console.log('Arquivo selecionado:', files);
-        this.enviarImagem(files[0]);
-      }
-    },*/
+    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
     buttons: {
       customButton: customButton
     }

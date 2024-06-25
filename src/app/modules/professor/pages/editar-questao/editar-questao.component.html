@@ -2,6 +2,17 @@
 <form [formGroup]="atualizarQuestaoForm" >
 <div class="box-questoes-sup">
 
+
+
+  <p-floatLabel>
+    <input type="text" pInputText formControlName="titulo"/>
+    <label for="titulo">Titulo</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input type="text" pInputText formControlName="dificuldade"/>
+    <label for="dificuldade">Dificuldade</label>
+  </p-floatLabel>
   
   <p-multiSelect 
       [options]="assuntos" 

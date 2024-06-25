@@ -60,11 +60,11 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
   content = "Digite";
   titulo =  'Digite o titulo';
-  corpo = "Digite o corpo";
-  alternativa1 = "Digite o conteúdo";
-  alternativa2 = "Digite o conteúdo";
-  alternativa3 = "Digite o conteúdo";
-  alternativa4 = "Digite o conteúdo";
+  corpo = "";
+  alternativa1 = "";
+  alternativa2 = "";
+  alternativa3 = "";
+  alternativa4 = "";
 
   previewContent = '';
   assuntos!: Assunto[];
