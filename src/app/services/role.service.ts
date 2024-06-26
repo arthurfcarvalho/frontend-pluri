@@ -12,6 +12,11 @@ export class RoleService {
 
   constructor(private httpClient: HttpClient) { }
 
+  create(data: any){
+    const url = this.baseUrl + 'criar-perfil-permissao';
+    return this.httpClient.post(url, data);
+  }
+
   returnAllRoles(): Observable<Role[]>{
     const url = this.baseUrl + 'listar-perfis';
     return this.httpClient.get<Role[]>(url).pipe(
