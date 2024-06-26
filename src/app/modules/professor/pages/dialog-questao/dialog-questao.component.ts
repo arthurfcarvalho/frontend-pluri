@@ -4,6 +4,7 @@ import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import {DialogModule} from 'primeng/dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import { Button } from 'primeng/button';
 
 declare var $: any;
 
@@ -27,7 +28,8 @@ function customButton(context: any) {
   standalone: true,
   imports: [
     NgxSummernoteModule,
-    DialogModule,  
+    DialogModule,
+    
   ],
   templateUrl: './dialog-questao.component.html',
   styleUrl: './dialog-questao.component.scss'

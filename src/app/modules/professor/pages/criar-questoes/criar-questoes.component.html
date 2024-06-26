@@ -1,56 +1,50 @@
 <app-header></app-header>
 <form [formGroup]="criarQuestaoForm" >
-<div class="box-questoes-sup">
+  <div class="box-questoes-sup">
 
-  <div class="box-inputs">
-    <p-floatLabel>
-      <input type="text" pInputText formControlName="titulo"/>
-      <label for="titulo">Titulo</label>
-    </p-floatLabel>
+    <div class="box-inputs">
+      <p-floatLabel>
+        <input type="text" pInputText formControlName="titulo"/>
+        <label for="titulo">Titulo</label>
+      </p-floatLabel>
   
-    <p-floatLabel>
-      <input type="text" pInputText formControlName="dificuldade"/>
-      <label for="dificuldade">Dificuldade</label>
-    </p-floatLabel>
+      <p-floatLabel>
+        <input type="text" pInputText formControlName="dificuldade"/>
+        <label for="dificuldade">Dificuldade</label>
+      </p-floatLabel>
   
-    <p-multiSelect 
+      <p-multiSelect 
         [options]="assuntos" 
         formControlName="codigo_assuntos"
         optionLabel="codigo" 
         placeholder="Selecione os assuntos"
         />
   
+    </div>  
   </div>
-  
-    <div class="box-inputs">
-      
-      <button pButton (click)="openDialog('corpo')">Editar Corpo</button>
-      <div [innerHTML]="corpo"></div>
-      <p-floatLabel>
-        <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
-      </p-floatLabel>
-    </div>
-    
-  </div>
-  
   <div class="box-questoes">
-    
+
+      <button pButton (click)="openDialog('corpo')">Editar Corpo</button>
+        
+        <div [innerHTML]="corpo"></div>
+        <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
+        
   
         <button  pButton (click)="openDialog('alternativa1')">Editar Alternativa 1</button>
-        <div [innerHTML]="alternativa1"></div>
+        <!--<div [innerHTML]="alternativa1"></div> -->
   
-        <button  pButton (click)="openDialog('alternativa2')">Editar Alternativa 2</button>
-        <div [innerHTML]="alternativa2"></div>
+         <button  pButton (click)="openDialog('alternativa2')">Editar Alternativa 2</button>
+        <!--<div [innerHTML]="alternativa2"></div>-->
     
         <button  pButton (click)="openDialog('alternativa3')">Editar Alternativa 3</button>
-        <div [innerHTML]="alternativa3"></div>
+        <!--<div [innerHTML]="alternativa3"></div>-->
       
         <button pButton (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
-        <div [innerHTML]="alternativa4"></div>
-      
+        <!--<div [innerHTML]="alternativa4"></div>-->
     </div>
-    <button pButton (click)="submitCriarQuestao()">enviar</button>
+    <button class="btn-enviar" pButton (click)="submitCriarQuestao()">enviar</button>
 </form>
+  <br>
   Pré-visualização do PDF
   <div  class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview" ></div>
-  <button pButton (click)="saveContent()">Salvar em PDF</button>
+  <button class="btn-enviar" pButton (click)="saveContent()">Salvar em PDF</button>
