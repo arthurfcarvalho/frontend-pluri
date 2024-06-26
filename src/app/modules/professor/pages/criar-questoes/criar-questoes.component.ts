@@ -187,12 +187,12 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
       ],
       ['fontsize', ['fontname', 'fontsize', 'color']],
       ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+      ['insert', ['picture', 'link', 'video', 'hr']],
       ['customButtons', ['testBtn']],
       ['view', ['fullscreen', 'codeview', 'help']],
       ['print', ['print']]
     ],
-    fontNames: ['Arial', 'Times New Roman', 'Inter', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times', 'MangCau', 'BayBuomHep', 'BaiSau', 'BaiHoc', 'CoDien', 'BucThu', 'KeChuyen', 'MayChu', 'ThoiDai', 'ThuPhap-Ivy', 'ThuPhap-ThienAn'],
+    fontNames: ['Arial'],
     buttons: {}
   };
 
@@ -219,7 +219,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
   openDialog(field: keyof DynamicFields): void {
     const dialogRef = this.dialog.open(DialogQuestionComponent, {
-      width: '80%',
+      width: '60%',
       data: { content: this[field] }
     });
 

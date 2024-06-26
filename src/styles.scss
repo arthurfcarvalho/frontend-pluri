@@ -14,3 +14,6 @@ html, body {
     padding: 0;
     height: 100%;
 }
+div.note-modal-backdrop {
+    z-index: 999;
+}

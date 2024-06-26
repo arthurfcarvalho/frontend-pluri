@@ -1,5 +1,9 @@
-<div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="data.content" [(summernoteModel)]="data.content"></div>
-<div class="dialog-actions">
-  <button pButton (click)="onCancel()">Cancelar</button>
-  <button pButton (click)="onSave()">Salvar</button>
-</div>
+<p-card>
+  <div class="box-summernote">
+    <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="data.content" [(summernoteModel)]="data.content"></div>
+  </div>
+  <div class="dialog-actions">
+    <button pButton (click)="onCancel()">Cancelar</button>
+    <button pButton (click)="onSave()">Salvar</button>
+  </div>
+</p-card>
