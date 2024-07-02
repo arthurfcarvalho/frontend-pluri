@@ -46,7 +46,9 @@ export class HeaderComponent {
       (login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe(
           (user) => {
+             
             this.user = user;
+                     
             this.menuItems = [
               {
                 label: 'Início',
@@ -68,7 +70,7 @@ export class HeaderComponent {
                   },
                   {
                     label: 'Solicitar Questões'
-                  }
+                  },
                 ]
               },
               {
@@ -86,6 +88,27 @@ export class HeaderComponent {
                       }
                     ]
                   }
+                ]
+              },
+              {
+                label: 'Professor',
+                //visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+                items: [
+                  {
+                    label: 'Criar Questão',
+                    routerLink: '/criar-questao',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
+                  {
+                    label: 'Minhas Questões',
+                    routerLink: '/minhas-questoes',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
+                  {
+                    label: 'Questoes a Enviar',
+                    routerLink: '/questoes-a-enviar',
+                    visible: this.userHasPermission(["PESQUISAR_PLURI"])
+                  },
                 ]
               },
             ]

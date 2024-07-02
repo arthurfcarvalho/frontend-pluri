@@ -36,6 +36,10 @@ export class UserService {
     const url = `http://localhost:8080/usuario/listar-usuario/${login}`;
     return this.http.get<User>(url);
   }
+  returnUserId(login: string){
+    const url = `http://localhost:8080/usuario/retornaId/${login}`;
+    return this.http.get<number>(url);
+  }
 
   saveToken(token: string){ 
     this.tokenService.saveToken(token);

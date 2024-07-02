@@ -1,0 +1,53 @@
+<app-header></app-header>
+<form [formGroup]="criarQuestaoForm" >
+  <div class="box-questoes-sup">
+
+    <div class="box-inputs">
+      <p-floatLabel>
+        <input type="text" pInputText formControlName="titulo"/>
+        <label for="titulo">Titulo</label>
+      </p-floatLabel>
+  
+      <p-floatLabel>
+        <input type="text" pInputText formControlName="dificuldade"/>
+        <label for="dificuldade">Dificuldade</label>
+      </p-floatLabel>
+  
+      <p-multiSelect 
+        [options]="assuntos" 
+        formControlName="codigo_assuntos"
+        optionLabel="codigo" 
+        placeholder="Selecione os assuntos"
+        />
+  
+    </div>  
+  </div>
+  <div class="box-questoes">
+
+      <button pButton (click)="openDialog('corpo')" label="Editar Corpo"></button>
+        
+        <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
+        
+        <button  pButton (click)="openDialog('alternativa1')" label="Editar Alternativa 1"></button>
+        
+        <button  pButton (click)="openDialog('alternativa2')" label="Editar Alternativa 2"></button>
+  
+        <button  pButton (click)="openDialog('alternativa3')" label="Editar Alternativa 3"></button>
+      
+        <button pButton (click)="openDialog('alternativa4')" label="Editar Alternativa 4"></button>
+        
+    </div>
+    <button class="btn-enviar" pButton (click)="submitCriarQuestao()" label="Enviar"></button>
+    <button class="btn-enviar" pButton [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+    <div *ngIf="carregamento" class="custom-spinner-container">
+      <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
+    </div>
+    
+    
+    
+
+</form>
+  <br>
+  Pré-visualização do PDF
+  <div  class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview" ></div>
+  <button class="btn-enviar" pButton (click)="saveContent()">Salvar em PDF</button>

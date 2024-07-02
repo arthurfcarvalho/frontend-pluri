@@ -1,0 +1,37 @@
+<app-header/>
+
+<p-table
+    [value]="dataQuestaoArea"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+    [tableStyle]="{'min-width': '50rem'}"
+    sortField="data_inicio_pluri"
+    [sortOrder]="1"
+>
+    <ng-template pTemplate="caption">
+        <div>
+            Questoes
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="area">Area<p-sortIcon field="area"/></th>
+            <th pSortableColumn="quantidadeQuestoesNescessaria">Quantidade Nescessaria<p-sortIcon field="quantidadeQuestoesNescessaria"/></th>
+            <th pSortableColumn="aprovada">Aprovada<p-sortIcon field="aprovada"/></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-questaoArea>
+        <tr>  
+            <td>{{ questaoArea.area }}</td>
+            <td>{{ questaoArea.quantidadeQuestoesNescessaria}}</td>
+            <td>{{ questaoArea.aprovada ? 'Sim' : 'Não' }}</td>
+            <td>
+                <button pButton type="button" label="Enviar" routerLink="/editar-questao/{{questaoArea.id}}"></button>
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>

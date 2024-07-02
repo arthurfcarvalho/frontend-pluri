@@ -1,3 +1,4 @@
+import { EditarQuestaoComponent } from './modules/professor/pages/editar-questao/editar-questao.component';
 import { Routes } from '@angular/router';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { SignupComponent } from './modules/auth/pages/signup/signup.component';
@@ -7,6 +8,9 @@ import { SearchPluriComponent } from './modules/pluri/pages/search-pluri/search-
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
+import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
+import { ListaQuestoesUsuarioComponent } from './modules/professor/pages/lista-questoes-usuario/lista-questoes-usuario.component';
+import { ListarQuestaoAEnviarComponent } from './modules/professor/pages/listar-questao-a-enviar/listar-questao-a-enviar.component';
 
 export const routes: Routes = [
     {
@@ -54,5 +58,23 @@ export const routes: Routes = [
         path: "indicar-docentes/:id",
         component: IndicacaoDocentesComponent,
         title: "Indicar Docentes - Pluri"
+    },
+    {
+        path: "criar-questao",
+        component: CreateQuestionsComponent,
+        title: "Criar Questao - Questao"
+    },
+    {
+        path: "minhas-questoes",
+        component: ListaQuestoesUsuarioComponent,
+        title: "Listar Questao - Questao"
+    },
+    {
+        path: "editar-questao/:id",
+        component: EditarQuestaoComponent
+    },
+    {
+        path: "questoes-a-enviar",
+        component: ListarQuestaoAEnviarComponent
     }
 ];
