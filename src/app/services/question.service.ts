@@ -38,5 +38,13 @@ export class QuestionService {
     const url = this.baseUrl + `/atualizar-questao`
     return this.httpClient.put(url,questao);
   }
+
+  listQuestoesAEnviar(id: number){
+    const url = this.baseUrl + `/listar-questoes-a-enviar/${id}`
+    
+    return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
+      obj => obj
+    ));
+  }
   
 }

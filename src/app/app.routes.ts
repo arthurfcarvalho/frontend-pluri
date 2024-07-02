@@ -10,6 +10,7 @@ import { SearchUsersComponent } from './modules/user-search/pages/search-users/s
 import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
 import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
 import { ListaQuestoesUsuarioComponent } from './modules/professor/pages/lista-questoes-usuario/lista-questoes-usuario.component';
+import { ListarQuestaoAEnviarComponent } from './modules/professor/pages/listar-questao-a-enviar/listar-questao-a-enviar.component';
 
 export const routes: Routes = [
     {
@@ -71,5 +72,9 @@ export const routes: Routes = [
     {
         path: "editar-questao/:id",
         component: EditarQuestaoComponent
+    },
+    {
+        path: "questoes-a-enviar",
+        component: ListarQuestaoAEnviarComponent
     }
 ];

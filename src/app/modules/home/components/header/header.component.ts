@@ -68,7 +68,7 @@ export class HeaderComponent {
                   },
                   {
                     label: 'Solicitar Questões'
-                  }
+                  },
                 ]
               },
               {
@@ -101,6 +101,11 @@ export class HeaderComponent {
                     label: 'Minhas Questões',
                     routerLink: '/minhas-questoes',
                     //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
+                  {
+                    label: 'Questoes a Enviar',
+                    routerLink: '/questoes-a-enviar',
+                    visible: this.userHasPermission(["PESQUISAR_PLURI"])
                   },
                 ]
               },
