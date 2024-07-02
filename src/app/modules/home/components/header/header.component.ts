@@ -46,7 +46,9 @@ export class HeaderComponent {
       (login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe(
           (user) => {
-            this.user = user;            
+             
+            this.user = user;
+                     
             this.menuItems = [
               {
                 label: 'Início',

@@ -60,6 +60,11 @@ export class UserService {
     return this.http.get<User>(url);
   }
 
+  returnAllUsers(){
+    const url = `http://localhost:8080/usuario/listar`;
+    return this.http.get<User[]>(url);
+  }
+
   assignRoles(id: number, role: Role[]): Observable<any> {
     const url = 'http://localhost:8080/usuario/atualizar-perfis';
     const data = { id: id, perfis: role };
