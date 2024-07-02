@@ -24,21 +24,28 @@
   </div>
   <div class="box-questoes">
 
-      <button pButton (click)="openDialog('corpo')">Editar Corpo</button>
+      <button pButton (click)="openDialog('corpo')" label="Editar Corpo"></button>
         
         <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
         
-        <button  pButton (click)="openDialog('alternativa1')">Editar Alternativa 1</button>
+        <button  pButton (click)="openDialog('alternativa1')" label="Editar Alternativa 1"></button>
         
-        <button  pButton (click)="openDialog('alternativa2')">Editar Alternativa 2</button>
+        <button  pButton (click)="openDialog('alternativa2')" label="Editar Alternativa 2"></button>
   
-        <button  pButton (click)="openDialog('alternativa3')">Editar Alternativa 3</button>
+        <button  pButton (click)="openDialog('alternativa3')" label="Editar Alternativa 3"></button>
       
-        <button pButton (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
+        <button pButton (click)="openDialog('alternativa4')" label="Editar Alternativa 4"></button>
         
     </div>
-    <button class="btn-enviar" pButton (click)="submitCriarQuestao()">enviar</button>
-    <button class="btn-enviar" pButton (click)="previewQuestaoNoModelo()">pre-view</button>
+    <button class="btn-enviar" pButton (click)="submitCriarQuestao()" label="Enviar"></button>
+    <button class="btn-enviar" pButton [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+    <div *ngIf="carregamento" class="custom-spinner-container">
+      <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
+    </div>
+    
+    
+    
+
 </form>
   <br>
   Pré-visualização do PDF

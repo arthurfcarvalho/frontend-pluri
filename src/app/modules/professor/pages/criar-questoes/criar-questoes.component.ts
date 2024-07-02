@@ -27,6 +27,10 @@ import { ListboxModule } from 'primeng/listbox';
 import { AreaService } from '../../../../services/area.service';
 import { HttpClient } from '@angular/common/http';
 import { RelatoriosService } from '../../../../services/relatorios.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { error } from 'jquery';
+import { CommonModule } from '@angular/common';
+
 
 
 interface DynamicFields {
@@ -51,7 +55,9 @@ interface DynamicFields {
     DropdownModule,
     InputTextModule,
     MultiSelectModule,
-    ListboxModule
+    ListboxModule,
+    ProgressSpinnerModule,
+    CommonModule,
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
@@ -66,6 +72,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   alternativa2 = " ";
   alternativa3 = " ";
   alternativa4 = " ";
+  carregamento: boolean = false
 
   previewContent = '';
   assuntos!: Assunto[];
@@ -232,6 +239,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   }
 
   previewQuestaoNoModelo(){
+    this.carregamento = true
     const formValue = this.criarQuestaoForm.value;
 
     console.log(formValue)
@@ -245,6 +253,9 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
       
       const blobUrl = window.URL.createObjectURL(pdfBlob);
       window.open(blobUrl);
+      this.carregamento = false
+    }, error =>{
+      this.carregamento = false
     })
   }
 
