@@ -26,10 +26,8 @@
 
       <button pButton (click)="openDialog('corpo')">Editar Corpo</button>
         
-        <div [innerHTML]="corpo"></div>
         <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
         
-  
         <button  pButton (click)="openDialog('alternativa1')">Editar Alternativa 1</button>
         <!--<div [innerHTML]="alternativa1"></div> -->
   
@@ -43,6 +41,7 @@
         <!--<div [innerHTML]="alternativa4"></div>-->
     </div>
     <button class="btn-enviar" pButton (click)="submitCriarQuestao()">enviar</button>
+    <button class="btn-enviar" pButton (click)="previewQuestaoNoModelo()">pre-view</button>
 </form>
   <br>
   Pré-visualização do PDF

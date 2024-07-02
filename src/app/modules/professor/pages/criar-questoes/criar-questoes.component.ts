@@ -26,6 +26,7 @@ import { Area } from '../../../../models/Area.model';
 import { ListboxModule } from 'primeng/listbox';
 import { AreaService } from '../../../../services/area.service';
 import { HttpClient } from '@angular/common/http';
+import { RelatoriosService } from '../../../../services/relatorios.service';
 
 
 interface DynamicFields {
@@ -77,7 +78,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     this.updatePreview();
   }
   
-  constructor(private http: HttpClient,private areaService: AreaService, private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
+  constructor(private relatioriosService: RelatoriosService,private http: HttpClient,private areaService: AreaService, private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
     private router: Router) {
 
     this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
@@ -110,8 +111,6 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     const formData = this.criarQuestaoForm.value;
     console.log(formData);
   }
-
-  
 
   submitCriarQuestao(){
 
@@ -230,6 +229,23 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
         this.updatePreview();
       }
     });
+  }
+
+  previewQuestaoNoModelo(){
+    const formValue = this.criarQuestaoForm.value;
+
+    console.log(formValue)
+  
+    
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any ) => assunto.codigo)
+    
+    formValue.codigo_assuntos = assuntosCodigosSelecionados
+
+    this.relatioriosService.previewQuestao(formValue).subscribe((pdfBlob: Blob)=>{
+      
+      const blobUrl = window.URL.createObjectURL(pdfBlob);
+      window.open(blobUrl);
+    })
   }
 
   saveContent() {
