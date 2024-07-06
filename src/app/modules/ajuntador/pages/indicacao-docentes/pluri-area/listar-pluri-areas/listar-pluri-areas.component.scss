@@ -1,0 +1,9 @@
+.box-pluri-areas {
+    display: flex;
+    flex-direction: column;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

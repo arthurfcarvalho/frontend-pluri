@@ -11,6 +11,8 @@ import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-
 import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
 import { ListaQuestoesUsuarioComponent } from './modules/professor/pages/lista-questoes-usuario/lista-questoes-usuario.component';
 import { ListarQuestaoAEnviarComponent } from './modules/professor/pages/listar-questao-a-enviar/listar-questao-a-enviar.component';
+import { Component } from '@angular/core';
+import { ListarPluriAreasComponent } from './modules/ajuntador/pages/indicacao-docentes/pluri-area/listar-pluri-areas/listar-pluri-areas.component';
 
 export const routes: Routes = [
     {
@@ -76,5 +78,9 @@ export const routes: Routes = [
     {
         path: "questoes-a-enviar",
         component: ListarQuestaoAEnviarComponent
+    },
+    {
+        path: "listar-pluri-areas",
+        component: ListarPluriAreasComponent
     }
 ];

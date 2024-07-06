@@ -1,3 +1,4 @@
+import { ApiResponse } from './../../../../types/api-response.type';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PluriService } from '../../../../services/pluri.service';
@@ -12,6 +13,7 @@ import { PluriInfoDAO } from '../../../../models/Pluri/PluriInfoDAO.model';
 import { User } from '../../../../models/User.model';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -48,48 +50,13 @@ export class IndicacaoDocentesComponent {
       email: 'joaosilva@email.com',
       perfis: [] // Empty array for perfis
     },
-    {
-      id: 11,
-      nome: 'Maria Oliveira',
-      login: 'mariaoliveira',
-      senha: 'qweasd',
-      data_nascimento: new Date('1985-02-02'),
-      email: 'mariaoliveira@email.com',
-      perfis: [] // Empty array for perfis
-    },
-    {
-      id: 3,
-      nome: 'Pedro Souza',
-      login: 'pedrosouza',
-      senha: 'zxcvbn',
-      data_nascimento: new Date('1990-03-03'),
-      email: 'pedrosouza@email.com',
-      perfis: [] // Empty array for perfis
-    },
-    {
-      id: 4,
-      nome: 'Ana Costa',
-      login: 'anacosta',
-      senha: '123123',
-      data_nascimento: new Date('1995-04-04'),
-      email: 'anacosta@email.com',
-      perfis: [] // Empty array for perfis
-    },
-    {
-      id: 5,
-      nome: 'Carlos Santos',
-      login: 'carlossanttos',
-      senha: 'qweqwe',
-      data_nascimento: new Date('2000-05-05'),
-      email: 'carlossanttos@email.com',
-      perfis: [] // Empty array for perfis
-    }
   ];
 
   constructor(
     private route: ActivatedRoute,
     private pluriService: PluriService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private usuarioService: UserService
   ){
     this.indicacaoDocentesForm = new FormGroup({
       id_pluri: new FormControl(),
@@ -103,10 +70,16 @@ export class IndicacaoDocentesComponent {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if(id){
       this.pluriService.getPluriGeneralInfo(id).subscribe(pluri => {
-        this.pluri = pluri;
+        this.pluri = pluri
+        this.pluri.nome = pluri.nome;
+        this.pluri.codigo = pluri.codigo;
+        this.pluri.trimestre = pluri.trimestre;
         this.areas = this.pluri.areasPluri;
       })
     }
+    this.usuarioService.retornaProfessores().subscribe(professores => {
+      this.teachers = professores.content
+    })
   }
 
   onAreaSelect(event: any){

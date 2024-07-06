@@ -60,3 +60,26 @@
         
     }
 }
+.red-border {
+    border: 1px solid red;
+  }
+  
+  .message-label {
+    color: red;
+    margin-top: 5px;
+    display: block;
+  }
+  
+iframe {
+    border: none;
+}
+.box-preview {
+    margin-top: 5%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  

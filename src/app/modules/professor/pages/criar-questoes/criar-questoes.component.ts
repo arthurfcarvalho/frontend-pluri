@@ -3,7 +3,7 @@ import { AssuntoService } from './../../../../services/assunto.service';
 import { QuestionService } from './../../../../services/question.service';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSummernoteModule } from 'ngx-summernote';
 
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
@@ -74,11 +74,15 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   alternativa4 = " ";
   carregamento: boolean = false
 
+  pdfUrl: SafeResourceUrl | null = null;
+
   previewContent = '';
   assuntos!: Assunto[];
   areas!: Area[];
   criarQuestaoForm: FormGroup;
   areaSelecionada!: number;
+  desabilitado = true
+  passou = false
 
 
   ngOnInit(): void {
@@ -144,62 +148,8 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   public configPre: SummernoteOptions = {
     airMode: false,
     toolbar: [
-      ['print', ['print']]
+      
     ],
-  };
-
-  public config: SummernoteOptions = {
-    airMode: false,
-    popover: {
-      table: [
-        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
-        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']]
-      ],
-      image: [
-        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
-        ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']]
-      ],
-      link: [['link', ['linkDialogShow', 'unlink']]],
-      air: [
-        [
-          'font',
-          [
-            'bold',
-            'italic',
-            'underline',
-            'strikethrough',
-            'superscript',
-            'subscript',
-            'clear'
-          ]
-        ]
-      ]
-    },
-    uploadImagePath: '/api/upload',
-    toolbar: [
-      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-      [
-        'font',
-        [
-          'bold',
-          'italic',
-          'underline',
-          'strikethrough',
-          'superscript',
-          'subscript',
-          'clear'
-        ]
-      ],
-      ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']],
-      ['view', ['fullscreen', 'codeview', 'help']],
-      ['print', ['print']]
-    ],
-    fontNames: ['Arial'],
-    buttons: {}
   };
 
   updatePreview() {
@@ -238,7 +188,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     });
   }
 
-  previewQuestaoNoModelo(){
+  /*previewQuestaoNoModelo(){
     this.carregamento = true
     const formValue = this.criarQuestaoForm.value;
 
@@ -257,6 +207,34 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     }, error =>{
       this.carregamento = false
     })
+  }*/
+  previewQuestaoNoModelo() {
+    this.carregamento = true;
+    const formValue = this.criarQuestaoForm.value;
+
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any) => assunto.codigo);
+    formValue.codigo_assuntos = assuntosCodigosSelecionados;
+
+    this.relatioriosService.previewQuestao(formValue).subscribe((pdfBlob: Blob) => {
+      const blobUrl = window.URL.createObjectURL(pdfBlob);
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
+      this.carregamento = false;
+    }, error => {
+      this.carregamento = false;
+    });
+  }
+
+  mostrarAlerta(){
+      if (this.desabilitado) {
+    alert('O editor está desativado');
+  }
+    alert("Clique nos botoes para criar")
+  }
+  mouseEntrou(){
+    this.passou = true;
+  }
+  mouseSaiu() {
+    this.passou = false;
   }
 
   saveContent() {

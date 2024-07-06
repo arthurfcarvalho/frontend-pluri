@@ -47,7 +47,22 @@
     
 
 </form>
-  <br>
-  Pré-visualização do PDF
-  <div  class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview" ></div>
-  <button class="btn-enviar" pButton (click)="saveContent()">Salvar em PDF</button>
+<br>
+Pré-visualização do PDF
+<!--<div (mouseover)="mouseEntrou()" (mouseout)="mouseSaiu()">
+  <div class="summernote-alternativa"
+       [class.red-border]="passou"
+       [ngxSummernoteDisabled]="desabilitado"
+       [ngxSummernote]="configPre"
+       [ngxSummernoteView]="previewContent"
+       [summernoteModel]="previewContent"
+       (summernoteModelChange)="updatePreview">
+  </div>
+</div>-->
+
+<button class="btn-enviar" pButton (click)="saveContent()">Salvar em PDF</button>
+<label *ngIf="passou" class="message-label">O editor está desativado</label>
+
+<div *ngIf="pdfUrl" class="box-preview">
+  <iframe [src]="pdfUrl" width="80%%" height="100%"></iframe>
+</div>

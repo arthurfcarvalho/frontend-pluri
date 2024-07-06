@@ -34,5 +34,5 @@ export interface Pluri {
     dataReaplicacao: Date | null;
     dataDivulgacaoNotas: Date | null;
     realizado: boolean;
-    areasPluri: PluriArea[] | null;
+    areasPluri?: PluriArea[] | null;
 }

@@ -111,6 +111,17 @@ export class HeaderComponent {
                   },
                 ]
               },
+              {
+                label: 'Ajuntador',
+                //visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+                items: [
+                  {
+                    label: 'Indicar Docente para pluri Area',
+                    routerLink: '/listar-pluri-areas',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
+                ]
+              },
             ]
           }
         )

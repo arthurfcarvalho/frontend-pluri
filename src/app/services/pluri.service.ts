@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
 import { Observable, map } from 'rxjs';
@@ -8,6 +8,7 @@ import { PluriAtividadesComissaoDAO } from '../models/Pluri/PluriAtividadesComis
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
 import { indicacaoDocentesDAO } from '../modules/ajuntador/models/IndicacaoDocentesDAO.model';
 import { PluriInfoDAO } from '../models/Pluri/PluriInfoDAO.model';
+import { PluriArea } from '../models/Pluri/PluriArea.model';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,19 @@ export class PluriService {
   defineArea(data: any){
     const url = this.baseUrl + '/definir-questoes-area';
     return this.httpClient.put(url, data);
+  }
+
+  listPluriArea(idusuario: number, page: number, size: number): Observable<ApiResponsePageable>{
+    //const url = this.baseUrl + '/listar-pluri-areas'
+    const url = this.baseUrl + '/listar-pluris-e-suas-areas'
+    let params = new HttpParams()
+      .set('idUsuario', idusuario.toString())
+      .set('page', page.toString())
+      .set('size', size.toString())
+
+      return this.httpClient.get<ApiResponsePageable>(url, {params}).pipe(map(
+        obj => obj
+      ));
   }
 
 }
