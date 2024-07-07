@@ -1,68 +1,74 @@
 <app-header></app-header>
-<form [formGroup]="criarQuestaoForm" >
-  <div class="box-questoes-sup">
 
-    <div class="box-inputs">
-      <p-floatLabel>
-        <input type="text" pInputText formControlName="titulo"/>
-        <label for="titulo">Titulo</label>
-      </p-floatLabel>
-  
-      <p-floatLabel>
-        <input type="text" pInputText formControlName="dificuldade"/>
-        <label for="dificuldade">Dificuldade</label>
-      </p-floatLabel>
-  
-      <p-multiSelect 
-        [options]="assuntos" 
-        formControlName="codigo_assuntos"
-        optionLabel="codigo" 
-        placeholder="Selecione os assuntos"
-        />
-  
-    </div>  
-  </div>
-  <div class="box-questoes">
+  <form [formGroup]="criarQuestaoForm">
 
+    <div class="box-questoes-sup">
+  
+  
+      <p>Para criar sua questão clique nos botões e salve suas modificações</p>
+      <div class="box-inputs">
+  
+        <p-floatLabel>
+          <input type="text" pInputText formControlName="titulo" />
+          <label for="titulo">Titulo</label>
+        </p-floatLabel>
+  
+        <p-floatLabel>
+          <input type="text" pInputText formControlName="dificuldade" />
+          <label for="dificuldade">Dificuldade</label>
+        </p-floatLabel>
+  
+        <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo"
+          placeholder="Selecione os assuntos" />
+      </div>
+    </div>
+  
+    <div class="box-questoes">
+  
       <button pButton (click)="openDialog('corpo')" label="Editar Corpo"></button>
-        
-        <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
-        
-        <button  pButton (click)="openDialog('alternativa1')" label="Editar Alternativa 1"></button>
-        
-        <button  pButton (click)="openDialog('alternativa2')" label="Editar Alternativa 2"></button>
   
-        <button  pButton (click)="openDialog('alternativa3')" label="Editar Alternativa 3"></button>
-      
-        <button pButton (click)="openDialog('alternativa4')" label="Editar Alternativa 4"></button>
-        
+      <input type="hidden" name="corpo" value="corpo" formControlName="corpo">
+  
+      <button pButton (click)="openDialog('alternativa1')" label="Editar Alternativa 1"></button>
+  
+      <button pButton (click)="openDialog('alternativa2')" label="Editar Alternativa 2"></button>
+  
+      <button pButton (click)="openDialog('alternativa3')" label="Editar Alternativa 3"></button>
+  
+      <button pButton (click)="openDialog('alternativa4')" label="Editar Alternativa 4"></button>
     </div>
+    
     <button class="btn-enviar" pButton (click)="submitCriarQuestao()" label="Enviar"></button>
-    <button class="btn-enviar" pButton [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
-    <div *ngIf="carregamento" class="custom-spinner-container">
-      <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
+
+  </form>
+    <div class="box-meio">
+      <p>Para ter a visualização na prova clique no Preview</p>
+      <button pButton [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
+          label="Preview Questão"></button>   
+    
+          <div *ngIf="carregamento" class="custom-spinner-container">
+            <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
+          </div>
+          <div *ngIf="pdfUrl" class="box-preview">
+            <iframe [src]="pdfUrl"></iframe>
+          </div>
+          <br> 
+          <div class="summernote-preview" (mouseover)="mouseEntrou()" (mouseout)="mouseSaiu()">
+            <div  [class.red-border]="passou" [ngxSummernoteDisabled]="desabilitado"
+              [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent"
+              (summernoteModelChange)="updatePreview">
+            </div>
+          </div>
     </div>
     
-    
-    
+  
+  
 
-</form>
-<br>
-Pré-visualização do PDF
-<!--<div (mouseover)="mouseEntrou()" (mouseout)="mouseSaiu()">
-  <div class="summernote-alternativa"
-       [class.red-border]="passou"
-       [ngxSummernoteDisabled]="desabilitado"
-       [ngxSummernote]="configPre"
-       [ngxSummernoteView]="previewContent"
-       [summernoteModel]="previewContent"
-       (summernoteModelChange)="updatePreview">
-  </div>
-</div>-->
+  
+  
+  
+  
+  <!--<button class="btn-enviar" pButton (click)="saveContent()">Salvar em PDF</button>-->
+  <label *ngIf="passou" class="message-label">O editor está desativado</label>
 
-<button class="btn-enviar" pButton (click)="saveContent()">Salvar em PDF</button>
-<label *ngIf="passou" class="message-label">O editor está desativado</label>
 
-<div *ngIf="pdfUrl" class="box-preview">
-  <iframe [src]="pdfUrl" width="80%%" height="100%"></iframe>
-</div>

@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { CommonModule } from '@angular/common';
 declare var $: any;
 
 
@@ -30,7 +31,8 @@ function customButton(context: any) {
     NgxSummernoteModule,
     DialogModule,
     ButtonModule,
-    CardModule
+    CardModule,
+    CommonModule
   ],
   templateUrl: './dialog-questao.component.html',
   styleUrl: './dialog-questao.component.scss'
@@ -46,8 +48,15 @@ export class DialogQuestionComponent {
       ['color', ['color']],
       ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture']],
-      ['view', ['fullscreen', 'codeview']]
+      ['view', ['fullscreen', 'codeview']],
+      ['custom', ['customButton']]
     ],
+    popover: {
+      image: [
+        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+        ['remove', ['removeMedia']]
+      ]
+    },
     uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
     buttons: {
       customButton: customButton
