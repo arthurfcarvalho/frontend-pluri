@@ -1,0 +1,40 @@
+<app-header/>
+<div class="container">
+    <p-table
+        [value]="roles"
+        styleClass="p-datatable-striped"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 20]"
+        [tableStyle]="{'min-width': '50rem'}"
+        sortField="nome"
+        [sortOrder]="1"
+        (selectionChange)="onSelect($event)"
+    >
+        <ng-template pTemplate="caption">
+            <div>
+                Perfis
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-role>
+            <tr>
+                <td>{{ role.nome }}</td>
+                <td style="display: flex; justify-content: flex-end;">
+                    <button pButton type="button" label="Atribuir Permissões" (click)="showModalPermAssignment(role)">
+                        <span class="pi pi-user-edit"></span>
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- <p-dialog [(visible)]="showPermAssignmentDialog" [header]="getRoleDialogHeader()">
+        <app-role-assign [selectedUser]="selectedUser"/>
+    </p-dialog> -->
+</div>

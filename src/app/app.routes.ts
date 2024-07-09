@@ -8,11 +8,16 @@ import { SearchPluriComponent } from './modules/pluri/pages/search-pluri/search-
 import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-pluri.component';
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
+
 import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
 import { ListaQuestoesUsuarioComponent } from './modules/professor/pages/lista-questoes-usuario/lista-questoes-usuario.component';
 import { ListarQuestaoAEnviarComponent } from './modules/professor/pages/listar-questao-a-enviar/listar-questao-a-enviar.component';
 import { Component } from '@angular/core';
 import { ListarPluriAreasComponent } from './modules/ajuntador/pages/indicacao-docentes/pluri-area/listar-pluri-areas/listar-pluri-areas.component';
+
+import { CreateRoleComponent } from './modules/role/pages/create-role/create-role.component';
+import { SearchRolesComponent } from './modules/role/pages/search-roles/search-roles.component';
+
 
 export const routes: Routes = [
     {
@@ -82,5 +87,13 @@ export const routes: Routes = [
     {
         path: "listar-pluri-areas",
         component: ListarPluriAreasComponent
+        path: "criar-perfil",
+        component: CreateRoleComponent,
+        title: "Criar Perfil - Pluri"
+    },
+    {
+        path: "pesquisar-perfis",
+        component: SearchRolesComponent,
+        title: "Pesquisar Perfis - Pluri"
     }
 ];
