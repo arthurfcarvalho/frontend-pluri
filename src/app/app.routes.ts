@@ -87,6 +87,8 @@ export const routes: Routes = [
     {
         path: "listar-pluri-areas",
         component: ListarPluriAreasComponent
+    },
+    {
         path: "criar-perfil",
         component: CreateRoleComponent,
         title: "Criar Perfil - Pluri"
