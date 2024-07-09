@@ -8,6 +8,7 @@ import { UpdatePluriComponent } from './modules/pluri/pages/update-pluri/update-
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-docentes/indicacao-docentes.component';
 import { CreateRoleComponent } from './modules/role/pages/create-role/create-role.component';
+import { SearchRolesComponent } from './modules/role/pages/search-roles/search-roles.component';
 
 export const routes: Routes = [
     {
@@ -60,5 +61,10 @@ export const routes: Routes = [
         path: "criar-perfil",
         component: CreateRoleComponent,
         title: "Criar Perfil - Pluri"
+    },
+    {
+        path: "pesquisar-perfis",
+        component: SearchRolesComponent,
+        title: "Pesquisar Perfis - Pluri"
     }
 ];
