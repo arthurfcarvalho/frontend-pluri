@@ -88,8 +88,13 @@ export class HeaderComponent {
                   },
                   {
                     label: 'Perfis',
-                    visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
+                    visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
                     items: [
+                      {
+                        label: 'Criar Perfil',
+                        visible: this.userHasPermission(["CRIAR_PERFIL"]),
+                        routerLink: '/criar-perfil'
+                      },
                       {
                         label: 'Pesquisar Perfis',
                         visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
