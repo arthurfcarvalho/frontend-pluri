@@ -33,12 +33,14 @@
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss",
               "node_modules/summernote/dist/summernote-lite.min.css"
-
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery-ui-dist/jquery-ui.min.js",
               "node_modules/summernote/dist/summernote-lite.min.js",
-              "src/app/modules/professor/pages/criar-questoes/pluginPrint.js"
+              "src/app/modules/professor/pages/criar-questoes/pluginPrint.js",
+              "src/app/modules/professor/pages/dialog-questao/image-editor.js",
+              "src/app/modules/professor/pages/dialog-questao/math-editor.js"
             ]
           },
           "configurations": {

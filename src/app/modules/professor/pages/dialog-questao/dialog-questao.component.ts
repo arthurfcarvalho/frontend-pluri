@@ -47,20 +47,21 @@ export class DialogQuestionComponent {
       ['fontname', ['fontname']],
       ['color', ['color']],
       ['para', ['ul', 'ol', 'paragraph']],
-      ['insert', ['picture']],
+      ['insert', ['picture', 'math']],
       ['view', ['fullscreen', 'codeview']],
       ['custom', ['customButton']]
     ],
+    lang: 'pt-BR',
     popover: {
       image: [
         ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']]
+        ['remove', ['removeMedia']],  
+        ['custom', ['imageAttributes']],
       ]
     },
     uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
-    buttons: {
-      customButton: customButton
-    }
+    buttons: {}
+    
   };
 
   onDelete(file: any) {
