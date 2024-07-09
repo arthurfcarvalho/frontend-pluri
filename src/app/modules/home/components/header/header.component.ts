@@ -68,9 +68,6 @@ export class HeaderComponent {
                     routerLink: '/pesquisar-pluri',
                     visible: this.userHasPermission(["PESQUISAR_PLURI"])
                   },
-                  {
-                    label: 'Solicitar Questões'
-                  },
                 ]
               },
               {
