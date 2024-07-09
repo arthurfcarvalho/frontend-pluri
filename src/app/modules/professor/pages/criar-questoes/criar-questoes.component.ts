@@ -147,8 +147,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
   public configPre: SummernoteOptions = {
     airMode: false,
-    toolbar: [
-      
+    toolbar: [ 
     ],
   };
 

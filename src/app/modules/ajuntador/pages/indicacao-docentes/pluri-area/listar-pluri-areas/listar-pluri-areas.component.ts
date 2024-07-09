@@ -10,6 +10,9 @@ import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { Pluri } from '../../../../../../models/Pluri/Pluri.model';
+import { UserService } from '../../../../../../services/user.service';
+import { User } from '../../../../../../models/User.model';
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-listar-pluri-areas',
@@ -30,11 +33,27 @@ import { Pluri } from '../../../../../../models/Pluri/Pluri.model';
 export class ListarPluriAreasComponent {
 
   dataPluri: Pluri[] = [];
+  usuarioLogado: User = {
+    id: 0,
+    nome: '',
+    login: '',
+    data_nascimento: new Date,
+    email: '',
+    perfis: [],
+    senha: ''
+  }
 
-  constructor(private pluriService: PluriService) {}
+  constructor(private pluriService: PluriService, private usuarioService: UserService) {}
   
   ngOnInit() {
-    this.getPluriAreas(1, 0, 10); // Exemplo: idUsuario=1, primeira página, 10 itens por página
+    this.usuarioService.returnUserLogin().subscribe((login: any | null) => {
+        this.usuarioService.returnUserByLogin(login.sub).subscribe(
+          (user) => {
+            this.usuarioLogado = user;
+            console.log(this.usuarioLogado)
+        })
+    })
+    this.getPluriAreas(this.usuarioLogado.id,0,10)
   }
 
   getPluriAreas(idUsuario: number, page: number, size: number) {
@@ -43,12 +62,18 @@ export class ListarPluriAreasComponent {
         this.dataPluri = data.content;
         console.log(data.content)
         console.log(this.dataPluri)
-        
       },
       error => {
         console.error('Error fetching pluri areas', error);
       }
     );
+  }
+  onPageChange(event: LazyLoadEvent) {
+    const first = event.first ?? 0;
+    const rows = event.rows ?? 10;
+    const page = first / rows;
+    const size = rows;
+    this.getPluriAreas(this.usuarioLogado.id, page, size);
   }
 
 }

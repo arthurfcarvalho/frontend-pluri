@@ -83,4 +83,12 @@ export class PluriService {
       ));
   }
 
+  listagemParaIndicacao(id: number){
+    const url = this.baseUrl + `/listagem-para-indicacao/${id}`;
+    return this.httpClient.get<PluriInfoDAO>(url).pipe(map(
+      obj => obj
+    ));
+  }
+  
+
 }

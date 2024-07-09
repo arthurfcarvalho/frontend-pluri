@@ -17,30 +17,33 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
+            <th pSortableColumn="id">id<p-sortIcon field="id"/></th>
             <th pSortableColumn="codigo">Codigo<p-sortIcon field="codigo"/></th>
             <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
             <th pSortableColumn="dataInicioEnvioQuestoes">Inicio Envio<p-sortIcon field="dataInicioEnvioQuestoes"/></th>
             <th pSortableColumn="dataFimEnvioQuestoes">Final Envio<p-sortIcon field="dataFimEnvioQuestoes"/></th>
             <th pSortableColumn="quantidadeDeAreas">Quantidade Areas<p-sortIcon field="quantidadeDeAreas"/></th>
+            
             <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pluri>
         <tr>
+            <td>{{ pluri.idPluri}}</td>
             <td>{{ pluri.codigo }}</td>
             <td>{{ pluri.nome }}</td>
             <td>{{ pluri.dataInicioEnvioQuestoes }}</td>
             <td>{{ pluri.dataFimEnvioQuestoes }}</td>
             <td>{{ pluri.quantidadeDeAreas }}</td> 
             <td>
-                <button pButton type="button" label="Pedir" routerLink="/indicar-docentes/{{pluri.id}}"></button>
+              <button pButton type="button" label="Pedir" routerLink="/indicar-docentes/{{pluri.idPluri}}"></button>    
             </td>
         </tr>
         <tr>
             <td colspan="6">
             <p-accordion [multiple]="true">
               <p-accordionTab header="Áreas">
-                <p-table [value]="pluri.pluriAreas" styleClass="p-datatable-striped">
+                <p-table [value]="pluri.pluriAreas" styleClass="p-datatable-striped" [paginator]="true" [rows]="10" (onPage)="onPageChange($event)">
                   <ng-template pTemplate="header">
                     <tr>
                       <th>Nome Área</th>
@@ -56,7 +59,9 @@
                       <td>{{ area.quantidadeQuestoes }}</td>
                       <td>{{ area.quantidadeQuestoesRecebidas }}</td>
                     </tr>
+                    
                   </ng-template>
+                  
                 </p-table>
               </p-accordionTab>
               <p-accordionTab header="Professores que enviaram">                

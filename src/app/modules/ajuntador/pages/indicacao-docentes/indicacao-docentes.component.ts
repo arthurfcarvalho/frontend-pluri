@@ -1,3 +1,4 @@
+import { Pluri } from './../../../../models/Pluri/Pluri.model';
 import { ApiResponse } from './../../../../types/api-response.type';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +15,8 @@ import { User } from '../../../../models/User.model';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../../../services/user.service';
+import { SplitterModule } from 'primeng/splitter';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -26,16 +29,30 @@ import { UserService } from '../../../../services/user.service';
     ReactiveFormsModule,
     InputNumberModule,
     ButtonModule,
-    FormsModule
+    FormsModule,
+    SplitterModule,
+    PanelModule
   ],
   templateUrl: './indicacao-docentes.component.html',
   styleUrl: './indicacao-docentes.component.scss'
 })
 export class IndicacaoDocentesComponent {
 
-  pluri!: PluriInfoDAO;
+  pluriT: PluriInfoDAO = {
+    id: 0,
+    nome: '',
+    codigo: '',
+    anoAplicacao: 0,
+    areasPluri: [],
+    dataInicioPluri: new Date,
+    dataFimPluri: new Date,
+    trimestre: 0,
+    
+  };
+  pluri: any
+
   indicacaoDocentesForm: FormGroup;
-  areas!: PluriArea[];
+  pluriAreas!: any[];
   selectedTeacher!: User;
   selectedAreaId!: number;
   teacherQuestionPairs: { teacher: User; amount: number }[] = [];
@@ -43,7 +60,7 @@ export class IndicacaoDocentesComponent {
   teachers: User[] = [
     {
       id: 1,
-      nome: 'João Silva',
+      nome: 'Erro Silva',
       login: 'joaosilva',
       senha: '123456',
       data_nascimento: new Date('1980-01-01'),
@@ -59,25 +76,30 @@ export class IndicacaoDocentesComponent {
     private usuarioService: UserService
   ){
     this.indicacaoDocentesForm = new FormGroup({
-      id_pluri: new FormControl(),
-      id_usuario: new FormControl(null, Validators.required),
-      id_pluri_area: new FormControl(null, Validators.required),
-      quant_questoes_pedidas: new FormControl(null, Validators.required)
+      idUsuario: new FormControl(null, Validators.required),
+      idPluri_area: new FormControl(null, Validators.required),
+      quantQuestoesPedidas: new FormControl(null, Validators.required)
     })
   }
 
   ngOnInit(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if(id){
-      this.pluriService.getPluriGeneralInfo(id).subscribe(pluri => {
+      this.pluriService.listagemParaIndicacao(id).subscribe(pluri => {
+        console.log("Retorno", pluri)
         this.pluri = pluri
-        this.pluri.nome = pluri.nome;
-        this.pluri.codigo = pluri.codigo;
-        this.pluri.trimestre = pluri.trimestre;
-        this.areas = this.pluri.areasPluri;
+        console.log("Teste ID",this.pluri.id)
+        //this.pluri.nome = pluri.nome;
+        //this.pluri.codigo = pluri.codigo;
+        //this.pluri.trimestre = pluri.trimestre;
+        this.pluriAreas = this.pluri.areasPluri;
+        console.log(this.pluriAreas)
       })
     }
     this.usuarioService.retornaProfessores().subscribe(professores => {
+      this.teachers = professores.content
+    })
+    this.usuarioService.retornaProfessoresPorArea(this.selectedAreaId).subscribe(professores => {
       this.teachers = professores.content
     })
   }
@@ -134,10 +156,9 @@ export class IndicacaoDocentesComponent {
     console.log(amount);
     if(amount > 0) {
       this.indicacaoDocentesForm.patchValue({
-        id_pluri: this.pluri.id,
-        id_usuario: teacherId,
-        id_pluri_area: this.selectedAreaId,
-        quant_questoes_pedidas: amount
+        idUsuario: teacherId,
+        idPluriArea: this.selectedAreaId,
+        quantQuestoesPedidas: amount
       });
       this.submitIndicacaoDocentes();
     } else {

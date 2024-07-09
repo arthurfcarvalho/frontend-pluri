@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="container">
-    <ng-container *ngIf="pluri != undefined">
+    <ng-container *ngIf="pluri">
         <p-fieldset legend="Informações do Pluri">
             <p>Nome: {{ pluri.nome }}</p>
             <p>Código: {{ pluri.codigo }}</p>
@@ -10,17 +10,36 @@
         </p-fieldset>
     </ng-container>    
 
+    <p-fieldset legend="Informações das Áreas do Pluri">
+        
+        <p-splitter [style]="{ height: '300px' }" styleClass="mb-5">
+            <ng-template pTemplate>
+                <div class="splitter-container">
+                    <div class="splitter-panel" *ngFor="let item of pluriAreas">
+                        <p-panel header="Área: {{ item.nomeArea }}">
+                            <p>Id: {{ item.idPluriArea }}</p>
+                            <p>Nome: {{ item.nomeArea }}</p>
+                            <p>Quantidade de Questões: {{ item.quantidadeQuestoes }}</p>
+                            <p>Quantidade de Questões Recebidas: {{ item.quantidadeQuestoesRecebidas }}</p>
+                        </p-panel>
+                    </div>
+                </div>
+            </ng-template>
+        </p-splitter>
+    </p-fieldset>
+    
     <form [formGroup]="indicacaoDocentesForm">
         <p-fieldset legend="Indicação de Docente(s)">
             <p-dropdown
                 formControlName="idPluriArea"
-                [options]="areas"
+                [options]="pluriAreas"
                 optionLabel="nome"
                 placeholder="Selecione a área"
                 [filter]="true"
                 filterBy="nome"
                 filterPlaceholder="Nenhum resultado encontrado!"
-                tooltip='Selecione a área que pretende indicar o docente para o Pluri {{pluri.nome}}'
+                [disabled]="!pluri"
+                [tooltip]="'Selecione a área que pretende indicar o docente para o Pluri ' + (pluri ? pluri.nome : '')"
                 tooltipPosition="top"
                 (onChange)="onAreaSelect($event)"
             ></p-dropdown>
@@ -32,7 +51,8 @@
                 [filter]="true"
                 filterBy="nome"
                 filterPlaceholder="Nenhum docente encontrado!"
-                tooltip="Selecione o docente que deseja solicitar questões para o Pluri {{pluri.nome}}"
+                [disabled]="!pluri"
+                [tooltip]="'Selecione o docente que deseja solicitar questões para o Pluri ' + (pluri ? pluri.nome : '')"
                 tooltipPosition="top"
                 (onChange)="onTeacherSelect($event)"
             ></p-dropdown>

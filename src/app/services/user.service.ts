@@ -85,4 +85,11 @@ export class UserService {
       obj => obj
     ));;
   }
+  retornaProfessoresPorArea(idArea: number): Observable<any>{
+    const url = `http://localhost:8080/usuario/listar-por-area/${idArea}`
+    
+    return this.http.get<any>(url).pipe(map(
+      obj => obj
+    ));;
+  }
 }
