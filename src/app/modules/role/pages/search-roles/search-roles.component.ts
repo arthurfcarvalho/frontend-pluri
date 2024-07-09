@@ -5,6 +5,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { RoleService } from '../../../../services/role.service';
+import { PermAssignmentComponent } from '../../components/perm-assignment/perm-assignment.component';
 
 @Component({
   selector: 'app-search-roles',
@@ -13,7 +14,8 @@ import { RoleService } from '../../../../services/role.service';
     ButtonModule,
     DialogModule,
     TableModule,
-    HeaderComponent
+    HeaderComponent,
+    PermAssignmentComponent
   ],
   providers: [DialogService],
   templateUrl: './search-roles.component.html',
@@ -31,6 +33,7 @@ export class SearchRolesComponent {
   ){
     this.roleService.returnAllRoles().subscribe(roles => {
       this.roles = roles;
+      console.log(roles)
     })
   }
 
