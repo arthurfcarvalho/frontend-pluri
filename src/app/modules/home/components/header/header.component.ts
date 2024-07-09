@@ -73,7 +73,7 @@ export class HeaderComponent {
               },
               {
                 label: 'Administração',
-                visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
+                visible: this.userHasPermission(["PESQUISAR_ALUNOS", "ATRIBUIR_PERMISSAO_PERFIL"]),
                 items: [
                   {
                     label: 'Usuários',
@@ -83,6 +83,22 @@ export class HeaderComponent {
                         label: 'Pesquisar Usuários',
                         visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
                         routerLink: '/pesquisar-usuarios'
+                      }
+                    ]
+                  },
+                  {
+                    label: 'Perfis',
+                    visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
+                    items: [
+                      {
+                        label: 'Criar Perfil',
+                        visible: this.userHasPermission(["CRIAR_PERFIL"]),
+                        routerLink: '/criar-perfil'
+                      },
+                      {
+                        label: 'Pesquisar Perfis',
+                        visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
+                        routerLink: '/pesquisar-perfis'
                       }
                     ]
                   }
