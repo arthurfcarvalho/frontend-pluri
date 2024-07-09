@@ -34,7 +34,7 @@
         </ng-template>
     </p-table>
 
-    <!-- <p-dialog [(visible)]="showPermAssignmentDialog" [header]="getRoleDialogHeader()">
-        <app-role-assign [selectedUser]="selectedUser"/>
-    </p-dialog> -->
+    <p-dialog [(visible)]="showPermAssignmentDialog" [header]="getRoleDialogHeader()">
+        <app-perm-assignment [selectedRole]="selectedRole"/>
+    </p-dialog>
 </div>
