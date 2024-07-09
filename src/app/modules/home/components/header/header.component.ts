@@ -46,7 +46,9 @@ export class HeaderComponent {
       (login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe(
           (user) => {
+             
             this.user = user;
+                     
             this.menuItems = [
               {
                 label: 'Início',
@@ -66,9 +68,6 @@ export class HeaderComponent {
                     routerLink: '/pesquisar-pluri',
                     visible: this.userHasPermission(["PESQUISAR_PLURI"])
                   },
-                  {
-                    label: 'Solicitar Questões'
-                  }
                 ]
               },
               {
@@ -102,6 +101,38 @@ export class HeaderComponent {
                       }
                     ]
                   }
+                ]
+              },
+              {
+                label: 'Professor',
+                //visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+                items: [
+                  {
+                    label: 'Criar Questão',
+                    routerLink: '/criar-questao',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
+                  {
+                    label: 'Minhas Questões',
+                    routerLink: '/minhas-questoes',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
+                  {
+                    label: 'Questoes a Enviar',
+                    routerLink: '/questoes-a-enviar',
+                    visible: this.userHasPermission(["PESQUISAR_PLURI"])
+                  },
+                ]
+              },
+              {
+                label: 'Ajuntador',
+                //visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+                items: [
+                  {
+                    label: 'Indicar Docente para pluri Area',
+                    routerLink: '/listar-pluri-areas',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
                 ]
               },
             ]

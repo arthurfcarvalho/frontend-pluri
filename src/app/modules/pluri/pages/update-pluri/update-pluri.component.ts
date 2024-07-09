@@ -13,7 +13,6 @@ import { Pluri } from '../../../../models/Pluri/Pluri.model';
 import { FieldsetModule } from 'primeng/fieldset';
 import moment from 'moment';
 import { Area } from '../../../../models/Area.model';
-import { AreaQuestoesDTO } from '../../models/AreaQuestoesDTO.model';
 import { AreaService } from '../../../../services/area.service';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';

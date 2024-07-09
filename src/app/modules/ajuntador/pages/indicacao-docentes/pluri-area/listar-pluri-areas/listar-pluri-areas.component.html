@@ -1,0 +1,96 @@
+<app-header/>
+
+<p-table
+    [value]="dataPluri"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+    [tableStyle]="{'min-width': '50rem'}"
+    sortField="data_inicio_pluri"
+    [sortOrder]="1"
+>
+    <ng-template pTemplate="caption">
+        <div>
+            Pluris
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="id">id<p-sortIcon field="id"/></th>
+            <th pSortableColumn="codigo">Codigo<p-sortIcon field="codigo"/></th>
+            <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
+            <th pSortableColumn="dataInicioEnvioQuestoes">Inicio Envio<p-sortIcon field="dataInicioEnvioQuestoes"/></th>
+            <th pSortableColumn="dataFimEnvioQuestoes">Final Envio<p-sortIcon field="dataFimEnvioQuestoes"/></th>
+            <th pSortableColumn="quantidadeDeAreas">Quantidade Areas<p-sortIcon field="quantidadeDeAreas"/></th>
+            
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pluri>
+        <tr>
+            <td>{{ pluri.idPluri}}</td>
+            <td>{{ pluri.codigo }}</td>
+            <td>{{ pluri.nome }}</td>
+            <td>{{ pluri.dataInicioEnvioQuestoes }}</td>
+            <td>{{ pluri.dataFimEnvioQuestoes }}</td>
+            <td>{{ pluri.quantidadeDeAreas }}</td> 
+            <td>
+              <button pButton type="button" label="Pedir" routerLink="/indicar-docentes/{{pluri.idPluri}}"></button>    
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+            <p-accordion [multiple]="true">
+              <p-accordionTab header="Áreas">
+                <p-table [value]="pluri.pluriAreas" styleClass="p-datatable-striped" [paginator]="true" [rows]="10" (onPage)="onPageChange($event)">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Nome Área</th>
+                      <th>Área Completa</th>
+                      <th>Quantidade Necessária</th>
+                      <th>Quantidade Recebida</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-area>
+                    <tr>
+                      <td>{{ area.areaNome }}</td>
+                      <td>{{ area.areaCompleta ? 'Sim' : 'Não' }}</td>
+                      <td>{{ area.quantidadeQuestoes }}</td>
+                      <td>{{ area.quantidadeQuestoesRecebidas }}</td>
+                    </tr>
+                    
+                  </ng-template>
+                  
+                </p-table>
+              </p-accordionTab>
+              <p-accordionTab header="Professores que enviaram">                
+                <div class="card flex justify-content-center">
+                    <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+                        <p-accordionTab>
+                            <ng-template pTemplate="header">
+                                <span class="flex align-items-center gap-2 w-full">
+                                    <p-avatar 
+                                        image="data:image/jpeg;base64,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" 
+                                        shape="circle" />
+                                    <span class="font-bold white-space-nowrap">
+                                        Nome do professor
+                                    </span>
+                                    <p-badge value="3" class="ml-auto mr-2" />
+                                </span>
+                            </ng-template>
+                            <p class="m-0">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </p-accordionTab>
+            
+            
+            </p-accordion>
+          </td>
+        </tr>
+    </ng-template>
+</p-table>

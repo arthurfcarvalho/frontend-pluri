@@ -1,0 +1,43 @@
+<app-header></app-header>
+<form [formGroup]="atualizarQuestaoForm" >
+  <div class="box-questoes-sup">
+  
+    <div class="box-inputs">
+      <p-floatLabel>
+        <input type="text" pInputText formControlName="titulo"/>
+        <label for="titulo">Titulo</label>
+      </p-floatLabel>
+  
+      <p-floatLabel>
+        <input type="text" pInputText formControlName="dificuldade"/>
+        <label for="dificuldade">Dificuldade</label>
+      </p-floatLabel>
+    
+      <p-multiSelect 
+        [options]="assuntos" 
+        formControlName="codigo_assuntos"
+        optionLabel="codigo" 
+        placeholder="Selecione os assuntos"
+        />  
+    </div>
+  </div>
+  
+  <div class="box-questoes">
+      <button pButton (click)="openDialog('corpo')">Editar Corpo</button>
+        
+        <button  pButton (click)="openDialog('alternativa1')">Editar Alternativa 1</button>
+        
+        <button  pButton (click)="openDialog('alternativa2')">Editar Alternativa 2</button>
+            
+        <button  pButton (click)="openDialog('alternativa3')">Editar Alternativa 3</button>
+
+        <button  pButton (click)="openDialog('alternativa4')">Editar Alternativa 4</button>
+        
+  </div>
+
+  <button pButton class="btn-enviar" (click)="submitAtualizarQuestao()">enviar</button>
+</form>
+
+<h3>Pré-visualização do PDF</h3>
+<div class="summernote-alternativa" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview" ></div>
+<button pButton class="btn-enviar" (click)="saveContent()">Salvar em PDF</button>

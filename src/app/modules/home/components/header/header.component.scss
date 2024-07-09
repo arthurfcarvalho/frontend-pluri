@@ -44,4 +44,10 @@ header {
             padding: 10px 20px;
         }
     }
+
+    @media (max-width: 650px) {
+        img {
+            display: none;
+        }
+    }
 }

@@ -1,0 +1,113 @@
+.box-inputs {
+    display: flex;
+        p-floatLabel { 
+            margin-right: 2em;
+        }       
+}
+.box-questoes-sup {  
+    margin: 3em;
+}
+
+.box-questoes{
+    display: flex;
+    margin: 3em;
+    button {
+        margin-right: 1em;
+    }
+}
+.summernote-preview {
+    width: 50%;
+    margin-top: 2em;
+}
+.box-meio {
+    margin-left: 3em;
+}
+.btn-enviar {
+    margin-left: 3em;
+}
+.custom-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+.custom-spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    background: rgba(255, 255, 255, 0.7); 
+  }
+  
+@media (max-width: 650px) {
+    .box-inputs {
+        align-items: start;
+        flex-direction: column;
+    }
+    .box-inputs p-floatLabel, .box-inputs p-multiSelect, input {
+        margin: 1em;
+        flex: none;
+        width: calc(100% - 2em); 
+        
+            
+    }
+
+
+    .box-questoes {
+        align-items: center;
+        flex-direction: column;
+    }
+    .box-questoes{
+        align-items: center;
+        flex-direction: column;
+    }
+    .box-questoes button {
+        text-align: center;
+        margin-bottom: 1em;
+        width: 15em;
+    }
+
+    .summernote-preview {
+        width: 100%; 
+        margin-top: 1em;
+    }
+
+    .box-meio {
+        margin-left: 0; 
+    }
+
+    .btn-enviar {
+        margin-left: 0.5;
+        width: 70%; 
+        text-align: center;
+    }
+}
+.red-border {
+    border: 1px solid red;
+  }
+  
+  .message-label {
+    color: red;
+    margin-top: 5px;
+    display: block;
+  }
+  
+iframe {
+    border: none;
+    width: 85%;
+    height: 90em; 
+}
+.box-preview {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

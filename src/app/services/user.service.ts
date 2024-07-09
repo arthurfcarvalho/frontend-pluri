@@ -1,3 +1,4 @@
+import { ApiResponse } from './../types/api-response.type';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { SignupUser } from '../modules/auth/models/SignupUser.model';
@@ -6,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { TokenService } from './token.service';
 import { User } from '../models/User.model';
 import { Role } from '../models/Role.model';
-import { ApiResponse } from '../types/api-response.type';
+import { ApiResponsePageable } from '../types/api-response-pageable.type';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,10 @@ export class UserService {
   returnUserByLogin(login: string){
     const url = `http://localhost:8080/usuario/listar-usuario/${login}`;
     return this.http.get<User>(url);
+  }
+  returnUserId(login: string){
+    const url = `http://localhost:8080/usuario/retornaId/${login}`;
+    return this.http.get<number>(url);
   }
 
   saveToken(token: string){ 
@@ -72,5 +77,19 @@ export class UserService {
   signup(user: SignupUser): Observable<ApiResponse>{
     const url = 'http://localhost:8080/usuario/registrar';
     return this.http.post<ApiResponse>(url, user);
+  }
+  retornaProfessores(): Observable<ApiResponsePageable>{
+    const url = 'http://localhost:8080/usuario/listar-usuarios-professor'
+    
+    return this.http.get<ApiResponsePageable>(url).pipe(map(
+      obj => obj
+    ));;
+  }
+  retornaProfessoresPorArea(idArea: number): Observable<any>{
+    const url = `http://localhost:8080/usuario/listar-por-area/${idArea}`
+    
+    return this.http.get<any>(url).pipe(map(
+      obj => obj
+    ));;
   }
 }

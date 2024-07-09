@@ -1,0 +1,41 @@
+.box-inputs {
+    display: flex;
+    margin: 3em;
+        p-floatLabel { 
+            margin-right: 2em;
+        }       
+}
+
+.box-questoes{
+    display: flex;
+    margin: 3em;
+    button {
+        margin-right: 1em;
+    }
+}
+.btn-enviar {
+    margin-left: 3em;
+}
+@media (max-width: 650px) {
+    .box-inputs{
+        align-items: start;
+        flex-direction: column;
+        
+        p-floatLabel {
+            margin: 1em;
+        }
+        p-multiSelect {
+            margin: 1em;
+        }
+    }
+    .box-questoes{
+        align-items: center;
+        flex-direction: column;
+        button{
+            text-align: center;
+            margin-bottom: 1em;
+            width: 45%;
+        }
+        
+    }
+}
