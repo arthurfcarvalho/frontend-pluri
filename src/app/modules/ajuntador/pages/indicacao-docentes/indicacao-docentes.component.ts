@@ -1,5 +1,4 @@
-import { Pluri } from './../../../../models/Pluri/Pluri.model';
-import { ApiResponse } from './../../../../types/api-response.type';
+import { DadosDetalhamentoAreaPluri } from './../../models/DadosDetalhamentoInformacoesGerais.mode';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PluriService } from '../../../../services/pluri.service';
@@ -9,14 +8,13 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
-import { PluriArea } from '../../../../models/Pluri/PluriArea.model';
-import { PluriInfoDAO } from '../../../../models/Pluri/PluriInfoDAO.model';
 import { User } from '../../../../models/User.model';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../../../services/user.service';
 import { SplitterModule } from 'primeng/splitter';
 import { PanelModule } from 'primeng/panel';
+import { DadosDetalhamentoInformacoesGerais } from '../../models/DadosDetalhamentoInformacoesGerais.mode';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -38,24 +36,23 @@ import { PanelModule } from 'primeng/panel';
 })
 export class IndicacaoDocentesComponent {
 
-  pluriT: PluriInfoDAO = {
-    id: 0,
-    nome: '',
-    codigo: '',
-    anoAplicacao: 0,
-    areasPluri: [],
-    dataInicioPluri: new Date,
-    dataFimPluri: new Date,
-    trimestre: 0,
-    
-  };
-  pluri: any
-
   indicacaoDocentesForm: FormGroup;
-  pluriAreas!: any[];
   selectedTeacher!: User;
   selectedAreaId!: number;
   teacherQuestionPairs: { teacher: User; amount: number }[] = [];
+
+  pluri: DadosDetalhamentoInformacoesGerais = {
+    id: 1,
+    nome: 'Pluri Example',
+    codigo: '001',
+    trimestre: 1,
+    anoAplicacao: 2024,
+    dataInicioPluri: new Date('2024-01-01'),
+    dataFimPluri: new Date('2024-12-31'),
+    areasPluri: new Set<DadosDetalhamentoAreaPluri>([]),
+  }
+  pluriAreas: DadosDetalhamentoAreaPluri[] = []
+    
 
   teachers: User[] = [
     {
@@ -77,7 +74,7 @@ export class IndicacaoDocentesComponent {
   ){
     this.indicacaoDocentesForm = new FormGroup({
       idUsuario: new FormControl(null, Validators.required),
-      idPluri_area: new FormControl(null, Validators.required),
+      idPluriArea: new FormControl(null, Validators.required),
       quantQuestoesPedidas: new FormControl(null, Validators.required)
     })
   }
@@ -86,26 +83,21 @@ export class IndicacaoDocentesComponent {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if(id){
       this.pluriService.listagemParaIndicacao(id).subscribe(pluri => {
-        console.log("Retorno", pluri)
         this.pluri = pluri
-        console.log("Teste ID",this.pluri.id)
-        //this.pluri.nome = pluri.nome;
-        //this.pluri.codigo = pluri.codigo;
-        //this.pluri.trimestre = pluri.trimestre;
-        this.pluriAreas = this.pluri.areasPluri;
+        this.pluriAreas =  Array.from(pluri.areasPluri);
         console.log(this.pluriAreas)
       })
     }
     this.usuarioService.retornaProfessores().subscribe(professores => {
       this.teachers = professores.content
     })
-    this.usuarioService.retornaProfessoresPorArea(this.selectedAreaId).subscribe(professores => {
+    /*this.usuarioService.retornaProfessoresPorArea(this.selectedAreaId).subscribe(professores => {
       this.teachers = professores.content
-    })
+    })*/
   }
 
   onAreaSelect(event: any){
-    this.selectedAreaId = event.value.id_pluri_area;
+    this.selectedAreaId = event.value.idPluriArea;
   }
 
   onTeacherSelect(event: any) {
@@ -165,7 +157,6 @@ export class IndicacaoDocentesComponent {
       this.toastService.error("Selecione uma quantidade válida de questões!");
     }
   }
-
   submitIndicacaoDocentes(){
     this.pluriService.submitIndicacaoDocentes(this.indicacaoDocentesForm.value).subscribe({
       next: (value) => {
@@ -176,5 +167,4 @@ export class IndicacaoDocentesComponent {
       },
     });
   }
-  
 }

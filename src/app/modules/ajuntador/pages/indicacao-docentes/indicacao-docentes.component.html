@@ -17,7 +17,8 @@
                 <div class="splitter-container">
                     <div class="splitter-panel" *ngFor="let item of pluriAreas">
                         <p-panel header="Área: {{ item.nomeArea }}">
-                            <p>Id: {{ item.idPluriArea }}</p>
+                            <p>Id Pluri Area: {{ item.idPluriArea }}</p>
+                            <p>Id Area: {{ item.idArea }}</p>
                             <p>Nome: {{ item.nomeArea }}</p>
                             <p>Quantidade de Questões: {{ item.quantidadeQuestoes }}</p>
                             <p>Quantidade de Questões Recebidas: {{ item.quantidadeQuestoesRecebidas }}</p>
@@ -33,7 +34,7 @@
             <p-dropdown
                 formControlName="idPluriArea"
                 [options]="pluriAreas"
-                optionLabel="nome"
+                optionLabel="nomeArea"
                 placeholder="Selecione a área"
                 [filter]="true"
                 filterBy="nome"

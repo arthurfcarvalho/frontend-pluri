@@ -9,6 +9,7 @@ import { ApiResponsePageable } from '../types/api-response-pageable.type';
 import { indicacaoDocentesDAO } from '../modules/ajuntador/models/IndicacaoDocentesDAO.model';
 import { PluriInfoDAO } from '../models/Pluri/PluriInfoDAO.model';
 import { PluriArea } from '../models/Pluri/PluriArea.model';
+import { DadosDetalhamentoInformacoesGerais } from '../modules/ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +86,7 @@ export class PluriService {
 
   listagemParaIndicacao(id: number){
     const url = this.baseUrl + `/listagem-para-indicacao/${id}`;
-    return this.httpClient.get<PluriInfoDAO>(url).pipe(map(
+    return this.httpClient.get<DadosDetalhamentoInformacoesGerais>(url).pipe(map(
       obj => obj
     ));
   }
