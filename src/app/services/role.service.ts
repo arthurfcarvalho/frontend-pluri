@@ -25,7 +25,7 @@ export class RoleService {
     )
   }
 
-  saveRoles(id: number, perms: Permission[]){
+  saveRoles(id: number, perms: any){
     const url = this.baseUrl + 'dar-permissoes';
     const data = {id: id, permissoes: perms};
     return this.httpClient.put(url, data).pipe(
