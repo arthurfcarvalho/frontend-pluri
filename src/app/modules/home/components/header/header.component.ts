@@ -5,6 +5,7 @@ import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/User.model';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 
 
 
@@ -37,7 +38,7 @@ export class HeaderComponent {
   menuItems!: MenuItem[];
   user: any;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit(){
@@ -158,6 +159,11 @@ export class HeaderComponent {
     return this.user.dadosPerfil.some((perfil: any) => {
       return perfil.permissoes && perfil.permissoes.some((perm: any) => requiredPermissions.includes(perm.codigo));
     })
+  }
+
+  logout(){
+    this.userService.logout();
+    this.router.navigate(['/login']);
   }
   
 }
