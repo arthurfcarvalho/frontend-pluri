@@ -64,7 +64,10 @@ export class PermAssignmentComponent implements OnChanges{
   }
 
   savePerms() {
-    this.roleService.saveRoles(this.selectedRole.id, this.selectedPerms).subscribe({
+
+    const codes = this.selectedPerms.map(perm => perm.codigo);
+
+    this.roleService.saveRoles(this.selectedRole.id, codes).subscribe({
       next: () => {
         this.toastService.success("Permissões atualizadas com sucesso!");
       },

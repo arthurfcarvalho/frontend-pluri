@@ -33,7 +33,6 @@ export class SearchRolesComponent {
   ){
     this.roleService.returnAllRoles().subscribe(roles => {
       this.roles = roles;
-      console.log(roles)
     })
   }
 
