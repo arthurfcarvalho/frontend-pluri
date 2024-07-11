@@ -151,8 +151,6 @@ export class HeaderComponent {
     if(menubar){
       menubar.style.borderRadius = '0';
     }
-
-    console.log(this.menuItems);
   }
 
   userHasPermission(requiredPermissions: string[]): boolean {
