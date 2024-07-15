@@ -20,6 +20,7 @@ import { SearchRolesComponent } from './modules/role/pages/search-roles/search-r
 import { authGuard } from './guards/auth.guard';
 import { permGuard } from './guards/perm.guard';
 import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
+import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 
 
 export const routes: Routes = [
@@ -32,12 +33,14 @@ export const routes: Routes = [
     {
         path: "login",
         component: LoginComponent,
-        title: "Login - Pluri"
+        title: "Login - Pluri",
+        canActivate: [redirectIfAuthenticatedGuard]
     },
     {
         path: "cadastrar",
         component: SignupComponent,
-        title: "Cadastrar - Pluri"
+        title: "Cadastrar - Pluri",
+        canActivate: [redirectIfAuthenticatedGuard]
     },
     {
         path: "home",
