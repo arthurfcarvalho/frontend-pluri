@@ -18,6 +18,7 @@ import { ListarPluriAreasComponent } from './modules/ajuntador/pages/indicacao-d
 import { CreateRoleComponent } from './modules/role/pages/create-role/create-role.component';
 import { SearchRolesComponent } from './modules/role/pages/search-roles/search-roles.component';
 import { authGuard } from './guards/auth.guard';
+import { permGuard } from './guards/perm.guard';
 
 
 export const routes: Routes = [
@@ -46,7 +47,12 @@ export const routes: Routes = [
     {
         path: "criar-pluri",
         component: CreatePluriComponent,
-        title: "Criar Pluri - Pluri"
+        title: "Criar Pluri - Pluri",
+        canActivate: [authGuard, permGuard],
+        data:
+        {
+            perms: ['CRIAR_PLURI']
+        }
     },
     {
         path: "pesquisar-pluri",
