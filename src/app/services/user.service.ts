@@ -1,6 +1,6 @@
 import { ApiResponse } from './../types/api-response.type';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { SignupUser } from '../modules/auth/models/SignupUser.model';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
@@ -78,6 +78,7 @@ export class UserService {
     const url = 'http://localhost:8080/usuario/registrar';
     return this.http.post<ApiResponse>(url, user);
   }
+
   retornaProfessores(): Observable<ApiResponsePageable>{
     const url = 'http://localhost:8080/usuario/listar-usuarios-professor'
     
@@ -85,6 +86,7 @@ export class UserService {
       obj => obj
     ));;
   }
+
   retornaProfessoresPorArea(idArea: number): Observable<any>{
     const url = `http://localhost:8080/usuario/listar-por-area/${idArea}`
     
@@ -92,4 +94,27 @@ export class UserService {
       obj => obj
     ));;
   }
+
+  hasPermission(requiredPermissions: string[]): Observable<boolean> {
+    const result = new Subject<boolean>();
+
+    this.returnUserLogin().subscribe((login: any) => {
+      this.returnUserByLogin(login.sub).subscribe((user: any) => {
+        const hasPermission = user.dadosPerfil.some((perfil: any) => {
+          return perfil.permissoes && perfil.permissoes.some((perm: any) => requiredPermissions.includes(perm.codigo));
+        });
+        result.next(hasPermission);
+        result.complete();
+      }, error => {
+        result.next(false);
+        result.complete();
+      });
+    }, error => {
+      result.next(false);
+      result.complete();
+    });
+
+    return result.asObservable();
+  }
+
 }

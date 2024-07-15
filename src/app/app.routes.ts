@@ -12,11 +12,15 @@ import { IndicacaoDocentesComponent } from './modules/ajuntador/pages/indicacao-
 import { CreateQuestionsComponent} from './modules/professor/pages/criar-questoes/criar-questoes.component';
 import { ListaQuestoesUsuarioComponent } from './modules/professor/pages/lista-questoes-usuario/lista-questoes-usuario.component';
 import { ListarQuestaoAEnviarComponent } from './modules/professor/pages/listar-questao-a-enviar/listar-questao-a-enviar.component';
-import { Component } from '@angular/core';
+
 import { ListarPluriAreasComponent } from './modules/ajuntador/pages/indicacao-docentes/pluri-area/listar-pluri-areas/listar-pluri-areas.component';
 
 import { CreateRoleComponent } from './modules/role/pages/create-role/create-role.component';
 import { SearchRolesComponent } from './modules/role/pages/search-roles/search-roles.component';
+import { authGuard } from './guards/auth.guard';
+import { permGuard } from './guards/perm.guard';
+import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
+import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 
 
 export const routes: Routes = [
@@ -29,22 +33,30 @@ export const routes: Routes = [
     {
         path: "login",
         component: LoginComponent,
-        title: "Login - Pluri"
+        title: "Login - Pluri",
+        canActivate: [redirectIfAuthenticatedGuard]
     },
     {
         path: "cadastrar",
         component: SignupComponent,
-        title: "Cadastrar - Pluri"
+        title: "Cadastrar - Pluri",
+        canActivate: [redirectIfAuthenticatedGuard]
     },
     {
         path: "home",
         component: HomeComponent,
-        title: "Pluri"
+        title: "Pluri",
+        canActivate: [authGuard]
     },
     {
         path: "criar-pluri",
         component: CreatePluriComponent,
-        title: "Criar Pluri - Pluri"
+        title: "Criar Pluri - Pluri",
+        canActivate: [authGuard, permGuard],
+        data:
+        {
+            perms: ['CRIAR_PLURI']
+        }
     },
     {
         path: "pesquisar-pluri",
@@ -97,5 +109,10 @@ export const routes: Routes = [
         path: "pesquisar-perfis",
         component: SearchRolesComponent,
         title: "Pesquisar Perfis - Pluri"
+    },
+    {
+        path: "acesso-negado",
+        component: DeniedAcessComponent,
+        title: "Acesso Negado - Pluri"
     }
 ];
