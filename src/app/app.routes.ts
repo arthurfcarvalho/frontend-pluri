@@ -19,6 +19,7 @@ import { CreateRoleComponent } from './modules/role/pages/create-role/create-rol
 import { SearchRolesComponent } from './modules/role/pages/search-roles/search-roles.component';
 import { authGuard } from './guards/auth.guard';
 import { permGuard } from './guards/perm.guard';
+import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
 
 
 export const routes: Routes = [
@@ -105,5 +106,10 @@ export const routes: Routes = [
         path: "pesquisar-perfis",
         component: SearchRolesComponent,
         title: "Pesquisar Perfis - Pluri"
+    },
+    {
+        path: "acesso-negado",
+        component: DeniedAcessComponent,
+        title: "Acesso Negado - Pluri"
     }
 ];
