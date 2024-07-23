@@ -18,4 +18,9 @@ export class AreaService {
       obj => obj
     ));
   }
+
+  createArea(data: any) {
+    const url = this.baseUrl + 'criar-area';
+    return this.httpClient.post(url, data);
+  } 
 }

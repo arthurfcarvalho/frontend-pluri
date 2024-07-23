@@ -101,6 +101,22 @@ export class HeaderComponent {
                         routerLink: '/pesquisar-perfis'
                       }
                     ]
+                  },
+                  {
+                    label: 'Áreas',
+                    //visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
+                    items: [
+                      {
+                        label: 'Criar Área',
+                        //visible: this.userHasPermission(["CRIAR_PERFIL"]),
+                        routerLink: '/criar-area'
+                      },
+                      {
+                        label: 'Pesquisar Áreas',
+                        //visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
+                        routerLink: '/pesquisar-areas'
+                      }
+                    ]
                   }
                 ]
               },

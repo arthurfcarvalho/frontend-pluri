@@ -21,6 +21,8 @@ import { authGuard } from './guards/auth.guard';
 import { permGuard } from './guards/perm.guard';
 import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
 import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
+import { SearchAreasComponent } from './modules/area/search-areas/search-areas.component';
+import { CreateAreaComponent } from './modules/area/create-area/create-area.component';
 
 
 export const routes: Routes = [
@@ -114,5 +116,15 @@ export const routes: Routes = [
         path: "acesso-negado",
         component: DeniedAcessComponent,
         title: "Acesso Negado - Pluri"
+    },
+    {
+        path: "pesquisar-areas",
+        component: SearchAreasComponent,
+        title: "Pesquisar Áreas - Pluri"
+    },
+    {
+        path: "criar-area",
+        component: CreateAreaComponent,
+        title: "Criar Área - Pluri"
     }
 ];
