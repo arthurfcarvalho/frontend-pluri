@@ -1,0 +1,31 @@
+<app-header/>
+<div class="container">
+    <p-table
+        [value]="areas"
+        styleClass="p-datatable-striped"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 20]"
+        [tableStyle]="{'min-width': '50rem'}"
+        sortField="nome"
+        [sortOrder]="1"
+    >
+        <ng-template pTemplate="caption">
+            <div>
+                Áreas
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
+                <th pSortableColumn="codigo">Código<p-sortIcon field="codigo"/></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-area>
+            <tr>
+                <td>{{ area.nome }}</td>
+                <td>{{ area.codigo }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
