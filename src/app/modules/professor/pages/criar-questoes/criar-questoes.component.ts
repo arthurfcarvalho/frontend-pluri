@@ -64,54 +64,59 @@ interface DynamicFields {
 })
 export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
-
   content = "Digite";
-  titulo =  'Digite o titulo';
+  titulo = 'Digite o titulo';
   corpo = " ";
   alternativa1 = " ";
   alternativa2 = " ";
   alternativa3 = " ";
   alternativa4 = " ";
-  carregamento: boolean = false
-
+  dificuldades = ['Fácil', 'Médio', 'Difícil'];
+  carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
-
   previewContent = '';
   assuntos!: Assunto[];
   areas!: Area[];
   criarQuestaoForm: FormGroup;
   areaSelecionada!: number;
-  desabilitado = true
-  passou = false
+  desabilitado = true;
+  passou = false;
+  showPreview = false;
 
-
-  ngOnInit(): void {
-    this.updatePreview();
-  }
-  
-  constructor(private relatioriosService: RelatoriosService,private http: HttpClient,private areaService: AreaService, private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
-    private router: Router) {
-
-    this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
-      this.assuntos = assuntosRecebidos.content;
-    })
-    this.areaService.returnAllAreas().subscribe(areaRecebidas => {
-      console.log(areaRecebidas.content)
-      this.areas = areaRecebidas.content;
-      console.log("areas", this.areas)
-    })
-
+  constructor(
+    private relatioriosService: RelatoriosService,
+    private http: HttpClient,
+    private areaService: AreaService,
+    private assuntoService: AssuntoService,
+    private questaoService: QuestionService,
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
+    private toastService: ToastrService,
+    private router: Router
+  ) {
     this.criarQuestaoForm = this.fb.group({
-      titulo: new FormControl(''),
+      titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
-      alternativa1: [''],
+      alternativa1: new FormControl('', Validators.required),
       alternativa2: new FormControl('', Validators.required),
       alternativa3: new FormControl('', Validators.required),
       alternativa4: new FormControl('', Validators.required),
-      codigo_assuntos: [ []
-        ],
+      codigo_assuntos: [[]],
       id_area: ['']
     });
+
+    this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
+      this.assuntos = assuntosRecebidos.content;
+    });
+
+    this.areaService.returnAllAreas().subscribe(areaRecebidas => {
+      this.areas = areaRecebidas.content;
+    });
+  }
+
+  ngOnInit(): void {
+    this.updatePreview();
   }
 
   get f() {
@@ -123,23 +128,17 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     console.log(formData);
   }
 
-  submitCriarQuestao(){
-
+  submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any) => assunto.codigo);
+    formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
-    console.log(formValue)
-  
-    
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any ) => assunto.codigo)
-    
-    formValue.codigo_assuntos = assuntosCodigosSelecionados
-  
-    this.questaoService.createQuestion(this.criarQuestaoForm.value).subscribe({ 
+    this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
         this.toastService.success("Questao criada com sucesso!");
         this.router.navigate(['/', value]);
       },
-      error: (e) => {
+      error: () => {
         this.toastService.error("Erro ao criar o Questão!");
       }
     });
@@ -147,8 +146,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
 
   public configPre: SummernoteOptions = {
     airMode: false,
-    toolbar: [ 
-    ],
+    toolbar: [],
   };
 
   updatePreview() {
@@ -168,10 +166,6 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     `;
   }
 
-  htmlContentSend(texto: string) {
-    console.log(texto);
-  }
-
   openDialog(field: keyof DynamicFields): void {
     const dialogRef = this.dialog.open(DialogQuestionComponent, {
       width: '60%',
@@ -181,36 +175,16 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this[field] = result.content;
-        this.criarQuestaoForm.controls[field].setValue(result.content);
+        this.criarQuestaoForm.controls[field]?.setValue(result.content);
         this.updatePreview();
       }
     });
   }
 
-  /*previewQuestaoNoModelo(){
-    this.carregamento = true
-    const formValue = this.criarQuestaoForm.value;
-
-    console.log(formValue)
-  
-    
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any ) => assunto.codigo)
-    
-    formValue.codigo_assuntos = assuntosCodigosSelecionados
-
-    this.relatioriosService.previewQuestao(formValue).subscribe((pdfBlob: Blob)=>{
-      
-      const blobUrl = window.URL.createObjectURL(pdfBlob);
-      window.open(blobUrl);
-      this.carregamento = false
-    }, error =>{
-      this.carregamento = false
-    })
-  }*/
   previewQuestaoNoModelo() {
+    this.showPreview = true;
     this.carregamento = true;
     const formValue = this.criarQuestaoForm.value;
-
     const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any) => assunto.codigo);
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
@@ -218,46 +192,34 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
       const blobUrl = window.URL.createObjectURL(pdfBlob);
       this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
       this.carregamento = false;
-    }, error => {
+    }, () => {
       this.carregamento = false;
     });
   }
 
-  mostrarAlerta(){
-      if (this.desabilitado) {
-    alert('O editor está desativado');
-  }
-    alert("Clique nos botoes para criar")
-  }
-  mouseEntrou(){
+  mouseEntrou() {
     this.passou = true;
   }
+
   mouseSaiu() {
     this.passou = false;
   }
 
   saveContent() {
     const content = this.previewContent;
-
-    console.log(content);
-
     const tempElement = document.createElement('div');
     tempElement.innerHTML = content;
-
     document.body.appendChild(tempElement);
 
-    
     html2canvas(tempElement).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
-
       const doc = new jsPDF('p', 'mm', 'a4');
-
       const imgProps = doc.getImageProperties(imgData);
       const pdfWidth = doc.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
       doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      doc.save('conteudo.pdf');document.body.removeChild(tempElement);
+      doc.save('conteudo.pdf');
+      document.body.removeChild(tempElement);
     });
-    
   }
 }
