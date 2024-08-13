@@ -1,5 +1,5 @@
 import { NgxSummernoteModule } from 'ngx-summernote';
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import {DialogModule} from 'primeng/dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
 declare var $: any;
 
 
@@ -32,12 +34,15 @@ function customButton(context: any) {
     DialogModule,
     ButtonModule,
     CardModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
+    CheckboxModule
   ],
   templateUrl: './dialog-questao.component.html',
   styleUrl: './dialog-questao.component.scss'
 })
 export class DialogQuestionComponent {
+  @Output() saveEvent = new EventEmitter<any>();
 
   public config: SummernoteOptions = {
     airMode: false,
@@ -70,16 +75,18 @@ export class DialogQuestionComponent {
   
   constructor(
     public dialogRef: MatDialogRef<DialogQuestionComponent>,private http: HttpClient,
-    @Inject(MAT_DIALOG_DATA) public data: { content: string }
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   onSave(): void {
+    this.saveEvent.emit(this.data);
     this.dialogRef.close(this.data);
   }
 
   onCancel(): void {
     this.dialogRef.close();
   }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

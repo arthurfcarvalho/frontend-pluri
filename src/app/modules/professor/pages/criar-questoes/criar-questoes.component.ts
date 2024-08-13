@@ -10,6 +10,7 @@ import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { MatDialog } from '@angular/material/dialog';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogQuestionComponent } from '../dialog-questao/dialog-questao.component';
@@ -36,10 +37,10 @@ import { CommonModule } from '@angular/common';
 interface DynamicFields {
   titulo: string,
   corpo: string;
-  alternativa1: string;
-  alternativa2: string;
-  alternativa3: string;
-  alternativa4: string;
+  alternativa1: any;
+  alternativa2: any;
+  alternativa3: any;
+  alternativa4: any;
 }
 
 @Component({
@@ -57,20 +58,20 @@ interface DynamicFields {
     MultiSelectModule,
     ListboxModule,
     ProgressSpinnerModule,
-    CommonModule,
+    CommonModule
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
 })
-export class CreateQuestionsComponent implements OnInit, DynamicFields {
+export class CreateQuestionsComponent implements OnInit {
 
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1 = " ";
-  alternativa2 = " ";
-  alternativa3 = " ";
-  alternativa4 = " ";
+  alternativa1 = { texto: '', correta: false };
+  alternativa2 = { texto: '', correta: false };
+  alternativa3 = { texto: '', correta: false };
+  alternativa4 = { texto: '', correta: false };
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
@@ -98,10 +99,23 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     this.criarQuestaoForm = this.fb.group({
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
-      alternativa1: new FormControl('', Validators.required),
-      alternativa2: new FormControl('', Validators.required),
-      alternativa3: new FormControl('', Validators.required),
-      alternativa4: new FormControl('', Validators.required),
+      dificuldade: new FormControl('', Validators.required),
+      alternativa1: this.fb.group({
+        texto: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      alternativa2: this.fb.group({
+        texto: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      alternativa3: this.fb.group({
+        texto: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      alternativa4: this.fb.group({
+        texto: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
       codigo_assuntos: [[]],
       id_area: ['']
     });
@@ -139,7 +153,7 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
         this.router.navigate(['/', value]);
       },
       error: () => {
-        this.toastService.error("Erro ao criar o Questão!");
+        this.toastService.error("Erro ao criar a questão!");
       }
     });
   }
@@ -158,10 +172,10 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
     return `
       <div>
         <div>${corpo || this.corpo}</div><br>
-        <p><strong>1)</strong> ${alternativa1 || this.alternativa1}</p>
-        <p><strong>2)</strong> ${alternativa2 || this.alternativa2}</p>
-        <p><strong>3)</strong> ${alternativa3 || this.alternativa3}</p>
-        <p><strong>4)</strong> ${alternativa4 || this.alternativa4}</p>
+        <p><strong>1)</strong> ${alternativa1.texto || this.alternativa1.texto}</p>
+        <p><strong>2)</strong> ${alternativa2.texto || this.alternativa2.texto}</p>
+        <p><strong>3)</strong> ${alternativa3.texto || this.alternativa3.texto}</p>
+        <p><strong>4)</strong> ${alternativa4.texto || this.alternativa4.texto}</p>
       </div>
     `;
   }
@@ -169,16 +183,23 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
   openDialog(field: keyof DynamicFields): void {
     const dialogRef = this.dialog.open(DialogQuestionComponent, {
       width: '60%',
-      data: { content: this[field] }
+      data: { content: this.criarQuestaoForm.get(field)?.value }
+    });
+
+    dialogRef.componentInstance.saveEvent.subscribe((result: any) => {
+      console.log(result)
+      this.criarQuestaoForm.get(field)?.setValue(result.content);
+      this.updatePreview();
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this[field] = result.content;
-        this.criarQuestaoForm.controls[field]?.setValue(result.content);
+        this.criarQuestaoForm.get(field)?.setValue(result.content);
+        console.log(this.criarQuestaoForm.get(field)?.value);
         this.updatePreview();
       }
     });
+
   }
 
   previewQuestaoNoModelo() {
@@ -221,5 +242,31 @@ export class CreateQuestionsComponent implements OnInit, DynamicFields {
       doc.save('conteudo.pdf');
       document.body.removeChild(tempElement);
     });
+  }
+
+  onCheckboxChange(event: MatCheckboxChange, index: number) {
+    const alternativas = [
+      this.criarQuestaoForm.get('alternativa1'),
+      this.criarQuestaoForm.get('alternativa2'),
+      this.criarQuestaoForm.get('alternativa3'),
+      this.criarQuestaoForm.get('alternativa4')
+    ];
+  
+    if (event.checked) {
+      const alreadyCorrectIndex = alternativas.findIndex(alt => alt?.get('correta')?.value);
+      if (alreadyCorrectIndex !== -1 && alreadyCorrectIndex !== index) {
+        const userConfirmed = window.confirm('Já existe uma alternativa correta. Deseja alterar?');
+        if (userConfirmed) {
+          alternativas[alreadyCorrectIndex]?.get('correta')?.setValue(false);
+          alternativas[index]?.get('correta')?.setValue(true);
+        } else {
+          alternativas[index]?.get('correta')?.setValue(false);
+        }
+      } else {
+        alternativas[index]?.get('correta')?.setValue(true);
+      }
+    } else {
+      alternativas[index]?.get('correta')?.setValue(false);
+    }
   }
 }

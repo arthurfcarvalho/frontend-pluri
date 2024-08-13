@@ -1,9 +1,15 @@
 <p-card>
   <div class="box-summernote">
-    <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="data.content" [(summernoteModel)]="data.content"></div>
+    <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="data.texto" [(summernoteModel)]="data.texto"></div>
   </div>
   <div class="dialog-actions">
-    <button pButton (click)="onCancel()">Cancelar</button>
-    <button pButton (click)="onSave()">Salvar</button>
+    <div class="dialog-checkbox">
+      <label for="correta">Alternativa Correta?</label>
+      <p-checkbox [(ngModel)]="data.correta" binary="true" inputId="correta"></p-checkbox>
+    </div>
+    <div class="dialog-buttons">
+      <button pButton (click)="onCancel()">Cancelar</button>
+      <button pButton (click)="onSave()">Salvar</button>
+    </div>
   </div>
 </p-card>

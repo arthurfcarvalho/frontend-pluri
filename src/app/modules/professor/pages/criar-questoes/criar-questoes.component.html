@@ -12,9 +12,12 @@
       </div>
       <div class="input-container">
         <p-floatLabel>
-          <input type="text" pInputText formControlName="dificuldade" id="dificuldade" />
-          <label for="dificuldade">Dificuldade</label>
-        </p-floatLabel>
+          <p-dropdown
+              [options]="dificuldades"
+              formControlName="dificuldade"
+              inputId="dificuldade" />
+          <label class="label-dificuldade" for="dificuldade">Dificuldade</label>
+      </p-floatLabel>
       </div>
       <div class="input-container">
           <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
@@ -47,11 +50,14 @@
   <div *ngIf="pdfUrl" class="box-preview">
     <iframe [src]="pdfUrl"></iframe>
   </div>
-  <br>
+  <div class="preview-container">
+    <div class="preview-content" [innerHTML]="previewContent"></div>
+  </div>
+  <!--
   <div class="summernote-preview" (mouseover)="mouseEntrou()" (mouseout)="mouseSaiu()">
     <div [class.red-border]="passou" [ngxSummernoteDisabled]="desabilitado" [ngxSummernote]="configPre" [ngxSummernoteView]="previewContent" [summernoteModel]="previewContent" (summernoteModelChange)="updatePreview()">
     </div>
-  </div>
+  </div> -->
 </div>
 
-<label *ngIf="passou" class="message-label">O editor está desativado</label>
+<!--<label *ngIf="passou" class="message-label">O editor está desativado</label>-->
