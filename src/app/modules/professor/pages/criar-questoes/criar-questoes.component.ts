@@ -181,20 +181,26 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   openDialog(field: keyof DynamicFields): void {
+    const fieldValue = this.criarQuestaoForm.get(field)?.value;
     const dialogRef = this.dialog.open(DialogQuestionComponent, {
       width: '60%',
-      data: { content: this.criarQuestaoForm.get(field)?.value }
+      data: { 
+        texto: fieldValue?.texto, 
+        correta: fieldValue?.correta 
+      }
     });
 
     dialogRef.componentInstance.saveEvent.subscribe((result: any) => {
-      console.log(result)
-      this.criarQuestaoForm.get(field)?.setValue(result.content);
+      console.log(result);
+      const { texto, correta } = result.content;
+      this.criarQuestaoForm.get(field)?.patchValue({ texto, correta });
       this.updatePreview();
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.criarQuestaoForm.get(field)?.setValue(result.content);
+        const { texto, correta } = result.content;
+        this.criarQuestaoForm.get(field)?.patchValue({ texto, correta });
         console.log(this.criarQuestaoForm.get(field)?.value);
         this.updatePreview();
       }
@@ -242,31 +248,5 @@ export class CreateQuestionsComponent implements OnInit {
       doc.save('conteudo.pdf');
       document.body.removeChild(tempElement);
     });
-  }
-
-  onCheckboxChange(event: MatCheckboxChange, index: number) {
-    const alternativas = [
-      this.criarQuestaoForm.get('alternativa1'),
-      this.criarQuestaoForm.get('alternativa2'),
-      this.criarQuestaoForm.get('alternativa3'),
-      this.criarQuestaoForm.get('alternativa4')
-    ];
-  
-    if (event.checked) {
-      const alreadyCorrectIndex = alternativas.findIndex(alt => alt?.get('correta')?.value);
-      if (alreadyCorrectIndex !== -1 && alreadyCorrectIndex !== index) {
-        const userConfirmed = window.confirm('Já existe uma alternativa correta. Deseja alterar?');
-        if (userConfirmed) {
-          alternativas[alreadyCorrectIndex]?.get('correta')?.setValue(false);
-          alternativas[index]?.get('correta')?.setValue(true);
-        } else {
-          alternativas[index]?.get('correta')?.setValue(false);
-        }
-      } else {
-        alternativas[index]?.get('correta')?.setValue(true);
-      }
-    } else {
-      alternativas[index]?.get('correta')?.setValue(false);
-    }
   }
 }

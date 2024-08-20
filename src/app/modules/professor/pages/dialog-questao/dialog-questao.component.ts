@@ -79,8 +79,8 @@ export class DialogQuestionComponent {
   ) {}
 
   onSave(): void {
-    this.saveEvent.emit(this.data);
-    this.dialogRef.close(this.data);
+    this.saveEvent.emit({ content: { texto: this.data.texto, correta: this.data.correta } });
+    this.dialogRef.close({ content: { texto: this.data.texto, correta: this.data.correta } });
   }
 
   onCancel(): void {
