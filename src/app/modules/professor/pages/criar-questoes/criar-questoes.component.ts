@@ -14,11 +14,9 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogQuestionComponent } from '../dialog-questao/dialog-questao.component';
-import { StepperModule } from 'primeng/stepper';
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Assunto from '../../../../models/Assunto.model';
@@ -30,8 +28,13 @@ import { HttpClient } from '@angular/common/http';
 import { RelatoriosService } from '../../../../services/relatorios.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { error } from 'jquery';
+import { ButtonModule } from 'primeng/button';
+import { StepperModule } from 'primeng/stepper';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule } from '@angular/common';
-
 
 
 interface DynamicFields {
@@ -58,7 +61,11 @@ interface DynamicFields {
     MultiSelectModule,
     ListboxModule,
     ProgressSpinnerModule,
-    CommonModule
+    CommonModule,
+    ButtonModule,
+    ToggleButtonModule,
+    IconFieldModule,
+    InputIconModule
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
@@ -83,6 +90,10 @@ export class CreateQuestionsComponent implements OnInit {
   desabilitado = true;
   passou = false;
   showPreview = false;
+
+
+
+  active: number | undefined = 0;
 
   constructor(
     private relatioriosService: RelatoriosService,
@@ -128,6 +139,32 @@ export class CreateQuestionsComponent implements OnInit {
       this.areas = areaRecebidas.content;
     });
   }
+
+
+  public config: SummernoteOptions = {
+    airMode: false,
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'italic', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['insert', ['picture', 'math']],
+      ['view', ['fullscreen', 'codeview']],
+      ['custom', ['customButton']]
+    ],
+    lang: 'pt-BR',
+    popover: {
+      image: [
+        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+        ['remove', ['removeMedia']],  
+        ['custom', ['imageAttributes']],
+      ]
+    },
+    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
+    buttons: {}
+    
+  };
 
   ngOnInit(): void {
     this.updatePreview();

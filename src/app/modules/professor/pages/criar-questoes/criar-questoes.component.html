@@ -61,3 +61,98 @@
 </div>
 
 <!--<label *ngIf="passou" class="message-label">O editor está desativado</label>-->
+
+<div class="card">
+  <p-stepper [linear]="true">
+      <p-stepperPanel header="Informações">
+          <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                      Informações I
+                      <div class="box-questoes-sup">
+                        <p class="titulo">Criar Questão</p>
+                        <div class="box-inputs">
+                          <div class="input-container">
+                            <p-floatLabel>
+                              <input type="text" pInputText formControlName="titulo" id="titulo" />
+                              <label for="titulo">Titulo</label>
+                            </p-floatLabel>
+                          </div>
+                          <div class="input-container">
+                            <p-floatLabel>
+                              <p-dropdown
+                                  [options]="dificuldades"
+                                  formControlName="dificuldade"
+                                  inputId="dificuldade" />
+                              <label class="label-dificuldade" for="dificuldade">Dificuldade</label>
+                          </p-floatLabel>
+                          </div>
+                          <div class="input-container">
+                              <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
+                          </div>
+                        </div>
+                      </div>
+                    
+                  </div>
+              </div>
+              <div class="flex pt-4 justify-content-end">
+                  <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Corpo">
+          <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                      Corpo
+                      <div class="box-summernote">
+                        <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo" [(summernoteModel)]="corpo"></div>
+                      </div>
+                  </div>
+              </div>
+              <div class="flex pt-4 justify-content-between">
+                  <p-button label="Back" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                  <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Alternativas">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                      Alternativas
+                      <div class="box-summernote">
+                        <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa1.texto" [(summernoteModel)]="alternativa1.texto"></div>
+                      </div>
+                      <div class="box-summernote">
+                        <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa2.texto" [(summernoteModel)]="alternativa2.texto"></div>
+                      </div>
+                      <div class="box-summernote">
+                        <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa3.texto" [(summernoteModel)]="alternativa3.texto"></div>
+                      </div>
+                      <div class="box-summernote">
+                        <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa4.texto" [(summernoteModel)]="alternativa4.texto"></div>
+                      </div>
+                  </div>
+              </div>
+              <div class="flex pt-4 justify-content-start">
+                <p-button label="Back" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Preview">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+            <div class="flex flex-column h-12rem">
+                <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                    Preview
+                </div>
+            </div>
+            <div class="flex pt-4 justify-content-start">
+                <p-button label="Back" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+            </div>
+        </ng-template>
+    </p-stepperPanel>
+  </p-stepper>
+</div>
