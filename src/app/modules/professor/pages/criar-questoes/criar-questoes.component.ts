@@ -1,7 +1,7 @@
-import { map } from 'rxjs';
+import { catchError, map, throwError, timeout } from 'rxjs';
 import { AssuntoService } from './../../../../services/assunto.service';
 import { QuestionService } from './../../../../services/question.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSummernoteModule } from 'ngx-summernote';
@@ -72,13 +72,14 @@ interface DynamicFields {
 })
 export class CreateQuestionsComponent implements OnInit {
 
+
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1 = { texto: '', correta: false };
-  alternativa2 = { texto: '', correta: false };
-  alternativa3 = { texto: '', correta: false };
-  alternativa4 = { texto: '', correta: false };
+  alternativa1 = { corpo: ' ', correta: false, posicao: 1};
+  alternativa2 = { corpo: ' ', correta: false, posicao: 2};
+  alternativa3 = { corpo: ' ', correta: false, posicao: 3};
+  alternativa4 = { corpo: ' ', correta: false, posicao: 4};
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
@@ -90,13 +91,17 @@ export class CreateQuestionsComponent implements OnInit {
   desabilitado = true;
   passou = false;
   showPreview = false;
+  alternativas = [];
+  
+  
+  @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
 
 
 
   active: number | undefined = 0;
 
   constructor(
-    private relatioriosService: RelatoriosService,
+    private relatoriosService: RelatoriosService,
     private http: HttpClient,
     private areaService: AreaService,
     private assuntoService: AssuntoService,
@@ -111,20 +116,21 @@ export class CreateQuestionsComponent implements OnInit {
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
       dificuldade: new FormControl('', Validators.required),
+      alternativas: new FormControl('', Validators.required),
       alternativa1: this.fb.group({
-        texto: new FormControl('', Validators.required),
+        corpo: new FormControl('', Validators.required),
         correta: new FormControl(false)
       }),
       alternativa2: this.fb.group({
-        texto: new FormControl('', Validators.required),
+        corpo: new FormControl('', Validators.required),
         correta: new FormControl(false)
       }),
       alternativa3: this.fb.group({
-        texto: new FormControl('', Validators.required),
+        corpo: new FormControl('', Validators.required),
         correta: new FormControl(false)
       }),
       alternativa4: this.fb.group({
-        texto: new FormControl('', Validators.required),
+        corpo: new FormControl('', Validators.required),
         correta: new FormControl(false)
       }),
       codigo_assuntos: [[]],
@@ -150,7 +156,6 @@ export class CreateQuestionsComponent implements OnInit {
       ['color', ['color']],
       ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'math']],
-      ['view', ['fullscreen', 'codeview']],
       ['custom', ['customButton']]
     ],
     lang: 'pt-BR',
@@ -181,8 +186,24 @@ export class CreateQuestionsComponent implements OnInit {
 
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any) => assunto.codigo);
+
+    formValue.corpo = this.corpo;
+    
+    const alternativas = [
+      this.alternativa1,
+      this.alternativa2,
+      this.alternativa3,
+      this.alternativa4
+    ];
+
+    formValue.alternativas = alternativas;
+
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos
+    .map((assunto: { codigo: string }) => assunto.codigo)
+    .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
+
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
+    console.log("Questão", formValue)
 
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
@@ -209,56 +230,74 @@ export class CreateQuestionsComponent implements OnInit {
     return `
       <div>
         <div>${corpo || this.corpo}</div><br>
-        <p><strong>1)</strong> ${alternativa1.texto || this.alternativa1.texto}</p>
-        <p><strong>2)</strong> ${alternativa2.texto || this.alternativa2.texto}</p>
-        <p><strong>3)</strong> ${alternativa3.texto || this.alternativa3.texto}</p>
-        <p><strong>4)</strong> ${alternativa4.texto || this.alternativa4.texto}</p>
+        <p><strong>1)</strong> ${alternativa1.texto || this.alternativa1.corpo}</p>
+        <p><strong>2)</strong> ${alternativa2.corpo || this.alternativa2.corpo}</p>
+        <p><strong>3)</strong> ${alternativa3.corpo || this.alternativa3.corpo}</p>
+        <p><strong>4)</strong> ${alternativa4.corpo || this.alternativa4.corpo}</p>
       </div>
     `;
-  }
-
-  openDialog(field: keyof DynamicFields): void {
-    const fieldValue = this.criarQuestaoForm.get(field)?.value;
-    const dialogRef = this.dialog.open(DialogQuestionComponent, {
-      width: '60%',
-      data: { 
-        texto: fieldValue?.texto, 
-        correta: fieldValue?.correta 
-      }
-    });
-
-    dialogRef.componentInstance.saveEvent.subscribe((result: any) => {
-      console.log(result);
-      const { texto, correta } = result.content;
-      this.criarQuestaoForm.get(field)?.patchValue({ texto, correta });
-      this.updatePreview();
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const { texto, correta } = result.content;
-        this.criarQuestaoForm.get(field)?.patchValue({ texto, correta });
-        console.log(this.criarQuestaoForm.get(field)?.value);
-        this.updatePreview();
-      }
-    });
-
   }
 
   previewQuestaoNoModelo() {
     this.showPreview = true;
     this.carregamento = true;
     const formValue = this.criarQuestaoForm.value;
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos.map((assunto: any) => assunto.codigo);
+
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos
+      .map((assunto: { codigo: string }) => assunto.codigo)
+      .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
+
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
-    this.relatioriosService.previewQuestao(formValue).subscribe((pdfBlob: Blob) => {
-      const blobUrl = window.URL.createObjectURL(pdfBlob);
-      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
-      this.carregamento = false;
-    }, () => {
-      this.carregamento = false;
-    });
+
+    formValue.corpo = this.corpo;
+    
+    const alternativas = [
+      this.alternativa1,
+      this.alternativa2,
+      this.alternativa3,
+      this.alternativa4
+    ];
+
+    formValue.alternativas = alternativas;
+
+    this.relatoriosService.previewQuestao(formValue).pipe(
+      timeout(10000),
+      map(response => response),
+      catchError(error => {
+        console.error('Error while previewing question:', error);
+        this.toastService.error("Erro ao gerar preview! Tente novamente mais tarde.");
+        this.carregamento = false;
+        return throwError(error);
+      })
+    ).subscribe(
+      (data: any) => {
+        const file = new Blob([data], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        this.fecharIframe();
+  
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);        
+        
+        this.carregamento = false;
+        this.toastService.success("Preview gerado com sucesso!");
+
+      },
+      error => {
+        console.error('Error while previewing question:', error);
+        this.carregamento = false;
+      }
+    );
+  }
+  fecharIframe(){
+    const btnDestroiIframe = document.getElementById('btnDestroiIframe')
+    const framePdf = document.getElementById('iFramePdf')
+    if(framePdf){
+      framePdf.remove()
+    }
+    if(btnDestroiIframe){
+      btnDestroiIframe?.remove()
+    }
+    this.pdfUrl = null
   }
 
   mouseEntrou() {
@@ -267,23 +306,5 @@ export class CreateQuestionsComponent implements OnInit {
 
   mouseSaiu() {
     this.passou = false;
-  }
-
-  saveContent() {
-    const content = this.previewContent;
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = content;
-    document.body.appendChild(tempElement);
-
-    html2canvas(tempElement).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const doc = new jsPDF('p', 'mm', 'a4');
-      const imgProps = doc.getImageProperties(imgData);
-      const pdfWidth = doc.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      doc.save('conteudo.pdf');
-      document.body.removeChild(tempElement);
-    });
   }
 }
