@@ -39,7 +39,7 @@
                   </div>
               </div>
               <div class="action-buttons">
-                  <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
               </div>
           </ng-template>
       </p-stepperPanel>
@@ -59,7 +59,7 @@
               </div>
               <div class="action-buttons">
                   <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                  <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
                   <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
           </ng-template>
@@ -89,7 +89,7 @@
               </div>
               <div class="action-buttons">
                 <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
           </ng-template>
@@ -107,7 +107,7 @@
               <div class="action-buttons">
                 
                 <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
-                <button pButton type="button" class="btn-enviar" (click)="submitAtualizarQuestao()" label="Enviar"></button>
+                <button pButton type="button" class="btn-enviar" (click)="submitAtualizarQuestao()" label="Atualizar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
           </ng-template>

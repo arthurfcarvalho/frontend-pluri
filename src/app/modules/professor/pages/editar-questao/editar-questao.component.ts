@@ -68,6 +68,8 @@ interface DynamicFields {
 })
 export class EditarQuestaoComponent {
 
+  idQuestao: number = 0;
+
 
   content = "Digite";
   titulo = 'Digite o titulo';
@@ -101,31 +103,15 @@ export class EditarQuestaoComponent {
       corpo: new FormControl('', Validators.required),
       dificuldade: new FormControl('', Validators.required),
       alternativas: new FormControl('', Validators.required),
-      alternativa1: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
-      alternativa2: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
-      alternativa3: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
-      alternativa4: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
       codigo_assuntos: [[]],
       id_area: ['']
     });
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.questaoService.listById(Number(id)).subscribe(questaoRecebida => {
+    this.idQuestao = (Number(this.route.snapshot.paramMap.get('id')));
+    if (this.idQuestao) {
+      this.questaoService.listById(Number(this.idQuestao)).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
 
         this.corpo = this.questao.corpo;
@@ -155,25 +141,40 @@ export class EditarQuestaoComponent {
   
 
   submitAtualizarQuestao() {
-    if (this.atualizarQuestaoForm.valid) {
+    const formValue = this.atualizarQuestaoForm.value;
 
-      const questaoAtualizada = this.atualizarQuestaoForm.value;
-      
-      const assuntosCodigosSelecionados = this.atualizarQuestaoForm.value.codigo_assuntos.map((assunto: any ) => assunto.codigo)
+      formValue.corpo = this.corpo;
+    
+      const alternativas = [
+        this.alternativa1,
+        this.alternativa2,
+        this.alternativa3,
+        this.alternativa4
+    ];
 
-      questaoAtualizada.codigo_assuntos = assuntosCodigosSelecionados
+    formValue.alternativas = alternativas;
 
-      this.questaoService.updateQuestion(questaoAtualizada).subscribe({ 
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos
+    .map((assunto: { codigo: string }) => assunto.codigo)
+    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
+
+
+    //formValue.codigo_assuntos = assuntosCodigosSelecionados;
+    formValue.codigoAssuntos = assuntosCodigosSelecionados;
+    formValue.id = this.idQuestao;
+
+    console.log("Questão", formValue)
+  
+    this.questaoService.updateQuestion(formValue).subscribe({ 
         next: (value) => {
-          this.toastService.success("Questao criada com sucesso!");
+          this.toastService.success("Questao atualizada com sucesso!");
           this.router.navigate(['/', value]);
         },
         error: (e) => {
-          this.toastService.error("Erro ao criar o Questão!");
+          this.toastService.error("Erro ao atualizar o Questão!");
         }
       });
     }
-  }
 
   
   public configPre: SummernoteOptions = {
@@ -206,19 +207,6 @@ export class EditarQuestaoComponent {
     buttons: {}
     
   };
-
-  /*getPreviewContent(): string {
-    const { corpo, alternativa1, alternativa2, alternativa3, alternativa4 } = this.atualizarQuestaoForm.value;
-    return `
-      <div>
-        <div>${corpo || this.questao.corpo}</div><br>
-        <p><strong>1)</strong> ${alternativa1 || this.questao.alternativa1}</p>
-        <p><strong>2)</strong> ${alternativa2 || this.questao.alternativa2}</p>
-        <p><strong>3)</strong> ${alternativa3 || this.questao.alternativa3}</p>
-        <p><strong>4)</strong> ${alternativa4 || this.questao.alternativa4}</p>
-      </div>
-    `;
-  }*/
 
   updatePreview() {
     //this.previewContent = this.getPreviewContent();
