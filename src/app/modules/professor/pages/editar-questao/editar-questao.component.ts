@@ -73,9 +73,9 @@ export class EditarQuestaoComponent {
   titulo = 'Digite o titulo';
   corpo = " ";
   alternativa1!: Alternativa; 
-  alternativa2 = { corpo: ' ', correta: false, posicao: 2};
-  alternativa3 = { corpo: ' ', correta: false, posicao: 3};
-  alternativa4 = { corpo: ' ', correta: false, posicao: 4};
+  alternativa2!: Alternativa; 
+  alternativa3!: Alternativa; 
+  alternativa4!: Alternativa; 
   
   pdfUrl: SafeResourceUrl | null = null;
   
@@ -127,19 +127,14 @@ export class EditarQuestaoComponent {
     if (id) {
       this.questaoService.listById(Number(id)).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
-        console.log("Questao Recebida",questaoRecebida)
-        console.log("Questao",this.questao)
 
         this.corpo = this.questao.corpo;
-         
 
         if (this.questao.alternativas && this.questao.alternativas.length > 0) {
           this.alternativa1 = this.questao.alternativas[0];  
-          this.alternativa2 = this.questao.alternativas[0];  
-          this.alternativa3 = this.questao.alternativas[0];  
-          this.alternativa4 = this.questao.alternativas[0];  
-        } else {
-          console.error("No alternatives available");
+          this.alternativa2 = this.questao.alternativas[1];  
+          this.alternativa3 = this.questao.alternativas[2];  
+          this.alternativa4 = this.questao.alternativas[3];  
         }
 
         this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {

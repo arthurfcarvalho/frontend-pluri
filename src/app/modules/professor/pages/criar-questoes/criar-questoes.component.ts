@@ -1,3 +1,4 @@
+import { Alternativa } from './../../models/Alternativa.model';
 import { catchError, map, throwError, timeout } from 'rxjs';
 import { AssuntoService } from './../../../../services/assunto.service';
 import { QuestionService } from './../../../../services/question.service';
@@ -76,10 +77,10 @@ export class CreateQuestionsComponent implements OnInit {
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1 = { corpo: ' ', correta: false, posicao: 1};
-  alternativa2 = { corpo: ' ', correta: false, posicao: 2};
-  alternativa3 = { corpo: ' ', correta: false, posicao: 3};
-  alternativa4 = { corpo: ' ', correta: false, posicao: 4};
+  alternativa1: Alternativa = {corpo: ' ', correta: false, posicao: 1};
+  alternativa2: Alternativa = {corpo: ' ', correta: false, posicao: 2};
+  alternativa3: Alternativa = {corpo: ' ', correta: false, posicao: 3};
+  alternativa4: Alternativa = {corpo: ' ', correta: false, posicao: 4};
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
@@ -117,7 +118,7 @@ export class CreateQuestionsComponent implements OnInit {
       corpo: new FormControl('', Validators.required),
       dificuldade: new FormControl('', Validators.required),
       alternativas: new FormControl('', Validators.required),
-      alternativa1: this.fb.group({
+      /*alternativa1: this.fb.group({
         corpo: new FormControl('', Validators.required),
         correta: new FormControl(false)
       }),
@@ -132,7 +133,7 @@ export class CreateQuestionsComponent implements OnInit {
       alternativa4: this.fb.group({
         corpo: new FormControl('', Validators.required),
         correta: new FormControl(false)
-      }),
+      }),*/
       codigo_assuntos: [[]],
       id_area: ['']
     });
