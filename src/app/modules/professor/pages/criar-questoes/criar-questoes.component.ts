@@ -15,7 +15,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Assunto from '../../../../models/Assunto.model';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -92,6 +92,7 @@ export class CreateQuestionsComponent implements OnInit {
   passou = false;
   showPreview = false;
   alternativas = [];
+  btnCriarEnviar = 'Criar'
   
   
   @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
@@ -110,40 +111,34 @@ export class CreateQuestionsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
     private toastService: ToastrService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
+
+    this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
+      this.assuntos = assuntosRecebidos.content;
+    })
+    this.areaService.returnAllAreas().subscribe(areas => {      
+      this.areasRecebidas = areas.content
+    })
+    this.route.paramMap.subscribe(params => { 
+      const idArea = params.get('id')
+      if(idArea){
+        this.btnCriarEnviar = 'Enviar'
+        const idParaNumber = +idArea
+        this.areaService.listarPorId(idParaNumber).subscribe((area)=>{
+          this.criarQuestaoForm.patchValue({ idArea: area });
+        })
+      }
+    })
+    
     this.criarQuestaoForm = this.fb.group({
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
       dificuldade: new FormControl('', Validators.required),
       alternativas: new FormControl('', Validators.required),
-      /*alternativa1: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
-      alternativa2: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
-      alternativa3: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),
-      alternativa4: this.fb.group({
-        corpo: new FormControl('', Validators.required),
-        correta: new FormControl(false)
-      }),*/
       codigo_assuntos: [[]],
-      id_area: ['']
-    });
-
-    this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
-      this.assuntos = assuntosRecebidos.content;
-    });
-
-
-    this.areaService.returnAllAreas().subscribe(areaRecebidas => {
-      this.areas = areaRecebidas.content;
+      idArea: ['']
     });
   }
 

@@ -11,6 +11,6 @@ export interface DadosAtualizarQuestao{
     dificuldade: string,
     aprovada: boolean, 
     assuntos: Assunto[];
-    //List<String> codigo_assuntos,
-    //Long id_area
+    codigoAssuntos: Assunto[];
+    idArea: number;
 }

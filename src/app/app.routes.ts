@@ -87,6 +87,11 @@ export const routes: Routes = [
         title: "Criar Questao - Questao"
     },
     {
+        path: "criar-questao/:id",
+        component: CreateQuestionsComponent,
+        title: "Criar Questao - Questao"
+    },
+    {
         path: "minhas-questoes",
         component: ListaQuestoesUsuarioComponent,
         title: "Listar Questao - Questao"

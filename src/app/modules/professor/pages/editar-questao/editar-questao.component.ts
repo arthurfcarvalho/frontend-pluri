@@ -30,6 +30,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Alternativa } from '../../models/Alternativa.model';
+import { Area } from '../../../../models/Area.model';
+import { AreaService } from '../../../../services/area.service';
 
 
 interface DynamicFields {
@@ -87,8 +89,11 @@ export class EditarQuestaoComponent {
   assuntos!: Assunto[];
   carregamento: boolean = false;
   showPreview = false;
+  areasRecebidas!: Area[]
+  areaQuestao!: Area
   
   constructor(
+    private areaService: AreaService,
     private relatoriosService: RelatoriosService,
     private fb: FormBuilder, private router: Router,
     private toastService: ToastrService,
@@ -103,7 +108,7 @@ export class EditarQuestaoComponent {
       dificuldade: new FormControl('', Validators.required),
       alternativas: new FormControl('', Validators.required),
       codigo_assuntos: [[]],
-      id_area: ['']
+      idArea: new FormControl()
     });
   }
 
@@ -129,6 +134,14 @@ export class EditarQuestaoComponent {
             ...this.questao,
             codigo_assuntos: this.questao.assuntos,
           });
+          this.areaService.returnAllAreas().subscribe(areas => {
+            this.areasRecebidas = areas.content
+          })
+          
+          this.areaService.listarPorId(this.questao.idArea).subscribe((area)=>{
+              this.areaQuestao = area
+              this.atualizarQuestaoForm.patchValue({ idArea: area });
+            })
           this.updatePreview();
         });  
       });
