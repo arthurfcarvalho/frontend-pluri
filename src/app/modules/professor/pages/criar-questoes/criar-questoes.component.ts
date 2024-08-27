@@ -87,6 +87,7 @@ export class CreateQuestionsComponent implements OnInit {
   areas!: Area[];
   criarQuestaoForm: FormGroup;
   areaSelecionada!: number;
+  areasRecebidas!: Area[]
   desabilitado = true;
   passou = false;
   showPreview = false;
@@ -139,6 +140,7 @@ export class CreateQuestionsComponent implements OnInit {
     this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
       this.assuntos = assuntosRecebidos.content;
     });
+
 
     this.areaService.returnAllAreas().subscribe(areaRecebidas => {
       this.areas = areaRecebidas.content;

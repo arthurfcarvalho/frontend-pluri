@@ -23,6 +23,7 @@ import { CommonModule, Location } from '@angular/common';
 import { DadosDetalhamentoQuestaoAEnviar } from '../../models/DadosDetalhamentoQuestaoAEnviar.model';
 import { FieldsetModule } from 'primeng/fieldset';
 import { DialogModule } from 'primeng/dialog';
+import { DadosAtualizarQuestao } from '../../models/DadosAtualizarQuestao.model';
 
 @Component({
   selector: 'app-enviar-questao',
@@ -34,7 +35,7 @@ import { DialogModule } from 'primeng/dialog';
 export class EnviarQuestaoComponent {
   questoesIneditas: DadosDetalhamentoQuestao[] = [];
   questoesSelecionadas: DadosDetalhamentoQuestao[] = [];
-  questaoPreview!: Questao
+  questaoPreview!: DadosAtualizarQuestao
   carregamento: boolean = false
   pdfUrl: SafeResourceUrl | null = null;
   questaoAEnviar!: DadosDetalhamentoQuestaoAEnviar

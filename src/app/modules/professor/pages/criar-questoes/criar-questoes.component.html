@@ -33,6 +33,11 @@
                               <label class="label-dificuldade" for="assunto">Assunto</label>
                             </p-floatLabel>
                           </div>
+
+                          <div class="input-container">
+                            <p-dropdown [options]="areasRecebidas" formControlName="idArea" optionLabel="nome"
+        placeholder="Selecione a area" />
+                          </div>
                         </div>
                       </div>
                     
