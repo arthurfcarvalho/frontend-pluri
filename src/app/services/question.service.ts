@@ -6,6 +6,7 @@ import { Questao } from "../modules/professor/models/Question.model";
 import { Injectable } from "@angular/core";
 import { ApiResponsePageable } from "../types/api-response-pageable.type";
 import { DadosAtualizarQuestao } from "../modules/professor/models/DadosAtualizarQuestao.model";
+import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetalhamentoQuestao.model";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,24 @@ export class QuestionService {
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
+  }
+  listQuestoesIneditasUsuarioPorArea(areaId: number): Observable<DadosDetalhamentoQuestao[]>{
+    const url = this.baseUrl + `/listar-questoes-ineditas/${areaId}`
+    return this.httpClient.get<DadosDetalhamentoQuestao[]>(url).pipe(map(
+      obj => obj
+    ));
+  }
+  enviarQuestoes(questao: any){
+    const url = this.baseUrl + `/enviar-questoes`
+    return this.httpClient.put(url,questao);
+  }
+  aprovarQuestao(id: number){
+    const url = this.baseUrl + `/aprovar-questao/${id}`
+    return this.httpClient.put(url,id).pipe(map(obj => obj));
+  }
+  reprovarQuestao(id: number){
+    const url = this.baseUrl + `/reprovar-questao/${id}`;
+    return this.httpClient.put(url,id).pipe(map(obj => obj));
   }
   
 }

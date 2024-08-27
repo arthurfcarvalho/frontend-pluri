@@ -10,6 +10,8 @@ import { indicacaoDocentesDAO } from '../modules/ajuntador/models/IndicacaoDocen
 import { PluriInfoDAO } from '../models/Pluri/PluriInfoDAO.model';
 import { PluriArea } from '../models/Pluri/PluriArea.model';
 import { DadosDetalhamentoInformacoesGerais } from '../modules/ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
+import { DadosDetalhamentoQuestaoAEnviar } from '../modules/professor/models/DadosDetalhamentoQuestaoAEnviar.model';
+import { DadosDetalhamentoQuestoesEnviadas } from '../modules/professor/models/DadosDetalhamentoQuestaoEnviadas.model';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +89,18 @@ export class PluriService {
   listagemParaIndicacao(id: number){
     const url = this.baseUrl + `/listagem-para-indicacao/${id}`;
     return this.httpClient.get<DadosDetalhamentoInformacoesGerais>(url).pipe(map(
+      obj => obj
+    ));
+  }
+  listarQuestoesAEnviarPorId(id: number){
+    const url = this.baseUrl + `/listar-questao-a-enviar/${id}`;
+    return this.httpClient.get<DadosDetalhamentoQuestaoAEnviar>(url).pipe(map(
+      obj => obj
+    ));
+  }
+  listarQuestoesEnviadas(id: number){
+  const url = this.baseUrl + `/listar-questoes-enviadas/${id}`;
+    return this.httpClient.get<DadosDetalhamentoQuestoesEnviadas>(url).pipe(map(
       obj => obj
     ));
   }
