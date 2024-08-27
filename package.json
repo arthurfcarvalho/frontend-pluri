@@ -34,7 +34,7 @@
     "summernote": "^0.8.20",
     "summernote-ext-print": "^0.1.6",
     "summernote-image-attributes-editor": "^1.2.1",
-    "tslib": "^2.3.0",
+    "tslib": "^2.7.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {

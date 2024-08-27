@@ -1,3 +1,4 @@
+import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { Alternativa } from './../../models/Alternativa.model';
 import { catchError, map, throwError, timeout } from 'rxjs';
 import { AssuntoService } from './../../../../services/assunto.service';
@@ -5,16 +6,12 @@ import { QuestionService } from './../../../../services/question.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { NgxSummernoteModule } from 'ngx-summernote';
 
-import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import { MatDialog } from '@angular/material/dialog';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogQuestionComponent } from '../dialog-questao/dialog-questao.component';
+
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
@@ -28,7 +25,7 @@ import { AreaService } from '../../../../services/area.service';
 import { HttpClient } from '@angular/common/http';
 import { RelatoriosService } from '../../../../services/relatorios.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { error } from 'jquery';
+
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 import { InputTextModule } from 'primeng/inputtext';
@@ -36,6 +33,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule } from '@angular/common';
+import { NgxSummernoteModule } from 'ngx-summernote';
 
 
 interface DynamicFields {
@@ -51,8 +49,8 @@ interface DynamicFields {
   selector: 'app-criar-questoes',
   standalone: true,
   imports: [
-    HeaderComponent,
-    NgxSummernoteModule, 
+    HeaderComponent, 
+    NgxSummernoteModule,
     StepperModule,
     ReactiveFormsModule,
     CalendarModule,

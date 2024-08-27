@@ -11,7 +11,6 @@ import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { DadosQuestaoAEnviar } from '../../models/DadosQuestaoAEnviar.model';
 
-
 @Component({
   selector: 'app-listar-questao-a-enviar',
   standalone: true,

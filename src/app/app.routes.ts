@@ -23,6 +23,7 @@ import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-
 import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 import { SearchAreasComponent } from './modules/area/search-areas/search-areas.component';
 import { CreateAreaComponent } from './modules/area/create-area/create-area.component';
+import { EnviarQuestaoComponent } from './modules/professor/pages/enviar-questao/enviar-questao.component';
 
 
 export const routes: Routes = [
@@ -106,6 +107,10 @@ export const routes: Routes = [
         path: "criar-perfil",
         component: CreateRoleComponent,
         title: "Criar Perfil - Pluri"
+    },
+    {
+        path: "lista-questoes-para-envio/:idQuestaoAEnviar",
+        component: EnviarQuestaoComponent
     },
     {
         path: "pesquisar-perfis",

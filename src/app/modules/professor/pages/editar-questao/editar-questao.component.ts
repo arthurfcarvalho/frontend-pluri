@@ -3,7 +3,6 @@ import { Questao } from './../../models/Question.model';
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogQuestionComponent } from '../dialog-questao/dialog-questao.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { StepperModule } from 'primeng/stepper';
