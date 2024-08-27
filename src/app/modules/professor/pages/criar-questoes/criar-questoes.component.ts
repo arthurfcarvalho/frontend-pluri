@@ -244,8 +244,8 @@ export class CreateQuestionsComponent implements OnInit {
     const formValue = this.criarQuestaoForm.value;
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
-      .map((assunto: { codigo: string }) => assunto.codigo)
-      .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
+    .map((assunto: { codigo: string }) => assunto.codigo)
+    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
@@ -261,17 +261,20 @@ export class CreateQuestionsComponent implements OnInit {
 
     formValue.alternativas = alternativas;
 
+    
+
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(10000),
+      timeout(3000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);
-        this.toastService.error("Erro ao gerar preview! Tente novamente mais tarde.");
+        this.toastService.error("Erro ao gerar preview! Tente novamente mais tarde.! Evite deixar espaços em branco e quebras de linha");
         this.carregamento = false;
         return throwError(error);
       })
     ).subscribe(
       (data: any) => {
+        
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
@@ -283,7 +286,7 @@ export class CreateQuestionsComponent implements OnInit {
 
       },
       error => {
-        console.error('Error while previewing question:', error);
+        this.toastService.error("Erro ao gerar preview! Evite deixar espaços em branco e quebras de linha");
         this.carregamento = false;
       }
     );

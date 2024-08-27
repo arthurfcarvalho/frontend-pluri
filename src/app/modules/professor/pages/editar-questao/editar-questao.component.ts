@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Questao } from './../../models/Question.model';
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
-import { Form, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogQuestionComponent } from '../dialog-questao/dialog-questao.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSummernoteModule } from 'ngx-summernote';
@@ -20,6 +20,18 @@ import { DadosAtualizarQuestao } from '../../models/DadosAtualizarQuestao.model'
 import Assunto from '../../../../models/Assunto.model';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AssuntoService } from '../../../../services/assunto.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { RelatoriosService } from '../../../../services/relatorios.service';
+import { catchError, map, throwError, timeout } from 'rxjs';
+import { ListboxModule } from 'primeng/listbox';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { Alternativa } from '../../models/Alternativa.model';
+
 
 interface DynamicFields {
   corpo: string;
@@ -41,30 +53,72 @@ interface DynamicFields {
     FloatLabelModule,
     DropdownModule,
     InputTextModule,
-    MultiSelectModule
+    MultiSelectModule,
+    StepperModule,
+    ListboxModule,
+    ProgressSpinnerModule,
+    CommonModule,
+    ButtonModule,
+    ToggleButtonModule,
+    IconFieldModule,
+    InputIconModule
   ],
   templateUrl: './editar-questao.component.html',
   styleUrls: ['./editar-questao.component.scss']
 })
 export class EditarQuestaoComponent {
 
+
+  content = "Digite";
+  titulo = 'Digite o titulo';
+  corpo = " ";
+  alternativa1!: Alternativa; 
+  alternativa2 = { corpo: ' ', correta: false, posicao: 2};
+  alternativa3 = { corpo: ' ', correta: false, posicao: 3};
+  alternativa4 = { corpo: ' ', correta: false, posicao: 4};
+  
+  pdfUrl: SafeResourceUrl | null = null;
+  
   atualizarQuestaoForm: FormGroup;
   questao!: DadosAtualizarQuestao;
   previewContent = '';
+  dificuldades = ['Fácil', 'Médio', 'Difícil'];
   assuntos!: Assunto[];
+  carregamento: boolean = false;
+  showPreview = false;
   
-  constructor(private router: Router, private toastService: ToastrService,private assuntoService: AssuntoService,private dialog: MatDialog, private questaoService: QuestionService, private route: ActivatedRoute) {
-    this.atualizarQuestaoForm = new FormGroup({
-      id: new FormControl(),
-      titulo: new FormControl(),
-      dificuldade: new FormControl(),
-      area_nome: new FormControl(),
-      corpo: new FormControl(),
-      alternativa1: new FormControl(),
-      alternativa2: new FormControl(),
-      alternativa3: new FormControl(),
-      alternativa4: new FormControl(),
-      codigo_assuntos: new FormControl()
+  constructor(
+    private relatoriosService: RelatoriosService,
+    private fb: FormBuilder, private router: Router,
+    private toastService: ToastrService,
+    private assuntoService: AssuntoService,
+    private dialog: MatDialog,
+    private questaoService: QuestionService,
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute) {
+    this.atualizarQuestaoForm = this.fb.group({
+      titulo: new FormControl('', Validators.required),
+      corpo: new FormControl('', Validators.required),
+      dificuldade: new FormControl('', Validators.required),
+      alternativas: new FormControl('', Validators.required),
+      alternativa1: this.fb.group({
+        corpo: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      alternativa2: this.fb.group({
+        corpo: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      alternativa3: this.fb.group({
+        corpo: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      alternativa4: this.fb.group({
+        corpo: new FormControl('', Validators.required),
+        correta: new FormControl(false)
+      }),
+      codigo_assuntos: [[]],
+      id_area: ['']
     });
   }
 
@@ -73,6 +127,20 @@ export class EditarQuestaoComponent {
     if (id) {
       this.questaoService.listById(Number(id)).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
+        console.log("Questao Recebida",questaoRecebida)
+        console.log("Questao",this.questao)
+
+        this.corpo = this.questao.corpo;
+         
+
+        if (this.questao.alternativas && this.questao.alternativas.length > 0) {
+          this.alternativa1 = this.questao.alternativas[0];  
+          this.alternativa2 = this.questao.alternativas[0];  
+          this.alternativa3 = this.questao.alternativas[0];  
+          this.alternativa4 = this.questao.alternativas[0];  
+        } else {
+          console.error("No alternatives available");
+        }
 
         this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
           this.assuntos = assuntosRecebidos.content;
@@ -84,6 +152,7 @@ export class EditarQuestaoComponent {
           this.updatePreview();
         });  
       });
+      
     }
   }
 
@@ -111,20 +180,7 @@ export class EditarQuestaoComponent {
     }
   }
 
-  openDialog(field: keyof DynamicFields): void {
-    const dialogRef = this.dialog.open(DialogQuestionComponent, {
-      width: '80%',
-      data: { content: this.questao[field] }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.atualizarQuestaoForm.controls[field].setValue(result.content);
-        this.updatePreview();
-      }
-    });
-  }
-
+  
   public configPre: SummernoteOptions = {
     airMode: false,
     toolbar: [
@@ -134,59 +190,29 @@ export class EditarQuestaoComponent {
 
   public config: SummernoteOptions = {
     airMode: false,
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'italic', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['insert', ['picture', 'math']],
+      ['custom', ['customButton']]
+    ],
+    lang: 'pt-BR',
     popover: {
-      table: [
-        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
-        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']]
-      ],
       image: [
-        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
         ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']]
-      ],
-      link: [['link', ['linkDialogShow', 'unlink']]],
-      air: [
-        [
-          'font',
-          [
-            'bold',
-            'italic',
-            'underline',
-            'strikethrough',
-            'superscript',
-            'subscript',
-            'clear'
-          ]
-        ]
+        ['remove', ['removeMedia']],  
+        ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: '/api/upload',
-    toolbar: [
-      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-      [
-        'font',
-        [
-          'bold',
-          'italic',
-          'underline',
-          'strikethrough',
-          'superscript',
-          'subscript',
-          'clear'
-        ]
-      ],
-      ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']],
-      ['view', ['fullscreen', 'codeview', 'help']],
-      ['print', ['print']]
-    ],
-    fontNames: ['Arial', 'Times New Roman', 'Inter', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times', 'MangCau', 'BayBuomHep', 'BaiSau', 'BaiHoc', 'CoDien', 'BucThu', 'KeChuyen', 'MayChu', 'ThoiDai', 'ThuPhap-Ivy', 'ThuPhap-ThienAn'],
+    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
     buttons: {}
+    
   };
 
-  getPreviewContent(): string {
+  /*getPreviewContent(): string {
     const { corpo, alternativa1, alternativa2, alternativa3, alternativa4 } = this.atualizarQuestaoForm.value;
     return `
       <div>
@@ -197,11 +223,75 @@ export class EditarQuestaoComponent {
         <p><strong>4)</strong> ${alternativa4 || this.questao.alternativa4}</p>
       </div>
     `;
-  }
+  }*/
 
   updatePreview() {
-    this.previewContent = this.getPreviewContent();
+    //this.previewContent = this.getPreviewContent();
   }
+
+  previewQuestaoNoModelo() {
+    this.showPreview = true;
+    this.carregamento = true;
+    const formValue = this.atualizarQuestaoForm.value;
+
+    const assuntosCodigosSelecionados = formValue.codigo_assuntos
+    .map((assunto: { codigo: string }) => assunto.codigo)
+    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
+
+    formValue.codigo_assuntos = assuntosCodigosSelecionados;
+
+
+    formValue.corpo = this.corpo;
+    
+    const alternativas = [
+      this.alternativa1,
+      this.alternativa2,
+      this.alternativa3,
+      this.alternativa4
+    ];
+
+    formValue.alternativas = alternativas;
+
+    this.relatoriosService.previewQuestao(formValue).pipe(
+      timeout(3000),
+      map(response => response),
+      catchError(error => {
+        console.error('Error while previewing question:', error);
+        this.toastService.error("Erro ao gerar preview! Tente novamente mais tarde.! Evite deixar espaços em branco e quebras de linha");
+        this.carregamento = false;
+        return throwError(error);
+      })
+    ).subscribe(
+      (data: any) => {
+        
+        const file = new Blob([data], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        this.fecharIframe();
+  
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);        
+        
+        this.carregamento = false;
+        this.toastService.success("Preview gerado com sucesso!");
+
+      },
+      error => {
+        this.toastService.error("Erro ao gerar preview! Evite deixar espaços em branco e quebras de linha");
+        this.carregamento = false;
+      }
+    );
+  }
+  fecharIframe(){
+    const btnDestroiIframe = document.getElementById('btnDestroiIframe')
+    const framePdf = document.getElementById('iFramePdf')
+    if(framePdf){
+      framePdf.remove()
+    }
+    if(btnDestroiIframe){
+      btnDestroiIframe?.remove()
+    }
+    this.pdfUrl = null
+  }
+
 
   saveContent() {
     const content = this.previewContent;

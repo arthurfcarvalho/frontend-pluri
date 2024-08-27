@@ -10,6 +10,8 @@ import { UserService } from './user.service';
 export class LoginService {
 
   baseUrl = 'http://localhost:8080/usuario/';
+  
+  //baseUrl = 'http://200.131.116.21:8081/usuario/';
 
   constructor(private userService: UserService, private httpClient: HttpClient) { }
 

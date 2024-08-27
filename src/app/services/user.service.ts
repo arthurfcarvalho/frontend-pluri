@@ -16,6 +16,8 @@ export class UserService {
 
   private userSubject = new BehaviorSubject<User | null>(null)
 
+  baseUrl = 'http://localhost:8080/usuario/';
+
   constructor(private http: HttpClient, private tokenService: TokenService) { 
     if(this.tokenService.hasToken()){
       this.decodeJWT();
@@ -34,11 +36,11 @@ export class UserService {
   }
 
   returnUserByLogin(login: string){
-    const url = `http://localhost:8080/usuario/listar-usuario/${login}`;
+    const url = this.baseUrl + `listar-usuario/${login}`;
     return this.http.get<User>(url);
   }
   returnUserId(login: string){
-    const url = `http://localhost:8080/usuario/retornaId/${login}`;
+    const url = this.baseUrl + `retornaId/${login}`;
     return this.http.get<number>(url);
   }
 

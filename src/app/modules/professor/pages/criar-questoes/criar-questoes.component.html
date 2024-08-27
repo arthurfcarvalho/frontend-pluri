@@ -55,7 +55,7 @@
                   </div>
               </div>
               <div class="action-buttons">
-                  <p-button label="Back" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                  <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                   <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
                   <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
@@ -70,7 +70,6 @@
                     </div>
                       <div class="box-alternativas">
                         <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa1.corpo" [(summernoteModel)]="corpo"></div>
                           <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa1.corpo" [(summernoteModel)]="alternativa1.corpo"></div>
                         </div>
                         <div class="box-summernote">
@@ -86,7 +85,7 @@
                   </div>
               </div>
               <div class="action-buttons">
-                <p-button label="Back" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                 <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
@@ -96,15 +95,15 @@
           <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
               <div class="flex flex-column h-12rem">
                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                     Preview
+                     Clique para gerar o preview e confira sua questão
                  </div>
               </div>
               <div class="flex pt-4 justify-content-start">
-                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+                 
               </div>
               <div class="action-buttons">
                 
-                <p-button label="Back" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
                 <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" label="Enviar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
