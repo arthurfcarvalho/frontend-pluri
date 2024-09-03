@@ -76,22 +76,74 @@
                     <div class="box-questoes-sup">
                       <p class="titulo">Informe as alternativas</p>
                     </div>
-                      <div class="box-alternativas">
-                        <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa1.corpo" [(summernoteModel)]="alternativa1.corpo"></div>
-                        </div>
-                        <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa2.corpo" [(summernoteModel)]="alternativa2.corpo"></div>
-                        </div>
-                        <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa3.corpo" [(summernoteModel)]="alternativa3.corpo"></div>
-                        </div>
-                        <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa4.corpo" [(summernoteModel)]="alternativa4.corpo"></div>
+                    <div class="box-alternativas">
+                      <div class="box-summernote">
+                        <p-button
+                          type="button"
+                          (click)="toggleEditor(1)"
+                          [class.active]="expandedIndex === 1"
+                        >
+                          Alternativa A
+                        </p-button>
+                        <div *ngIf="expandedIndex === 1">
+                          <div
+                            id="summernote1"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativa1.corpo"
+                          ></div>
                         </div>
                       </div>
+                      <div class="box-summernote">
+                        <p-button
+                          type="button"
+                          (click)="toggleEditor(2)"
+                          [class.active]="expandedIndex === 2"
+                        >
+                          Alternativa B
+                        </p-button>
+                        <div *ngIf="expandedIndex === 2">
+                          <div
+                            id="summernote2"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativa2.corpo"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="box-summernote">
+                        <p-button
+                          type="button"
+                          (click)="toggleEditor(3)"
+                          [class.active]="expandedIndex === 3"
+                        >
+                          Alternativa C
+                        </p-button>
+                        <div *ngIf="expandedIndex === 3">
+                          <div
+                            id="summernote3"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativa3.corpo"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="box-summernote">
+                        <p-button
+                          type="button"
+                          (click)="toggleEditor(4)"
+                          [class.active]="expandedIndex === 4"
+                        >
+                          Alternativa D
+                        </p-button>
+                        <div *ngIf="expandedIndex === 4">
+                          <div
+                            id="summernote4"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativa4.corpo"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-              </div>
+                </div>
               <div class="action-buttons">
                 <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                 <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
@@ -112,7 +164,7 @@
               <div class="action-buttons">
                 
                 <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
-                <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" label="btnCriarEnviar"></button>
+                <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" [label]="btnCriarEnviar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
           </ng-template>
@@ -120,7 +172,7 @@
     </p-stepper>
   </div>
   <div class="box-btn-fechar">
-    <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe" (click)="fecharIframe()">fechar</button>
+    <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe" (click)="fecharIframe()">Fechar</button>
   </div>
 </form>
 

@@ -92,7 +92,8 @@ export class CreateQuestionsComponent implements OnInit {
   passou = false;
   showPreview = false;
   alternativas = [];
-  btnCriarEnviar = 'Criar'
+  btnCriarEnviar = 'Criar';
+  expandedIndex: number | null = null;
   
   
   @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
@@ -173,6 +174,10 @@ export class CreateQuestionsComponent implements OnInit {
 
   get f() {
     return this.criarQuestaoForm.controls;
+  }
+
+  toggleEditor(index: number) {
+    this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
   onSubmit() {
