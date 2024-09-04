@@ -18,7 +18,7 @@ import { DadosDetalhamentoQuestoesEnviadas } from '../modules/professor/models/D
 })
 export class PluriService {
 
-  baseUrl = "http://localhost:8080/pluri";
+  baseUrl = "http://200.131.116.21:8081/pluri";
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 

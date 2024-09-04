@@ -149,7 +149,7 @@ export class CreateQuestionsComponent implements OnInit {
         ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
+    uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
     buttons: {}
   };
 

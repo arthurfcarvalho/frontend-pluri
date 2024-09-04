@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RelatoriosService {
 
-  baseUrl = "http://localhost:8080/relatorio";
+  baseUrl = "http://200.131.116.21:8081/relatorio";
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Permission } from '../models/Permission.model';
 })
 export class PermService {
 
-  baseUrl = 'http://localhost:8080/permissao/';
+  baseUrl = 'http://200.131.116.21:8081/permissao/';
 
   constructor(private httpClient: HttpClient) { }
 

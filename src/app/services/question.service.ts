@@ -13,7 +13,7 @@ import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetal
 })
 export class QuestionService {
 
-  baseUrl = "http://localhost:8080/questao";
+  baseUrl = "http://200.131.116.21:8081/questao";
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 
