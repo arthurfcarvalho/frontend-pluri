@@ -104,16 +104,16 @@ export class HeaderComponent {
                   },
                   {
                     label: 'Áreas',
-                    //visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
+                    visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
                     items: [
                       {
                         label: 'Criar Área',
-                        //visible: this.userHasPermission(["CRIAR_PERFIL"]),
+                        visible: this.userHasPermission(["CRIAR_PERFIL"]),
                         routerLink: '/criar-area'
                       },
                       {
                         label: 'Pesquisar Áreas',
-                        //visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
+                        visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
                         routerLink: '/pesquisar-areas'
                       }
                     ]
@@ -122,33 +122,33 @@ export class HeaderComponent {
               },
               {
                 label: 'Professor',
-                //visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+                visible: this.userHasPermission(["CRIAR_QUESTAO"]),
                 items: [
                   {
                     label: 'Criar Questão',
                     routerLink: '/criar-questao',
-                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                   {
                     label: 'Minhas Questões',
                     routerLink: '/minhas-questoes',
-                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                   {
                     label: 'Questoes a Enviar',
                     routerLink: '/questoes-a-enviar',
-                    visible: this.userHasPermission(["PESQUISAR_PLURI"])
+                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                 ]
               },
               {
                 label: 'Ajuntador',
-                //visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+                visible: this.userHasPermission(["CRIAR_QUESTAO"]),
                 items: [
                   {
                     label: 'Indicar Docente para pluri Area',
                     routerLink: '/listar-pluri-areas',
-                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                 ]
               },

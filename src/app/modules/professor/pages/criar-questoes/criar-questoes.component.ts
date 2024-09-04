@@ -59,12 +59,12 @@ import { CheckboxModule } from 'primeng/checkbox';
 export class CreateQuestionsComponent implements OnInit {
   content = "Digite";
   titulo = 'Digite o titulo';
-  corpo = " ";
+  corpo = ' ';
   alternativas = [
-    {corpo: '', correta: false, posicao: 1},
-    {corpo: '', correta: false, posicao: 2},
-    {corpo: '', correta: false, posicao: 3},
-    {corpo: '', correta: false, posicao: 4}
+    {corpo: ' ', correta: false, posicao: 1},
+    {corpo: ' ', correta: false, posicao: 2},
+    {corpo: ' ', correta: false, posicao: 3},
+    {corpo: ' ', correta: false, posicao: 4}
   ];
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
@@ -116,13 +116,13 @@ export class CreateQuestionsComponent implements OnInit {
     
     this.criarQuestaoForm = this.fb.group({
       titulo: new FormControl('', Validators.required),
-      corpo: new FormControl('', Validators.required),
+      corpo: new FormControl(' ', Validators.required),
       dificuldade: new FormControl('', Validators.required),
-      alternativas: new FormControl(''),
-      alternativa1: new FormControl(''),
-      alternativa2: new FormControl(''),
-      alternativa3: new FormControl(''),
-      alternativa4: new FormControl(''),
+      alternativas: new FormControl(' '),
+      alternativa1: new FormControl(' '),
+      alternativa2: new FormControl(' '),
+      alternativa3: new FormControl(' '),
+      alternativa4: new FormControl(' '),
       codigo_assuntos: [[]],
       idArea: [''],
       correta: new FormControl(''),
@@ -193,7 +193,10 @@ export class CreateQuestionsComponent implements OnInit {
     .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
-    formValue.idArea = formValue.idArea.id;
+    //formValue.idArea = formValue.idArea.id;   
+    formValue.idArea = this.criarQuestaoForm.get('idArea')?.value;
+    formValue.idArea = formValue.idArea.id;   
+
     console.log("Questão", formValue)
 
     this.questaoService.createQuestion(formValue).subscribe({
@@ -244,6 +247,10 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.corpo = this.corpo;
   
     formValue.alternativas = this.alternativas;
+
+    console.log(formValue)
+
+    
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(3000),
