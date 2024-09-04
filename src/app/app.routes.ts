@@ -64,77 +64,135 @@ export const routes: Routes = [
     {
         path: "pesquisar-pluri",
         component: SearchPluriComponent,
-        title: "Pesquisar Pluri - Pluri"
+        title: "Pesquisar Pluri - Pluri",
+        canActivate: [authGuard, permGuard],
+        data:
+        {
+            perms: ['CRIAR_PLURI']
+        }
     },
     {
         path: "editar-pluri/:id",
         component: UpdatePluriComponent,
-        title: "Editar Pluri - Pluri"
+        title: "Editar Pluri - Pluri",
+        data: {
+            perms: ['CRIAR_PLURI']
+        }
     },
     {
         path: "pesquisar-usuarios",
         component: SearchUsersComponent,
-        title: "Pesquisar Usuários - Pluri"
+        title: "Pesquisar Usuários - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['PESQUISAR_USUARIOS']
+        }
     },
     {
         path: "indicar-docentes/:id",
         component: IndicacaoDocentesComponent,
-        title: "Indicar Docentes - Pluri"
+        title: "Indicar Docentes - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['APROVAR_QUESTAO']
+        }
     },
     {
         path: "criar-questao",
         component: CreateQuestionsComponent,
-        title: "Criar Questao - Questao"
+        title: "Criar Questao - Questao",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_QUESTAO']
+        }
+
     },
     {
         path: "criar-questao/:id",
         component: CreateQuestionsComponent,
-        title: "Criar Questao - Questao"
+        title: "Criar Questao - Questao",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_QUESTAO']
+        }
     },
     {
         path: "minhas-questoes",
         component: ListaQuestoesUsuarioComponent,
-        title: "Listar Questao - Questao"
+        title: "Listar Questao - Questao",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_QUESTAO']
+        }
     },
     {
         path: "editar-questao/:id",
-        component: EditarQuestaoComponent
+        component: EditarQuestaoComponent,
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_QUESTAO']
+        }
     },
     {
         path: "questoes-a-enviar",
-        component: ListarQuestaoAEnviarComponent
+        component: ListarQuestaoAEnviarComponent,
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_QUESTAO']
+        }
     },
     {
         path: "listar-pluri-areas",
-        component: ListarPluriAreasComponent
+        component: ListarPluriAreasComponent,
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['APROVAR_QUESTAO']
+        }
     },
     {
         path: "criar-perfil",
         component: CreateRoleComponent,
-        title: "Criar Perfil - Pluri"
+        title: "Criar Perfil - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_PERFIL']
+        }
     },
     {
         path: "lista-questoes-para-envio/:idQuestaoAEnviar",
-        component: EnviarQuestaoComponent
+        component: EnviarQuestaoComponent,
     },
     {
         path: "pesquisar-perfis",
         component: SearchRolesComponent,
-        title: "Pesquisar Perfis - Pluri"
+        title: "Pesquisar Perfis - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_PERFIL'] 
+        }
     },
     {
         path: "acesso-negado",
         component: DeniedAcessComponent,
-        title: "Acesso Negado - Pluri"
+        title: "Acesso Negado - Pluri",
+        canActivate: [authGuard]
     },
     {
         path: "pesquisar-areas",
         component: SearchAreasComponent,
-        title: "Pesquisar Áreas - Pluri"
+        title: "Pesquisar Áreas - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_AREA']
+        }
     },
     {
         path: "criar-area",
         component: CreateAreaComponent,
-        title: "Criar Área - Pluri"
+        title: "Criar Área - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_AREA']
+        }
     }
 ];
