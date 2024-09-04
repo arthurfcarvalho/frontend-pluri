@@ -84,6 +84,12 @@ iframe {
     width: 500px;
     margin: 0 auto;
   }
+
+  .button-checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 .action-buttons {

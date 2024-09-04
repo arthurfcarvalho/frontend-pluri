@@ -6,12 +6,8 @@ import { QuestionService } from './../../../../services/question.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
 import { MatDialog } from '@angular/material/dialog';
-
-
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
@@ -25,7 +21,6 @@ import { AreaService } from '../../../../services/area.service';
 import { HttpClient } from '@angular/common/http';
 import { RelatoriosService } from '../../../../services/relatorios.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 import { InputTextModule } from 'primeng/inputtext';
@@ -34,16 +29,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule } from '@angular/common';
 import { NgxSummernoteModule } from 'ngx-summernote';
-
-
-interface DynamicFields {
-  titulo: string,
-  corpo: string;
-  alternativa1: any;
-  alternativa2: any;
-  alternativa3: any;
-  alternativa4: any;
-}
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-criar-questoes',
@@ -64,21 +50,22 @@ interface DynamicFields {
     ButtonModule,
     ToggleButtonModule,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    CheckboxModule
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
 })
 export class CreateQuestionsComponent implements OnInit {
-
-
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1: Alternativa = {corpo: ' ', correta: false, posicao: 1};
-  alternativa2: Alternativa = {corpo: ' ', correta: false, posicao: 2};
-  alternativa3: Alternativa = {corpo: ' ', correta: false, posicao: 3};
-  alternativa4: Alternativa = {corpo: ' ', correta: false, posicao: 4};
+  alternativas = [
+    {corpo: '', correta: false, posicao: 1},
+    {corpo: '', correta: false, posicao: 2},
+    {corpo: '', correta: false, posicao: 3},
+    {corpo: '', correta: false, posicao: 4}
+  ];
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
@@ -91,15 +78,9 @@ export class CreateQuestionsComponent implements OnInit {
   desabilitado = true;
   passou = false;
   showPreview = false;
-  alternativas = [];
   btnCriarEnviar = 'Criar';
-  expandedIndex: number | null = null;
-  
-  
+  expandedIndexes: boolean[] = [false, false, false, false];
   @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
-
-
-
   active: number | undefined = 0;
 
   constructor(
@@ -137,9 +118,14 @@ export class CreateQuestionsComponent implements OnInit {
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
       dificuldade: new FormControl('', Validators.required),
-      alternativas: new FormControl('', Validators.required),
+      alternativas: new FormControl(''),
+      alternativa1: new FormControl(''),
+      alternativa2: new FormControl(''),
+      alternativa3: new FormControl(''),
+      alternativa4: new FormControl(''),
       codigo_assuntos: [[]],
-      idArea: ['']
+      idArea: [''],
+      correta: new FormControl(''),
     });
   }
 
@@ -165,7 +151,6 @@ export class CreateQuestionsComponent implements OnInit {
     },
     uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
     buttons: {}
-    
   };
 
   ngOnInit(): void {
@@ -177,7 +162,17 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   toggleEditor(index: number) {
-    this.expandedIndex = this.expandedIndex === index ? null : index;
+    this.expandedIndexes[index] = !this.expandedIndexes[index];
+  }
+
+  setCorreta(index: number) {
+    this.alternativas.forEach((alternativa, i) => {
+      if (i === index) {
+        alternativa.correta = true;
+      } else {
+        alternativa.correta = false;
+      }
+    });
   }
 
   onSubmit() {
@@ -189,21 +184,16 @@ export class CreateQuestionsComponent implements OnInit {
     const formValue = this.criarQuestaoForm.value;
 
     formValue.corpo = this.corpo;
-    
-    const alternativas = [
-      this.alternativa1,
-      this.alternativa2,
-      this.alternativa3,
-      this.alternativa4
-    ];
 
-    formValue.alternativas = alternativas;
+
+    formValue.alternativas = this.alternativas;
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
     .map((assunto: { codigo: string }) => assunto.codigo)
     .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
+    formValue.idArea = formValue.idArea.id;
     console.log("Questão", formValue)
 
     this.questaoService.createQuestion(formValue).subscribe({
@@ -231,10 +221,10 @@ export class CreateQuestionsComponent implements OnInit {
     return `
       <div>
         <div>${corpo || this.corpo}</div><br>
-        <p><strong>1)</strong> ${alternativa1.texto || this.alternativa1.corpo}</p>
-        <p><strong>2)</strong> ${alternativa2.corpo || this.alternativa2.corpo}</p>
-        <p><strong>3)</strong> ${alternativa3.corpo || this.alternativa3.corpo}</p>
-        <p><strong>4)</strong> ${alternativa4.corpo || this.alternativa4.corpo}</p>
+        <p><strong>1)</strong> ${alternativa1.texto || this.alternativas[0].corpo}</p>
+        <p><strong>2)</strong> ${alternativa2.corpo || this.alternativas[1].corpo}</p>
+        <p><strong>3)</strong> ${alternativa3.corpo || this.alternativas[2].corpo}</p>
+        <p><strong>4)</strong> ${alternativa4.corpo || this.alternativas[3].corpo}</p>
       </div>
     `;
   }
@@ -249,20 +239,11 @@ export class CreateQuestionsComponent implements OnInit {
     .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
-
+    formValue.idArea = formValue.idArea.id;
 
     formValue.corpo = this.corpo;
-    
-    const alternativas = [
-      this.alternativa1,
-      this.alternativa2,
-      this.alternativa3,
-      this.alternativa4
-    ];
-
-    formValue.alternativas = alternativas;
-
-    
+  
+    formValue.alternativas = this.alternativas;
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(3000),
