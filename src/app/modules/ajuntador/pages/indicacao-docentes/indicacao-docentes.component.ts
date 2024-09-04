@@ -1,12 +1,12 @@
 import { DadosDetalhamentoAreaPluri } from './../../models/DadosDetalhamentoInformacoesGerais.mode';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PluriService } from '../../../../services/pluri.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FieldsetModule } from 'primeng/fieldset';
 import { HeaderComponent } from '../../../home/components/header/header.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { User } from '../../../../models/User.model';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -15,6 +15,13 @@ import { UserService } from '../../../../services/user.service';
 import { SplitterModule } from 'primeng/splitter';
 import { PanelModule } from 'primeng/panel';
 import { DadosDetalhamentoInformacoesGerais } from '../../models/DadosDetalhamentoInformacoesGerais.mode';
+import { DadosDetalhamentoQuestoesEnviadas } from '../../../professor/models/DadosDetalhamentoQuestaoEnviadas.model';
+import { DialogModule } from 'primeng/dialog';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DadosDetalhamentoQuestao } from '../../../professor/models/DadosDetalhamentoQuestao.model';
+import { RelatoriosService } from '../../../../services/relatorios.service';
+import { QuestionService } from '../../../../services/question.service';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -29,18 +36,32 @@ import { DadosDetalhamentoInformacoesGerais } from '../../models/DadosDetalhamen
     ButtonModule,
     FormsModule,
     SplitterModule,
-    PanelModule
+    PanelModule,
+    DialogModule,
+    DividerModule
   ],
   templateUrl: './indicacao-docentes.component.html',
-  styleUrl: './indicacao-docentes.component.scss'
+  styleUrl: './indicacao-docentes.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class IndicacaoDocentesComponent {
 
   indicacaoDocentesForm: FormGroup;
   selectedTeacher!: User;
+  questoesSelecionadas: DadosDetalhamentoQuestao[] = [];
   selectedAreaId!: number;
   teacherQuestionPairs: { teacher: User; amount: number }[] = [];
-
+  mostrarDialog = false
+  carregamento: boolean = false
+  pdfUrl: SafeResourceUrl | null = null;
+  idQuestaoEnviar: number = 0
+  idQuestoesAEnviar: number[] = []
+  questoesEnviadas: DadosDetalhamentoQuestoesEnviadas = {
+    idQuestoesAEnviar: 0,
+    idPluriArea: 0,
+    idPluri: 0,
+    nomePluri: "",
+  }
   pluri: DadosDetalhamentoInformacoesGerais = {
     id: 1,
     nome: 'Pluri Example',
@@ -52,8 +73,6 @@ export class IndicacaoDocentesComponent {
     areasPluri: new Set<DadosDetalhamentoAreaPluri>([]),
   }
   pluriAreas: DadosDetalhamentoAreaPluri[] = []
-    
-
   teachers: User[] = [
     {
       id: 1,
@@ -62,15 +81,19 @@ export class IndicacaoDocentesComponent {
       senha: '123456',
       data_nascimento: new Date('1980-01-01'),
       email: 'joaosilva@email.com',
-      perfis: [] // Empty array for perfis
+      perfis: [] 
     },
   ];
 
   constructor(
+    private location: Location,
     private route: ActivatedRoute,
+    private relatoriosService: RelatoriosService,
     private pluriService: PluriService,
     private toastService: ToastrService,
-    private usuarioService: UserService
+    private usuarioService: UserService,
+    private sanitizer: DomSanitizer,
+    private questaoService: QuestionService
   ){
     this.indicacaoDocentesForm = new FormGroup({
       idUsuario: new FormControl(null, Validators.required),
@@ -85,7 +108,6 @@ export class IndicacaoDocentesComponent {
       this.pluriService.listagemParaIndicacao(id).subscribe(pluri => {
         this.pluri = pluri
         this.pluriAreas =  Array.from(pluri.areasPluri);
-        console.log(this.pluriAreas)
       })
     }
     this.usuarioService.retornaProfessores().subscribe(professores => {
@@ -95,7 +117,6 @@ export class IndicacaoDocentesComponent {
       this.teachers = professores.content
     })*/
   }
-
   onAreaSelect(event: any){
     this.selectedAreaId = event.value.idPluriArea;
   }
@@ -163,8 +184,58 @@ export class IndicacaoDocentesComponent {
         this.toastService.success("Docente indicado com sucesso!");
       },
       error: (e) => {
-        this.toastService.error("Erro ao indicar docente. Tente novamente!");
+        this.toastService.error(e.error.mensagem);
       },
     });
+  }
+  fechar(){
+    this.mostrarDialog = false
+  }
+  visualizarQuestoesEnviadas(id: number){
+    this.pluriService.listarQuestoesEnviadas(id).subscribe((questoes)=>{
+      this.mostrarDialog = true
+      this.questoesEnviadas = questoes
+    })
+  }
+  previewQuestoesNoModelo(id: number){
+    this.idQuestoesAEnviar.push(id)
+    const questoesSelecionadas = {
+       questoesSelecionadas: this.idQuestoesAEnviar
+    }
+    this.relatoriosService.previewQuestoesAEnviar(questoesSelecionadas).subscribe((pdfBlob: Blob) => {
+      const blobUrl = window.URL.createObjectURL(pdfBlob);
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
+      window.open(blobUrl)
+      this.carregamento = false;
+      this.idQuestoesAEnviar = []
+      this.toastService.success("Preview gerado com sucesso!");
+    }, error => {
+      this.carregamento = false;
+      this.toastService.error("Erro ao gerar preview!");
+    });
+  }
+  aprovarQuestao(id: number){
+    this.questaoService.aprovarQuestao(id).subscribe({
+      next: (value) => {
+        location.reload()
+        this.toastService.success("Aprovado com sucesso")
+      },
+      error:(e)=> {
+        this.toastService.success(e.error.mensagem)
+      }
+      }
+    )
+  }
+  reprovarQuestao(id: number){
+    this.questaoService.reprovarQuestao(id).subscribe({
+      next: (value) => {
+        location.reload()
+        this.toastService.success("Reprovada com sucesso")
+      },
+      error:(e)=> {
+        this.toastService.success(e.error.mensagem)
+      }
+      }
+    )
   }
 }
