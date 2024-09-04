@@ -57,7 +57,7 @@ export class HeaderComponent {
               },
               {
                 label: 'Pluri',
-                visible: this.userHasPermission(["CRIAR_PLURI", "PESQUISAR_PLURI"]),
+                visible: this.userHasPermission(["CRIAR_PLURI"]),
                 items: [
                   {
                     label: 'Criar Pluri',
@@ -67,44 +67,44 @@ export class HeaderComponent {
                   {
                     label: 'Pesquisar Pluri',
                     routerLink: '/pesquisar-pluri',
-                    visible: this.userHasPermission(["PESQUISAR_PLURI"])
+                    visible: this.userHasPermission(["CRIAR_PLURI"])
                   },
                 ]
               },
               {
                 label: 'Administração',
-                visible: this.userHasPermission(["PESQUISAR_ALUNOS", "ATRIBUIR_PERMISSAO_PERFIL"]),
+                visible: this.userHasPermission(["CRIAR_PLURI"]),
                 items: [
                   {
                     label: 'Usuários',
-                    visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
+                    visible: this.userHasPermission(["CRIAR_PLURI"]),
                     items: [
                       {
                         label: 'Pesquisar Usuários',
-                        visible: this.userHasPermission(["PESQUISAR_ALUNOS"]),
+                        visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-usuarios'
                       }
                     ]
                   },
                   {
                     label: 'Perfis',
-                    visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
+                    visible: this.userHasPermission(["CRIAR_PLURI"]),
                     items: [
                       {
                         label: 'Criar Perfil',
-                        visible: this.userHasPermission(["CRIAR_PERFIL"]),
+                        visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/criar-perfil'
                       },
                       {
                         label: 'Pesquisar Perfis',
-                        visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
+                        visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-perfis'
                       }
                     ]
                   },
                   {
                     label: 'Áreas',
-                    visible: this.userHasPermission(["CRIAR_PERFIL", "ATRIBUIR_PERMISSAO_PERFIL"]),
+                    visible: this.userHasPermission(["CRIAR_PLURI"]),
                     items: [
                       {
                         label: 'Criar Área',
@@ -113,7 +113,7 @@ export class HeaderComponent {
                       },
                       {
                         label: 'Pesquisar Áreas',
-                        visible: this.userHasPermission(["ATRIBUIR_PERMISSAO_PERFIL"]),
+                        visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-areas'
                       }
                     ]
