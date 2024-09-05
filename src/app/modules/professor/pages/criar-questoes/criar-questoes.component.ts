@@ -253,7 +253,7 @@ export class CreateQuestionsComponent implements OnInit {
     
 
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(3000),
+      timeout(10000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);
