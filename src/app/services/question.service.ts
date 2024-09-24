@@ -13,7 +13,8 @@ import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetal
 })
 export class QuestionService {
 
-  baseUrl = "http://200.131.116.21:8081/questao";
+  //baseUrl = "http://200.131.116.21:8081/questao";
+  baseUrl = "http://localhost:8080/questao";
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 
@@ -22,12 +23,18 @@ export class QuestionService {
     return this.httpClient.post<Questao>(url, data);
   }
   
-  listQuestionsUser(id: number){
+  /*listQuestionsUser(id: number){
     const url = this.baseUrl + `/listar-questoes-usuario/${id}`
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
+  }*/
+  
+  listQuestionsUser(userId: number, page: number = 0, size: number = 10): Observable<any> {
+    const url = this.baseUrl + `/listar-questoes-usuario/${userId}?page=${page}&size=${size}`;
+    return this.httpClient.get<any>(url);
   }
+  
 
   listById(id: number){
     const url = this.baseUrl + `/listar-questao/${id}`
