@@ -6,6 +6,7 @@ import { PluriService } from '../../../../services/pluri.service';
 import { Pluri } from '../../../../models/Pluri/Pluri.model';
 import { RouterModule } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-search-pluri',
@@ -24,12 +25,19 @@ import { DatePipe } from '@angular/common';
 export class SearchPluriComponent {
 
   dataPluri!: Pluri[];
+  totalRecords = 0;
 
   constructor(private pluriService: PluriService, public datePipe: DatePipe){ 
-    this.pluriService.searchUnfinishedPluris().subscribe((data) => {
+    this.loadPluris(0,10);
+  }
+
+  loadPluris(page: number = 0, size: number = 10){
+    this.pluriService.searchUnfinishedPluris(page, size).subscribe((data) => {
       this.dataPluri = data.content;
+      this.totalRecords = data.totalElements
     })
   }
+  
 
   formatDate(date: Date){
     const day = date.getDate().toString().padStart(2, '0');
@@ -41,5 +49,14 @@ export class SearchPluriComponent {
   formatTrimestre(trimestre: string){
     return `${trimestre}º Trimestre`;
   }
+
+  /*onPageChange(event: LazyLoadEvent) {
+    const first = event.first ?? 0;
+    const rows = event.rows ?? 10;
+    const page = first / rows;
+    const size = rows;
+    this.listPluris(page, size);
+  }*/
+
   
 }

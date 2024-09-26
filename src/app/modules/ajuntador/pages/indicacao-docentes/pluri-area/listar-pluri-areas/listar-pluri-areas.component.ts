@@ -42,6 +42,7 @@ export class ListarPluriAreasComponent {
     perfis: [],
     senha: ''
   }
+  totalRecords = 0;
 
   constructor(private pluriService: PluriService, private usuarioService: UserService) {}
   
@@ -50,18 +51,16 @@ export class ListarPluriAreasComponent {
         this.usuarioService.returnUserByLogin(login.sub).subscribe(
           (user) => {
             this.usuarioLogado = user;
-            console.log(this.usuarioLogado)
         })
     })
-    this.getPluriAreas(this.usuarioLogado.id,0,10)
+    this.loadPluriArea(0,10);
   }
 
-  getPluriAreas(idUsuario: number, page: number, size: number) {
-    this.pluriService.listPluriArea(idUsuario, page, size).subscribe(
+  loadPluriArea(page: number, size: number) {
+    this.pluriService.listPluriArea(this.usuarioLogado.id, page, size).subscribe(
       data => {
         this.dataPluri = data.content;
-        console.log(data.content)
-        console.log(this.dataPluri)
+        this.totalRecords = data.totalElements;
       },
       error => {
         console.error('Error fetching pluri areas', error);
@@ -73,7 +72,7 @@ export class ListarPluriAreasComponent {
     const rows = event.rows ?? 10;
     const page = first / rows;
     const size = rows;
-    this.getPluriAreas(this.usuarioLogado.id, page, size);
+    this.loadPluriArea(page, size);
   }
 
 }

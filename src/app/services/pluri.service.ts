@@ -18,7 +18,8 @@ import { DadosDetalhamentoQuestoesEnviadas } from '../modules/professor/models/D
 })
 export class PluriService {
 
-  baseUrl = "http://200.131.116.21:8081/pluri";
+  //baseUrl = "http://200.131.116.21:8081/pluri";
+  baseUrl = "http://localhost:8080/pluri";
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 
@@ -42,8 +43,9 @@ export class PluriService {
     return this.httpClient.put(url, data);
   }
 
-  searchUnfinishedPluris(): Observable<ApiResponsePageable>{
-    const url = this.baseUrl + `/listar-pluris-nao-realizados`;
+  searchUnfinishedPluris(page: number = 0, size: number = 10): Observable<ApiResponsePageable>{
+    const url = this.baseUrl + `/listar-pluris-nao-realizados?page=${page}&size=${size}`
+  
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
@@ -75,13 +77,8 @@ export class PluriService {
 
   listPluriArea(idusuario: number, page: number, size: number): Observable<ApiResponsePageable>{
     //const url = this.baseUrl + '/listar-pluri-areas'
-    const url = this.baseUrl + '/listar-pluris-e-suas-areas'
-    let params = new HttpParams()
-      .set('idUsuario', idusuario.toString())
-      .set('page', page.toString())
-      .set('size', size.toString())
-
-      return this.httpClient.get<ApiResponsePageable>(url, {params}).pipe(map(
+    const url = this.baseUrl + `/listar-pluris-e-suas-areas?page=${page}&size=${size}`;
+      return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
         obj => obj
       ));
   }

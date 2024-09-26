@@ -5,9 +5,11 @@
     styleClass="p-datatable-striped"
     [paginator]="true"
     [rows]="10"
-    [rowsPerPageOptions]="[10, 20]"
+    [totalRecords]="totalRecords"
+    (onLazyLoad)="loadPluriArea(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+    [rowsPerPageOptions]="[5,10, 20]"
     [tableStyle]="{'min-width': '50rem'}"
-    sortField="data_inicio_pluri"
+    
     [sortOrder]="1"
 >
     <ng-template pTemplate="caption">
