@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Permission } from '../models/Permission.model';
+import { URLS } from '../../assets/constantes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PermService {
 
-  baseUrl = 'http://200.131.116.21:8081/permissao/';
+  baseUrl = `${URLS.IP_LOCAL}/permissao/`;
 
   constructor(private httpClient: HttpClient) { }
 

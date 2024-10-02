@@ -8,6 +8,7 @@ import { TokenService } from './token.service';
 import { User } from '../models/User.model';
 import { Role } from '../models/Role.model';
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
+import { URLS } from '../../assets/constantes';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class UserService {
 
   private userSubject = new BehaviorSubject<User | null>(null)
 
-  baseUrl = 'http://200.131.116.21:8081/usuario/';
+  baseUrl = `${URLS.IP_SERVIDOR}/usuario/`;
 
   constructor(private http: HttpClient, private tokenService: TokenService) { 
     if(this.tokenService.hasToken()){
@@ -59,17 +60,17 @@ export class UserService {
   }
 
   searchUserById(id: number): Observable<User> {
-    const url = `http://200.131.116.21:8081/usuario/listar/${id}`;
+    const url = `${URLS.IP_SERVIDOR}/usuario/listar/${id}`;
     return this.http.get<User>(url);
   }
 
   returnAllUsers(){
-    const url = `http://200.131.116.21:8081/usuario/listar`;
+    const url = `${URLS.IP_SERVIDOR}/usuario/listar`;
     return this.http.get<User[]>(url);
   }
 
   assignRoles(id: number, role: Role[]): Observable<any> {
-    const url = 'http://200.131.116.21:8081/usuario/atualizar-perfis';
+    const url = `${URLS.IP_SERVIDOR}/usuario/atualizar-perfis`;
     const data = { id: id, perfis: role };
     return this.http.put(url, data).pipe(
       map((response: any) => response)
@@ -77,12 +78,13 @@ export class UserService {
   }
 
   signup(user: SignupUser): Observable<ApiResponse>{
-    const url = 'http://200.131.116.21:8081/usuario/registrar';
+    //const url = '${URLS.IP_SERVIDOR}/usuario/registrar';
+    const url = `${URLS.IP_LOCAL}/usuario/registrar`;
     return this.http.post<ApiResponse>(url, user);
   }
 
   retornaProfessores(): Observable<ApiResponsePageable>{
-    const url = 'http://200.131.116.21:8081/usuario/listar-usuarios-professor'
+    const url = `${URLS.IP_SERVIDOR}/usuario/listar-usuarios-professor`
     
     return this.http.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
@@ -90,7 +92,7 @@ export class UserService {
   }
 
   retornaProfessoresPorArea(idArea: number): Observable<any>{
-    const url = `http://200.131.116.21:8081/usuario/listar-por-area/${idArea}`
+    const url = `${URLS.IP_SERVIDOR}/usuario/listar-por-area/${idArea}`
     
     return this.http.get<any>(url).pipe(map(
       obj => obj

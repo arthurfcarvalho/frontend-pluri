@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { URLS } from '../../assets/constantes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RelatoriosService {
 
-  baseUrl = "http://200.131.116.21:8081/relatorio";
+  baseUrl = `${URLS.IP_SERVIDOR}/relatorio`;
 
   constructor(private http: HttpClient) { }
 

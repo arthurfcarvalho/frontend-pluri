@@ -12,6 +12,7 @@ import { PluriArea } from '../models/Pluri/PluriArea.model';
 import { DadosDetalhamentoInformacoesGerais } from '../modules/ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
 import { DadosDetalhamentoQuestaoAEnviar } from '../modules/professor/models/DadosDetalhamentoQuestaoAEnviar.model';
 import { DadosDetalhamentoQuestoesEnviadas } from '../modules/professor/models/DadosDetalhamentoQuestaoEnviadas.model';
+import { URLS } from '../../assets/constantes';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ import { DadosDetalhamentoQuestoesEnviadas } from '../modules/professor/models/D
 export class PluriService {
 
   //baseUrl = "http://200.131.116.21:8081/pluri";
-  baseUrl = "http://localhost:8080/pluri";
+  baseUrl = `${URLS.IP_LOCAL}/pluri`;
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 

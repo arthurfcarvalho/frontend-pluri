@@ -7,6 +7,7 @@ import { Injectable } from "@angular/core";
 import { ApiResponsePageable } from "../types/api-response-pageable.type";
 import { DadosAtualizarQuestao } from "../modules/professor/models/DadosAtualizarQuestao.model";
 import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetalhamentoQuestao.model";
+import { URLS } from "../../assets/constantes";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetal
 export class QuestionService {
 
   //baseUrl = "http://200.131.116.21:8081/questao";
-  baseUrl = "http://localhost:8080/questao";
+  baseUrl = `${URLS.IP_LOCAL}/questao`;
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 
