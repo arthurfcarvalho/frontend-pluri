@@ -1,0 +1,46 @@
+.stepper-panel-content {
+    display: flex;
+    flex-direction: column;
+    height: 12rem;
+
+    .form-container {
+        padding: 50px;
+        border: 2px solid #e4e4e4;
+        border-radius: 8px;
+        flex: 1;
+        display: flex;
+        font-weight: bold;
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            gap: 50px;
+        }
+    }
+
+    .fieldset-container{
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .btn-wrapper {
+
+        display: flex;
+        padding-top: 1rem;
+        justify-content: flex-end;
+        gap: 15px;
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    }
+
+    
+}

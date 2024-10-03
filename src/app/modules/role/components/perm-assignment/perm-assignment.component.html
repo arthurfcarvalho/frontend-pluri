@@ -1,0 +1,25 @@
+<p-pickList 
+    [source]="availablePerms" 
+    [target]="selectedPerms" 
+    sourceHeader="Disponíveis" 
+    targetHeader="Selecionados" 
+    [dragdrop]="true" 
+    [responsive]="true" 
+    [sourceStyle]="{  }"
+    [targetStyle]="{  }" 
+    filterBy="nome" 
+    sourceFilterPlaceholder="Pesquisar pelo nome" 
+    targetFilterPlaceholder="Pesquisar pelo nome"
+    keepSelection="false"
+    stripedRows="true"
+    breakpoint="1400px">
+        <ng-template let-availablePerm pTemplate="item">
+            <span class="font-bold">
+                {{ availablePerm.nome }}
+            </span>
+        </ng-template>
+</p-pickList>
+<div class="submit-button">
+    <p-button label="Salvar" (onClick)=savePerms()/>
+</div>
+

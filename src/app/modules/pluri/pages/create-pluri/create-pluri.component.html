@@ -1,0 +1,58 @@
+<app-header />
+
+<p-stepper [linear]="true">
+    <p-stepperPanel header="Informações Gerais">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+            <div class="stepper-panel-content">
+                <div class="form-container">
+                    <form [formGroup]="informacoesGeraisForm">
+                        <p-floatLabel>
+                            <input type="text" pInputText formControlName="codigo" [readOnly]="true"/>
+                            <label for="codigo">Código</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <input type="text" pInputText formControlName="nome"/>
+                            <label for="nome">Nome</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-dropdown 
+                                formControlName="trimestre"
+                                [options]="trimestreOptions"
+                            />
+                            <label for="trimestre">Trimestre</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="anoAplicacao"
+                                view="year"
+                                dateFormat="yy"
+                            />
+                            <label for="anoAplicacao">Ano de Aplicação</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar
+                                formControlName="dataInicioPluri"
+                                dateFormat="dd/mm/yy"
+                            />
+                            <label for="dataInicioPluri">Data de Início do Pluri</label>
+                        </p-floatLabel>
+                    </form>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="submit-button" (click)="submitInformacoesGerais()">Salvar</button>
+                </div>
+            </div>
+        </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Definir Áreas do Pluri">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+            
+        </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Atividades da Comissão">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+            
+        </ng-template>
+    </p-stepperPanel>
+</p-stepper>
+

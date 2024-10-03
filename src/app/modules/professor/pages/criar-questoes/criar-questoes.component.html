@@ -1,0 +1,221 @@
+<app-header></app-header>
+
+<!--<label *ngIf="passou" class="message-label">O editor está desativado</label>-->
+
+<form [formGroup]="criarQuestaoForm" class="create-question-form">
+<div class="card">
+  <p-stepper [linear]="true">
+      <p-stepperPanel header="Informações">
+          <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                      <div class="box-questoes-sup">
+                        <p class="titulo">Informe as informações basicas da questão</p>
+                        <div class="box-inputs">
+                          <div class="input-container">
+                            <p-floatLabel>
+                              <input type="text" pInputText formControlName="titulo" id="titulo" />
+                              <label for="titulo">Titulo</label>
+                            </p-floatLabel>
+                          </div>
+                          <div class="input-container">
+                            <p-floatLabel>
+                              <p-dropdown
+                                  [options]="dificuldades"
+                                  formControlName="dificuldade"
+                                  inputId="dificuldade" />
+                              <label class="label-dificuldade" for="dificuldade">Dificuldade</label>
+                          </p-floatLabel>
+                          </div>
+                          <div class="input-container">
+                            <p-floatLabel>
+                              <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
+                              <label class="label-dificuldade" for="assunto">Assunto</label>
+                            </p-floatLabel>
+                          </div>
+
+                          <div class="input-container">
+                            <p-dropdown [options]="areasRecebidas" formControlName="idArea" optionLabel="nome"
+                              placeholder="Selecione a area" />
+                          </div>
+                        </div>
+                      </div>
+                    
+                  </div>
+              </div>
+              <div class="action-buttons">
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Corpo">
+          <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                    <div class="box-questoes-sup">
+                      <p class="titulo">Informe o corpo</p>
+                    </div>
+                      <div class="box-corpo">
+                        <div class="box-summernote">
+                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo" [(summernoteModel)]="corpo"></div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="action-buttons">
+                  <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                  <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Alternativas">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium text-align-center">
+                    <div class="box-questoes-sup">
+                      <p class="titulo">Informe as alternativas</p>
+                    </div>
+                    <div class="box-alternativas">
+                      <div class="box-summernote">
+                        <div class="button-checkbox-container">
+                          <p-button
+                          type="button"
+                          (click)="toggleEditor(0)"
+                          [class.active]="expandedIndexes[0]"
+                        >
+                          Alternativa A
+                        </p-button>
+                        <div *ngIf="expandedIndexes[0]">
+                          <p-checkbox for="alternativa1-cb" (onChange)="setCorreta(0)" [value]="alternativas[0].correta"></p-checkbox>
+                          <label id="alternativa1-cb">Alternativa correta?</label>
+                        </div>
+                        </div>
+                        <div *ngIf="expandedIndexes[0]">
+                          <div
+                            id="summernote1"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativas[0].corpo"
+                            [ngxSummernoteView]="alternativas[0].corpo"
+                          >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="box-summernote">
+                        <div class="button-checkbox-container">
+                          <p-button
+                          type="button"
+                          (click)="toggleEditor(1)"
+                          [class.active]="expandedIndexes[1]"
+                        >
+                          Alternativa B
+                        </p-button>
+                        <div *ngIf="expandedIndexes[1]">
+                          <p-checkbox for="alternativa2-cb" (onChange)="setCorreta(1)" [value]="alternativas[1].correta"></p-checkbox>
+                          <label id="alternativa2-cb">Alternativa correta?</label>
+                        </div>
+                        </div>
+                        <div *ngIf="expandedIndexes[1]">
+                          <div
+                            id="summernote2"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativas[1].corpo"
+                            [ngxSummernoteView]="alternativas[1].corpo"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="box-summernote">
+                        <div class="button-checkbox-container">
+                          <p-button
+                          type="button"
+                          (click)="toggleEditor(2)"
+                          [class.active]="expandedIndexes[2]"
+                        >
+                          Alternativa C
+                        </p-button>
+                        <div *ngIf="expandedIndexes[2]">
+                          <p-checkbox for="alternativa3-cb" (onChange)="setCorreta(2)" [value]="alternativas[2].correta"></p-checkbox>
+                          <label id="alternativa3-cb">Alternativa correta?</label>
+                        </div>
+                        </div>
+                        <div *ngIf="expandedIndexes[2]">
+                          <div
+                            id="summernote3"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativas[2].corpo"
+                            [ngxSummernoteView]="alternativas[2].corpo"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="box-summernote">
+                        <div class="button-checkbox-container">
+                          <p-button
+                          type="button"
+                          (click)="toggleEditor(3)"
+                          [class.active]="expandedIndexes[3]"
+                        >
+                          Alternativa D
+                        </p-button>
+                        <div *ngIf="expandedIndexes[3]">
+                          <p-checkbox for="alternativa4-cb" (onChange)="setCorreta(3)" [value]="alternativas[3].correta"></p-checkbox>
+                          <label id="alternativa4-cb">Alternativa correta?</label>
+                        </div>
+                        </div>
+                        <div *ngIf="expandedIndexes[3]">
+                          <div
+                            id="summernote4"
+                            [ngxSummernote]="config"
+                            [(summernoteModel)]="alternativas[3].corpo"
+                            [ngxSummernoteView]="alternativas[3].corpo"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <div class="action-buttons">
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+              </div>
+          </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Preview">
+          <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                 <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                     Clique para gerar o preview e confira sua questão
+                 </div>
+              </div>
+              <div class="flex pt-4 justify-content-start">
+                 
+              </div>
+              <div class="action-buttons">
+                
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
+                <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" [label]="btnCriarEnviar"></button>
+                <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </div>
+  <div class="box-btn-fechar">
+    <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe" (click)="fecharIframe()">Fechar</button>
+  </div>
+</form>
+
+
+<div *ngIf="carregamento" class="custom-spinner-container">
+  <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
+</div>
+<br>
+<div *ngIf="pdfUrl" class="box-preview">
+<p>Sua questão exemplo e a número 01.</p>
+<iframe id="iFramePdf" [src]="pdfUrl"></iframe>
+</div>
+
+
+<div *ngIf="!carregamento && pdfUrl">
+  <iframe [src]="pdfUrl" style="width: 100%; height: 600px; border: none;"></iframe>
+</div>

@@ -1,0 +1,24 @@
+.ui-g{
+    width: 25em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+        div{
+            margin: 0.5em;
+        }
+}
+.dialog-footer {
+    text-align: right;  
+    margin-top: 10px;
+}
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+.btn-fechar .p-button {
+    padding: 5px 5px;
+    font-size: 15px; 
+    height: 10%; 
+    width: auto; 
+}

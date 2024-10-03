@@ -1,0 +1,53 @@
+@import "../../../../..//styles/variables.scss";
+
+header {
+    width: 100%;
+    display: flex;
+    
+    p-menubar{
+        flex: 1;
+        background-color: $secondary-color;
+        color: $text-color;
+
+        img {
+            margin: 10px 40px 0 10px;
+        }
+
+        a{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: $text-color;
+            text-decoration: none;
+            padding: 10px 20px;
+
+            &:hover {
+                background-color: $primary-color;
+                color: #fff;
+            }
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .user-profile-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: $text-color;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+    }
+
+    @media (max-width: 650px) {
+        img {
+            display: none;
+        }
+    }
+}

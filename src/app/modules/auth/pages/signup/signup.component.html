@@ -1,0 +1,62 @@
+<app-login-layout
+    title="Cadastrar-se"
+    primaryBtnText="Cadastrar"
+    secondaryBtnText="Login"
+    (submit)="submit()"
+    (navigate)="navigate()"
+    [disablePrimaryBtn]="!signupForm.valid"
+>
+    <form [formGroup]="signupForm">
+        <app-auth-input
+            formControlName="nome"
+            inputName="nome"
+            type="text"
+            label="Nome"
+            placeholder="Nome completo"
+        >
+            <img src="/assets/icons/name-icon.svg"/>
+        </app-auth-input>
+        <app-auth-input
+            formControlName="email"
+            inputName="email"
+            type="email"
+            label="Email"
+            placeholder="usuario@gmail.com"
+        >
+            <img src="/assets/icons/email-icon.svg"/>
+        </app-auth-input>
+        <app-auth-input
+            formControlName="login"
+            inputName="login"
+            type="text"
+            label="Usuário"
+            placeholder="Nome de Usuário"
+        >
+            <img src="/assets/icons/user-icon.svg"/>
+        </app-auth-input>
+        <app-auth-input
+            formControlName="senha"
+            inputName="senha"
+            type="password"
+            label="Senha"
+        >
+            <img src="/assets/icons/password-icon.svg"/>
+        </app-auth-input>
+        <app-auth-input
+            formControlName="confirmarSenha"
+            inputName="confirmarSenha"
+            type="password"
+            label="Confirme sua senha"
+        >
+            <img src="/assets/icons/password-icon.svg"/>
+        </app-auth-input>
+        <app-auth-input
+            formControlName="data_nascimento"
+            inputName="data_nascimento"
+            type="date"
+            label="Data de Nascimento"
+        >
+            <img src="/assets/icons/date-icon.svg"/>
+        </app-auth-input>
+    </form>
+</app-login-layout>
