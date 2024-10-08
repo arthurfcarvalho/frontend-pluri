@@ -49,7 +49,7 @@ export const routes: Routes = [
         path: "home",
         component: HomeComponent,
         title: "Pluri",
-        canActivate: [authGuard]
+        //canActivate: [authGuard]
     },
     {
         path: "criar-pluri",
