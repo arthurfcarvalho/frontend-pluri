@@ -85,7 +85,7 @@ export const routes: Routes = [
         title: "Pesquisar Usuários - Pluri",
         canActivate: [authGuard, permGuard],
         data: {
-            perms: ['PESQUISAR_USUARIOS']
+            perms: ['CRIAR_PLURI']
         }
     },
     {
