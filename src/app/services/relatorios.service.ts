@@ -8,7 +8,7 @@ import { URLS } from '../../assets/constantes';
 })
 export class RelatoriosService {
 
-  baseUrl = `${URLS.IP_SERVIDOR}/relatorio`;
+  baseUrl = `${URLS.IP_LOCAL}/relatorio`;
 
   constructor(private http: HttpClient) { }
 

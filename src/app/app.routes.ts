@@ -34,10 +34,16 @@ export const routes: Routes = [
         title: "Login - Pluri"
     },
     {
+        path: " ",
+        redirectTo: "/login",
+        pathMatch: "full",
+        title: "Login - Pluri"
+    },
+    {
         path: "login",
         component: LoginComponent,
         title: "Login - Pluri",
-        canActivate: [redirectIfAuthenticatedGuard]
+        //canActivate: [redirectIfAuthenticatedGuard]
     },
     {
         path: "cadastrar",

@@ -1,0 +1,19 @@
+<div class="notification-wrapper">
+    <i class="pi pi-bell" (click)="toggleNotifications()" style="font-size: 1.5rem; cursor: pointer; position: relative;">
+      <p-badge *ngIf="notifications.length > 0" value="{{ notifications }}" severity="danger" styleClass="notification-badge"></p-badge>
+    </i>
+    
+    <p-panel *ngIf="showNotifications" header="Notificações" styleClass="notification-panel">
+      <ng-container *ngIf="notifications.length > 0; else noNotifications">
+        <ul>
+          <li *ngFor="let notification of [1, 2, 3, 4, 5]; let i = index">
+            Notificação {{ i + 1 }}
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #noNotifications>
+        <p>Nenhuma notificação no momento.</p>
+      </ng-template>
+    </p-panel>
+  </div>
+  

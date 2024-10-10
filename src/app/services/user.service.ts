@@ -9,6 +9,7 @@ import { User } from '../models/User.model';
 import { Role } from '../models/Role.model';
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
 import { URLS } from '../../assets/constantes';
+import { MessageModel } from '../modules/home/models/MessageModel';
 
 @Injectable({
   providedIn: 'root'
@@ -92,9 +93,17 @@ export class UserService {
   }
 
   retornaProfessoresPorArea(idArea: number): Observable<any>{
-    const url = `${this.baseUrl}/usuario/listar-por-area/${idArea}`
+    const url = `${this.baseUrl}/listar-por-area/${idArea}`
     
     return this.http.get<any>(url).pipe(map(
+      obj => obj
+    ));;
+  }
+
+  returnMessagesgesUser(idUser: number): Observable<MessageModel[]>{
+    const url = `${this.baseUrl}/messages/${idUser}`
+    
+    return this.http.get<MessageModel[]>(url).pipe(map(
       obj => obj
     ));;
   }

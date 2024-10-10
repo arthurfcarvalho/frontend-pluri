@@ -4,8 +4,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/User.model';
 import { CommonModule } from '@angular/common';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import { Router } from '@angular/router';
+import { NotificationBoxComponent } from './notification-box/notification-box.component';
+import { MessageModel } from '../../models/MessageModel';
 
 
 
@@ -28,7 +30,8 @@ import { Router } from '@angular/router';
   imports: [
     MenubarModule,
     MatMenuModule,
-    CommonModule
+    CommonModule,
+    NotificationBoxComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -38,6 +41,8 @@ export class HeaderComponent {
   menuItems!: MenuItem[];
   user: any;
 
+  notifications: MessageModel[] = [];
+
   constructor(private userService: UserService, private router: Router) {
   }
 
@@ -46,9 +51,16 @@ export class HeaderComponent {
     this.userService.returnUserLogin().subscribe(
       (login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe(
+
           (user) => {
              
             this.user = user;
+
+            this.userService.returnMessagesgesUser(user.id).subscribe(data=> {
+              this.notifications = data;7
+              console.log(data)
+            });
+            
                      
             this.menuItems = [
               {
