@@ -3,6 +3,11 @@
 header {
     width: 100%;
     display: flex;
+    p-menubar-end {
+        display: flex;
+        align-items: center;
+        align-content: center;
+    }
     
     p-menubar{
         flex: 1;
@@ -43,7 +48,14 @@ header {
             text-decoration: none;
             padding: 10px 20px;
         }
-    }
+        
+        #p-menubar-end {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        } 
+    }    
+    
 
     @media (max-width: 650px) {
         img {

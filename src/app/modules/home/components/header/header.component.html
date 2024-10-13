@@ -14,33 +14,32 @@
           </a>
         </ng-template>
       </ng-container>
-      
-    
-      <ng-template pTemplate="end">
-        <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
-          <app-notification-box [notifications]="notifications"></app-notification-box>
-          <ng-container *ngIf="user != undefined">
-            {{ user.nome }}
-          </ng-container>
-          
-        </span>
-        <mat-menu #menu="matMenu" class="user-profile-menu">
-          <button mat-menu-item>
-            <span class="user-profile-item">Editar perfil</span>
-          </button>
-          <span mat-menu-item disabled class="user-profile-item">Perfis:
-            <ng-container *ngIf="user != undefined">
-              @for (perfil of user.dadosPerfil; track perfil.nome) {
-                <br><span class="user-profile-perfis">{{ perfil.nome }}</span>
-              }
-            </ng-container>
-          </span>
 
-          <button mat-menu-item (click)="logout()">
-            <span class="user-profile-item">Sair</span>
-          </button>
-        </mat-menu>
-      
-      </ng-template>
+        <div id="p-menubar-end">
+            <app-notification-box></app-notification-box>
+            <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
+                <ng-container *ngIf="user != undefined">
+                    {{ user.nome }}
+                </ng-container>
+            </span>
+            <mat-menu #menu="matMenu" class="user-profile-menu">
+                <button mat-menu-item>
+                    <span class="user-profile-item">Editar perfil</span>
+                </button>
+                <button mat-menu-item (click)="navigateMessages()">
+                  <span class="user-profile-item">Caixa de mensagens</span>
+              </button>
+                <span mat-menu-item disabled class="user-profile-item">Perfis:
+                    <ng-container *ngIf="user != undefined">
+                        @for (perfil of user.dadosPerfil; track perfil.nome) {
+                            <br><span class="user-profile-perfis">{{ perfil.nome }}</span>
+                        }
+                    </ng-container>
+                </span>
+                <button mat-menu-item (click)="logout()">
+                    <span class="user-profile-item">Sair</span>
+                </button>
+            </mat-menu>
+        </div>
     </p-menubar>
 </header>

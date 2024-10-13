@@ -20,7 +20,7 @@ export class NotificationBoxComponent {
 
   @Input() notifications: MessageModel[] = [];
 
-  showNotifications = false;
+  showNotifications = true;
 
   toggleNotifications() {
     this.showNotifications = !this.showNotifications;

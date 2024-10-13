@@ -1,6 +1,7 @@
 .notification-wrapper {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
   }
   
   .notification-badge {
@@ -11,23 +12,20 @@
   
   .notification-panel {
     position: absolute;
+    top: 2rem; /* Ajuste conforme necessário */
     right: 0;
-    width: 250px;
+    width: 250px; /* Largura da caixa de notificações */
     z-index: 1000;
   }
   
-  ul {
+  .notification-panel ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
   
-  li {
-    padding: 8px;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  li:last-child {
-    border-bottom: none;
+  .notification-panel li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
   }
   

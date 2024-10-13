@@ -193,5 +193,9 @@ export class HeaderComponent {
     this.userService.logout();
     this.router.navigate(['/login']);
   }
+  navigateMessages(){
+    this.userService.logout();
+    this.router.navigate(['/caixa-de-mensagens']);
+  }
   
 }
