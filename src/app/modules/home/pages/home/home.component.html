@@ -1,9 +1,27 @@
 <app-header />
 <div class="content">
+
+  <h1>TUTORIAIS DO PLURI</h1>
+  <p-accordion>
+    <p-accordionTab header="Tutoriais">
+      <p-tabView>
+        <p-tabPanel header="Alunos">
+          <p>LINKS</p>
+        </p-tabPanel>
+        <p-tabPanel header="Professores">
+          <p>LINKS</p>
+        </p-tabPanel>
+        <p-tabPanel header="Comissão">
+          <p>LINKS</p>
+        </p-tabPanel>
+      </p-tabView>
+    </p-accordionTab>
+  </p-accordion>
+
   <h1>REGULAMENTO DO PLURI</h1>
   <h2>INSTITUTO FEDERAL DO TRIÂNGULO MINEIRO - CAMPUS PATROCÍNIO</h2>
 
-  <p-accordion [multiple]="true" [activeIndex]="[0, 1, 2, 3, 4, 5, 6]">
+  <p-accordion [multiple]="true">
     <p-accordionTab header="CAPÍTULO I - Das Disposições Preliminares">
       <p>
         Art. 1°. O presente Regulamento orienta a organização, composição,
@@ -177,23 +195,6 @@
         Art. 12. Os casos omissos neste Regulamento serão apreciados e julgados
         pela comissão.
       </p>
-    </p-accordionTab>
-  </p-accordion>
-
-  <h1>TUTORIAIS DO PLURI</h1>
-  <p-accordion>
-    <p-accordionTab header="Tutoriais">
-      <p-tabView>
-        <p-tabPanel header="Alunos">
-          <p>LINKS</p>
-        </p-tabPanel>
-        <p-tabPanel header="Professores">
-          <p>LINKS</p>
-        </p-tabPanel>
-        <p-tabPanel header="Comissão">
-          <p>LINKS</p>
-        </p-tabPanel>
-      </p-tabView>
     </p-accordionTab>
   </p-accordion>
 </div>

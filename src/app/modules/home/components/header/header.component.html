@@ -1,45 +1,61 @@
 <header>
   <p-menubar [model]="menuItems">
-      <ng-template pTemplate="start">
-        <img src="assets/images/pluri-logo.png" alt="Logo do Pluri" loading="eager" height="100px"/>
-      </ng-template>
-      
-      <ng-container *ngIf="user != undefined">
-        <ng-template pTemplate="item" let-item let-root="root">
-          <!-- @if(!item.perm || userHasPermission(item.perm)){
+    <ng-template pTemplate="start">
+      <img src="assets/images/pluri-logo.png" alt="Logo do Pluri" loading="eager" height="100px" />
+    </ng-template>
+
+    <ng-container *ngIf="user != undefined">
+      <ng-template pTemplate="item" let-item let-root="root">
+        <!-- @if(!item.perm || userHasPermission(item.perm)){
             
           } -->
-          <a [routerLink]="item.route">
-            {{ item.label }}
-          </a>
-        </ng-template>
-      </ng-container>
+        <a [routerLink]="item.route">
+          {{ item.label }}
+        </a>
+      </ng-template>
+    </ng-container>
 
-        <div id="p-menubar-end">
-            <app-notification-box></app-notification-box>
-            <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
-                <ng-container *ngIf="user != undefined">
-                    {{ user.nome }}
-                </ng-container>
-            </span>
-            <mat-menu #menu="matMenu" class="user-profile-menu">
-                <button mat-menu-item>
-                    <span class="user-profile-item">Editar perfil</span>
-                </button>
-                <button mat-menu-item (click)="navigateMessages()">
-                  <span class="user-profile-item">Caixa de mensagens</span>
-              </button>
-                <span mat-menu-item disabled class="user-profile-item">Perfis:
-                    <ng-container *ngIf="user != undefined">
-                        @for (perfil of user.dadosPerfil; track perfil.nome) {
-                            <br><span class="user-profile-perfis">{{ perfil.nome }}</span>
-                        }
-                    </ng-container>
-                </span>
-                <button mat-menu-item (click)="logout()">
-                    <span class="user-profile-item">Sair</span>
-                </button>
-            </mat-menu>
-        </div>
-    </p-menubar>
+    <div id="p-menubar-end" style="position: relative;">
+      <div class="notification-wrapper">
+        <i class="pi pi-bell" (click)="toggleNotifications()"
+          style="font-size: 1.5rem; cursor: pointer; position: relative;">
+          <p-badge *ngIf="notifications.length > 0" [value]="notifications.length" severity="danger"
+            styleClass="notification-badge"></p-badge>
+        </i>
+
+        <p-panel *ngIf="showNotifications" header="Notificações" styleClass="notification-panel">
+          <ng-container *ngIf="notifications.length > 0; else noNotifications">
+            <ul>
+              <li *ngFor="let notification of notifications; let i = index">
+                {{ notification.conteudo }}
+              </li>
+            </ul>
+          </ng-container>
+          <ng-template #noNotifications>
+            <p>Nenhuma notificação no momento.</p>
+          </ng-template>
+        </p-panel>
+      </div>
+      <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
+        <ng-container *ngIf="user != undefined">
+          {{ user.nome }}
+        </ng-container>
+      </span>
+      <mat-menu #menu="matMenu" class="user-profile-menu">
+        <button mat-menu-item>
+          <span class="user-profile-item">Editar perfil</span>
+        </button>
+        <span mat-menu-item disabled class="user-profile-item">Perfis:
+          <ng-container *ngIf="user != undefined">
+            @for (perfil of user.dadosPerfil; track perfil.nome) {
+            <br><span class="user-profile-perfis">{{ perfil.nome }}</span>
+            }
+          </ng-container>
+        </span>
+        <button mat-menu-item (click)="logout()">
+          <span class="user-profile-item">Sair</span>
+        </button>
+      </mat-menu>
+    </div>
+  </p-menubar>
 </header>

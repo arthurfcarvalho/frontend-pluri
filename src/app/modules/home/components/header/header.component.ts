@@ -6,23 +6,9 @@ import { User } from '../../../../models/User.model';
 import { CommonModule } from '@angular/common';
 import { MenuItem, Message } from 'primeng/api';
 import { Router } from '@angular/router';
-import { NotificationBoxComponent } from './notification-box/notification-box.component';
 import { MessageModel } from '../../models/MessageModel';
-
-
-
-// export interface UserHeader {
-//     id: number;
-//     nome: string;
-//     DadosPerfis:{
-//       id: number,
-//       nome: String
-//       Permissoes: {
-
-//       }
-//     },
-// }
-
+import { PanelModule } from 'primeng/panel';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-header',
@@ -31,7 +17,8 @@ import { MessageModel } from '../../models/MessageModel';
     MenubarModule,
     MatMenuModule,
     CommonModule,
-    NotificationBoxComponent
+    PanelModule,
+    BadgeModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -40,8 +27,8 @@ import { MessageModel } from '../../models/MessageModel';
 export class HeaderComponent {
   menuItems!: MenuItem[];
   user: any;
-
   notifications: MessageModel[] = [];
+  showNotifications: boolean = false;
 
   constructor(private userService: UserService, private router: Router) {
   }
@@ -56,9 +43,8 @@ export class HeaderComponent {
              
             this.user = user;
 
-            this.userService.returnMessagesgesUser(user.id).subscribe(data=> {
-              this.notifications = data;7
-              console.log(data)
+            this.userService.returnUserNotifications(user.id).subscribe(data=> {
+              this.notifications = data;
             });
             
                      
@@ -193,9 +179,8 @@ export class HeaderComponent {
     this.userService.logout();
     this.router.navigate(['/login']);
   }
-  navigateMessages(){
-    this.userService.logout();
-    this.router.navigate(['/caixa-de-mensagens']);
-  }
   
+  toggleNotifications(){
+    this.showNotifications = !this.showNotifications;
+  }
 }

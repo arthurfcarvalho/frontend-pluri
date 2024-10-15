@@ -100,7 +100,7 @@ export class UserService {
     ));;
   }
 
-  returnMessagesgesUser(idUser: number): Observable<MessageModel[]>{
+  returnUserNotifications(idUser: number): Observable<MessageModel[]>{
     const url = `${this.baseUrl}/messages/${idUser}`
     
     return this.http.get<MessageModel[]>(url).pipe(map(
