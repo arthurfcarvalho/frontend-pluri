@@ -23,7 +23,13 @@
             styleClass="notification-badge"></p-badge>
         </i>
 
-        <p-panel *ngIf="showNotifications" header="Notificações" styleClass="notification-panel">
+        <p-panel *ngIf="showNotifications" styleClass="notification-panel">
+          <ng-template pTemplate="header">
+            <div class="notification-header">
+              <span>Notificações</span>
+              <i class="pi pi-times" (click)="toggleNotifications()" style="cursor: pointer;"></i>
+            </div>
+          </ng-template>
           <ng-container *ngIf="notifications.length > 0; else noNotifications">
             <ul>
               <li *ngFor="let notification of notifications; let i = index">
