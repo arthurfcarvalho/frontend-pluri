@@ -60,12 +60,12 @@ export class HeaderComponent {
                   {
                     label: 'Criar Pluri',
                     routerLink: '/criar-pluri',
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                    //visible: this.userHasPermission(["CRIAR_PLURI"]),
                   },
                   {
                     label: 'Pesquisar Pluri',
                     routerLink: '/pesquisar-pluri',
-                    visible: this.userHasPermission(["CRIAR_PLURI"])
+                    //visible: this.userHasPermission(["CRIAR_PLURI"])
                   },
                 ]
               },
@@ -79,7 +79,7 @@ export class HeaderComponent {
                     items: [
                       {
                         label: 'Pesquisar Usuários',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
+                        //visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-usuarios'
                       }
                     ]
@@ -90,12 +90,12 @@ export class HeaderComponent {
                     items: [
                       {
                         label: 'Criar Perfil',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
+                        //visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/criar-perfil'
                       },
                       {
                         label: 'Pesquisar Perfis',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
+                        //visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-perfis'
                       }
                     ]
@@ -106,12 +106,12 @@ export class HeaderComponent {
                     items: [
                       {
                         label: 'Criar Área',
-                        visible: this.userHasPermission(["CRIAR_PERFIL"]),
+                        //visible: this.userHasPermission(["CRIAR_PERFIL"]),
                         routerLink: '/criar-area'
                       },
                       {
                         label: 'Pesquisar Áreas',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
+                        //visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-areas'
                       }
                     ]
@@ -125,17 +125,17 @@ export class HeaderComponent {
                   {
                     label: 'Criar Questão',
                     routerLink: '/criar-questao',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                   {
                     label: 'Minhas Questões',
                     routerLink: '/minhas-questoes',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                   {
                     label: 'Questoes a Enviar',
                     routerLink: '/questoes-a-enviar',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                 ]
               },
@@ -146,10 +146,20 @@ export class HeaderComponent {
                   {
                     label: 'Indicar Docente para pluri Area',
                     routerLink: '/listar-pluri-areas',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                 ]
               },
+              {
+                label: 'Diagramador',
+                items: [
+                  {
+                    label: 'Listar Questoes',
+                    routerLink: '/listar-questoes-aprovadas'
+                  }
+                ]
+
+              }
             ]
           }
         )

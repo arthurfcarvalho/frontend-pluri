@@ -24,6 +24,7 @@ import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 import { SearchAreasComponent } from './modules/area/search-areas/search-areas.component';
 import { CreateAreaComponent } from './modules/area/create-area/create-area.component';
 import { EnviarQuestaoComponent } from './modules/professor/pages/enviar-questao/enviar-questao.component';
+import { ListarAreasComponent } from './modules/diagramador/listar-areas/listar-areas.component';
 
 
 export const routes: Routes = [
@@ -191,6 +192,14 @@ export const routes: Routes = [
         data: {
             perms: ['CRIAR_AREA']
         }
+    },
+    {
+        path: "listar-questoes-aprovadas",
+        component: ListarAreasComponent,
+        title: "Pesquisar Questoes - Ajuntador",
+        /*data: {
+            perms: ['CRIAR_AREA']
+        }*/
     },
     {
         path: "criar-area",
