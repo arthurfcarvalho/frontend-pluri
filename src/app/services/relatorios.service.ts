@@ -18,12 +18,11 @@ export class RelatoriosService {
 
     return this.http.post(url, dados,{ responseType: 'blob' });
   }
+  
   previewQuestoesAEnviar(dados: any):Observable<Blob>{
     
     const url = this.baseUrl + '/gerar-pdf-questoes-selecionadas';
 
     return this.http.post(url, dados,{ responseType: 'blob' });
   }
-
-
 }

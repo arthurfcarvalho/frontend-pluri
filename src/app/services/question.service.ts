@@ -8,6 +8,7 @@ import { ApiResponsePageable } from "../types/api-response-pageable.type";
 import { DadosAtualizarQuestao } from "../modules/professor/models/DadosAtualizarQuestao.model";
 import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetalhamentoQuestao.model";
 import { URLS } from "../../assets/constantes";
+import { Area } from "../models/Area.model";
 
 @Injectable({
   providedIn: 'root'
@@ -73,5 +74,16 @@ export class QuestionService {
     const url = this.baseUrl + `/reprovar-questao/${id}`;
     return this.httpClient.put(url,id).pipe(map(obj => obj));
   }
+
+  listarAprovadasPorArea(id: number | null, page: number, size: number): Observable<ApiResponsePageable> {
+    let url = `${this.baseUrl}/aprovadas?page=${page}&size=${size}`;
+
+    if (id !== null && id !== undefined) {
+        url += `&areaId=${id}`;
+    }
+
+    return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
+}
+
   
 }

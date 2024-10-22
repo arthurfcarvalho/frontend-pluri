@@ -51,7 +51,6 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
           (login: any | null) => {
             this.userService.returnUserByLogin(login.sub).subscribe((user) => {
               this.user = user;
-              // Inicializa a primeira página com tamanho 10
               this.loadQuestions(0, 10);
             });
           }
@@ -60,8 +59,8 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
       
       loadQuestions(page: number = 0, size: number = 10) {
         this.questaoService.listQuestionsUser(this.user.id, page, size).subscribe((data) => {
-          this.dataQuestao = data.content; // dados da página
-          this.totalRecords = data.totalElements; // total de registros
+          this.dataQuestao = data.content; 
+          this.totalRecords = data.totalElements;
         });
       }      
 }
