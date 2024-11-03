@@ -78,6 +78,11 @@ export class HeaderComponent {
                     visible: this.userHasPermission(["CRIAR_PLURI"]),
                     items: [
                       {
+                        label: 'Criar Usuário',
+                        //visible: this.userHasPermission(["CRIAR_PLURI"]),
+                        routerLink: '/cadastrar'
+                      },
+                      {
                         label: 'Pesquisar Usuários',
                         //visible: this.userHasPermission(["CRIAR_PLURI"]),
                         routerLink: '/pesquisar-usuarios'

@@ -50,7 +50,7 @@ export const routes: Routes = [
         path: "cadastrar",
         component: SignupComponent,
         title: "Cadastrar - Pluri",
-        canActivate: [redirectIfAuthenticatedGuard]
+        canActivate: [authGuard],
     },
     {
         path: "home",
