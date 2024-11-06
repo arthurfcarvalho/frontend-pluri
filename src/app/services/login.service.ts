@@ -3,17 +3,14 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { LoginResponse } from '../types/login-response.type';
 import { UserService } from './user.service';
-import { URLS } from '../../assets/constantes';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  //baseUrl = `http://200.131.116.21:8081/usuario/`;
-  baseUrl = `${URLS.IP_LOCAL}/usuario/`;
-  
-  //baseUrl = 'http://200.131.116.21:8081/usuario/';
+  baseUrl = environment.apiUrl + '/usuario/';
 
   constructor(private userService: UserService, private httpClient: HttpClient) { }
 

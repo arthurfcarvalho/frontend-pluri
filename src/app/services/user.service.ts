@@ -8,8 +8,8 @@ import { TokenService } from './token.service';
 import { User } from '../models/User.model';
 import { Role } from '../models/Role.model';
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
-import { URLS } from '../../assets/constantes';
 import { MessageModel } from '../modules/home/models/MessageModel';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class UserService {
 
   private userSubject = new BehaviorSubject<User | null>(null)
 
-  baseUrl = `${URLS.IP_LOCAL}/usuario`;
+  baseUrl = environment.apiUrl + '/usuario/';
 
   constructor(private http: HttpClient, private tokenService: TokenService) { 
     if(this.tokenService.hasToken()){
@@ -38,11 +38,11 @@ export class UserService {
   }
 
   returnUserByLogin(login: string){
-    const url = this.baseUrl + `/listar-usuario/${login}`;
+    const url = this.baseUrl + `listar-usuario/${login}`;
     return this.http.get<User>(url);
   }
   returnUserId(login: string){
-    const url = this.baseUrl + `/retornaId/${login}`;
+    const url = this.baseUrl + `retornaId/${login}`;
     return this.http.get<number>(url);
   }
 
@@ -61,17 +61,17 @@ export class UserService {
   }
 
   searchUserById(id: number): Observable<User> {
-    const url = `${this.baseUrl}/usuario/listar/${id}`;
+    const url = `${this.baseUrl}usuario/listar/${id}`;
     return this.http.get<User>(url);
   }
 
   returnAllUsers(){
-    const url = `${this.baseUrl}/listar`;
+    const url = `${this.baseUrl}listar`;
     return this.http.get<User[]>(url);
   }
 
   assignRoles(id: number, role: Role[]): Observable<any> {
-    const url = `${this.baseUrl}/atualizar-perfis`;
+    const url = `${this.baseUrl}atualizar-perfis`;
     const data = { id: id, perfis: role };
     return this.http.put(url, data).pipe(
       map((response: any) => response)
@@ -79,13 +79,12 @@ export class UserService {
   }
 
   signup(user: SignupUser): Observable<ApiResponse>{
-    //const url = '${this.baseUrl}/usuario/registrar';
-    const url = `${URLS.IP_LOCAL}/usuario/registrar`;
+    const url = '${this.baseUrl}usuario/registrar';
     return this.http.post<ApiResponse>(url, user);
   }
 
   retornaProfessores(): Observable<ApiResponsePageable>{
-    const url = `${this.baseUrl}/listar-usuarios-professor`
+    const url = `${this.baseUrl}listar-usuarios-professor`
     
     return this.http.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
@@ -93,7 +92,7 @@ export class UserService {
   }
 
   retornaProfessoresPorArea(idArea: number): Observable<any>{
-    const url = `${this.baseUrl}/listar-por-area/${idArea}`
+    const url = `${this.baseUrl}listar-por-area/${idArea}`
     
     return this.http.get<any>(url).pipe(map(
       obj => obj
@@ -101,7 +100,7 @@ export class UserService {
   }
 
   returnUserNotifications(idUser: number): Observable<MessageModel[]>{
-    const url = `${this.baseUrl}/messages/${idUser}`
+    const url = `${this.baseUrl}messages/${idUser}`
     
     return this.http.get<MessageModel[]>(url).pipe(map(
       obj => obj

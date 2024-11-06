@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { ApiResponsePageable } from '../types/api-response-pageable.type';
 import { Area } from '../models/Area.model';
-import { URLS } from '../../assets/constantes';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AreaService {
 
-  //baseUrl = 'http://200.131.116.21:8081/area/';
-  baseUrl = `${URLS.IP_LOCAL}/area/`;
+  baseUrl = environment.apiUrl + '/area/';
+
   constructor(private httpClient: HttpClient) { }
 
   returnAllAreas(): Observable<ApiResponsePageable>{
