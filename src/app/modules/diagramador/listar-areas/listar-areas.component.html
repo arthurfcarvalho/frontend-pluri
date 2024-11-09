@@ -50,10 +50,7 @@
             <td>{{ questao.areaNome}}</td>
             <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
             <td>
-                <button pButton type="button" label="Editar" routerLink="/editar-questao/{{questao.id}}"></button>
-            </td>
-            <td>
-                <button pButton type="button" label="Preview" routerLink="/editar-questao/{{questao.id}}"></button>
+                <button pButton type="button" label="Preview" routerLink=""></button>
             </td>
             <td>
                 <button pButton type="button" label="Acicionar ao Preview Geral" (click)="adicionarAoPreview(questao.id)"></button>
