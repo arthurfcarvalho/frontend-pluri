@@ -65,7 +65,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-area let-i="rowIndex">
                             <tr>
-                                <td>{{area.nome}}</td>
+                                <td>{{area.area.nome}}</td>
                                 <td>
                                     <p-inputNumber [(ngModel)]="area.quantidadeQuestoes" [min]="0"></p-inputNumber>
                                 </td>
