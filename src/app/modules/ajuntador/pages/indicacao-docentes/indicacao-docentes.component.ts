@@ -22,6 +22,7 @@ import { DadosDetalhamentoQuestao } from '../../../professor/models/DadosDetalha
 import { RelatoriosService } from '../../../../services/relatorios.service';
 import { QuestionService } from '../../../../services/question.service';
 import { DividerModule } from 'primeng/divider';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -38,7 +39,8 @@ import { DividerModule } from 'primeng/divider';
     SplitterModule,
     PanelModule,
     DialogModule,
-    DividerModule
+    DividerModule, 
+    CardModule
   ],
   templateUrl: './indicacao-docentes.component.html',
   styleUrl: './indicacao-docentes.component.scss',

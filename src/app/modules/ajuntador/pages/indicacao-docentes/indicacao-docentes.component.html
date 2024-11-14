@@ -1,49 +1,44 @@
 <app-header></app-header>
 
-<div class="container-pluri" *ngIf="pluri">
-    <h2>Informações Pluri</h2>
-    <div class="box-pluri">
-        <p>Nome: {{ pluri.nome }}</p>
-        <p>Código: {{ pluri.codigo }}</p>
-        <p>Trimestre: {{ pluri.trimestre }}</p>
-        <p>Ano de Aplicação: {{ pluri.anoAplicacao }}</p>
-    </div>
-</div>
-<p-divider />
-<div class="container">
-    <p-fieldset legend="Informações das Áreas do Pluri">
-        <div class=" box">
-            <div class="splitter-panel" *ngFor="let item of pluriAreas">
-                <p-panel header="Área: {{ item.nomeArea }}">
-                    <p>Nome: {{ item.nomeArea }}</p>
-                    <p>Quantidade de Questões: {{ item.quantidadeQuestoes }}</p>
-                    <p>Quantidade de Questões Recebidas: {{ item.quantidadeQuestoesRecebidas }}</p>
-                    <p>Quantidade de Questões Pedidas: {{ item.quantidadeQuestoesPedidas }}</p>
-                    <p [ngClass]="{'green': item.completa, 'red': !item.completa }">
-                        Pluri Area Completa: {{ item.completa ? 'Sim' : 'Não' }}
-                    </p>
-                </p-panel>
-            </div>
-        </div>    
-        <br>
-    </p-fieldset>
-    <br>
-    <p-divider />
-    <p-fieldset class="container-questaoAEnviar" legend="Informações Questões a Enviar">
-        <div  *ngFor="let item of pluriAreas">
-            <h3>{{item.nomeArea}}</h3>
-                <div class="box-questaiAEnviar" *ngFor="let questaoAEnviar of item.questoesAEnviar">
-                    <p>Nome: {{ questaoAEnviar.nomeArea }}</p>
-                    <p>Quantidade de Questões: {{ questaoAEnviar.quantidadeNecessaria }}</p>
-                    <p>Quantidade de Questões Recebidas: {{ questaoAEnviar.quantidadeEnviada }}</p>
-                    <p>Professor: {{ questaoAEnviar.usuarioNome }}</p>
-                    <p-button label="Ver Enviadas" (onClick)="visualizarQuestoesEnviadas(questaoAEnviar.idQuestoesAEnviar)"/>
-                </div>
-            
+<p-panel header="Informações do Pluri" styleClass="pluri-info-panel">
+    <div class="pluri-info-container">
+        <div class="pluri-details">
+            <p><strong>Nome do Pluri:</strong> {{ pluri.nome }}</p>
+            <p><strong>Código:</strong> {{ pluri.codigo }}</p>
+            <p><strong>Trimestre:</strong> {{ pluri.trimestre }}º Trimestre</p>
+            <p><strong>Ano de Aplicação:</strong> {{ pluri.anoAplicacao }}</p>
         </div>
-    </p-fieldset>    
-    
-</div>    
+
+        <p-divider></p-divider>
+
+        <div class="pluri-areas">
+            <p class="pluri-areas-title"><strong>Áreas do Pluri:</strong></p>
+            <div class="areas-grid">
+                <p-card *ngFor="let area of pluriAreas" styleClass="area-card">
+                    <div class="area-header">
+                        <h3>{{ area.nomeArea }}</h3>
+                    </div>
+                    <div class="area-details">
+                        <p><strong>Questões Necessárias:</strong> {{ area.quantidadeQuestoes }}</p>
+                        <p><strong>Questões Recebidas:</strong> {{ area.quantidadeQuestoesRecebidas }}</p>
+                    </div>
+                    <div class="professores-list">
+                        <p *ngIf="area.questoesAEnviar && area.questoesAEnviar.length" class="professores-title">
+                            Professores Solicitados:
+                        </p>
+                        <ul>
+                            <li *ngFor="let questao of area.questoesAEnviar">
+                                <span class="professor-info">{{ questao.usuarioNome }} - {{ questao.quantidadeNecessaria }} questões</span>
+                                <p-button label="Visualizar questões enviadas" (onClick)="visualizarQuestoesEnviadas(questao.idQuestoesAEnviar)" class="btn-ver-questoes" size="small"></p-button>
+                            </li>
+                        </ul>
+                    </div>
+                </p-card>
+            </div>
+        </div>
+    </div>
+</p-panel>
+
 <form [formGroup]="indicacaoDocentesForm">
     <p-fieldset legend="Indicação de Docente(s)">
         <p-dropdown
@@ -76,11 +71,12 @@
             <div *ngFor="let pair of teacherQuestionPairs; let i = index">
                 <p>{{ pair.teacher.nome }}: </p>
                 <p-inputNumber [(ngModel)]="pair.amount" [ngModelOptions]="{standalone: true}"></p-inputNumber>
-                <p-button pButton label="Indicar" (click)="saveAmount(pair.teacher.id, pair.amount)" size="small"></p-button>
+                <p-button label="Indicar" (click)="saveAmount(pair.teacher.id, pair.amount)" size="small"></p-button>
             </div>
         </div>
     </p-fieldset>
 </form>
+
 <p-dialog header="Escolha a ação" [(visible)]="mostrarDialog" [modal]="true" [closable]="false" [resizable]="false">
     <div class="lista-questoes-wrapper">
         <div class="lista-questoes ui-g" *ngFor="let questao of questoesEnviadas.questoesEnviadas">
