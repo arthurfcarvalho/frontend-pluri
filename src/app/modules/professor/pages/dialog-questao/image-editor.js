@@ -93,7 +93,6 @@
           var $container = options.dialogsInBody ? $(document.body) : $editor;
           $.summernote.options.imageAttributes._counter++;
           var i = $.summernote.options.imageAttributes._counter;
-          // console.log('indice for imageAttribute : ', i);
           var body = '<ul class="nav note-nav nav-tabs note-nav-tabs">' +
                         '<li class="nav-item note-nav-item active"><a class="nav-link note-nav-link active" href="#note-imageAttributes-' + i + '" data-toggle="tab">' + lang.imageAttributes.tabImage + '</a></li>' +
                         '<li class="nav-item note-nav-item"><a class="nav-link note-nav-link" href="#note-imageAttributes-attributes-' + i + '" data-toggle="tab">' + lang.imageAttributes.tabAttributes + '</a></li>' +

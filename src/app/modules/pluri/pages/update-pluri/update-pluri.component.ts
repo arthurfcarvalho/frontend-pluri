@@ -130,9 +130,7 @@ export class UpdatePluriComponent {
     const id = this.route.snapshot.paramMap.get('id');
     if(id) {
       this.pluriService.searchPluriById(Number(id)).subscribe(pluri => {
-        this.pluri = pluri;
-        console.log(this.pluri);
-        
+        this.pluri = pluri;        
         //atribuindo os valores recuperados ao Form, no momento está manual, mas no futuro fazer essa conversão de maneira automática
         this.informacoesGeraisForm.patchValue({
           ...this.pluri,
@@ -293,7 +291,6 @@ export class UpdatePluriComponent {
   submitAtividadesComissao(){
     this.atividadesComissaoForm.value.id = this.pluri.id;
     this.updateAtividadesComissaoForm();
-    console.log(this.atividadesComissaoForm.value);
     this.pluriService.updateAtividadesComissao(this.atividadesComissaoForm.value).subscribe({
       next: (value) => {
         this.toastService.success("Informações das atividades da comissão atualizadas com sucesso!");

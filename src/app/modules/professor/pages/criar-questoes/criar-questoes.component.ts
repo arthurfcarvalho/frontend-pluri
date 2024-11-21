@@ -30,6 +30,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule } from '@angular/common';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { CheckboxModule } from 'primeng/checkbox';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-criar-questoes',
@@ -150,7 +151,7 @@ export class CreateQuestionsComponent implements OnInit {
       ]
     },
     //uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
-    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
+    uploadImagePath: `${environment.apiUrl}/controle-de-arquivos/enviar/`,
     buttons: {}
   };
 
@@ -178,8 +179,7 @@ export class CreateQuestionsComponent implements OnInit {
 
   onSubmit() {
     const formData = this.criarQuestaoForm.value;
-    console.log(formData);
-  }
+    }
 
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
@@ -198,7 +198,7 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.idArea = formValue.idArea ? formValue.idArea.id : null;
     formValue.idArea = formValue.idArea.id;
 
-    console.log("Questão", formValue)
+  
 
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
@@ -234,22 +234,22 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   previewQuestaoNoModelo() {
+    this.pdfUrl = "";
     this.showPreview = true;
     this.carregamento = true;
-    const formValue = this.criarQuestaoForm.value;
+    const formValue = { ...this.criarQuestaoForm.value };
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
     .map((assunto: { codigo: string }) => assunto.codigo)
     .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
+
     formValue.idArea = formValue.idArea.id;
 
     formValue.corpo = this.corpo;
   
     formValue.alternativas = this.alternativas;
-
-    console.log(formValue)
 
     
 

@@ -32,6 +32,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Alternativa } from '../../models/Alternativa.model';
 import { Area } from '../../../../models/Area.model';
 import { AreaService } from '../../../../services/area.service';
+import { environment } from '../../../../../environments/environment';
 
 
 interface DynamicFields {
@@ -174,8 +175,6 @@ export class EditarQuestaoComponent {
     //formValue.codigo_assuntos = assuntosCodigosSelecionados;
     formValue.codigoAssuntos = assuntosCodigosSelecionados;
     formValue.id = this.idQuestao;
-
-    console.log("Questão", formValue)
   
     this.questaoService.updateQuestion(formValue).subscribe({ 
         next: (value) => {
@@ -215,7 +214,7 @@ export class EditarQuestaoComponent {
         ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
+    uploadImagePath: `${environment.apiUrl}/controle-de-arquivos/enviar/`,
     buttons: {}
     
   };
@@ -227,7 +226,7 @@ export class EditarQuestaoComponent {
   previewQuestaoNoModelo() {
     this.showPreview = true;
     this.carregamento = true;
-    const formValue = this.atualizarQuestaoForm.value;
+    const formValue = {...this.atualizarQuestaoForm.value};
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
     .map((assunto: { codigo: string }) => assunto.codigo)
@@ -291,7 +290,7 @@ export class EditarQuestaoComponent {
   saveContent() {
     const content = this.previewContent;
 
-    console.log(content);
+    
 
     const tempElement = document.createElement('div');
     tempElement.innerHTML = content;
