@@ -149,7 +149,8 @@ export class CreateQuestionsComponent implements OnInit {
         ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
+    //uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
+    uploadImagePath: "http://localhost:8080/controle-de-arquivos/enviar/",
     buttons: {}
   };
 
@@ -194,8 +195,8 @@ export class CreateQuestionsComponent implements OnInit {
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
     //formValue.idArea = formValue.idArea.id;   
-    formValue.idArea = this.criarQuestaoForm.get('idArea')?.value;
-    formValue.idArea = formValue.idArea.id;   
+    formValue.idArea = formValue.idArea ? formValue.idArea.id : null;
+    formValue.idArea = formValue.idArea.id;
 
     console.log("Questão", formValue)
 

@@ -61,7 +61,7 @@ export class UserService {
   }
 
   searchUserById(id: number): Observable<User> {
-    const url = `${this.baseUrl}usuario/listar/${id}`;
+    const url = `${this.baseUrl}listar/${id}`;
     return this.http.get<User>(url);
   }
 
@@ -79,7 +79,7 @@ export class UserService {
   }
 
   signup(user: SignupUser): Observable<ApiResponse>{
-    const url = '${this.baseUrl}usuario/registrar';
+    const url = `${this.baseUrl}registrar`;
     return this.http.post<ApiResponse>(url, user);
   }
 
