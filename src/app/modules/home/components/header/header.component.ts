@@ -161,7 +161,11 @@ export class HeaderComponent {
                   {
                     label: 'Listar Questoes',
                     routerLink: '/listar-questoes-aprovadas'
-                  }
+                  },{
+                    label: 'Overview',
+                    routerLink: '/overview-prova',
+                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
+                  },
                 ]
 
               }

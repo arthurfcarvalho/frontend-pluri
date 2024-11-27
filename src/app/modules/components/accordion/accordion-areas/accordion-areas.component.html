@@ -1,0 +1,23 @@
+<p-accordion [multiple]="true" [activeIndex]="[0]">
+    <app-accordion-tab header="Tabela de Exemplo" 
+                       [tableHeaders]="['Nome', 'Idade', 'Profissão']" 
+                       [tableData]="[
+                         ['João', 25, 'Engenheiro'],
+                         ['Maria', 30, 'Médica'],
+                         ['Carlos', 28, 'Designer']
+                       ]">
+    </app-accordion-tab>
+  
+    <app-accordion-tab header="Header II">
+      <p>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
+      </p>
+    </app-accordion-tab>
+  
+    <app-accordion-tab header="Header III">
+      <p>
+        At vero eos et accusamus et iusto odio dignissimos...
+      </p>
+    </app-accordion-tab>
+  </p-accordion>
+  

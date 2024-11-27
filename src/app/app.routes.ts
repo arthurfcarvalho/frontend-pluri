@@ -25,6 +25,7 @@ import { SearchAreasComponent } from './modules/area/search-areas/search-areas.c
 import { CreateAreaComponent } from './modules/area/create-area/create-area.component';
 import { EnviarQuestaoComponent } from './modules/professor/pages/enviar-questao/enviar-questao.component';
 import { ListarAreasComponent } from './modules/diagramador/listar-areas/listar-areas.component';
+import { OverviewComponent } from './modules/diagramador/overview/overview.component';
 
 
 export const routes: Routes = [
@@ -205,6 +206,15 @@ export const routes: Routes = [
         path: "criar-area",
         component: CreateAreaComponent,
         title: "Criar Área - Pluri",
+        canActivate: [authGuard, permGuard],
+        data: {
+            perms: ['CRIAR_AREA']
+        }
+    },
+    {
+        path: "overview-prova",
+        component: OverviewComponent,
+        title: "Overview",
         canActivate: [authGuard, permGuard],
         data: {
             perms: ['CRIAR_AREA']
