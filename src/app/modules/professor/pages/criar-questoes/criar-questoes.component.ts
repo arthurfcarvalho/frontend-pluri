@@ -195,9 +195,7 @@ export class CreateQuestionsComponent implements OnInit {
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
     //formValue.idArea = formValue.idArea.id;   
-    formValue.idArea = formValue.idArea ? formValue.idArea.id : null;
     formValue.idArea = formValue.idArea.id;
-
   
 
     this.questaoService.createQuestion(formValue).subscribe({
