@@ -4,6 +4,7 @@ export interface DadosDetalhamentoAreaPluri {
     idPluriArea: number;
     idArea: number;
     nomeArea: string;
+    areaNome: string;
     quantidadeQuestoes: number;
     quantidadeQuestoesRecebidas: number;
     quantidadeQuestoesPedidas: number;
