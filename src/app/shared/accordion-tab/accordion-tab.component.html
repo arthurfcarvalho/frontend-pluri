@@ -3,7 +3,7 @@
     <ng-content></ng-content>
   
    
-    <table *ngIf="tableHeaders.length && tableData.length" class="table">
+    <!--<table *ngIf="tableHeaders.length && tableData.length" class="table">
       <thead>
         <tr>
           <th *ngFor="let header of tableHeaders">{{ header }}</th>
@@ -14,8 +14,8 @@
           <td *ngFor="let cell of row">{{ cell }}</td>
         </tr>
       </tbody>
-    </table>
-    <p-dropdown
+    </table>-->
+    <!--<p-dropdown
             formControlName="idPluriArea"
             [options]="areasOptions"
             optionLabel="nome"
@@ -29,7 +29,7 @@
             (onChange)="onAreaSelect($event)"
         ></p-dropdown>
         <button pButton type="button" label="Buscar" (click)="buscarQuestoes()"></button>
-        <button pButton type="button" label="Gerar PDF" (click)="gerarPdfPreview()"></button>
+        <button pButton type="button" label="Gerar PDF" (click)="gerarPdfPreview()"></button>-->
 <p-table
     [value]="dataArea"
     class="table"

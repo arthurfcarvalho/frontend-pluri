@@ -1,0 +1,46 @@
+<app-header/>
+
+<p-table
+    [value]="dataPluri"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[2,5,10, 20]"
+    [lazy]="true"
+    [totalRecords]="totalRecords"
+    (onLazyLoad)="loadPluris(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+    [tableStyle]="{'min-width': '50rem'}"
+    sortField="data_inicio_pluri"
+    [sortOrder]="1"
+>
+    <ng-template pTemplate="caption">
+        <div>
+            Pluris
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="codigo">Código<p-sortIcon field="codigo"/></th>
+            <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
+            <th pSortableColumn="data_inicio_pluri">Data de Início do Pluri<p-sortIcon field="data_inicio_pluri"/></th>
+            <th pSortableColumn="trimestre">Trimestre<p-sortIcon field="trimestre"/></th>
+            <th pSortableColumn="ano_aplicacao">Ano de Aplicação<p-sortIcon field="ano_aplicacao"/></th>
+            <th pSortableColumn="realizado">Finalizado<p-sortIcon field="realizado"/></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pluri>
+        <tr>
+            <td>{{ pluri.codigo }}</td>
+            <td>{{ pluri.nome }}</td>
+            <td>{{ datePipe.transform(pluri.dataInicioPluri, 'dd/MM/yyyy') }}</td>
+            <td>{{ formatTrimestre(pluri.trimestre) }}</td>
+            <td>{{ pluri.anoAplicacao }}</td>
+            <td>{{ pluri.realizado ? 'Sim' : 'Não' }}</td>
+            <td>
+                <button pButton type="button" label="Overview" routerLink="/overview-pluri/{{pluri.id}}"></button>
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>

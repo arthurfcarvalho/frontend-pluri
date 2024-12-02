@@ -166,6 +166,11 @@ export class HeaderComponent {
                     routerLink: '/overview-prova',
                     //visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
+                  {
+                    label: 'Pesquisar Pluri Overview',
+                    routerLink: '/listar-pluris-diagramador',
+                    //visible: this.userHasPermission(["CRIAR_PLURI"])
+                  },
                 ]
 
               }

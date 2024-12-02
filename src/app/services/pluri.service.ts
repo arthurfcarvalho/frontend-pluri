@@ -1,3 +1,4 @@
+import { ApiResponse } from './../types/api-response.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
@@ -101,6 +102,8 @@ export class PluriService {
       obj => obj
     ));
   }
-  
-
+  listarPluriAreasByPluri(idPluri: number, page: number, size: number): Observable<ApiResponsePageable> {
+    const url = `${this.baseUrl}listar-pluri-areas-pluri/${idPluri}?page=${page}&size=${size}`;
+    return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
+  }  
 }

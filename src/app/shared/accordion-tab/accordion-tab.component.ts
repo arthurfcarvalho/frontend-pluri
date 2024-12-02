@@ -34,11 +34,12 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrl: './accordion-tab.component.scss'
 })
 export class AccordionTabComponent {
-  @Input() header: string = ''; // Cabeçalho do AccordionTab
-  @Input() tableHeaders: string[] = []; // Cabeçalhos da Tabela
+  @Input() header: string = ''; 
+  @Input() tableHeaders: string[] = []; 
   @Input() tableData: any[] = []; 
-  dataArea!: Area[];
-  idArea: number | null = null; // Permitir que seja null para "Geral"
+  @Input() area!: Area;
+  @Input() dataArea!: Area[];
+  idArea: number | null = null;
   totalRecords: number = 0;
   areasOptions: Area[] = [];
   selectedAreaId!: number;
@@ -49,14 +50,13 @@ export class AccordionTabComponent {
   ngOnInit() {
     this.loadQuestoes(0, 10);
 
-    // Requisitar áreas e adicionar a opção "Geral"
     this.areaService.returnAllAreas().subscribe(areas => {
       this.areasOptions = [{ id: 0, nome: 'Geral' }, ...areas.content];
     });
   }
 
   loadQuestoes(page: number, size: number) {
-    // Passa null se a área selecionada for "Geral"
+  
     const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
 
     this.questaoService.listarAprovadasPorArea(areaId, page, size).subscribe(
@@ -68,21 +68,21 @@ export class AccordionTabComponent {
         console.error('Error fetching approved questions', error);
       }
     );
-  }
+  }/*
 
   onAreaSelect(event: any) {
     this.selectedAreaId = event.value.id;
   }
 
-  adicionarAoPreview(questaoId: number) {
+  */adicionarAoPreview(questaoId: number) {
     if (!this.idQuestoesPreview.includes(questaoId)) {
       this.idQuestoesPreview.push(questaoId);
     }
   }
-
+/*
 
   buscarQuestoes() {
-    this.loadQuestoes(0, 10); // Chama a busca ao clicar no botão
+    this.loadQuestoes(0, 10); 
   }
   gerarPdfPreview() {
     const requestData = {
@@ -98,6 +98,6 @@ export class AccordionTabComponent {
         console.error('Error fetching approved questions', error);
       }
     );
-  }
+  }*/
 
 }
