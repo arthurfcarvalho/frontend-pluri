@@ -29,8 +29,6 @@ export class LoginComponent {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
 
-  
-
   constructor(
     private router: Router,
     private loginService: LoginService,

@@ -1,0 +1,41 @@
+<app-header/>
+<div class="container">
+    <p-table
+        [value]="turmas"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 20]"
+        [tableStyle]="{'min-width': '50rem'}"
+        sortField="codigo"
+        [sortOrder]="1"
+    >
+        <ng-template pTemplate="caption">
+            <div>
+                Listagem de Turmas
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="codigo">Código<p-sortIcon field="codigo"/></th>
+                <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
+                <th pSortableColumn="area">Área Técnica<p-sortIcon field="area"/></th>
+                <th pSortableColumn="ano">Ano<p-sortIcon field="ano"/></th>
+                <th class="action-column"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-turma>
+            <tr>
+                <td>{{ turma.codigo }}</td>
+                <td>{{ turma.nome }}</td>
+                <td>{{ turma.area }}</td>
+                <td>{{ turma.ano }}</td>
+                <td class="action-column">
+                    <div class="actions-container">
+                        <button pButton icon="pi pi-pencil" label="Editar" (click)="editTurma(turma)"></button>
+                        <!-- <button pButton icon="pi pi-times" label="Excluir" (click)="deleteTurma(turma)"></button> -->
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

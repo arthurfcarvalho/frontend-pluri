@@ -27,6 +27,8 @@ import { EnviarQuestaoComponent } from './modules/professor/pages/enviar-questao
 import { ListarAreasComponent } from './modules/diagramador/listar-areas/listar-areas.component';
 import { OverviewComponent } from './modules/diagramador/overview/overview.component';
 import { ListaProvaComponent } from './modules/prova/lista-prova/lista-prova.component';
+import { CreateTurmaComponent } from './modules/turma/pages/create-turma/create-turma.component';
+import { SearchTurmasComponent } from './modules/turma/pages/search-turmas/search-turmas.component';
 
 
 export const routes: Routes = [
@@ -226,17 +228,26 @@ export const routes: Routes = [
         component: ListaProvaComponent,
         title: "Overview-",
         canActivate: [authGuard, permGuard],
-        data: {
-            perms: ['CRIAR_AREA']
-        }
     },
     {
         path: "overview-pluri/:id",
         component: OverviewComponent,
         title: "Overview",
         canActivate: [authGuard, permGuard],
-        data: {
-            perms: ['CRIAR_AREA']
-        }
+    },
+    {
+        path: "criar-turmas",
+        component: CreateTurmaComponent,
+        title: "Criar Turma - Pluri",
+    },
+    {
+        path: "listar-turmas",
+        component: SearchTurmasComponent,
+        title: "Listar Turmas - Pluri",
+    },
+    {
+        path: "editar-turma/:codigo",
+        component: CreateTurmaComponent,
+        title: "Editar Turma - Pluri",
     }
 ];
