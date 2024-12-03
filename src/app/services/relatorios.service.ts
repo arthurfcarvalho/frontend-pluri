@@ -25,4 +25,11 @@ export class RelatoriosService {
 
     return this.http.post(url, dados,{ responseType: 'blob' });
   }
+  previewQuestaoSelecionada(id: number):Observable<Blob>{
+    
+    const url = this.baseUrl + 'gerar-pdf-questao-selecionada';
+
+    return this.http.post(url, id,{ responseType: 'blob' });
+  }
+  
 }

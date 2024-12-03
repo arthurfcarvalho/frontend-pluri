@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AccordionModule, AccordionTab } from 'primeng/accordion';
 import { RelatoriosService } from '../../services/relatorios.service';
 import { HttpClient } from '@angular/common/http';
@@ -15,6 +15,10 @@ import { PanelModule } from 'primeng/panel';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { FormsModule } from '@angular/forms';
+import { Questao } from '../../modules/professor/models/Question.model';
+
 
 @Component({
   selector: 'app-accordion-tab',
@@ -29,16 +33,23 @@ import { DropdownModule } from 'primeng/dropdown';
      PanelModule,
      DialogModule,
      DividerModule,
-     DropdownModule],
+     DropdownModule,
+     FormsModule,
+     InputSwitchModule],
   templateUrl: './accordion-tab.component.html',
   styleUrl: './accordion-tab.component.scss'
 })
 export class AccordionTabComponent {
   @Input() header: string = ''; 
-  @Input() tableHeaders: string[] = []; 
-  @Input() tableData: any[] = []; 
+  
   @Input() area!: Area;
-  @Input() dataArea!: Area[];
+  checked: boolean = false
+
+  @Output() questaoSelecionada = new EventEmitter<{checked: boolean, questao: Questao}>();
+  
+  dataArea!: Area[];
+
+  @Input()
   idArea: number | null = null;
   totalRecords: number = 0;
   areasOptions: Area[] = [];
@@ -55,12 +66,28 @@ export class AccordionTabComponent {
     });
   }
 
+  onInputSwitchChange(checked: boolean, questao: Questao) {
+    if (checked) { 
+      if (!this.idQuestoesPreview.includes(questao.id)) {
+        this.idQuestoesPreview.push(questao.id);
+
+        this.questaoSelecionada.emit({checked, questao});
+      }
+    } else {
+      this.idQuestoesPreview = this.idQuestoesPreview.filter(id => id !== questao.id);
+    }
+  }
+  
+
   loadQuestoes(page: number, size: number) {
   
-    const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
+    const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId || this.idArea : this.idArea;
+
+    console.log(areaId)
 
     this.questaoService.listarAprovadasPorArea(areaId, page, size).subscribe(
       data => {
+        console.log(data.content)
         this.dataArea = data.content;
         this.totalRecords = data.totalElements;
       },
@@ -83,7 +110,7 @@ export class AccordionTabComponent {
 
   buscarQuestoes() {
     this.loadQuestoes(0, 10); 
-  }
+  }*/
   gerarPdfPreview() {
     const requestData = {
       questoesSelecionadas: this.idQuestoesPreview
@@ -98,6 +125,24 @@ export class AccordionTabComponent {
         console.error('Error fetching approved questions', error);
       }
     );
-  }*/
+  }
+  gerarPdfPreviewQuestion(questao: Questao) {
 
+    let id = 0;
+
+    if(questao != null){
+      id = questao?.id;
+      console.log(questao)
+    }
+
+    this.relatorioService.previewQuestaoSelecionada(id).subscribe(
+      data => {
+        const url = window.URL.createObjectURL(data);
+        window.open(url);
+      },
+      error => {
+        console.error('Error fetching approved questions', error);
+      }
+    );
+  }
 }

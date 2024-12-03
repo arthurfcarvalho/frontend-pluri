@@ -3,6 +3,11 @@ import { DadosDetalhamentoQuestaoAEnviar } from "../../professor/models/DadosDet
 export interface DadosDetalhamentoAreaPluri {
     idPluriArea: number;
     idArea: number;
+    areaId: number;
+    pluriNome: string;
+    trimestre: number;
+    dataInicio: Date;
+    dataFim: Date;
     nomeArea: string;
     areaNome: string;
     quantidadeQuestoes: number;

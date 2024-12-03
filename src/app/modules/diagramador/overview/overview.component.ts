@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PluriArea } from '../../../models/Pluri/PluriArea.model';
 import { CommonModule } from '@angular/common';
 import { DadosDetalhamentoAreaPluri } from '../../ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
+import { Questao } from '../../professor/models/Question.model';
 
 @Component({
   selector: 'app-overview',
@@ -23,6 +24,11 @@ export class OverviewComponent implements OnInit{
   idPluri!: number;
 
   pluriAreas!: DadosDetalhamentoAreaPluri[];
+
+  questoesEmitidas: Questao[] = [];
+
+  selectedQuestoes: Questao[] = [];
+
 
   constructor(private route: ActivatedRoute, private pluriService: PluriService){}
   
@@ -41,5 +47,9 @@ export class OverviewComponent implements OnInit{
         })
       }
       })
+  }
+
+  atualizarQuestoesSelecionadas(questoes: Questao[]) {
+    this.questoesEmitidas = questoes; 
   }
 }

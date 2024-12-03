@@ -22,7 +22,10 @@ export class AccordionComponent {
   @Input() tableHeaders: string[] = []; 
   @Input() tableData: any[] = []; 
   //@Input() area!: Area;
+  
+  
   dataArea!: Area[];
+  @Input()
   idArea: number | null = null;
   totalRecords: number = 0;
   areasOptions: Area[] = [];

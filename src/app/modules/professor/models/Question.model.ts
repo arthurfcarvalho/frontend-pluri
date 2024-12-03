@@ -2,6 +2,7 @@ import { Alternativa } from "./Alternativa.model";
 
 export interface Questao{
     id_questao: number;
+    id: number;
     corpo: string,
     titulo: string,
     alternativas: Alternativa[];

@@ -1,4 +1,4 @@
-<p-accordionTab [header]="header">
+'<p-accordionTab [header]="header">
     
     <ng-content></ng-content>
   
@@ -66,10 +66,12 @@
             <td>{{ questao.areaNome}}</td>
             <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
             <td>
-                <button pButton type="button" label="Preview" routerLink=""></button>
+                <button pButton type="button" label="Preview" (click)="gerarPdfPreviewQuestion(questao)"></button>
             </td>
             <td>
-                <button pButton type="button" label="Acicionar ao Preview Geral" (click)="adicionarAoPreview(questao.id)"></button>
+                <div class="card flex justify-content-center">
+                    <p-inputSwitch [(ngModel)]="checked" (onChange)="onInputSwitchChange($event.checked, questao)"></p-inputSwitch>
+                </div>
             </td>
         </tr>
     </ng-template>

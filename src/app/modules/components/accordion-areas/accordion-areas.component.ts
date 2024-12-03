@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
 import { AccordionTabComponent } from "../../../shared/accordion-tab/accordion-tab.component";
 import { AccordionComponent } from "../../../shared/accordion/accordion.component";
@@ -9,6 +9,7 @@ import { RelatoriosService } from '../../../services/relatorios.service';
 import { HttpClient } from '@angular/common/http';
 import { QuestionService } from '../../../services/question.service';
 import { AreaService } from '../../../services/area.service';
+import { Questao } from '../../professor/models/Question.model';
 
 @Component({  
   selector: 'app-accordion-areas',
@@ -24,9 +25,13 @@ export class AccordionAreasComponent {
 
   @Input() tableHeaders: string[] = []; 
   @Input() tableData: any[] = []; 
-  @Input() area!: Area;
+  @Input() idArea!: number;
+
+  @Output() questoesSelecionadasChange = new EventEmitter<Questao[]>();
+
+
+  questoesSelecionadas: Questao[] = [];
   dataArea!: Area[];
-  idArea: number | null = null;
   totalRecords: number = 0;
   areasOptions: Area[] = [];
   selectedAreaId!: number;
@@ -42,6 +47,18 @@ export class AccordionAreasComponent {
     });
   }
 
+  onQuestaoSelecionada(event: { questao: Questao, checked: boolean }) {
+    const { questao, checked } = event;
+
+    if (checked) {
+      this.questoesSelecionadas.push(questao); 
+    } else {
+      this.questoesSelecionadas = this.questoesSelecionadas.filter(q => q.id_questao !== questao.id_questao); // Remover se checked for false
+    }
+
+    this.questoesSelecionadasChange.emit(this.questoesSelecionadas); 
+  }
+  
   loadQuestoes(page: number, size: number) {
   
     const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
