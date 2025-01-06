@@ -179,7 +179,7 @@ export const routes: Routes = [
         title: "Pesquisar Perfis - Pluri",
         canActivate: [authGuard, permGuard],
         data: {
-            perms: ['CRIAR_PERFIL'] 
+            perms: ['CRIAR_PERFIL']
         }
     },
     {
@@ -218,22 +218,22 @@ export const routes: Routes = [
         path: "overview-prova",
         component: OverviewComponent,
         title: "Overview",
-        canActivate: [authGuard, permGuard],
-        data: {
-            perms: ['CRIAR_AREA']
-        }
+        //canActivate: [authGuard, permGuard],
+        // data: {
+        //     perms: ['CRIAR_AREA']
+        // }
     },
     {
         path: "listar-pluris-diagramador",
         component: ListaProvaComponent,
         title: "Overview-",
-        canActivate: [authGuard, permGuard],
+        //canActivate: [authGuard, permGuard],
     },
     {
         path: "overview-pluri/:id",
         component: OverviewComponent,
         title: "Overview",
-        canActivate: [authGuard, permGuard],
+        //canActivate: [authGuard, permGuard],
     },
     {
         path: "criar-turmas",

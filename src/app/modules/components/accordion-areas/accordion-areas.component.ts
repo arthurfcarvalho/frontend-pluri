@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
-import { AccordionTabComponent } from "../../../shared/accordion-tab/accordion-tab.component";
 import { AccordionComponent } from "../../../shared/accordion/accordion.component";
 import { PluriArea } from '../../../models/Pluri/PluriArea.model';
 import { DadosDetalhamentoAreaPluri } from '../../ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
@@ -10,11 +9,34 @@ import { HttpClient } from '@angular/common/http';
 import { QuestionService } from '../../../services/question.service';
 import { AreaService } from '../../../services/area.service';
 import { Questao } from '../../professor/models/Question.model';
+import {ButtonDirective, ButtonModule} from "primeng/button";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {TableModule} from "primeng/table";
+import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
+import {SplitterModule} from "primeng/splitter";
+import {PanelModule} from "primeng/panel";
+import {DialogModule} from "primeng/dialog";
+import {DividerModule} from "primeng/divider";
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
 
-@Component({  
+@Component({
   selector: 'app-accordion-areas',
   standalone: true,
-  imports: [AccordionModule, AccordionTabComponent, AccordionComponent],
+  imports: [AccordionModule,
+            AccordionModule,
+            CommonModule,
+            TableModule,
+            ButtonModule,
+            RouterModule,
+            SplitterModule,
+            PanelModule,
+            DialogModule,
+            DividerModule,
+            DropdownModule,
+            FormsModule,
+            InputSwitchModule],
   templateUrl: './accordion-areas.component.html',
   styleUrl: './accordion-areas.component.scss'
 })
@@ -22,20 +44,30 @@ export class AccordionAreasComponent {
   @Input()
   pluriArea!: DadosDetalhamentoAreaPluri;
 
+  @Input() header: string = '';
 
-  @Input() tableHeaders: string[] = []; 
-  @Input() tableData: any[] = []; 
-  @Input() idArea!: number;
+  @Input() area!: Area;
+  checked: boolean = false
+
+  @Output() questaoSelecionada = new EventEmitter<{checked: boolean, questao: Questao}>();
+
+  dataArea!: Area[];
+
+  @Input()
+  idArea: number | null = null;
+  totalRecords: number = 0;
+  areasOptions: Area[] = [];
+  selectedAreaId!: number;
+  idQuestoesPreview: number[] = [];
+
+
+  @Input() tableHeaders: string[] = [];
+  @Input() tableData: any[] = [];
 
   @Output() questoesSelecionadasChange = new EventEmitter<Questao[]>();
 
 
   questoesSelecionadas: Questao[] = [];
-  dataArea!: Area[];
-  totalRecords: number = 0;
-  areasOptions: Area[] = [];
-  selectedAreaId!: number;
-  idQuestoesPreview: number[] = [];
 
   constructor(private relatorioService: RelatoriosService,private http: HttpClient, private questaoService: QuestionService, private areaService: AreaService) {}
 
@@ -47,21 +79,54 @@ export class AccordionAreasComponent {
     });
   }
 
+  onInputSwitchChange(checked: boolean, questao: Questao) {
+    console.log("CHEGOU NO CHECK", checked, questao)
+    if (checked) {
+      if (!this.idQuestoesPreview.includes(questao.id)) {
+        this.idQuestoesPreview.push(questao.id);
+
+        this.questaoSelecionada.emit({checked, questao});
+      }
+    } else {
+      this.idQuestoesPreview = this.idQuestoesPreview.filter(id => id !== questao.id);
+    }
+  }
+  gerarPdfPreviewQuestion(questao: Questao) {
+
+    let id = 0;
+
+    if(questao != null){
+      id = questao?.id;
+      console.log(questao)
+    }
+
+    this.relatorioService.previewQuestaoSelecionada(id).subscribe(
+      data => {
+        const url = window.URL.createObjectURL(data);
+        window.open(url);
+      },
+      error => {
+        console.error('Error fetching approved questions', error);
+      }
+    );
+  }
+
   onQuestaoSelecionada(event: { questao: Questao, checked: boolean }) {
     const { questao, checked } = event;
 
     if (checked) {
-      this.questoesSelecionadas.push(questao); 
+      this.questoesSelecionadas.push(questao);
     } else {
       this.questoesSelecionadas = this.questoesSelecionadas.filter(q => q.id_questao !== questao.id_questao); // Remover se checked for false
     }
 
-    this.questoesSelecionadasChange.emit(this.questoesSelecionadas); 
+    this.questoesSelecionadasChange.emit(this.questoesSelecionadas);
   }
-  
+
   loadQuestoes(page: number, size: number) {
-  
-    const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
+
+    //const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
+    const areaId = this.pluriArea.areaId
 
     this.questaoService.listarAprovadasPorArea(areaId, page, size).subscribe(
       data => {
@@ -86,13 +151,13 @@ export class AccordionAreasComponent {
 
 
   buscarQuestoes() {
-    this.loadQuestoes(0, 10); 
+    this.loadQuestoes(0, 10);
   }
   gerarPdfPreview() {
     const requestData = {
       questoesSelecionadas: this.idQuestoesPreview
     };
-    
+
     this.relatorioService.previewQuestoesAEnviar(requestData).subscribe(
       data => {
         const url = window.URL.createObjectURL(data);

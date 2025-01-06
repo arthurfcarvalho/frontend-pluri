@@ -25,22 +25,22 @@ export class OverviewComponent implements OnInit{
 
   pluriAreas!: DadosDetalhamentoAreaPluri[];
 
-  questoesEmitidas: Questao[] = [];
+  questoesSelecionadas: Questao[] = [];
 
   selectedQuestoes: Questao[] = [];
 
 
   constructor(private route: ActivatedRoute, private pluriService: PluriService){}
-  
-  
+
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => { 
+    this.route.paramMap.subscribe(params => {
       const idPluri = params.get('id')
       if(idPluri){
         const idParaNumber = +idPluri
         this.idPluri = idParaNumber
-        this.pluriService.listarPluriAreasByPluri(idParaNumber, 0, 10).subscribe((apiresponse)=>{
-          this.pluriAreas = apiresponse.content        
+        this.pluriService.listarPluriAreasByPluri(idParaNumber, 0, 10).subscribe((apiResponse)=>{
+          this.pluriAreas = apiResponse.content
           //this.questaoService.listQuestoesIneditasUsuarioPorArea(this.idArea).subscribe(questoes=>{
             //this.questoesIneditas = questoes
           //})
@@ -50,6 +50,10 @@ export class OverviewComponent implements OnInit{
   }
 
   atualizarQuestoesSelecionadas(questoes: Questao[]) {
-    this.questoesEmitidas = questoes; 
+    console.log("QUESTOES RECEBIDAS", questoes);
+    questoes.forEach(questoes => {
+      this.questoesSelecionadas.push(questoes);
+    })
+
   }
 }

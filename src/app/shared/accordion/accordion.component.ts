@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { AccordionTabComponent } from "../accordion-tab/accordion-tab.component";
 import { AccordionModule } from 'primeng/accordion';
 import { Area } from '../../models/Area.model';
 import { RelatoriosService } from '../../services/relatorios.service';
@@ -10,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-accordion',
   standalone: true,
-  imports: [AccordionTabComponent, AccordionTabComponent, AccordionModule],
+  imports: [ AccordionModule],
   templateUrl: './accordion.component.html',
   styleUrl: './accordion.component.scss'
 })
@@ -18,12 +17,12 @@ export class AccordionComponent {
   @Input()
   area!: Area;
 
-  @Input() header: string = ''; 
-  @Input() tableHeaders: string[] = []; 
-  @Input() tableData: any[] = []; 
+  @Input() header: string = '';
+  @Input() tableHeaders: string[] = [];
+  @Input() tableData: any[] = [];
   //@Input() area!: Area;
-  
-  
+
+
   dataArea!: Area[];
   @Input()
   idArea: number | null = null;
@@ -43,7 +42,7 @@ export class AccordionComponent {
   }
 
   loadQuestoes(page: number, size: number) {
-  
+
     const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
 
     this.questaoService.listarAprovadasPorArea(areaId, page, size).subscribe(
@@ -69,13 +68,13 @@ export class AccordionComponent {
 
 
   buscarQuestoes() {
-    this.loadQuestoes(0, 10); 
+    this.loadQuestoes(0, 10);
   }
   gerarPdfPreview() {
     const requestData = {
       questoesSelecionadas: this.idQuestoesPreview
     };
-    
+
     this.relatorioService.previewQuestoesAEnviar(requestData).subscribe(
       data => {
         const url = window.URL.createObjectURL(data);

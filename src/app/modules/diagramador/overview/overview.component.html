@@ -1,7 +1,7 @@
 <app-header></app-header>
 <h1>Olá</h1>
 <div>
-    <p>{{ pluriAreas[0].pluriNome }}</p>
+<!--    <p>{{ pluriAreas[0]?.pluriNome }}</p>-->
 </div>
 <div *ngFor="let pluriArea of pluriAreas">
     <app-accordion-areas
@@ -12,6 +12,6 @@
 <div>
     <h2>Questões Selecionadas:</h2>
     <ul>
-        <li *ngFor="let questao of questoesEmitidas">{{ questao.titulo }}</li>
+        <li *ngFor="let questao of questoesSelecionadas">{{ questao.titulo }}</li>
     </ul>
 </div>
