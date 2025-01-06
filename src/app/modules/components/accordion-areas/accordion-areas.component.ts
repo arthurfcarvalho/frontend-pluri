@@ -125,7 +125,6 @@ export class AccordionAreasComponent {
 
   loadQuestoes(page: number, size: number) {
 
-    //const areaId = this.selectedAreaId && this.selectedAreaId !== 0 ? this.selectedAreaId : null;
     const areaId = this.pluriArea.areaId
 
     this.questaoService.listarAprovadasPorArea(areaId, page, size).subscribe(
