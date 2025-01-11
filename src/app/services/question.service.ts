@@ -23,19 +23,19 @@ export class QuestionService {
     const url = this.baseUrl + 'criar-questao';
     return this.httpClient.post<Questao>(url, data);
   }
-  
+
   /*listQuestionsUser(id: number){
     const url = this.baseUrl + `listar-questoes-usuario/${id}`
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
   }*/
-  
+
   listQuestionsUser(userId: number, page: number = 0, size: number = 10): Observable<any> {
     const url = this.baseUrl + `listar-questoes-usuario/${userId}?page=${page}&size=${size}`;
     return this.httpClient.get<any>(url);
   }
-  
+
 
   listById(id: number){
     const url = this.baseUrl + `listar-questao/${id}`
@@ -45,12 +45,13 @@ export class QuestionService {
   }
   updateQuestion(questao: DadosAtualizarQuestao){
     const url = this.baseUrl + `atualizar-questao`
+    console.log("questaoService", questao)
     return this.httpClient.put(url,questao);
   }
 
   listQuestoesAEnviar(id: number){
     const url = this.baseUrl + `listar-questoes-a-enviar/${id}`
-    
+
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
@@ -84,5 +85,5 @@ export class QuestionService {
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
 }
 
-  
+
 }

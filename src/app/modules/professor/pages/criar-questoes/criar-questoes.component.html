@@ -40,7 +40,7 @@
                           </div>
                         </div>
                       </div>
-                    
+
                   </div>
               </div>
               <div class="action-buttons">
@@ -87,19 +87,22 @@
                           Alternativa A
                         </p-button>
                         <div *ngIf="expandedIndexes[0]">
-                          <p-checkbox for="alternativa1-cb" (onChange)="setCorreta(0)" [value]="alternativas[0].correta"></p-checkbox>
+                          <p-checkbox
+                            for="alternativa1-cb"
+                            (onChange)="setCorreta(0)"
+                            [value]="alternativas[0].correta"></p-checkbox>
                           <label id="alternativa1-cb">Alternativa correta?</label>
                         </div>
                         </div>
                         <div *ngIf="expandedIndexes[0]">
-                          <div
-                            id="summernote1"
-                            [ngxSummernote]="config"
-                            [(summernoteModel)]="alternativas[0].corpo"
-                            [ngxSummernoteView]="alternativas[0].corpo"
-                          >
-                          </div>
+                        <div
+                          id="summernote1"
+                          [ngxSummernote]="config"
+                          [(summernoteModel)]="alternativas[0].corpo"
+                          [ngxSummernoteView]="alternativas[0].corpo"
+                        >
                         </div>
+                      </div>
                       </div>
                       <div class="box-summernote">
                         <div class="button-checkbox-container">
@@ -188,11 +191,11 @@
                  </div>
               </div>
               <div class="flex pt-4 justify-content-start">
-                 
+
               </div>
               <div class="action-buttons">
-                
-                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
+
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                 <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" [label]="btnCriarEnviar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>

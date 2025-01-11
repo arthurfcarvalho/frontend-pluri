@@ -42,7 +42,7 @@
                           </div>
                         </div>
                       </div>
-                    
+
                   </div>
               </div>
               <div class="action-buttons">
@@ -80,16 +80,112 @@
                     </div>
                       <div class="box-alternativas">
                         <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa1.corpo" [(summernoteModel)]="alternativa1.corpo"></div>
+                          <div class="button-checkbox-container">
+                            <p-button
+                              type="button"
+                              (click)="toggleEditor(0)"
+                              [class.active]="expandedIndexes[0]"
+                            >
+                              Alternativa A
+                            </p-button>
+                            <div *ngIf="expandedIndexes[0]">
+                              <p-checkbox
+                                for="alternativa1-cb"
+                                [(ngModel)]="this.questao.alternativas[0].correta"
+                                (onChange)="setCorreta(0)"
+                                ></p-checkbox>
+                              {{ this.questao.alternativas[0].correta }}
+                              <label id="alternativa1-cb">Alternativa correta?</label>
+                            </div>
+                          </div>
+                          <div *ngIf="expandedIndexes[0]">
+                            <div
+                              id="summernote1"
+                              [ngxSummernote]="config"
+                              [(summernoteModel)]="this.questao.alternativas[0].corpo"
+                              [ngxSummernoteView]="this.questao.alternativas[0].corpo"
+                            >
+                            </div>
+                          </div>
                         </div>
                         <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa2.corpo" [(summernoteModel)]="alternativa2.corpo"></div>
+                          <div class="button-checkbox-container">
+                            <p-button
+                              type="button"
+                              (click)="toggleEditor(1)"
+                              [class.active]="expandedIndexes[1]"
+                            >
+                              Alternativa B
+                            </p-button>
+                            <div *ngIf="expandedIndexes[1]">
+                                <p-checkbox
+                                  for="alternativa2-cb"
+                                  (onChange)="setCorreta(1)"
+                                  [value]="this.questao.alternativas[1].correta"></p-checkbox>
+                              <label id="alternativa2-cb">Alternativa correta?</label>
+                            </div>
+                          </div>
+                          <div *ngIf="expandedIndexes[1]">
+                            <div
+                              id="summernote2"
+                              [ngxSummernote]="config"
+                              [(summernoteModel)]="this.questao.alternativas[1].corpo"
+                              [ngxSummernoteView]="this.questao.alternativas[1].corpo"
+                            ></div>
+                          </div>
                         </div>
                         <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa3.corpo" [(summernoteModel)]="alternativa3.corpo"></div>
+                          <div class="button-checkbox-container">
+                            <p-button
+                              type="button"
+                              (click)="toggleEditor(2)"
+                              [class.active]="expandedIndexes[2]"
+                            >
+                              Alternativa C
+                            </p-button>
+                            <div *ngIf="expandedIndexes[2]">
+                              <p-checkbox
+                                for="alternativa3-cb"
+                                (onChange)="setCorreta(2)"
+                                [value]="this.questao.alternativas[2].correta"></p-checkbox>
+                              <label id="alternativa3-cb">Alternativa correta?</label>
+                            </div>
+                          </div>
+                          <div *ngIf="expandedIndexes[2]">
+                            <div
+                              id="summernote3"
+                              [ngxSummernote]="config"
+                              [(summernoteModel)]="this.questao.alternativas[2].corpo"
+                              [ngxSummernoteView]="this.questao.alternativas[2].corpo"
+                            ></div>
+                          </div>
                         </div>
                         <div class="box-summernote">
-                          <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="alternativa4.corpo" [(summernoteModel)]="alternativa4.corpo"></div>
+                          <div class="button-checkbox-container">
+                            <p-button
+                              type="button"
+                              (click)="toggleEditor(3)"
+                              [class.active]="expandedIndexes[3]"
+                            >
+                              Alternativa D
+                            </p-button>
+                            <div *ngIf="expandedIndexes[3]">
+                              <p-checkbox
+
+                                for="alternativa4-cb"
+                                (onChange)="setCorreta(3)"
+                                [value]="this.questao.alternativas[3].correta"></p-checkbox>
+                              <label id="alternativa4-cb">Alternativa correta?</label>
+                            </div>
+                          </div>
+                          <div *ngIf="expandedIndexes[3]">
+                            <div
+                              id="summernote4"
+                              [ngxSummernote]="config"
+                              [(summernoteModel)]="this.questao.alternativas[3].corpo"
+                              [ngxSummernoteView]="this.questao.alternativas[3].corpo"
+                            ></div>
+                          </div>
                         </div>
                       </div>
                   </div>
@@ -109,11 +205,11 @@
                  </div>
               </div>
               <div class="flex pt-4 justify-content-start">
-                 
+
               </div>
               <div class="action-buttons">
-                
-                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
+
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                 <button pButton type="button" class="btn-enviar" (click)="submitAtualizarQuestao()" label="Atualizar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
