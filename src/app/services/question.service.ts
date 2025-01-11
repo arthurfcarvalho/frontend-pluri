@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { TokenService } from "./token.service";
 import { PluriInformacoesGeraisDAO } from "../models/Pluri/PluriInformacoesGeraisDAO.model";
-import { map, Observable } from "rxjs";
+import {catchError, map, Observable, throwError} from "rxjs";
 import { Questao } from "../modules/professor/models/Question.model";
 import { Injectable } from "@angular/core";
 import { ApiResponsePageable } from "../types/api-response-pageable.type";
@@ -83,7 +83,15 @@ export class QuestionService {
     }
 
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
-}
+  }
+
+  deleteQuestao(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}deletar/${id}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      }));
+  }
+
 
 
 }

@@ -11,8 +11,7 @@
     [rowsPerPageOptions]="[5,10, 20]"
     [tableStyle]="{'min-width': '50rem'}"
     sortField="data_inicio_pluri"
-    [sortOrder]="1"
->
+    [sortOrder]="1">
     <ng-template pTemplate="caption">
         <div>
             Questoes
@@ -27,12 +26,13 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-questao>
-        <tr>  
+        <tr>
             <td>{{ questao.titulo }}</td>
             <td>{{ questao.area_nome}}</td>
             <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
-            <td>
+            <td class="box-btns">
                 <button pButton type="button" label="Editar" routerLink="/editar-questao/{{questao.id}}"></button>
+                <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="deletarQuestao(questao.id)"></button>
             </td>
         </tr>
     </ng-template>
