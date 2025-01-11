@@ -37,8 +37,9 @@
             <td>{{ formatTrimestre(pluri.trimestre) }}</td>
             <td>{{ pluri.anoAplicacao }}</td>
             <td>{{ pluri.realizado ? 'Sim' : 'Não' }}</td>
-            <td>
+            <td class="box-btns">
                 <button pButton type="button" label="Editar" routerLink="/editar-pluri/{{pluri.id}}"></button>
+              <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="deletarPluri(pluri.id)"></button>
             </td>
         </tr>
     </ng-template>

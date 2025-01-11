@@ -2,7 +2,7 @@ import { ApiResponse } from './../types/api-response.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
-import { Observable, map } from 'rxjs';
+import {Observable, map, catchError, throwError} from 'rxjs';
 import { Pluri } from '../models/Pluri/Pluri.model';
 import { PluriInformacoesGeraisDAO } from '../models/Pluri/PluriInformacoesGeraisDAO.model';
 import { PluriAtividadesComissaoDAO } from '../models/Pluri/PluriAtividadesComissaoDAO.model';
@@ -46,7 +46,7 @@ export class PluriService {
 
   searchUnfinishedPluris(page: number = 0, size: number = 10): Observable<ApiResponsePageable>{
     const url = this.baseUrl + `listar-pluris-nao-realizados?page=${page}&size=${size}`
-  
+
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));
@@ -105,5 +105,12 @@ export class PluriService {
   listarPluriAreasByPluri(idPluri: number, page: number, size: number): Observable<ApiResponsePageable> {
     const url = `${this.baseUrl}listar-pluri-areas-pluri/${idPluri}?page=${page}&size=${size}`;
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
-  }  
+  }
+
+  deletePluri(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}deletar/${id}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      }));
+  }
 }
