@@ -22,6 +22,7 @@
 
 <div>
   <span><strong>Questões Selecionadas:</strong></span>
+  <br>
   <div class="w-5">
     <p-carousel class="w-4" *ngIf="questoesSelecionadas.length > 0 else notSelectedQuestions"
     [value]="questoesSelecionadas"
@@ -30,8 +31,8 @@
     [circular]="true">
     <ng-template let-q pTemplate="item">
       <p-card>
-        <h4><strong>Titulo</strong>{{ q.titulo }}</h4>
-        <h4><strong>Area: </strong>{{ q.nomeArea }}</h4>
+        <h4><strong>Titulo: </strong>{{ q.titulo }}</h4>
+        <h4><strong>Area: </strong>{{ q.areaNome }}</h4>
       </p-card>
     </ng-template>
     </p-carousel>
