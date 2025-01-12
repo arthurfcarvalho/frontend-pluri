@@ -8,6 +8,9 @@ import { PluriArea } from '../../../models/Pluri/PluriArea.model';
 import { CommonModule } from '@angular/common';
 import { DadosDetalhamentoAreaPluri } from '../../ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
 import { Questao } from '../../professor/models/Question.model';
+import {RelatoriosService} from "../../../services/relatorios.service";
+import {ButtonDirective} from "primeng/button";
+import {Pluri} from "../../../models/Pluri/Pluri.model";
 
 @Component({
   selector: 'app-overview',
@@ -15,7 +18,9 @@ import { Questao } from '../../professor/models/Question.model';
   imports: [
     AccordionAreasComponent,
     CommonModule,
-    HeaderComponent],
+    HeaderComponent,
+    ButtonDirective
+  ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
 })
@@ -27,10 +32,14 @@ export class OverviewComponent implements OnInit{
 
   questoesSelecionadas: Questao[] = [];
 
+  pluri!: Pluri;
+
   selectedQuestoes: Questao[] = [];
+  questionReceiveModel: { checked: boolean; questao: Questao; } | undefined;
 
 
-  constructor(private route: ActivatedRoute, private pluriService: PluriService){}
+
+  constructor(private relatorioService: RelatoriosService,private route: ActivatedRoute, private pluriService: PluriService){}
 
 
   ngOnInit(): void {
@@ -39,21 +48,58 @@ export class OverviewComponent implements OnInit{
       if(idPluri){
         const idParaNumber = +idPluri
         this.idPluri = idParaNumber
+        this.pluriService.searchPluriById(idParaNumber)
+          .subscribe((apiResponse)=>{
+          this.pluri = apiResponse
+        });
         this.pluriService.listarPluriAreasByPluri(idParaNumber, 0, 10).subscribe((apiResponse)=>{
           this.pluriAreas = apiResponse.content
-          //this.questaoService.listQuestoesIneditasUsuarioPorArea(this.idArea).subscribe(questoes=>{
-            //this.questoesIneditas = questoes
-          //})
-        })
+        });
       }
       })
   }
 
   atualizarQuestoesSelecionadas(questoes: Questao[]) {
     console.log("QUESTOES RECEBIDAS", questoes);
-    questoes.forEach(questoes => {
-      this.questoesSelecionadas.push(questoes);
+    questoes.forEach(questao => {
+      this.questoesSelecionadas.push(questao);
     })
-
   }
+
+  questionReceive(questionReceiveModel: { checked: boolean; questao: Questao }) {
+    console.log("Questao recebida", questionReceiveModel)
+    if (questionReceiveModel) {
+      if (questionReceiveModel.checked) {
+        if (!this.questoesSelecionadas.some(q => q.id === questionReceiveModel.questao.id)) {
+          this.questoesSelecionadas.push(questionReceiveModel.questao);
+          console.log("Input",this.questoesSelecionadas)
+        }
+        console.log(questionReceiveModel.checked);
+      } else {
+        console.log("Remove", this.questionReceiveModel)
+        this.questoesSelecionadas = this.questoesSelecionadas.filter(
+          questao => questao.id !== questionReceiveModel.questao.id
+        );
+        console.log("Output",this.questoesSelecionadas)
+      }
+    }
+  }
+
+  gerarPdfPreview() {
+    const requestData = {
+      questoesSelecionadas: this.questoesSelecionadas.map(q => q.id),
+    };
+
+    this.relatorioService.previewQuestoesAEnviar(requestData).subscribe(
+      data => {
+        const url = window.URL.createObjectURL(data);
+        window.open(url);
+      },
+      error => {
+        console.error('Error fetching approved questions', error);
+      }
+    );
+  }
+
+
 }

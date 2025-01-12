@@ -41,7 +41,7 @@
         </td>
         <td>
           <div class="card flex justify-content-center">
-            <p-inputSwitch [(ngModel)]="checked" (onChange)="onInputSwitchChange($event.checked, questao)"></p-inputSwitch>
+            <p-inputSwitch [(ngModel)]="questao.checked" (onChange)="onInputSwitchChange(questao.checked, questao)"></p-inputSwitch>
           </div>
         </td>
       </tr>

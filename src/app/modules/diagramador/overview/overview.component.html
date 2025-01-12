@@ -1,10 +1,15 @@
 <app-header></app-header>
-<h1>Olá</h1>
+<span>Nome: {{ pluri?.nome }}</span>
+<span>Data Inicio da diagramação: {{ pluri?.dataInicioDiagramacao ? pluri?.dataInicioDiagramacao : 'Não definido' }}</span>
+<span>Data Fim da diagramação: {{ pluri?.dataFimDiagramacao ? pluri?.dataInicioDiagramacao : 'Não definido' }}</span>
+<!--<span>{{ pluri.quantidadeTotalDeQuestoesNoPluri }}</span>-->
 <div>
 <!--    <p>{{ pluriAreas[0]?.pluriNome }}</p>-->
 </div>
 <div *ngFor="let pluriArea of pluriAreas">
     <app-accordion-areas
+      [header]="pluriArea.areaNome"
+      (questaoSelecionada)="questionReceive($event)"
      (questoesSelecionadasChange)="atualizarQuestoesSelecionadas($event)"
      [pluriArea]="pluriArea"></app-accordion-areas>
 </div>
@@ -15,3 +20,4 @@
         <li *ngFor="let questao of questoesSelecionadas">{{ questao.titulo }}</li>
     </ul>
 </div>
+<button pButton type="button" label="Gerar PDF" (click)="gerarPdfPreview()"></button>

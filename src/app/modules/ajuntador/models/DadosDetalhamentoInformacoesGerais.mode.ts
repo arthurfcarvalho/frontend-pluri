@@ -5,6 +5,9 @@ export interface DadosDetalhamentoAreaPluri {
     idArea: number;
     areaId: number;
     pluriNome: string;
+    dataInicioDiagramacao: Date;
+    dataFimDiagramacao: Date;
+    quantidadeTotalDeQuestoesNoPluri: number;
     trimestre: number;
     dataInicio: Date;
     dataFim: Date;
@@ -23,6 +26,6 @@ export interface DadosDetalhamentoInformacoesGerais {
     trimestre: number;
     anoAplicacao: number;
     dataInicioPluri: Date;
-    dataFimPluri: Date; 
+    dataFimPluri: Date;
     areasPluri: Set<DadosDetalhamentoAreaPluri>;
 }

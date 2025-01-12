@@ -16,4 +16,5 @@ export interface Questao{
     aprovada: boolean,
     codigo_assuntos: string[]
     id_area?: number
+    checked?: boolean
 }

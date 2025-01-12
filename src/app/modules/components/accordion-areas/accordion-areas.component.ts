@@ -84,13 +84,14 @@ export class AccordionAreasComponent {
     if (checked) {
       if (!this.idQuestoesPreview.includes(questao.id)) {
         this.idQuestoesPreview.push(questao.id);
-
-        this.questaoSelecionada.emit({checked, questao});
       }
     } else {
       this.idQuestoesPreview = this.idQuestoesPreview.filter(id => id !== questao.id);
     }
+    this.questaoSelecionada.emit({checked, questao});
+    console.log(this.questaoSelecionada)
   }
+
   gerarPdfPreviewQuestion(questao: Questao) {
 
     let id = 0;
