@@ -40,14 +40,14 @@ export class HeaderComponent {
         this.userService.returnUserByLogin(login.sub).subscribe(
 
           (user) => {
-             
+
             this.user = user;
 
             this.userService.returnUserNotifications(user.id).subscribe(data=> {
               this.notifications = data;
             });
-            
-                     
+
+
             this.menuItems = [
               {
                 label: 'Início',
@@ -161,10 +161,6 @@ export class HeaderComponent {
                   {
                     label: 'Listar Questoes',
                     routerLink: '/listar-questoes-aprovadas'
-                  },{
-                    label: 'Overview',
-                    routerLink: '/overview-prova',
-                    //visible: this.userHasPermission(["CRIAR_QUESTAO"])
                   },
                   {
                     label: 'Pesquisar Pluri Overview',
@@ -203,7 +199,7 @@ export class HeaderComponent {
     this.userService.logout();
     this.router.navigate(['/login']);
   }
-  
+
   toggleNotifications(){
     this.showNotifications = !this.showNotifications;
   }

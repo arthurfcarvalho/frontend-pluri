@@ -1,5 +1,14 @@
 @import "../../../../../styles/variables.scss";
 
+.custom-danger-button {
+  background-color: red !important;
+  border-color: red !important;
+  border-radius: 12px;
+  color: white !important;
+  width: 4rem !important;
+  height: 3rem !important;
+}
+
 .pluri-info-panel {
     width: 100%;
     background-color: #ffffff;
@@ -74,7 +83,7 @@
 
                 .professores-list {
                     margin-top: auto; /* Empurra a lista de professores para a parte inferior */
-                    
+
                     .professores-title {
                         margin-bottom: 5px;
                         font-size: 14px;

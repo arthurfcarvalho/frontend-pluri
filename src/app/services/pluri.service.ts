@@ -113,4 +113,10 @@ export class PluriService {
         return throwError(() => error);
       }));
   }
+  deleteQuestoesAEnviar(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}deletar-questao-a-enviar/${id}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      }));
+  }
 }

@@ -21,15 +21,20 @@
                     <div class="area-details">
                         <p><strong>Questões Necessárias:</strong> {{ area.quantidadeQuestoes }}</p>
                         <p><strong>Questões Recebidas:</strong> {{ area.quantidadeQuestoesRecebidas }}</p>
+                        <p><strong>Questões Pedidas:</strong> {{ area.quantidadeQuestoesPedidas }}</p>
                     </div>
                     <div class="professores-list">
                         <p *ngIf="area.questoesAEnviar && area.questoesAEnviar.length" class="professores-title">
                             Professores Solicitados:
                         </p>
                         <ul>
-                            <li *ngFor="let questao of area.questoesAEnviar">
-                                <span class="professor-info">{{ questao.usuarioNome }} - {{ questao.quantidadeNecessaria }} questões</span>
-                                <p-button label="Visualizar questões enviadas" (onClick)="visualizarQuestoesEnviadas(questao.idQuestoesAEnviar)" class="btn-ver-questoes" size="small"></p-button>
+                            <li *ngFor="let questaoAEnviar of area.questoesAEnviar">
+                              <span class="professor-info">{{ questaoAEnviar.usuarioNome }} - {{ questaoAEnviar.quantidadeNecessaria }} questões</span>
+                              <p-button label="Visualizar questões enviadas" (onClick)="visualizarQuestoesEnviadas(questaoAEnviar.idQuestoesAEnviar)" class="btn-ver-questoes" size="small"></p-button>
+                              <button
+                                class="custom-danger-button"
+                                (click)="deleteQuestoesAEnviar(questaoAEnviar.idQuestoesAEnviar)"
+                              >Deletar</button>
                             </li>
                         </ul>
                     </div>
@@ -54,7 +59,7 @@
             tooltipPosition="top"
             (onChange)="onAreaSelect($event)"
         ></p-dropdown>
-        <p-dropdown 
+        <p-dropdown
             formControlName="selectedTeacher"
             [options]="teachers"
             optionLabel="nome"
@@ -87,18 +92,18 @@
                     Aprovada: {{ questao.aprovada ? 'Sim' : 'Não'}}
                 </p>
                 <div class="box-btn">
-                    <p-button severity="help" size="small" (onClick)="previewQuestoesNoModelo(questao.id)">visualizar</p-button>                        
+                    <p-button severity="help" size="small" (onClick)="previewQuestoesNoModelo(questao.id)">visualizar</p-button>
                     <p-button *ngIf="questao.aprovada" severity="danger" size="small" (onClick)="reprovarQuestao(questao.id)">reprovar</p-button>
                     <p-button *ngIf="!questao.aprovada" severity="success" size="small" (onClick)="aprovarQuestao(questao.id)">aprovar</p-button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div *ngIf="questoesEnviadas?.questoesEnviadas?.length === 0" class="ui-g-12">
         <p>Nenhuma questão enviada.</p>
     </div>
-    <div class="ui-g-12 dialog-footer">
-        <p-button pButton class="btn-fechar" severity="danger" type="button" label="Fechar" (click)="fechar()"></p-button>
+    <div class="m-3 ui-g-12 dialog-footer">
+      <p-button  severity="danger" size="small" (click)="fechar()" >Fechar</p-button>
     </div>
 </p-dialog>
