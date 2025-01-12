@@ -1,5 +1,5 @@
-import { ApiResponse } from './../../../types/api-response.type';
-import { Component, OnInit } from '@angular/core';
+import { PanelModule } from 'primeng/panel';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { AccordionAreasComponent } from "../../components/accordion-areas/accordion-areas.component";
 import { HeaderComponent } from "../../home/components/header/header.component";
 import { PluriService } from '../../../services/pluri.service';
@@ -9,8 +9,13 @@ import { CommonModule } from '@angular/common';
 import { DadosDetalhamentoAreaPluri } from '../../ajuntador/models/DadosDetalhamentoInformacoesGerais.mode';
 import { Questao } from '../../professor/models/Question.model';
 import {RelatoriosService} from "../../../services/relatorios.service";
-import {ButtonDirective} from "primeng/button";
+import {ButtonDirective, ButtonModule} from "primeng/button";
 import {Pluri} from "../../../models/Pluri/Pluri.model";
+import { AvatarModule } from 'primeng/avatar';
+import {MenuModule} from "primeng/menu";
+import {CardModule} from "primeng/card";
+import {CarouselModule} from "primeng/carousel";
+
 
 @Component({
   selector: 'app-overview',
@@ -19,7 +24,13 @@ import {Pluri} from "../../../models/Pluri/Pluri.model";
     AccordionAreasComponent,
     CommonModule,
     HeaderComponent,
-    ButtonDirective
+    ButtonDirective,
+    PanelModule,
+    AvatarModule,
+    ButtonModule,
+    MenuModule,
+    CardModule,
+    CarouselModule
   ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
@@ -32,14 +43,14 @@ export class OverviewComponent implements OnInit{
 
   questoesSelecionadas: Questao[] = [];
 
-  pluri!: Pluri;
+  pluri: Pluri = new Pluri();
 
   selectedQuestoes: Questao[] = [];
   questionReceiveModel: { checked: boolean; questao: Questao; } | undefined;
 
 
 
-  constructor(private relatorioService: RelatoriosService,private route: ActivatedRoute, private pluriService: PluriService){}
+  constructor( private cdr: ChangeDetectorRef,private relatorioService: RelatoriosService,private route: ActivatedRoute, private pluriService: PluriService){}
 
 
   ngOnInit(): void {
@@ -83,6 +94,7 @@ export class OverviewComponent implements OnInit{
         console.log("Output",this.questoesSelecionadas)
       }
     }
+    this.cdr.detectChanges();  // Força a detecção de mudanças após a atualização
   }
 
   gerarPdfPreview() {
@@ -99,6 +111,27 @@ export class OverviewComponent implements OnInit{
         console.error('Error fetching approved questions', error);
       }
     );
+  }
+  gerarTexPreview(){
+    const requestData = {
+      questoesSelecionadas: this.questoesSelecionadas.map(q => q.id),
+    };
+    this.relatorioService.downloadArquivoTexQuestoes(requestData).subscribe(
+      (data: Blob) => {
+        const url = window.URL.createObjectURL(data);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'questoes-selecionadas.tex'; // Nome do arquivo de download
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error => {
+        console.error('Erro ao baixar o arquivo TEX:', error);
+      }
+    );
+
   }
 
 

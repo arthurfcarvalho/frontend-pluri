@@ -18,18 +18,24 @@ export class RelatoriosService {
 
     return this.http.post(url, dados,{ responseType: 'blob' });
   }
-  
+
   previewQuestoesAEnviar(dados: any):Observable<Blob>{
-    
+
     const url = this.baseUrl + 'gerar-pdf-questoes-selecionadas';
 
     return this.http.post(url, dados,{ responseType: 'blob' });
   }
+  downloadArquivoTexQuestoes(dados: any): Observable<Blob>{
+    const url = this.baseUrl + 'gerar-tex-questoes-selecionadas-download';
+
+    return this.http.post(url, dados,{ responseType: 'blob' });
+  }
+
   previewQuestaoSelecionada(id: number):Observable<Blob>{
-    
+
     const url = this.baseUrl + 'gerar-pdf-questao-selecionada';
 
     return this.http.post(url, id,{ responseType: 'blob' });
   }
-  
+
 }
