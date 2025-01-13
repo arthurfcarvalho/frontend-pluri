@@ -53,7 +53,7 @@
       <p-stepperPanel header="Corpo">
           <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
               <div class="flex flex-column h-12rem">
-                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                  <div class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
                     <div class="box-questoes-sup">
                       <p class="titulo">Informe o corpo</p>
                     </div>
@@ -74,10 +74,10 @@
       <p-stepperPanel header="Alternativas">
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
               <div class="flex flex-column h-12rem">
+                <div class="box-questoes-sup">
+                  <p class="titulo">Informe as alternativas</p>
+                </div>
                   <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium text-align-center">
-                    <div class="box-questoes-sup">
-                      <p class="titulo">Informe as alternativas</p>
-                    </div>
                       <div class="box-alternativas">
                         <div class="box-summernote">
                           <div class="button-checkbox-container">
@@ -189,11 +189,11 @@
                         </div>
                       </div>
                   </div>
-              </div>
-              <div class="action-buttons">
-                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
-                <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+                <div class="action-buttons">
+                  <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                  <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+                </div>
               </div>
           </ng-template>
         </p-stepperPanel>
