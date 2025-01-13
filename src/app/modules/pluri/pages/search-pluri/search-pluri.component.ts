@@ -17,7 +17,6 @@ import {ToastrService} from "ngx-toastr";
     HeaderComponent,
     ButtonModule,
     RouterModule,
-    DatePipe
   ],
   providers: [DatePipe],
   templateUrl: './search-pluri.component.html',

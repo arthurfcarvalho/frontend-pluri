@@ -94,7 +94,7 @@
                 <div class="box-btn">
                     <p-button severity="help" size="small" (onClick)="previewQuestoesNoModelo(questao.id)">visualizar</p-button>
                     <p-button *ngIf="questao.aprovada" severity="danger" size="small" (onClick)="reprovarQuestao(questao.id)">reprovar</p-button>
-                    <p-button *ngIf="!questao.aprovada" severity="success" size="small" (onClick)="aprovarQuestao(questao.id)">aprovar</p-button>
+                    <p-button *ngIf="!questao.aprovada" severity="success"  size="small" (onClick)="aprovarQuestao(questao.id)">aprovar</p-button>
                 </div>
             </div>
         </div>

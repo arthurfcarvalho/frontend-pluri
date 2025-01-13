@@ -113,6 +113,12 @@ export class PluriService {
         return throwError(() => error);
       }));
   }
+  deleteArea(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}deletar-pluri-area/${id}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      }));
+  }
   deleteQuestoesAEnviar(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.baseUrl}deletar-questao-a-enviar/${id}`).pipe(
       catchError(error => {

@@ -240,7 +240,7 @@ export class UpdatePluriComponent {
       const area = this.areasOptions.find(option => option.id === this.selectedArea.id);
       if (area) {
         this.areas.push({
-          id: 0, // ou outro valor apropriado, se necessário
+          idPluriArea: 0, // ou outro valor apropriado, se necessário
           pluri: this.pluri,
           area: area,
           quantidadeQuestoes: 0,
@@ -301,4 +301,20 @@ export class UpdatePluriComponent {
     });
   }
 
+  deleteArea(i: any) {
+    const area = this.areas[i];
+    let id: number = +area.idPluriArea;
+    console.log(area);
+    if(id){
+      this.pluriService.deleteArea(id).subscribe(
+        () => {
+          this.toastService.success("Operação realizada com sucesso!");
+        },
+        (error) => {
+          const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+          this.toastService.error(errorMessage);
+        }
+      );
+    }
+  }
 }
