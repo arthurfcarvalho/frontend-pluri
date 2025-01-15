@@ -40,3 +40,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Arquivos de variáveis de ambiente
+src/enviroments/enviroment.ts
+src/enviroments/enviroment.prod.ts
