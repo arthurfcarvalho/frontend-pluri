@@ -72,10 +72,13 @@ export const routes: Routes = [
   // Ajuntador/Diagramador
   { path: 'indicar-docentes/:id', component: IndicacaoDocentesComponent, title: 'Indicar Docentes - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['APROVAR_QUESTAO'] } },
   { path: 'listar-pluri-areas', component: ListarPluriAreasComponent, title: 'Listar Pluri Areas - Ajuntador', canActivate: [authGuard, permGuard], data: { perms: ['APROVAR_QUESTAO'] } },
-  { path: 'overview-prova', component: OverviewComponent, title: 'Overview Prova', canActivate: [authGuard] },
   { path: 'listar-pluris-diagramador', component: ListaProvaComponent, title: 'Listar Pluris - Diagramador', canActivate: [authGuard] },
+  { path: 'listar-questoes-aprovadas', component: ListarAreasComponent, title: 'Pesquisar Questões - Pluri', canActivate: [authGuard] },
+  { path: 'overview-prova', component: OverviewComponent, title: 'Overview - Pluri', canActivate: [authGuard] },
+  { path: 'overview-pluri/:id', component: OverviewComponent, title: 'Overview - Pluri', canActivate: [authGuard] },
 
   // Admin
+  { path: 'pesquisar-usuarios', component: SearchUsersComponent, title: 'Pesquisar Usuários - Pluri', canActivate: [authGuard] },
   { path: 'criar-perfil', component: CreateRoleComponent, title: 'Criar Perfil - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_PERFIL'] } },
   { path: 'pesquisar-perfis', component: SearchRolesComponent, title: 'Pesquisar Perfis - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_PERFIL'] } },
   { path: 'pesquisar-areas', component: SearchAreasComponent, title: 'Pesquisar Áreas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_AREA'] } },
