@@ -13,7 +13,7 @@ export class AreaService {
 
   private readonly baseUrl = `${environment.apiUrl}/area/`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   /**
    * Retorna todas as áreas cadastradas.
