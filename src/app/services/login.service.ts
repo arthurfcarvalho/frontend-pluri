@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
+
 import { LoginResponse } from '../types/login-response.type';
 import { UserService } from './user.service';
 import { environment } from '../../environments/environment';
@@ -10,10 +11,19 @@ import { environment } from '../../environments/environment';
 })
 export class LoginService {
 
-  baseUrl = environment.apiUrl + '/usuario/';
+  private readonly baseUrl = `${environment.apiUrl}/usuario/`;
 
-  constructor(private userService: UserService, private httpClient: HttpClient) { }
+  constructor(
+    private userService: UserService, 
+    private httpClient: HttpClient
+  ) {}
 
+  /**
+   * Realiza o login do usuário.
+   * @param login O login do usuário.
+   * @param senha A senha do usuário.
+   * @returns Observable que emite a resposta do backend contendo o token de autenticação.
+   */
   login(login: string, senha: string) {
 
     const url = this.baseUrl + 'login';
