@@ -11,6 +11,7 @@ import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/User.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ToastrService} from "ngx-toastr";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-lista-questoes-usuario',
@@ -20,6 +21,7 @@ import {ToastrService} from "ngx-toastr";
     HeaderComponent,
     ButtonModule,
     RouterModule,
+    TranslatePipe,
   ],
   templateUrl: './lista-questoes-usuario.component.html',
   styleUrl: './lista-questoes-usuario.component.scss'

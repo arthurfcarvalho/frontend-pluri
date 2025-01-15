@@ -19,9 +19,9 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="titulo">Titulo<p-sortIcon field="titulo"/></th>
-            <th pSortableColumn="area_nome">Area<p-sortIcon field="area_nome"/></th>
-            <th pSortableColumn="aprovada">Aprovada<p-sortIcon field="aprovada"/></th>
+            <th pSortableColumn="titulo">{{ 'label_table_title' | translate }}<p-sortIcon field="titulo"/></th>
+            <th pSortableColumn="area_nome">{{ 'label_table_area' | translate }}<p-sortIcon field="area_nome"/></th>
+            <th pSortableColumn="aprovada">{{ 'label_table_approved' | translate }}<p-sortIcon field="aprovada"/></th>
             <th></th>
         </tr>
     </ng-template>

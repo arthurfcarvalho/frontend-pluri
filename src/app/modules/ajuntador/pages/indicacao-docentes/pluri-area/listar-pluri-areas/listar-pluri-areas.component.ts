@@ -13,6 +13,7 @@ import { Pluri } from '../../../../../../models/Pluri/Pluri.model';
 import { UserService } from '../../../../../../services/user.service';
 import { User } from '../../../../../../models/User.model';
 import { LazyLoadEvent } from 'primeng/api';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-listar-pluri-areas',
@@ -25,7 +26,8 @@ import { LazyLoadEvent } from 'primeng/api';
     DatePipe,
     AccordionModule,
     AvatarModule,
-    BadgeModule
+    BadgeModule,
+    TranslatePipe
   ],
   templateUrl: './listar-pluri-areas.component.html',
   styleUrl: './listar-pluri-areas.component.scss'
@@ -45,7 +47,7 @@ export class ListarPluriAreasComponent {
   totalRecords = 0;
 
   constructor(private pluriService: PluriService, private usuarioService: UserService) {}
-  
+
   ngOnInit() {
     this.usuarioService.returnUserLogin().subscribe((login: any | null) => {
         this.usuarioService.returnUserByLogin(login.sub).subscribe(
