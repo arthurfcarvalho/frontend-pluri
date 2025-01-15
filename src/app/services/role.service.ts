@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+
 import { Role } from '../models/Role.model';
-import { Permission } from '../models/Permission.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -10,15 +10,24 @@ import { environment } from '../../environments/environment';
 })
 export class RoleService {
 
-  baseUrl = environment.apiUrl + '/perfil/';
+  private readonly baseUrl = `${environment.apiUrl}/perfil/`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
+  /**
+   * Cria um novo perfil.
+   * @param data Dados do novo perfil.
+   * @returns Observable com a resposta do backend.
+   */
   create(data: any){
     const url = this.baseUrl + 'criar-perfil-permissao';
     return this.httpClient.post(url, data);
   }
 
+  /**
+   * Retorna todos os perfis cadastrados.
+   * @returns Observable contendo a lista de roles.
+   */
   returnAllRoles(): Observable<Role[]>{
     const url = this.baseUrl + 'listar-perfis';
     return this.httpClient.get<Role[]>(url).pipe(
@@ -26,6 +35,12 @@ export class RoleService {
     )
   }
 
+  /**
+   * Atribui permissões a um perfil existente.
+   * @param id ID do perfil (role).
+   * @param perms Lista de permissões a serem atribuídas ao perfil.
+   * @returns Observable com a resposta do backend.
+   */
   saveRoles(id: number, perms: any){
     const url = this.baseUrl + 'dar-permissoes';
     const data = {id: id, permissoes: perms};
