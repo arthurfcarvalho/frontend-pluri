@@ -1,0 +1,23 @@
+@import "../../../../../styles/variables.scss";
+
+.container {
+    margin: 15px;
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .codigo-element label,
+        .nome-element label,
+        .area-element label,
+        .ano-element label {
+            display: flex;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            margin-left: auto;
+        }
+    }
+}

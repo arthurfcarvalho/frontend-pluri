@@ -3,7 +3,16 @@ import { DadosDetalhamentoQuestaoAEnviar } from "../../professor/models/DadosDet
 export interface DadosDetalhamentoAreaPluri {
     idPluriArea: number;
     idArea: number;
+    areaId: number;
+    pluriNome: string;
+    dataInicioDiagramacao: Date;
+    dataFimDiagramacao: Date;
+    quantidadeTotalDeQuestoesNoPluri: number;
+    trimestre: number;
+    dataInicio: Date;
+    dataFim: Date;
     nomeArea: string;
+    areaNome: string;
     quantidadeQuestoes: number;
     quantidadeQuestoesRecebidas: number;
     quantidadeQuestoesPedidas: number;
@@ -17,6 +26,6 @@ export interface DadosDetalhamentoInformacoesGerais {
     trimestre: number;
     anoAplicacao: number;
     dataInicioPluri: Date;
-    dataFimPluri: Date; 
+    dataFimPluri: Date;
     areasPluri: Set<DadosDetalhamentoAreaPluri>;
 }

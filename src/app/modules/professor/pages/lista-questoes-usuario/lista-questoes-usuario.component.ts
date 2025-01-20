@@ -9,6 +9,9 @@ import { QuestionService } from '../../../../services/question.service';
 import { Questao } from '../../models/Question.model';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/User.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {ToastrService} from "ngx-toastr";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-lista-questoes-usuario',
@@ -18,6 +21,7 @@ import { User } from '../../../../models/User.model';
     HeaderComponent,
     ButtonModule,
     RouterModule,
+    TranslatePipe,
   ],
   templateUrl: './lista-questoes-usuario.component.html',
   styleUrl: './lista-questoes-usuario.component.scss'
@@ -31,7 +35,9 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
   }
   totalRecords = 0;
 
-  constructor(private questaoService: QuestionService, private userService: UserService, private tokenService: TokenService){ 
+  constructor(
+    private toastService: ToastrService,
+    private snackBar: MatSnackBar, private questaoService: QuestionService, private userService: UserService, private tokenService: TokenService){
   }
 
   /*ngAfterViewInit(){
@@ -51,18 +57,28 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
           (login: any | null) => {
             this.userService.returnUserByLogin(login.sub).subscribe((user) => {
               this.user = user;
-              // Inicializa a primeira página com tamanho 10
               this.loadQuestions(0, 10);
             });
           }
         );
       }
-      
+
       loadQuestions(page: number = 0, size: number = 10) {
         this.questaoService.listQuestionsUser(this.user.id, page, size).subscribe((data) => {
-          this.dataQuestao = data.content; // dados da página
-          this.totalRecords = data.totalElements; // total de registros
+          this.dataQuestao = data.content;
+          this.totalRecords = data.totalElements;
         });
-      }      
+      }
+    deletarQuestao(id: number): void {
+        this.questaoService.deleteQuestao(id).subscribe(
+          () => {
+            this.loadQuestions(0, 10);
+          },
+          (error) => {
+            const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+            this.toastService.error(errorMessage);
+          }
+        );
+    }
 }
 

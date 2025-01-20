@@ -1,0 +1,53 @@
+<app-header></app-header>
+
+<!--<span>{{ pluri.quantidadeTotalDeQuestoesNoPluri }}</span>-->
+<p-panel [toggleable]="true" [header]="'Gerador de provas'">
+  <div class="flex flex-column gap-1">
+    <span><strong>Nome: </strong> {{ pluri.nome }}</span>
+    <span><strong>Trimestre: </strong> {{ pluri.trimestre ? pluri.trimestre : 'Não definido' }}º</span>
+    <span><strong>Data Inicio da diagramação: </strong> {{ pluri.dataInicioDiagramacao ? pluri.dataInicioDiagramacao : 'Não definido' }}</span>
+    <span><strong>Data Fim da diagramação: </strong> {{ pluri.dataFimDiagramacao ? pluri.dataInicioDiagramacao : 'Não definido' }}</span>
+  </div>
+</p-panel>
+<div>
+<!--    <p>{{ pluriAreas[0]?.pluriNome }}</p>-->
+</div>
+<div *ngFor="let pluriArea of pluriAreas">
+    <app-accordion-areas
+      [header]="pluriArea.areaNome"
+      (questaoSelecionada)="questionReceive($event)"
+     (questoesSelecionadasChange)="atualizarQuestoesSelecionadas($event)"
+     [pluriArea]="pluriArea"></app-accordion-areas>
+</div>
+
+<div>
+  <span><strong>Questões Selecionadas:</strong></span>
+  <br>
+  <div class="w-5">
+    <p-carousel class="w-4" *ngIf="questoesSelecionadas.length > 0 else notSelectedQuestions"
+    [value]="questoesSelecionadas"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="true">
+    <ng-template let-q pTemplate="item">
+      <p-card>
+        <h4><strong>Titulo: </strong>{{ q.titulo }}</h4>
+        <h4><strong>Area: </strong>{{ q.areaNome }}</h4>
+      </p-card>
+    </ng-template>
+    </p-carousel>
+  </div>
+  <ng-template #notSelectedQuestions>
+      Nenhuma questão selecionada
+  </ng-template>
+</div>
+<p-card >
+  <div class="flex-column flex">
+    <label><strong>Gera o pdf das questões selecionadas.</strong></label>
+    <button class="w-1 h-1rem p-3" pButton type="button" label="Gerar PDF" (click)="gerarPdfPreview()"></button>
+  </div>
+  <div class="flex-column flex">
+    <label><strong>Faz o download do .tex.</strong></label>
+    <button class="w-1 h-1rem p-3" pButton type="button" label="Gerar .Tex" (click)="gerarTexPreview()"></button>
+  </div>
+</p-card>

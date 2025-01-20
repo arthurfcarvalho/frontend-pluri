@@ -11,8 +11,7 @@
     [rowsPerPageOptions]="[5,10, 20]"
     [tableStyle]="{'min-width': '50rem'}"
     sortField="data_inicio_pluri"
-    [sortOrder]="1"
->
+    [sortOrder]="1">
     <ng-template pTemplate="caption">
         <div>
             Questoes
@@ -20,19 +19,20 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="titulo">Titulo<p-sortIcon field="titulo"/></th>
-            <th pSortableColumn="area_nome">Area<p-sortIcon field="area_nome"/></th>
-            <th pSortableColumn="aprovada">Aprovada<p-sortIcon field="aprovada"/></th>
+            <th pSortableColumn="titulo">{{ 'label_table_title' | translate }}<p-sortIcon field="titulo"/></th>
+            <th pSortableColumn="area_nome">{{ 'label_table_area' | translate }}<p-sortIcon field="area_nome"/></th>
+            <th pSortableColumn="aprovada">{{ 'label_table_approved' | translate }}<p-sortIcon field="aprovada"/></th>
             <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-questao>
-        <tr>  
+        <tr>
             <td>{{ questao.titulo }}</td>
             <td>{{ questao.area_nome}}</td>
             <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
-            <td>
+            <td class="box-btns">
                 <button pButton type="button" label="Editar" routerLink="/editar-questao/{{questao.id}}"></button>
+                <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="deletarQuestao(questao.id)"></button>
             </td>
         </tr>
     </ng-template>

@@ -1,0 +1,42 @@
+<app-header/>
+
+<div class="container">
+    <p-fieldset legend="Criar Turma">
+        <form class="form-container" [formGroup]="createTurmaForm">
+            <div class="codigo-element">
+                <label for="codigo">Código</label>
+                <input id="codigo" type="text" pInputText formControlName="codigo" placeholder="Exemplo: 1TADM"/>
+            </div>
+
+            <div class="nome-element">
+                <label for="nome">Nome</label>
+                <input id="nome" type="text" pInputText formControlName="nome"/>
+            </div>
+
+            <div class="area-element">
+                <label for="area">Área Técnica</label>
+                <p-dropdown 
+                    id="area" 
+                    [options]="areas" 
+                    optionLabel="nome" 
+                    formControlName="area"
+                    placeholder="Selecione uma área">
+                </p-dropdown>
+            </div>
+
+            <div class="ano-element">
+                <label for="ano">Ano</label>
+                <p-dropdown 
+                    id="ano" 
+                    [options]="anos" 
+                    formControlName="ano"
+                    placeholder="Selecione o ano">
+                </p-dropdown>
+            </div>
+
+            <div class="submit-button">
+                <p-button label="Salvar" (click)="submit()"/>
+            </div>
+        </form>      
+    </p-fieldset>
+</div>

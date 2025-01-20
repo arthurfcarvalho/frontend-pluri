@@ -1,0 +1,62 @@
+<app-header/>
+<p-dropdown
+            formControlName="idPluriArea"
+            [options]="areasOptions"
+            optionLabel="nome"
+            placeholder="Selecione a área"
+            [filter]="true"
+            filterBy="nome"
+            filterPlaceholder="Nenhum resultado encontrado!"
+            [disabled]=""
+            [tooltip]="'Selelecione a area para filtrar as questões'"
+            tooltipPosition="top"
+            (onChange)="onAreaSelect($event)"
+        ></p-dropdown>
+        <button pButton type="button" label="Buscar" (click)="buscarQuestoes()"></button>
+        <button pButton type="button" label="Gerar PDF" (click)="gerarPdfPreview()"></button>
+<p-table
+    [value]="dataArea"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="totalRecords"
+    [lazy]="true"
+    (onLazyLoad)="loadQuestoes(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+    [rowsPerPageOptions]="[5,10, 20]"
+    [tableStyle]="{'min-width': '50rem'}"
+    sortField="data_inicio_pluri"
+    [sortOrder]="1"
+>
+    <ng-template pTemplate="caption">
+        <div>
+            Questoes
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="titulo">Titulo<p-sortIcon field="titulo"/></th>
+            <th pSortableColumn="areaNome">Criador<p-sortIcon field="criador"/></th>
+            <th pSortableColumn="area_nome">Area<p-sortIcon field="area_nome"/></th>
+            <th pSortableColumn="aprovada">Aprovada<p-sortIcon field="aprovada"/></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-questao>
+        <tr>  
+            <td>{{ questao.titulo }}</td>
+            <td>{{ questao.criador }}</td>
+            <td>{{ questao.areaNome}}</td>
+            <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
+            <td>
+                <button pButton type="button" label="Preview" routerLink=""></button>
+            </td>
+            <td>
+                <button pButton type="button" label="Acicionar ao Preview Geral" (click)="adicionarAoPreview(questao.id)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+

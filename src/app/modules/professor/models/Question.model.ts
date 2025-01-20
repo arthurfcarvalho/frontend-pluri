@@ -2,6 +2,7 @@ import { Alternativa } from "./Alternativa.model";
 
 export interface Questao{
     id_questao: number;
+    id: number;
     corpo: string,
     titulo: string,
     alternativas: Alternativa[];
@@ -15,4 +16,5 @@ export interface Questao{
     aprovada: boolean,
     codigo_assuntos: string[]
     id_area?: number
+    checked?: boolean
 }

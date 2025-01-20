@@ -1,8 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
-import { Questao } from './../../models/Question.model';
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
-import { Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Form, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { StepperModule } from 'primeng/stepper';
@@ -32,6 +31,9 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Alternativa } from '../../models/Alternativa.model';
 import { Area } from '../../../../models/Area.model';
 import { AreaService } from '../../../../services/area.service';
+import { environment } from '../../../../../environments/environment';
+import {CheckboxModule} from "primeng/checkbox";
+import {InputSwitchModule} from "primeng/inputswitch";
 
 
 interface DynamicFields {
@@ -62,7 +64,10 @@ interface DynamicFields {
     ButtonModule,
     ToggleButtonModule,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    CheckboxModule,
+    FormsModule,
+    InputSwitchModule
   ],
   templateUrl: './editar-questao.component.html',
   styleUrls: ['./editar-questao.component.scss']
@@ -75,13 +80,13 @@ export class EditarQuestaoComponent {
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1!: Alternativa; 
-  alternativa2!: Alternativa; 
-  alternativa3!: Alternativa; 
-  alternativa4!: Alternativa; 
-  
+  alternativa1!: Alternativa;
+  alternativa2!: Alternativa;
+  alternativa3!: Alternativa;
+  alternativa4!: Alternativa;
+
   pdfUrl: SafeResourceUrl | null = null;
-  
+
   atualizarQuestaoForm: FormGroup;
   questao!: DadosAtualizarQuestao;
   previewContent = '';
@@ -91,8 +96,13 @@ export class EditarQuestaoComponent {
   showPreview = false;
   areasRecebidas!: Area[]
   areaQuestao!: Area
-  
+  expandedIndexes: boolean[] = [false, false, false, false];
+  alternativas: Alternativa[] = [];
+
+  alternativaCorreta: boolean[] = [true, true, true, true];
+
   constructor(
+    private cdRef: ChangeDetectorRef,
     private areaService: AreaService,
     private relatoriosService: RelatoriosService,
     private fb: FormBuilder, private router: Router,
@@ -117,14 +127,16 @@ export class EditarQuestaoComponent {
     if (this.idQuestao) {
       this.questaoService.listById(Number(this.idQuestao)).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
+        this.cdRef.detectChanges();
 
         this.corpo = this.questao.corpo;
 
         if (this.questao.alternativas && this.questao.alternativas.length > 0) {
-          this.alternativa1 = this.questao.alternativas[0];  
-          this.alternativa2 = this.questao.alternativas[1];  
-          this.alternativa3 = this.questao.alternativas[2];  
-          this.alternativa4 = this.questao.alternativas[3];  
+          this.alternativa1 = this.questao.alternativas[0];
+          this.alternativa2 = this.questao.alternativas[1];
+          this.alternativa3 = this.questao.alternativas[2];
+          this.alternativa4 = this.questao.alternativas[3];
+          this.alternativas = this.questao?.alternativas;
         }
 
         this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
@@ -137,26 +149,30 @@ export class EditarQuestaoComponent {
           this.areaService.returnAllAreas().subscribe(areas => {
             this.areasRecebidas = areas.content
           })
-          
+
           this.areaService.listarPorId(this.questao.idArea).subscribe((area)=>{
               this.areaQuestao = area
               this.atualizarQuestaoForm.patchValue({ idArea: area });
             })
           this.updatePreview();
-        });  
+        });
       });
-      
+
     }
   }
 
-  
-  
+  toggleEditor(index: number) {
+    this.expandedIndexes[index] = !this.expandedIndexes[index];
+    if(this.questao.alternativas[index].correta) {
+
+    }
+  }
 
   submitAtualizarQuestao() {
     const formValue = this.atualizarQuestaoForm.value;
 
       formValue.corpo = this.corpo;
-    
+
       const alternativas = [
         this.alternativa1,
         this.alternativa2,
@@ -175,9 +191,7 @@ export class EditarQuestaoComponent {
     formValue.codigoAssuntos = assuntosCodigosSelecionados;
     formValue.id = this.idQuestao;
 
-    console.log("Questão", formValue)
-  
-    this.questaoService.updateQuestion(formValue).subscribe({ 
+    this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
           this.toastService.success("Questao atualizada com sucesso!");
           this.router.navigate(['/', value]);
@@ -186,9 +200,19 @@ export class EditarQuestaoComponent {
           this.toastService.error("Erro ao atualizar o Questão!");
         }
       });
-    }
+  }
 
-  
+  setCorreta(index: number) {
+    console.log(this.alternativas)
+    this.alternativas.forEach((alternativa, i) => {
+      if (i === index) {
+        alternativa.correta = true;
+      } else {
+        alternativa.correta = false;
+      }
+    });
+  }
+
   public configPre: SummernoteOptions = {
     airMode: false,
     toolbar: [
@@ -211,13 +235,13 @@ export class EditarQuestaoComponent {
     popover: {
       image: [
         ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']],  
+        ['remove', ['removeMedia']],
         ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
+    uploadImagePath: `${environment.apiUrl}/controle-de-arquivos/enviar/`,
     buttons: {}
-    
+
   };
 
   updatePreview() {
@@ -227,7 +251,7 @@ export class EditarQuestaoComponent {
   previewQuestaoNoModelo() {
     this.showPreview = true;
     this.carregamento = true;
-    const formValue = this.atualizarQuestaoForm.value;
+    const formValue = {...this.atualizarQuestaoForm.value};
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
     .map((assunto: { codigo: string }) => assunto.codigo)
@@ -237,7 +261,7 @@ export class EditarQuestaoComponent {
 
 
     formValue.corpo = this.corpo;
-    
+
     const alternativas = [
       this.alternativa1,
       this.alternativa2,
@@ -258,13 +282,13 @@ export class EditarQuestaoComponent {
       })
     ).subscribe(
       (data: any) => {
-        
+
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
-  
-        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);        
-        
+
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+
         this.carregamento = false;
         this.toastService.success("Preview gerado com sucesso!");
 
@@ -291,7 +315,7 @@ export class EditarQuestaoComponent {
   saveContent() {
     const content = this.previewContent;
 
-    console.log(content);
+
 
     const tempElement = document.createElement('div');
     tempElement.innerHTML = content;

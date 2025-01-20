@@ -2,25 +2,13 @@ import { Component } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 import { MatMenuModule } from '@angular/material/menu';
 import { UserService } from '../../../../services/user.service';
-import { User } from '../../../../models/User.model';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-
-
-
-// export interface UserHeader {
-//     id: number;
-//     nome: string;
-//     DadosPerfis:{
-//       id: number,
-//       nome: String
-//       Permissoes: {
-
-//       }
-//     },
-// }
-
+import { MessageModel } from '../../models/MessageModel';
+import { PanelModule } from 'primeng/panel';
+import { BadgeModule } from 'primeng/badge';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-header',
@@ -28,7 +16,9 @@ import { Router } from '@angular/router';
   imports: [
     MenubarModule,
     MatMenuModule,
-    CommonModule
+    CommonModule,
+    PanelModule,
+    BadgeModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -37,126 +27,158 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   menuItems!: MenuItem[];
   user: any;
+  notifications: MessageModel[] = [];
+  showNotifications: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private translate: TranslateService,private userService: UserService, private router: Router) {
   }
 
-  ngOnInit(){
+  ngOnInit(): void {
+    this.userService.returnUserLogin().subscribe((login: any | null) => {
+      this.userService.returnUserByLogin(login.sub).subscribe((user) => {
+        this.user = user;
 
-    this.userService.returnUserLogin().subscribe(
-      (login: any | null) => {
-        this.userService.returnUserByLogin(login.sub).subscribe(
-          (user) => {
-             
-            this.user = user;
-                     
-            this.menuItems = [
-              {
-                label: 'Início',
-                routerLink: '/home'
-              },
-              {
-                label: 'Pluri',
-                visible: this.userHasPermission(["CRIAR_PLURI"]),
-                items: [
-                  {
-                    label: 'Criar Pluri',
-                    routerLink: '/criar-pluri',
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
-                  },
-                  {
-                    label: 'Pesquisar Pluri',
-                    routerLink: '/pesquisar-pluri',
-                    visible: this.userHasPermission(["CRIAR_PLURI"])
-                  },
-                ]
-              },
-              {
-                label: 'Administração',
-                visible: this.userHasPermission(["CRIAR_PLURI"]),
-                items: [
-                  {
-                    label: 'Usuários',
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
-                    items: [
-                      {
-                        label: 'Pesquisar Usuários',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
-                        routerLink: '/pesquisar-usuarios'
-                      }
-                    ]
-                  },
-                  {
-                    label: 'Perfis',
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
-                    items: [
-                      {
-                        label: 'Criar Perfil',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
-                        routerLink: '/criar-perfil'
-                      },
-                      {
-                        label: 'Pesquisar Perfis',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
-                        routerLink: '/pesquisar-perfis'
-                      }
-                    ]
-                  },
-                  {
-                    label: 'Áreas',
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
-                    items: [
-                      {
-                        label: 'Criar Área',
-                        visible: this.userHasPermission(["CRIAR_PERFIL"]),
-                        routerLink: '/criar-area'
-                      },
-                      {
-                        label: 'Pesquisar Áreas',
-                        visible: this.userHasPermission(["CRIAR_PLURI"]),
-                        routerLink: '/pesquisar-areas'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                label: 'Professor',
-                visible: this.userHasPermission(["CRIAR_QUESTAO"]),
-                items: [
-                  {
-                    label: 'Criar Questão',
-                    routerLink: '/criar-questao',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
-                  },
-                  {
-                    label: 'Minhas Questões',
-                    routerLink: '/minhas-questoes',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
-                  },
-                  {
-                    label: 'Questoes a Enviar',
-                    routerLink: '/questoes-a-enviar',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
-                  },
-                ]
-              },
-              {
-                label: 'Ajuntador',
-                visible: this.userHasPermission(["CRIAR_QUESTAO"]),
-                items: [
-                  {
-                    label: 'Indicar Docente para pluri Area',
-                    routerLink: '/listar-pluri-areas',
-                    visible: this.userHasPermission(["CRIAR_QUESTAO"])
-                  },
-                ]
-              },
-            ]
-          }
-        )
-      }
-    )
+        this.userService.returnUserNotifications(user.id).subscribe((data) => {
+          this.notifications = data;
+        });
+
+        this.translate.get([
+          'MENU.HOME',
+          'MENU.PLURI',
+          'MENU.CREATE_PLURI',
+          'MENU.SEARCH_PLURI',
+          'MENU.ADMINISTRATION',
+          'MENU.USERS',
+          'MENU.CREATE_USER',
+          'MENU.SEARCH_USERS',
+          'MENU.PROFILES',
+          'MENU.CREATE_PROFILE',
+          'MENU.SEARCH_PROFILES',
+          'MENU.AREAS',
+          'MENU.CREATE_AREA',
+          'MENU.SEARCH_AREAS',
+          'MENU.TEACHER',
+          'MENU.CREATE_QUESTION',
+          'MENU.MY_QUESTIONS',
+          'MENU.QUESTIONS_TO_SEND',
+          'MENU.ADJUSTER',
+          'MENU.ASSIGN_DOCENT',
+          'MENU.DESIGNER',
+          'MENU.LIST_QUESTIONS',
+          'MENU.SEARCH_PLURI_OVERVIEW'
+        ]).subscribe((translations) => {
+          this.menuItems = [
+            {
+              label: translations['MENU.HOME'],
+              routerLink: '/home'
+            },
+            {
+              label: translations['MENU.PLURI'],
+              visible: this.userHasPermission(["CRIAR_PLURI"]),
+              items: [
+                {
+                  label: translations['MENU.CREATE_PLURI'],
+                  routerLink: '/criar-pluri',
+                },
+                {
+                  label: translations['MENU.SEARCH_PLURI'],
+                  routerLink: '/pesquisar-pluri',
+                },
+              ]
+            },
+            {
+              label: translations['MENU.ADMINISTRATION'],
+              visible: this.userHasPermission(["CRIAR_PLURI"]),
+              items: [
+                {
+                  label: translations['MENU.USERS'],
+                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  items: [
+                    {
+                      label: translations['MENU.CREATE_USER'],
+                      routerLink: '/cadastrar'
+                    },
+                    {
+                      label: translations['MENU.SEARCH_USERS'],
+                      routerLink: '/pesquisar-usuarios'
+                    }
+                  ]
+                },
+                {
+                  label: translations['MENU.PROFILES'],
+                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  items: [
+                    {
+                      label: translations['MENU.CREATE_PROFILE'],
+                      routerLink: '/criar-perfil'
+                    },
+                    {
+                      label: translations['MENU.SEARCH_PROFILES'],
+                      routerLink: '/pesquisar-perfis'
+                    }
+                  ]
+                },
+                {
+                  label: translations['MENU.AREAS'],
+                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  items: [
+                    {
+                      label: translations['MENU.CREATE_AREA'],
+                      routerLink: '/criar-area'
+                    },
+                    {
+                      label: translations['MENU.SEARCH_AREAS'],
+                      routerLink: '/pesquisar-areas'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              label: translations['MENU.TEACHER'],
+              visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+              items: [
+                {
+                  label: translations['MENU.CREATE_QUESTION'],
+                  routerLink: '/criar-questao',
+                },
+                {
+                  label: translations['MENU.MY_QUESTIONS'],
+                  routerLink: '/minhas-questoes',
+                },
+                {
+                  label: translations['MENU.QUESTIONS_TO_SEND'],
+                  routerLink: '/questoes-a-enviar',
+                },
+              ]
+            },
+            {
+              label: translations['MENU.ADJUSTER'],
+              visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+              items: [
+                {
+                  label: translations['MENU.ASSIGN_DOCENT'],
+                  routerLink: '/listar-pluri-areas',
+                },
+              ]
+            },
+            {
+              label: translations['MENU.DESIGNER'],
+              items: [
+                {
+                  label: translations['MENU.LIST_QUESTIONS'],
+                  routerLink: '/listar-questoes-aprovadas'
+                },
+                {
+                  label: translations['MENU.SEARCH_PLURI_OVERVIEW'],
+                  routerLink: '/listar-pluris-diagramador',
+                },
+              ]
+            }
+          ];
+        });
+      });
+    });
   }
 
   ngAfterViewInit(){
@@ -181,5 +203,8 @@ export class HeaderComponent {
     this.userService.logout();
     this.router.navigate(['/login']);
   }
-  
+
+  toggleNotifications(){
+    this.showNotifications = !this.showNotifications;
+  }
 }

@@ -1,153 +1,130 @@
 @import "../../../../../styles/variables.scss";
-h2 {
-    color: #495057;
-    text-align: center;
-}
-.box-pluri {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    border: solid 5px rgba(128, 0, 128, 0.534);
-    border-radius: 10px;
-        p {
-            text-align: center;
-            font-weight: 600;
-            margin: 5px;
-            color: #495057;
-        }
-}
-.container {
-    margin-top: 30px;
-    gap: 20px; 
-    min-height: 100vh;
-    p-button {
-        margin-left: 10px;  
-        box-sizing: border-box;
-    }
-}
-p-fieldset {
-    margin: 15px;
-}
-.container-pluri {
-    margin: 10px;
-}
-.splitter-container {
-    display: flex;
-    flex-direction: column; 
-    height: 100%; 
+
+.custom-danger-button {
+  background-color: red !important;
+  border-color: red !important;
+  border-radius: 12px;
+  color: white !important;
+  width: 4rem !important;
+  height: 3rem !important;
 }
 
-.splitter-panel {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px; 
-    flex: 1; 
-}
+.pluri-info-panel {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
 
-.box {
-    display: flex;
-    gap: 10px; 
-    p-panel {
-        width: 100%;
-        box-sizing: border-box;
-        flex: 1;
-    }
-}
-.container-questaoAEnviar{
-    display: flex;
-    gap: 15px;
-    p-panel {
-        box-sizing: border-box;
-        flex: 1;
-    }
-    .box-questaiAEnviar {
-        border: solid 5px rgba(128, 0, 128, 0.534);
-        border-radius: 10px;
-        padding: 10px;
-    }
-}
+    .pluri-info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
 
-
-@media (max-width: 750px) {
-    .box {
-        flex-direction: column; 
-    }
-}
-.lista-questoes {
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    
-    .box-questoes {
-        background-color: #f0f0f0;
-        padding: 10px;
-        margin-bottom: 10px;
-        width: 100%;
-        box-sizing: border-box;
-        border-radius: 5px;
-    }
-}
-.lista-questoes-wrapper {
-    max-height: 500px;
-    overflow-y: auto;
-    padding: 10px;
-}
-.dialog-footer {
-    text-align: right;  
-    margin-top: 10px;
-}
-.dialog-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-.ui-g{
-    width: 25em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-        div{
-            margin: 0.5em;
-        }
-}
-.btn-fechar .p-button {
-    padding: 5px 5px;
-    font-size: 15px; 
-    height: 10%; 
-    width: auto; 
-}
-.box-btn {
-    display: flex;
-    justify-content: flex-end;   
-    p-button{
-        margin-right: 10px;
-    }
-}
-.red {
-    color: red;
-}
-.green {
-    color: green;
-}
-.lista-questoes {
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    color: white;
-    
-    .box-questoes {
-        padding: 10px;
-        margin-bottom: 10px;
-        width: 100%;
-        box-sizing: border-box;
-        border-radius: 5px;
-
-        &.approved {
-            background-color: green;
+        .pluri-details {
+            margin-bottom: 5px;
+            p {
+                color: #495057;
+                font-size: 16px;
+                margin: 5px 0;
+                strong {
+                    color: #333;
+                    font-weight: 600;
+                }
+            }
         }
 
-        &.not-approved {
-            background-color: red;
+        .pluri-areas {
+            margin-top: 5px;
+
+            .pluri-areas-title {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+
+            .areas-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Aumenta a largura mínima dos cards */
+                gap: 15px;
+            }
+
+            .area-card {
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 10px 15px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+                background-color: #fdfdfd;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                .area-header {
+                    margin-bottom: 5px;
+                    h3 {
+                        font-size: 18px;
+                        color: #6a1b9a;
+                        margin: 0;
+                    }
+                }
+
+                .area-details {
+                    margin-bottom: 10px;
+                    p {
+                        font-size: 14px;
+                        color: #616161;
+                        margin: 3px 0;
+                        strong {
+                            color: #333;
+                        }
+                    }
+                }
+
+                .professores-list {
+                    margin-top: auto; /* Empurra a lista de professores para a parte inferior */
+
+                    .professores-title {
+                        margin-bottom: 5px;
+                        font-size: 14px;
+                        color: #333;
+                        font-weight: 500;
+                    }
+
+                    ul {
+                        padding-left: 15px;
+                        list-style-type: disc;
+                        li {
+                            display: flex;
+                            flex-direction: column;
+                            margin-bottom: 10px;
+
+                            .professor-info {
+                                font-size: 15px;
+                                color: #424242;
+                                margin-bottom: 5px;
+                            }
+
+                            .btn-ver-questoes {
+                                align-self: start;
+                                font-size: 13px;
+                                padding: 2px 6px;
+                                margin-top: 5px; /* Leve afastamento acima da borda inferior */
+
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+}
+
+#professor-questions-container {
+    div {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Adiciona espaçamento entre o input e o botão */
     }
 }

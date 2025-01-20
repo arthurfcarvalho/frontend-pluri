@@ -7,15 +7,17 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../services/user.service';
 import { ApiResponse } from '../../../../types/api-response.type';
+import { HeaderComponent } from "../../../home/components/header/header.component";
 
 @Component({
   selector: 'app-signup',
   standalone: true,
   imports: [
+    HeaderComponent,
     LoginLayoutComponent,
     AuthInputComponent,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })

@@ -1,0 +1,52 @@
+<p-accordion>
+  <p-accordionTab [header]="header">
+  <ng-content></ng-content>
+  <p-table
+    [value]="dataArea"
+    class="table"
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="totalRecords"
+    [lazy]="true"
+    (onLazyLoad)="loadQuestoes(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+    [rowsPerPageOptions]="[5,10, 20]"
+    [tableStyle]="{'min-width': '50rem'}"
+    sortField="data_inicio_pluri"
+    [sortOrder]="1"
+  >
+    <ng-template pTemplate="caption">
+      <div>
+        Questoes
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="titulo">Titulo<p-sortIcon field="titulo"/></th>
+        <th pSortableColumn="areaNome">Criador<p-sortIcon field="criador"/></th>
+        <th pSortableColumn="area_nome">Area<p-sortIcon field="area_nome"/></th>
+        <th pSortableColumn="aprovada">Aprovada<p-sortIcon field="aprovada"/></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-questao>
+      <tr>
+        <td>{{ questao.titulo }}</td>
+        <td>{{ questao.criador }}</td>
+        <td>{{ questao.areaNome}}</td>
+        <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
+        <td>
+          <button pButton type="button" label="Preview" (click)="gerarPdfPreviewQuestion(questao)"></button>
+        </td>
+        <td>
+          <div class="card flex justify-content-center">
+            <p-inputSwitch [(ngModel)]="questao.checked" (onChange)="onInputSwitchChange(questao.checked, questao)"></p-inputSwitch>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-accordionTab>
+
+</p-accordion>

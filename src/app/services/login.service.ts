@@ -1,20 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
+
 import { LoginResponse } from '../types/login-response.type';
 import { UserService } from './user.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  baseUrl = 'http://200.131.116.21:8081/usuario/';
-  
-  //baseUrl = 'http://200.131.116.21:8081/usuario/';
+  private readonly baseUrl = `${environment.apiUrl}/usuario/`;
 
-  constructor(private userService: UserService, private httpClient: HttpClient) { }
+  constructor(
+    private userService: UserService, 
+    private httpClient: HttpClient
+  ) {}
 
+  /**
+   * Realiza o login do usuário.
+   * @param login O login do usuário.
+   * @param senha A senha do usuário.
+   * @returns Observable que emite a resposta do backend contendo o token de autenticação.
+   */
   login(login: string, senha: string) {
 
     const url = this.baseUrl + 'login';

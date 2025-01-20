@@ -1,0 +1,40 @@
+@import "../../../../../styles/variables.scss";
+
+.content {
+    padding: 20px;
+    line-height: 1.6;
+    background-color: $gray-secondary-bg;
+    text-align: center;
+    min-height: 90vh;
+  }
+  
+  h1 {
+    color: $text-color;
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    color: $text-color;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  
+  ul {
+    margin-left: 20px;
+    list-style-type: disc;
+    text-align: left;
+  }
+  
+  ul li {
+    margin-bottom: 5px;
+  }
+
+  ::ng-deep .p-accordion .p-accordion-tab {
+    margin-bottom: 10px;
+  }

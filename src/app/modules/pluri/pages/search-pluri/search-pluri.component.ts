@@ -7,6 +7,7 @@ import { Pluri } from '../../../../models/Pluri/Pluri.model';
 import { RouterModule } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { LazyLoadEvent } from 'primeng/api';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-search-pluri',
@@ -16,7 +17,6 @@ import { LazyLoadEvent } from 'primeng/api';
     HeaderComponent,
     ButtonModule,
     RouterModule,
-    DatePipe
   ],
   providers: [DatePipe],
   templateUrl: './search-pluri.component.html',
@@ -27,7 +27,7 @@ export class SearchPluriComponent {
   dataPluri!: Pluri[];
   totalRecords = 0;
 
-  constructor(private pluriService: PluriService, public datePipe: DatePipe){ 
+  constructor(private toastService: ToastrService,private pluriService: PluriService, public datePipe: DatePipe){
     this.loadPluris(0,10);
   }
 
@@ -37,7 +37,7 @@ export class SearchPluriComponent {
       this.totalRecords = data.totalElements
     })
   }
-  
+
 
   formatDate(date: Date){
     const day = date.getDate().toString().padStart(2, '0');
@@ -58,5 +58,15 @@ export class SearchPluriComponent {
     this.listPluris(page, size);
   }*/
 
-  
+  deletarPluri(id: number): void {
+    this.pluriService.deletePluri(id).subscribe(
+      () => {
+        this.loadPluris(0, 10);
+      },
+      (error) => {
+        const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+        this.toastService.error(errorMessage);
+      }
+    );
+  }
 }

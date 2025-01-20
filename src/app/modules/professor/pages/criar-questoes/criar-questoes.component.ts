@@ -30,12 +30,13 @@ import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule } from '@angular/common';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { CheckboxModule } from 'primeng/checkbox';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-criar-questoes',
   standalone: true,
   imports: [
-    HeaderComponent, 
+    HeaderComponent,
     NgxSummernoteModule,
     StepperModule,
     ReactiveFormsModule,
@@ -51,7 +52,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ToggleButtonModule,
     IconFieldModule,
     InputIconModule,
-    CheckboxModule
+    CheckboxModule,
+    FormsModule
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss']
@@ -100,10 +102,10 @@ export class CreateQuestionsComponent implements OnInit {
     this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
       this.assuntos = assuntosRecebidos.content;
     })
-    this.areaService.returnAllAreas().subscribe(areas => {      
+    this.areaService.returnAllAreas().subscribe(areas => {
       this.areasRecebidas = areas.content
     })
-    this.route.paramMap.subscribe(params => { 
+    this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')
       if(idArea){
         this.btnCriarEnviar = 'Enviar'
@@ -113,7 +115,7 @@ export class CreateQuestionsComponent implements OnInit {
         })
       }
     })
-    
+
     this.criarQuestaoForm = this.fb.group({
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl(' ', Validators.required),
@@ -145,11 +147,12 @@ export class CreateQuestionsComponent implements OnInit {
     popover: {
       image: [
         ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']],  
+        ['remove', ['removeMedia']],
         ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
+    //uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
+    uploadImagePath: `${environment.apiUrl}/controle-de-arquivos/enviar/`,
     buttons: {}
   };
 
@@ -177,8 +180,7 @@ export class CreateQuestionsComponent implements OnInit {
 
   onSubmit() {
     const formData = this.criarQuestaoForm.value;
-    console.log(formData);
-  }
+    }
 
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
@@ -193,11 +195,9 @@ export class CreateQuestionsComponent implements OnInit {
     .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
-    //formValue.idArea = formValue.idArea.id;   
-    formValue.idArea = this.criarQuestaoForm.get('idArea')?.value;
-    formValue.idArea = formValue.idArea.id;   
+    //formValue.idArea = formValue.idArea.id;
+    formValue.idArea = formValue.idArea.id;
 
-    console.log("Questão", formValue)
 
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
@@ -233,24 +233,24 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   previewQuestaoNoModelo() {
+    this.pdfUrl = "";
     this.showPreview = true;
     this.carregamento = true;
-    const formValue = this.criarQuestaoForm.value;
+    const formValue = { ...this.criarQuestaoForm.value };
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
     .map((assunto: { codigo: string }) => assunto.codigo)
     .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
+
     formValue.idArea = formValue.idArea.id;
 
     formValue.corpo = this.corpo;
-  
+
     formValue.alternativas = this.alternativas;
 
-    console.log(formValue)
 
-    
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(10000),
@@ -263,13 +263,13 @@ export class CreateQuestionsComponent implements OnInit {
       })
     ).subscribe(
       (data: any) => {
-        
+
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
-  
-        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);        
-        
+
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+
         this.carregamento = false;
         this.toastService.success("Preview gerado com sucesso!");
 

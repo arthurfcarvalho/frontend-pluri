@@ -22,6 +22,7 @@ import { DadosDetalhamentoQuestao } from '../../../professor/models/DadosDetalha
 import { RelatoriosService } from '../../../../services/relatorios.service';
 import { QuestionService } from '../../../../services/question.service';
 import { DividerModule } from 'primeng/divider';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-indicacao-docentes',
@@ -38,7 +39,8 @@ import { DividerModule } from 'primeng/divider';
     SplitterModule,
     PanelModule,
     DialogModule,
-    DividerModule
+    DividerModule,
+    CardModule
   ],
   templateUrl: './indicacao-docentes.component.html',
   styleUrl: './indicacao-docentes.component.scss',
@@ -81,7 +83,7 @@ export class IndicacaoDocentesComponent {
       senha: '123456',
       data_nascimento: new Date('1980-01-01'),
       email: 'joaosilva@email.com',
-      perfis: [] 
+      perfis: []
     },
   ];
 
@@ -237,5 +239,17 @@ export class IndicacaoDocentesComponent {
       }
       }
     )
+  }
+
+  deleteQuestoesAEnviar(idQuestoesAEnviar: number) {
+    this.pluriService.deleteQuestoesAEnviar(idQuestoesAEnviar).subscribe(
+      () => {
+        this.toastService.success("Deletado com sucesso!");
+      },
+      (error) => {
+        const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+        this.toastService.error(errorMessage);
+      }
+    );
   }
 }

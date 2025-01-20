@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { LoginService } from '../../../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../services/user.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,8 @@ import { UserService } from '../../../../services/user.service';
   imports: [
     LoginLayoutComponent,
     AuthInputComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -22,6 +25,9 @@ import { UserService } from '../../../../services/user.service';
 export class LoginComponent {
   
   loginForm!: FormGroup;
+  showPassword: boolean = false;
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
 
   constructor(
     private router: Router,
@@ -32,6 +38,9 @@ export class LoginComponent {
       login: new FormControl('', Validators.required),
       senha: new FormControl('', [Validators.required, Validators.minLength(4)])
     })
+  }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   submit() {

@@ -50,7 +50,6 @@ export class ListarQuestaoAEnviarComponent implements AfterViewInit {
           (user) => {
             this.user = user;
             this.questaoService.listQuestoesAEnviar(this.user.id).subscribe((data) => {
-              console.log(data.content);
               this.dataQuestaoArea = data.content;
             });
           }

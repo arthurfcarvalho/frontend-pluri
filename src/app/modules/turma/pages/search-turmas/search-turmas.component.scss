@@ -1,0 +1,14 @@
+::ng-deep .actions-column {
+    width: 120px;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.p-datatable table {
+    table-layout: fixed;
+    width: 100%;
+}

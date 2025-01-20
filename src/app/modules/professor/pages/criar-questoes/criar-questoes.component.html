@@ -40,18 +40,18 @@
                           </div>
                         </div>
                       </div>
-                    
+
                   </div>
               </div>
-              <div class="action-buttons">
-                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
-              </div>
+            <div class="action-buttons">
+              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+            </div>
           </ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Corpo">
           <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
               <div class="flex flex-column h-12rem">
-                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-column flex-auto flex justify-content-center align-items-center font-medium">
                     <div class="box-questoes-sup">
                       <p class="titulo">Informe o corpo</p>
                     </div>
@@ -65,19 +65,19 @@
               <div class="action-buttons">
                   <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                   <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
-                  <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+                  <!--<button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>-->
               </div>
           </ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Alternativas">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+        <ng-template class="flex flex-column" pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
               <div class="flex flex-column h-12rem">
-                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium text-align-center">
+                  <div class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium text-align-center">
                     <div class="box-questoes-sup">
                       <p class="titulo">Informe as alternativas</p>
                     </div>
                     <div class="box-alternativas">
-                      <div class="box-summernote">
+                      <div class="">
                         <div class="button-checkbox-container">
                           <p-button
                           type="button"
@@ -87,21 +87,24 @@
                           Alternativa A
                         </p-button>
                         <div *ngIf="expandedIndexes[0]">
-                          <p-checkbox for="alternativa1-cb" (onChange)="setCorreta(0)" [value]="alternativas[0].correta"></p-checkbox>
+                          <p-checkbox
+                            for="alternativa1-cb"
+                            (onChange)="setCorreta(0)"
+                            [value]="alternativas[0].correta"></p-checkbox>
                           <label id="alternativa1-cb">Alternativa correta?</label>
                         </div>
                         </div>
                         <div *ngIf="expandedIndexes[0]">
-                          <div
-                            id="summernote1"
-                            [ngxSummernote]="config"
-                            [(summernoteModel)]="alternativas[0].corpo"
-                            [ngxSummernoteView]="alternativas[0].corpo"
-                          >
-                          </div>
+                        <div
+                          id="summernote1"
+                          [ngxSummernote]="config"
+                          [(summernoteModel)]="alternativas[0].corpo"
+                          [ngxSummernoteView]="alternativas[0].corpo"
+                        >
                         </div>
                       </div>
-                      <div class="box-summernote">
+                      </div>
+                      <div>
                         <div class="button-checkbox-container">
                           <p-button
                           type="button"
@@ -124,7 +127,7 @@
                           ></div>
                         </div>
                       </div>
-                      <div class="box-summernote">
+                      <div>
                         <div class="button-checkbox-container">
                           <p-button
                           type="button"
@@ -147,7 +150,7 @@
                           ></div>
                         </div>
                       </div>
-                      <div class="box-summernote">
+                      <div>
                         <div class="button-checkbox-container">
                           <p-button
                           type="button"
@@ -172,12 +175,12 @@
                       </div>
                     </div>
                   </div>
+                <div class="action-buttons">
+                  <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                  <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
                 </div>
-              <div class="action-buttons">
-                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
-                <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
-              </div>
+                </div>
           </ng-template>
         </p-stepperPanel>
         <p-stepperPanel header="Preview">
@@ -188,11 +191,11 @@
                  </div>
               </div>
               <div class="flex pt-4 justify-content-start">
-                 
+
               </div>
               <div class="action-buttons">
-                
-                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" /> 
+
+                <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
                 <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" [label]="btnCriarEnviar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
@@ -214,8 +217,6 @@
 <p>Sua questão exemplo e a número 01.</p>
 <iframe id="iFramePdf" [src]="pdfUrl"></iframe>
 </div>
-
-
-<div *ngIf="!carregamento && pdfUrl">
+<!--<div *ngIf="!carregamento && pdfUrl">
   <iframe [src]="pdfUrl" style="width: 100%; height: 600px; border: none;"></iframe>
-</div>
+</div>-->

@@ -14,7 +14,7 @@
                             <label for="nome">Nome</label>
                         </p-floatLabel>
                         <p-floatLabel>
-                            <p-dropdown 
+                            <p-dropdown
                                 formControlName="trimestre"
                                 [options]="trimestreOptions"
                             />
@@ -65,12 +65,13 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-area let-i="rowIndex">
                             <tr>
-                                <td>{{area.nome}}</td>
+                                <td>{{area?.area?.nome}}</td>
                                 <td>
                                     <p-inputNumber [(ngModel)]="area.quantidadeQuestoes" [min]="0"></p-inputNumber>
                                 </td>
                                 <td>
                                     <button pButton type="button" label="Salvar" (click)="saveArea(i)"></button>
+                                    <button pButton type="button" label="Deletar" severity="danger" (click)="deleteArea(i)"></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -97,9 +98,9 @@
                                 <label>Período de Envio das Questões</label>
                             </p-floatLabel>
                         </div>
-                        
+
                     </p-fieldset>
-                    
+
                     <p-fieldset legend="Criação das provas" [toggleable]="true">
                         <div class="fieldset-container">
                             <p-floatLabel>
