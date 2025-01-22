@@ -5,7 +5,7 @@ import { QuestionService } from './../../../../services/question.service';
 import { Component } from '@angular/core';
 import { HeaderComponent } from "../../../home/components/header/header.component";
 import { PickListModule } from 'primeng/picklist';
-import { Button } from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +28,7 @@ import { DadosAtualizarQuestao } from '../../models/DadosAtualizarQuestao.model'
 @Component({
   selector: 'app-enviar-questao',
   standalone: true,
-  imports: [DialogModule,FieldsetModule,HeaderComponent,PickListModule,CommonModule,ProgressSpinnerModule, Button, TableModule,CardModule],
+    imports: [DialogModule, FieldsetModule, HeaderComponent, PickListModule, CommonModule, ProgressSpinnerModule, Button, TableModule, CardModule, ButtonDirective],
   templateUrl: './enviar-questao.component.html',
   styleUrl: './enviar-questao.component.scss'
 })
@@ -50,11 +50,11 @@ export class EnviarQuestaoComponent {
     nomePluri: "",
   }
 
-  constructor(private location: Location,private relatoriosService: RelatoriosService,private http: HttpClient,private areaService: AreaService, private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
+  constructor(private relatorioService: RelatoriosService, private location: Location,private relatoriosService: RelatoriosService,private http: HttpClient,private areaService: AreaService, private assuntoService: AssuntoService,private questaoService: QuestionService,private fb: FormBuilder, private sanitizer: DomSanitizer, private dialog: MatDialog,private toastService: ToastrService,
     private route: ActivatedRoute, private pluriService: PluriService) {}
 
   ngOnInit(){
-   this.route.paramMap.subscribe(params => { 
+   this.route.paramMap.subscribe(params => {
     const idQuestaoAEnviarT = params.get('idQuestaoAEnviar')
     if(idQuestaoAEnviarT){
       const idParaNumber = +idQuestaoAEnviarT
@@ -69,7 +69,7 @@ export class EnviarQuestaoComponent {
     }
     })
   }
-  enviarQuestoes(){    
+  enviarQuestoes(){
     this.idQuestoesAEnviar = this.questoesSelecionadas.map(questao => questao.id)
     const enviarQuestoes = {
         idQuestoesAEnviar: this.questaoAEnviar.idQuestoesAEnviar,
@@ -102,7 +102,7 @@ export class EnviarQuestaoComponent {
     this.questaoService.listById(questao.id).subscribe(questao =>{
       this.questaoPreview = questao
     })
-    
+
     this.relatoriosService.previewQuestao(this.questaoPreview).subscribe((pdfBlob: Blob) => {
       const blobUrl = window.URL.createObjectURL(pdfBlob);
       this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
@@ -131,5 +131,23 @@ export class EnviarQuestaoComponent {
       this.toastService.error("Erro ao gerar preview!");
     });
   }
+  gerarPdfPreviewQuestion(questao: Questao) {
 
+    let id = 0;
+
+    if(questao != null){
+      id = questao?.id;
+      console.log(questao)
+    }
+
+    this.relatorioService.previewQuestaoSelecionada(id).subscribe(
+      data => {
+        const url = window.URL.createObjectURL(data);
+        window.open(url);
+      },
+      error => {
+        console.error('Error fetching approved questions', error);
+      }
+    );
+  }
 }

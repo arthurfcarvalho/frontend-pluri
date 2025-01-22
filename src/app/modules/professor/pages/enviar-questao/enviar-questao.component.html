@@ -3,8 +3,8 @@
     <ng-container *ngIf="questaoAEnviar">
         <p-fieldset legend="Informações do Pluri">
             <p>Nome do Pluri: {{ questaoAEnviar.nomePluri }}</p>
-            <p class="red">Quantidade Necessaria: {{ questaoAEnviar.quantidadeNecessaria }}</p>            
-            <p class="blue">Quantidade enviadas: {{questaoAEnviar.quantidadeEnviada}}</p>            
+            <p class="red">Quantidade Necessaria: {{ questaoAEnviar.quantidadeNecessaria }}</p>
+            <p class="blue">Quantidade enviadas: {{questaoAEnviar.quantidadeEnviada}}</p>
             <div class="d-flex">
                 <p class="green">Questoes aprovadas: {{questaoAEnviar.quantidadeAprovada}}</p>
                 <p-button label="Visualizar questões" severity="help" icon="pi pi-check" size="small" (click)="visualizarQuestoesEnviadas()"/>
@@ -12,13 +12,13 @@
             <p>Completa: {{questaoAEnviar.completa}}</p>
             <p>Area: {{questaoAEnviar.nomeArea}}</p>
         </p-fieldset>
-    </ng-container>    
+    </ng-container>
 
 
     <p-dialog header="Escolha a ação" [(visible)]="mostrarDialog" [modal]="true" [closable]="false" [resizable]="false">
         <div class="lista-questoes-wrapper">
             <div class="lista-questoes ui-g" *ngFor="let questao of questoesEnviadas.questoesEnviadas">
-                
+
                 <div class="box-questoes" >
                     <p>Titulo: {{questao.titulo}}</p>
                     <p>Aprovada: {{questao.aprovada}}</p>
@@ -30,9 +30,9 @@
             <p-button pButton severity="danger" type="button" label="Fechar" (click)="fechar()"></p-button>
         </div>
     </p-dialog>
-    
 
-    <!--<p-fieldset legend="Informações das Áreas do Pluri">    
+
+    <!--<p-fieldset legend="Informações das Áreas do Pluri">
         <p-splitter [style]="{ height: '300px' }" styleClass="mb-5">
             <ng-template pTemplate>
                 <div class="splitter-container">
@@ -53,17 +53,17 @@
 
 
 <div class="box">
-    <p-pickList 
-    [source]="questoesIneditas" 
-    [target]="questoesSelecionadas" 
-    sourceHeader="Disponíveis" 
-    targetHeader="Selecionados" 
-    [dragdrop]="true" 
-    [responsive]="true" 
-    [sourceStyle]="{ height: '300px', overflow: 'auto' }" 
-    [targetStyle]="{ height: '300px', overflow: 'auto' }" 
-    filterBy="titulo" 
-    sourceFilterPlaceholder="Pesquisar pelo titulo" 
+    <p-pickList
+    [source]="questoesIneditas"
+    [target]="questoesSelecionadas"
+    sourceHeader="Disponíveis"
+    targetHeader="Selecionados"
+    [dragdrop]="true"
+    [responsive]="true"
+    [sourceStyle]="{ height: '300px', overflow: 'auto' }"
+    [targetStyle]="{ height: '300px', overflow: 'auto' }"
+    filterBy="titulo"
+    sourceFilterPlaceholder="Pesquisar pelo titulo"
     targetFilterPlaceholder="Pesquisar pelo titulo"
     keepSelection="false"
     stripedRows="true"
@@ -73,11 +73,11 @@
             <span>Titulo: {{ questao.titulo }}</span><br>
             <span>Data Criação: {{ questao.dataCriacao }}</span>
             <p>Area: {{questao.areaNome}}</p>
-            <p-button class="btn-preview" (click)="previewQuestaoNoModelo(questao)">Preview da questão</p-button>
+            <p-button class="btn-preview" (click)="gerarPdfPreviewQuestion(questao)">Preview da questão</p-button>
         </p-card>
     </ng-template>
         <!--<ng-template let-questoesIneditas pTemplate="item">
-            
+
             <span class="font-bold d-flex">
                 {{ questoesIneditas.titulo }}
                 {{ questoesIneditas.dataCriacao }}

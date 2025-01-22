@@ -51,7 +51,7 @@ export const routes: Routes = [
     // Antes de autenticar
   { path: '', redirectTo: '/login', pathMatch: 'full', title: 'Login - Pluri' },
   { path: 'login', component: LoginComponent, title: 'Login - Pluri', canActivate: [redirectIfAuthenticatedGuard] },
-  { path: 'cadastrar', component: SignupComponent, title: 'Cadastrar - Pluri', canActivate: [redirectIfAuthenticatedGuard] },
+  { path: 'cadastrar', component: SignupComponent, title: 'Cadastrar - Pluri' },
 
   // Home
   { path: 'home', component: HomeComponent, title: 'Pluri', canActivate: [authGuard] },
