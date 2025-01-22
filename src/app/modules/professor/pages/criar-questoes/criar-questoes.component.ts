@@ -202,13 +202,17 @@ export class CreateQuestionsComponent implements OnInit {
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
         this.toastService.success("Questao criada com sucesso!");
-        this.router.navigate(['/', value]);
+        this.router.navigate(['/minhas-questoes', value]);
       },
       error: () => {
         this.toastService.error("Erro ao criar a questão!");
       }
     });
   }
+  existsAlternativaCorreta(){
+      return this.alternativas.some((a) => a.correta === true);
+  }
+
 
   public configPre: SummernoteOptions = {
     airMode: false,

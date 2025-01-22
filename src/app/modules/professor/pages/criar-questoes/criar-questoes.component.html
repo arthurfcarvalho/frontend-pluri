@@ -196,7 +196,7 @@
               <div class="action-buttons">
 
                 <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" [label]="btnCriarEnviar"></button>
+                <button [disabled]="!existsAlternativaCorreta()" pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()" [label]="btnCriarEnviar"></button>
                 <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
               </div>
           </ng-template>
