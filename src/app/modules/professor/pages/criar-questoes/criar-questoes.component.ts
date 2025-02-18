@@ -182,6 +182,15 @@ export class CreateQuestionsComponent implements OnInit {
     const formData = this.criarQuestaoForm.value;
     }
 
+  validarAntesDeAvancar(nextCallback: any) {
+    if (this.criarQuestaoForm.valid) {
+      nextCallback.emit(); // Avança para a próxima etapa
+    } else {
+      this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
+    }
+  }
+
+
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
 
@@ -191,8 +200,8 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.alternativas = this.alternativas;
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
+      .map((assunto: { codigo: string }) => assunto.codigo)
+      .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
     //formValue.idArea = formValue.idArea.id;
@@ -209,6 +218,8 @@ export class CreateQuestionsComponent implements OnInit {
       }
     });
   }
+
+
 
   public configPre: SummernoteOptions = {
     airMode: false,
