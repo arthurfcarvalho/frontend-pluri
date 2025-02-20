@@ -182,14 +182,13 @@ export class CreateQuestionsComponent implements OnInit {
     const formData = this.criarQuestaoForm.value;
     }
 
-  validarAntesDeAvancarInformacoes(nextCallback: any) {
+  validarAntesDeAvancar(nextCallback: any) {
     if (this.criarQuestaoForm.valid) {
-      nextCallback.emit();
+      nextCallback.emit(); // Avança para a próxima etapa
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
   }
-
   validarAntesDeAvancarCorpo(nextCallback: any) {
     if (this.corpo && this.corpo.trim() !== '' && this.corpo !== "<br>" && this.corpo !== "") {
       nextCallback.emit();
@@ -197,7 +196,6 @@ export class CreateQuestionsComponent implements OnInit {
       this.toastService.error('Preencha o corpo antes de avançar.');
     }
   }
-
 
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;

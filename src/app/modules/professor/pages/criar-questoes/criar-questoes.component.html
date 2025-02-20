@@ -25,13 +25,13 @@
                                     [options]="dificuldades"
                                     formControlName="dificuldade"
                                     inputId="dificuldade" />
-                                <label class="label-dificuldade" for="dificuldade">Dificuldade</label>
+                                <label class="label-dificuldade" >Dificuldade</label>
                             </p-floatLabel>
                             </div>
                             <div class="input-container">
                               <p-floatLabel>
                                 <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
-                                <label class="label-dificuldade" for="assunto">Assunto</label>
+                                <label class="label-dificuldade" >Assunto</label>
                               </p-floatLabel>
                             </div>
 
@@ -45,7 +45,7 @@
                     </div>
                 </div>
               <div class="action-buttons">
-                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarInformacoes(nextCallback)"/>
+                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancar(nextCallback)"/>
               </div>
             </ng-template>
         </p-stepperPanel>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="action-buttons">
                     <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarCorpo(nextCallback)" />
                     <!--<button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>-->
                 </div>
             </ng-template>
