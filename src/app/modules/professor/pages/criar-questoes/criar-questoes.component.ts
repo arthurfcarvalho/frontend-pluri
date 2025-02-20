@@ -182,11 +182,19 @@ export class CreateQuestionsComponent implements OnInit {
     const formData = this.criarQuestaoForm.value;
     }
 
-  validarAntesDeAvancar(nextCallback: any) {
+  validarAntesDeAvancarInformacoes(nextCallback: any) {
     if (this.criarQuestaoForm.valid) {
-      nextCallback.emit(); // Avança para a próxima etapa
+      nextCallback.emit();
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
+    }
+  }
+
+  validarAntesDeAvancarCorpo(nextCallback: any) {
+    if (this.corpo && this.corpo.trim() !== '') {
+      nextCallback.emit();
+    } else {
+      this.toastService.error('Preencha o corpo antes de avançar.');
     }
   }
 
