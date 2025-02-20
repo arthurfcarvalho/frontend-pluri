@@ -182,6 +182,23 @@ export class CreateQuestionsComponent implements OnInit {
     const formData = this.criarQuestaoForm.value;
     }
 
+  validarAntesDeAvancarInformacoes(nextCallback: any) {
+    if (this.criarQuestaoForm.valid) {
+      nextCallback.emit();
+    } else {
+      this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
+    }
+  }
+
+  validarAntesDeAvancarCorpo(nextCallback: any) {
+    if (this.corpo && this.corpo.trim() !== '' && this.corpo !== "<br>" && this.corpo !== "") {
+      nextCallback.emit();
+    } else {
+      this.toastService.error('Preencha o corpo antes de avançar.');
+    }
+  }
+
+
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
 
@@ -191,8 +208,8 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.alternativas = this.alternativas;
 
     const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
+      .map((assunto: { codigo: string }) => assunto.codigo)
+      .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
     //formValue.idArea = formValue.idArea.id;
@@ -212,6 +229,8 @@ export class CreateQuestionsComponent implements OnInit {
   existsAlternativaCorreta(){
       return this.alternativas.some((a) => a.correta === true);
   }
+
+
 
 
   public configPre: SummernoteOptions = {
