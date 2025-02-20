@@ -1,12 +1,23 @@
 @import "../../../../../styles/variables.scss";
 
+
 .custom-danger-button {
+  font-size: 13px;
+  font-weight: bold;
   background-color: red !important;
   border-color: red !important;
-  border-radius: 12px;
+  border-radius: 8px;
   color: white !important;
-  width: 4rem !important;
-  height: 3rem !important;
+  height: 4.013rem !important;
+  margin-left: 5px;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 200px;
+}
+
+.custom-danger-button:hover {
+  background-color: #c50909 !important;
+  border-color: #c50909 !important;
 }
 
 .pluri-info-panel {
@@ -16,7 +27,7 @@
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 
     .pluri-info-container {
         display: flex;
@@ -108,9 +119,11 @@
                             .btn-ver-questoes {
                                 align-self: start;
                                 font-size: 13px;
-                                padding: 2px 6px;
+                                padding: 2px 0px;
                                 margin-top: 5px; /* Leve afastamento acima da borda inferior */
-
+                                margin-left: 5px;
+                                width: 100%;
+                                max-width: 200px;
                             }
                         }
                     }
