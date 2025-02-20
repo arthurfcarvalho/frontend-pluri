@@ -191,7 +191,7 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   validarAntesDeAvancarCorpo(nextCallback: any) {
-    if (this.corpo && this.corpo.trim() !== '') {
+    if (this.corpo && this.corpo.trim() !== '' && this.corpo !== "<br>" && this.corpo !== "") {
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha o corpo antes de avançar.');
