@@ -31,6 +31,9 @@ import { CommonModule } from '@angular/common';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { CheckboxModule } from 'primeng/checkbox';
 import { environment } from '../../../../../environments/environment';
+import {Disciplina} from "../../../disciplina/models/disciplina";
+import {DisciplinaService} from "../../../../services/disciplina.service";
+import {ApiResponsePageable} from "../../../../types/api-response-pageable.type";
 
 @Component({
   selector: 'app-criar-questoes',
@@ -73,6 +76,7 @@ export class CreateQuestionsComponent implements OnInit {
   pdfUrl: SafeResourceUrl | null = null;
   previewContent = '';
   assuntos!: Assunto[];
+  disciplinas: Disciplina[] = [];
   areas!: Area[];
   criarQuestaoForm: FormGroup;
   areaSelecionada!: number;
@@ -88,6 +92,7 @@ export class CreateQuestionsComponent implements OnInit {
   constructor(
     private relatoriosService: RelatoriosService,
     private http: HttpClient,
+    private disciplinaService: DisciplinaService,
     private areaService: AreaService,
     private assuntoService: AssuntoService,
     private questaoService: QuestionService,
@@ -98,10 +103,6 @@ export class CreateQuestionsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-
-    this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
-      this.assuntos = assuntosRecebidos.content;
-    })
     this.areaService.returnAllAreas().subscribe(areas => {
       this.areasRecebidas = areas.content
     })
@@ -111,7 +112,7 @@ export class CreateQuestionsComponent implements OnInit {
         this.btnCriarEnviar = 'Enviar'
         const idParaNumber = +idArea
         this.areaService.listarPorId(idParaNumber).subscribe((area)=>{
-          this.criarQuestaoForm.patchValue({ idArea: area });
+          this.criarQuestaoForm.patchValue({ area: area });
         })
       }
     })
@@ -126,7 +127,7 @@ export class CreateQuestionsComponent implements OnInit {
       alternativa3: new FormControl(' '),
       alternativa4: new FormControl(' '),
       codigo_assuntos: [[]],
-      idArea: [''],
+      area: [''],
       correta: new FormControl(''),
     });
   }
@@ -319,5 +320,19 @@ export class CreateQuestionsComponent implements OnInit {
 
   mouseSaiu() {
     this.passou = false;
+  }
+
+  loadFieldsArea(event: any) {
+    this.criarQuestaoForm.patchValue({ area: event.value });
+    this.disciplinaService.listarDisciplinasPorArea(event.value?.id).subscribe(disciplinasRecebidas => {
+      this.disciplinas = disciplinasRecebidas.content;
+    })
+  }
+
+  loadFieldsDisciplinas(event: any) {
+    console.log(event)
+    this.assuntoService.listarPorDisciplina(event.itemValue?.id).subscribe(assuntosRecebidos => {
+      this.assuntos = assuntosRecebidos.content;
+    })
   }
 }

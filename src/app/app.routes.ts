@@ -46,6 +46,8 @@ import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 // Error
 
 import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
+import {CreateDisciplinaComponent} from "./modules/disciplina/create-disciplina/create-disciplina.component";
+import {CreateAssuntoComponent} from "./modules/assunto/create-assunto/create-assunto.component";
 
 export const routes: Routes = [
     // Antes de autenticar
@@ -86,6 +88,10 @@ export const routes: Routes = [
   { path: 'criar-turmas', component: CreateTurmaComponent, title: 'Criar Turma - Pluri', canActivate: [authGuard] },
   { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard] },
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
+  { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard] },
+  { path: 'listar-disciplinas', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
+  { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar - Assunto', canActivate: [authGuard] },
+  { path: 'listar-assuntos', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard] },
 
   // Error
   { path: 'acesso-negado', component: DeniedAcessComponent, title: 'Acesso Negado - Pluri', canActivate: [authGuard] },
