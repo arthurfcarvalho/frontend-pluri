@@ -136,13 +136,13 @@ export class CreateQuestionsComponent implements OnInit {
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
-      ['style', ['style']],
-      ['font', ['bold', 'italic', 'underline', 'clear']],
-      ['fontname', ['fontname']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
+      // ['style', ['style']],
+      // ['font', ['bold', 'italic', 'underline', 'clear']],
+      // ['fontname', ['fontname']],
+      // ['color', ['color']],
+      // ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'math']],
-      ['custom', ['customButton']]
+      ['custom', ['customButton']],
     ],
     lang: 'pt-BR',
     popover: {
@@ -211,8 +211,9 @@ export class CreateQuestionsComponent implements OnInit {
       .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
-    //formValue.idArea = formValue.idArea.id;
-    formValue.idArea = formValue.idArea.id;
+
+    formValue.area = formValue.area.id;
+    console.log(formValue)
 
 
     this.questaoService.createQuestion(formValue).subscribe({
@@ -266,14 +267,14 @@ export class CreateQuestionsComponent implements OnInit {
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
-    formValue.idArea = formValue.idArea.id;
+    formValue.area = formValue.area.id;
 
     formValue.corpo = this.corpo;
 
     formValue.alternativas = this.alternativas;
 
 
-
+    console.log(formValue)
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(10000),
       map(response => response),
@@ -330,7 +331,6 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   loadFieldsDisciplinas(event: any) {
-    console.log(event)
     this.assuntoService.listarPorDisciplina(event.itemValue?.id).subscribe(assuntosRecebidos => {
       this.assuntos = assuntosRecebidos.content;
     })
