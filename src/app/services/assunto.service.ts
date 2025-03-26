@@ -31,6 +31,17 @@ export class AssuntoService {
       obj => obj
     ));
   }
+
+  listAssuntosPage(page: number = 0, size: number = 10): Observable<any> {
+    const url = this.baseUrl + `listar-assuntos-page?page=${page}&size=${size}`;
+    return this.httpClient.get<any>(url);
+  }
+  listarAssuntosPage(){
+    const url = this.baseUrl + `listar-assuntos`
+    return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
+      obj => obj
+    ));
+  }
   createAssunto(data: Assunto): Observable<Assunto> {
     const url = this.baseUrl + 'criar-assunto';
     return this.httpClient.post<Pluri>(url, data);

@@ -1,0 +1,36 @@
+<app-header/>
+
+<div class="container">
+  <p-fieldset legend="Criar Disciplina">
+    <form class="form-container" [formGroup]="createDisciplinaForm">
+      <div class="name-element">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" pInputText formControlName="nome"/>
+      </div>
+
+      <div class="desc-element">
+        <label for="area">Area</label>
+        <p-dropdown
+          id="area"
+          [options]="areaList"
+          optionLabel="nome"
+          (onChange)="onAreaChange($event)"
+          [(ngModel)]="areaSelected"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="desc-element">
+        <label>Assuntos</label>
+        <p-multiSelect
+          [options]="assuntosList"
+          optionLabel="nome">
+        </p-multiSelect>
+      </div>
+
+      <div class="submit-button">
+        <p-button label="Salvar" (click)="submit()"/>
+      </div>
+    </form>
+  </p-fieldset>
+</div>

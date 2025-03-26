@@ -1,0 +1,33 @@
+<app-header/>
+
+<div class="container">
+  <p-fieldset legend="Criar Assunto">
+    <form class="form-container" [formGroup]="createAssuntoForm">
+      <div class="name-element">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" pInputText formControlName="nome"/>
+      </div>
+
+      <div class="desc-element">
+        <label for="disciplina">Disciplina</label>
+        <p-dropdown
+          id="disciplina"
+          [options]="disciplinaList"
+          optionLabel="nome"
+          [(ngModel)]="disciplinaSelected"
+          (onChange)="onDisciplinaChange($event)"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="desc-element">
+        <label>Código</label>
+        <input id="codigo" type="text" pInputText formControlName="codigo"/>
+      </div>
+
+      <div class="submit-button">
+        <p-button label="Salvar" (click)="submit()"/>
+      </div>
+    </form>
+  </p-fieldset>
+</div>

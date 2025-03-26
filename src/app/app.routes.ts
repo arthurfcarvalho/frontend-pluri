@@ -48,6 +48,8 @@ import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
 import {CreateDisciplinaComponent} from "./modules/disciplina/create-disciplina/create-disciplina.component";
 import {CreateAssuntoComponent} from "./modules/assunto/create-assunto/create-assunto.component";
+import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assuntos.component";
+import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
 
 export const routes: Routes = [
     // Antes de autenticar
@@ -89,9 +91,9 @@ export const routes: Routes = [
   { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard] },
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
   { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard] },
-  { path: 'listar-disciplinas', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
+  { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
   { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar - Assunto', canActivate: [authGuard] },
-  { path: 'listar-assuntos', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard] },
+  { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar - Assuntos', canActivate: [authGuard] },
 
   // Error
   { path: 'acesso-negado', component: DeniedAcessComponent, title: 'Acesso Negado - Pluri', canActivate: [authGuard] },
