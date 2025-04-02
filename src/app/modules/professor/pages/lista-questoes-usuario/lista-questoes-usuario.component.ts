@@ -1,5 +1,5 @@
 import { TokenService } from './../../../../services/token.service';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component ,ViewChild, ElementRef} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { ButtonModule } from 'primeng/button';
@@ -12,6 +12,7 @@ import { User } from '../../../../models/User.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ToastrService} from "ngx-toastr";
 import {TranslatePipe} from "@ngx-translate/core";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-lista-questoes-usuario',
@@ -35,6 +36,10 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
   }
   totalRecords = 0;
   rowsPerPage: number = 10;//inicie uma variavel para pegar o valor do filtro
+
+  idToDelete:number = 0;
+
+  @ViewChild('modalDeletar') modalDeletar!: ElementRef;
 
   constructor(
     private toastService: ToastrService,
@@ -61,23 +66,33 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
     });
   }
 
-  loadQuestions(page: number = 0, size: number) {
-    this.questaoService.listQuestionsUser(this.user.id, page, size).subscribe((data) => {
-      this.dataQuestao = data.content;
-      this.totalRecords = data.totalElements;
-    });
+      loadQuestions(page: number = 0, size: number = 10) {
+        this.questaoService.listQuestionsUser(this.user.id, page, size).subscribe((data) => {
+          this.dataQuestao = data.content;
+          this.totalRecords = data.totalElements;
+        });
+      }
+  confirmarDeletar(id: number) :void{
+    this.idToDelete = id;
+    this.modalDeletar.nativeElement.style.display = 'block';
   }
-
+  fecharConfirmacao(): void {
+    this.modalDeletar.nativeElement.style.display = 'none';
+  }
   deletarQuestao(id: number): void {
-    this.questaoService.deleteQuestao(id).subscribe(() => {
-        this.loadQuestions(0, this.rowsPerPage);//ao deletar a questão, vai carregar a qtd de questões baseada na this.rowsPerPage
+    this.fecharConfirmacao();
+    this.questaoService.deleteQuestao(id).subscribe(
+      () => {
+        this.loadQuestions(0, 10);
+
+
       },
       (error) => {
         const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
         this.toastService.error(errorMessage);
-      });
+      }
+    );
   }
-
   onPageChange(event: any): void {
     // Atualiza o valor de rowsPerPage quando  mudar a quantidade de itens por página no filtro
     this.rowsPerPage = event.rows;
