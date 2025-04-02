@@ -160,3 +160,9 @@ iframe {
           font-size: 20px;
       }
 }
+
+input[type="radio"] {
+  transform: scale(1.8);
+  margin-right: 8px;
+  cursor: pointer;
+}

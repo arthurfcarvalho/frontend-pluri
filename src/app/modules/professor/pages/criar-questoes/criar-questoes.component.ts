@@ -3,7 +3,7 @@ import { Alternativa } from './../../models/Alternativa.model';
 import { catchError, map, throwError, timeout } from 'rxjs';
 import { AssuntoService } from './../../../../services/assunto.service';
 import { QuestionService } from './../../../../services/question.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
@@ -59,17 +59,18 @@ import {ApiResponsePageable} from "../../../../types/api-response-pageable.type"
     FormsModule
   ],
   templateUrl: './criar-questoes.component.html',
-  styleUrls: ['./criar-questoes.component.scss']
+  styleUrls: ['./criar-questoes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush  // Habilita OnPush
 })
 export class CreateQuestionsComponent implements OnInit {
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = ' ';
   alternativas = [
-    {corpo: ' ', correta: false, posicao: 1},
-    {corpo: ' ', correta: false, posicao: 2},
-    {corpo: ' ', correta: false, posicao: 3},
-    {corpo: ' ', correta: false, posicao: 4}
+    {corpo: '', correta: false, posicao: 1},
+    {corpo: '', correta: false, posicao: 2},
+    {corpo: '', correta: false, posicao: 3},
+    {corpo: '', correta: false, posicao: 4}
   ];
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
@@ -85,7 +86,7 @@ export class CreateQuestionsComponent implements OnInit {
   passou = false;
   showPreview = false;
   btnCriarEnviar = 'Criar';
-  expandedIndexes: boolean[] = [false, false, false, false];
+  expandedIndexes: boolean[] = [true, true, true, true];
   @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
   active: number | undefined = 0;
 
@@ -134,7 +135,6 @@ export class CreateQuestionsComponent implements OnInit {
     });
   }
 
-
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
@@ -168,7 +168,7 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   toggleEditor(index: number) {
-    this.expandedIndexes[index] = !this.expandedIndexes[index];
+    this.expandedIndexes[index] = this.expandedIndexes[index];
   }
 
   setCorreta(index: number) {
@@ -178,7 +178,29 @@ export class CreateQuestionsComponent implements OnInit {
       } else {
         alternativa.correta = false;
       }
+
     });
+
+  }
+
+  validarAcoes(nextCallback: any){
+    this.validarAlternativasCorpo(nextCallback);
+  }
+
+  verMarcado(nextCallback: any): void {
+    let cont = 0;
+    this.alternativas.forEach((alternativas, i) => {
+      if (alternativas.correta === false) {
+        cont = cont + 1;
+      }
+    });
+
+    if (cont === 4) {
+      this.toastService.error('Escolha uma questão correta.');
+    }else{
+      nextCallback.emit();
+    }
+
   }
 
   onSubmit() {
@@ -197,6 +219,17 @@ export class CreateQuestionsComponent implements OnInit {
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha o corpo antes de avançar.');
+    }
+  }
+
+  validarAlternativasCorpo(nextCallback: any) {
+
+    const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
+
+    if (!alternativasVazias) {
+      this.verMarcado(nextCallback);
+    } else {
+      this.toastService.error('Preencha todas as alternativas antes de avançar.');
     }
   }
 
