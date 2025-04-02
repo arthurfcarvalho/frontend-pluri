@@ -189,8 +189,13 @@ export class CreateQuestionsComponent implements OnInit {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
   }
+
   validarAntesDeAvancarCorpo(nextCallback: any) {
-    if (this.corpo && this.corpo.trim() !== '' && this.corpo !== "<br>" && this.corpo !== "") {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(this.corpo , "text/html");/*interpreta o texto como html*/
+    const corpoLimpo = doc.body.textContent?.trim() || "";/*se o doc tiver tags html, doc.body.textContent?.trim() || "" vai tirar as tags como <br> <p>
+                                                                   e o trim() remove os espaços*/
+    if (corpoLimpo.length > 0) {
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha o corpo antes de avançar.');
