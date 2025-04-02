@@ -96,7 +96,7 @@ export class EditarQuestaoComponent {
   showPreview = false;
   areasRecebidas!: Area[]
   areaQuestao!: Area
-  expandedIndexes: boolean[] = [false, false, false, false];
+  expandedIndexes: boolean[] = [true, true, true, true];
   alternativas: Alternativa[] = [];
 
   alternativaCorreta: boolean[] = [true, true, true, true];
@@ -162,10 +162,10 @@ export class EditarQuestaoComponent {
   }
 
   toggleEditor(index: number) {
-    this.expandedIndexes[index] = !this.expandedIndexes[index];
-    if(this.questao.alternativas[index].correta) {
+    this.expandedIndexes[index] = this.expandedIndexes[index];
+    //if(this.questao.alternativas[index].correta) {
 
-    }
+    //}
   }
 
   submitAtualizarQuestao() {
@@ -249,6 +249,7 @@ export class EditarQuestaoComponent {
   }
 
   previewQuestaoNoModelo() {
+    this.pdfUrl = "";
     this.showPreview = true;
     this.carregamento = true;
     const formValue = {...this.atualizarQuestaoForm.value};
@@ -259,6 +260,7 @@ export class EditarQuestaoComponent {
 
     formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
+    formValue.idArea = formValue.idArea.id;
 
     formValue.corpo = this.corpo;
 
@@ -311,6 +313,51 @@ export class EditarQuestaoComponent {
     this.pdfUrl = null
   }
 
+  validarAntesDeAvancar(nextCallback: any) {
+    if (this.atualizarQuestaoForm.valid) {
+      nextCallback.emit(); // Avança para a próxima etapa
+    } else {
+      this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
+    }
+  }
+  validarAntesDeAvancarCorpo(nextCallback: any) {
+    if (this.corpo && this.corpo.trim() !== '' && this.corpo !== "<br>" && this.corpo !== "") {
+      nextCallback.emit();
+    } else {
+      this.toastService.error('Preencha o corpo antes de avançar.');
+    }
+  }
+
+  verMarcado(nextCallback: any): void {
+    let cont = 0;
+    this.alternativas.forEach((alternativas, i) => {
+      if (alternativas.correta === false) {
+        cont = cont + 1;
+      }
+    });
+
+    if (cont === 4) {
+      this.toastService.error('Escolha uma questão correta.');
+    }else{
+      nextCallback.emit();
+    }
+
+  }
+
+  validarAcoes(nextCallback: any){
+    this.validarAlternativasCorpo(nextCallback);
+  }
+
+  validarAlternativasCorpo(nextCallback: any) {
+
+    const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
+
+    if (!alternativasVazias) {
+      this.verMarcado(nextCallback);
+    } else {
+      this.toastService.error('Preencha todas as alternativas antes de avançar.');
+    }
+  }
 
   saveContent() {
     const content = this.previewContent;

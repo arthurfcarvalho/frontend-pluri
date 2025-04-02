@@ -88,10 +88,13 @@
                             Alternativa A
                           </p-button>
                           <div *ngIf="expandedIndexes[0]">
-                            <p-checkbox
+                            <input
                               for="alternativa1-cb"
-                              (onChange)="setCorreta(0)"
-                              [value]="alternativas[0].correta"></p-checkbox>
+                              type="radio"
+                              (change) = "setCorreta(0)"
+                              [checked] = "alternativas[0].correta"
+                              name="alternativa"
+                              />
                             <label id="alternativa1-cb">Alternativa correta?</label>
                           </div>
                           </div>
@@ -115,7 +118,13 @@
                             Alternativa B
                           </p-button>
                           <div *ngIf="expandedIndexes[1]">
-                            <p-checkbox for="alternativa2-cb" (onChange)="setCorreta(1)" [value]="alternativas[1].correta"></p-checkbox>
+                            <input
+                              for="alternativa2-cb"
+                              type="radio"
+                              (change) = "setCorreta(1)"
+                              [checked] = "alternativas[1].correta"
+                              name="alternativa"
+                            />
                             <label id="alternativa2-cb">Alternativa correta?</label>
                           </div>
                           </div>
@@ -138,7 +147,13 @@
                             Alternativa C
                           </p-button>
                           <div *ngIf="expandedIndexes[2]">
-                            <p-checkbox for="alternativa3-cb" (onChange)="setCorreta(2)" [value]="alternativas[2].correta"></p-checkbox>
+                            <input
+                              for="alternativa3-cb"
+                              type="radio"
+                              (change) = "setCorreta(2)"
+                              [checked] = "alternativas[2].correta"
+                              name="alternativa"
+                            />
                             <label id="alternativa3-cb">Alternativa correta?</label>
                           </div>
                           </div>
@@ -161,8 +176,14 @@
                             Alternativa D
                           </p-button>
                           <div *ngIf="expandedIndexes[3]">
-                            <p-checkbox for="alternativa4-cb" (onChange)="setCorreta(3)" [value]="alternativas[3].correta"></p-checkbox>
-                            <label id="alternativa4-cb">Alternativa correta?</label>
+                            <input
+                              for="alternativa4-cb"
+                              type="radio"
+                              (change) = "setCorreta(3)"
+                              [checked] = "alternativas[3].correta"
+                              name="alternativa"
+                            />
+                             <label id="alternativa4-cb">Alternativa correta?</label>
                           </div>
                           </div>
                           <div *ngIf="expandedIndexes[3]">
@@ -178,7 +199,7 @@
                     </div>
                   <div class="action-buttons">
                     <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAcoes(nextCallback)" />
                     <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
 
                   </div>
@@ -214,13 +235,11 @@
     </div>
   </form>
 
-
   <div *ngIf="carregamento" class="custom-spinner-container">
     <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
   </div>
   <br>
-
-  <!--<div *ngIf="!carregamento && pdfUrl">
+  <!-- <div *ngIf="!carregamento && pdfUrl">
     <iframe [src]="pdfUrl" style="width: 100%; height: 600px; border: none;"></iframe>
-  </div>-->
+  </div> -->
 </body>
