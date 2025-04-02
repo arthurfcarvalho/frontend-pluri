@@ -1,5 +1,5 @@
 import { TokenService } from './../../../../services/token.service';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component ,ViewChild, ElementRef} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { ButtonModule } from 'primeng/button';
@@ -12,6 +12,7 @@ import { User } from '../../../../models/User.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ToastrService} from "ngx-toastr";
 import {TranslatePipe} from "@ngx-translate/core";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-lista-questoes-usuario',
@@ -34,6 +35,10 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
     login: ''
   }
   totalRecords = 0;
+
+  idToDelete:number = 0;
+
+  @ViewChild('modalDeletar') modalDeletar!: ElementRef;
 
   constructor(
     private toastService: ToastrService,
@@ -69,16 +74,27 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
           this.totalRecords = data.totalElements;
         });
       }
-    deletarQuestao(id: number): void {
-        this.questaoService.deleteQuestao(id).subscribe(
-          () => {
-            this.loadQuestions(0, 10);
-          },
-          (error) => {
-            const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
-            this.toastService.error(errorMessage);
-          }
-        );
-    }
+
+      confirmarDeletar(id: number) :void{
+        this.idToDelete = id;
+        this.modalDeletar.nativeElement.style.display = 'block';
+      }
+      fecharConfirmacao(): void {
+        this.modalDeletar.nativeElement.style.display = 'none';
+      }
+      deletarQuestao(id: number): void {
+          this.fecharConfirmacao();
+          this.questaoService.deleteQuestao(id).subscribe(
+            () => {
+              this.loadQuestions(0, 10);
+
+
+            },
+            (error) => {
+              const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+              this.toastService.error(errorMessage);
+            }
+          );
+      }
 }
 
