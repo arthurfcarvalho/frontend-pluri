@@ -1,13 +1,15 @@
 <app-header/>
-
+<!-- [rows]="rowsPerPage" define quantos itens vao aparecer com base no valor do filtro-->
+<!-- (onPage)="onPageChange($event)" quando a pagina e atualizada $event pega as informaçoes(numero de itens)-->
 <p-table
     [value]="dataQuestao"
     styleClass="p-datatable-striped"
     [paginator]="true"
-    [rows]="10"
+    [rows]="rowsPerPage"
     [totalRecords]="totalRecords"
     [lazy]="true"
     (onLazyLoad)="loadQuestions(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+    (onPage)="onPageChange($event)"
     [rowsPerPageOptions]="[5,10, 20]"
     [tableStyle]="{'min-width': '50rem'}"
     sortField="data_inicio_pluri"
@@ -25,6 +27,8 @@
             <th></th>
         </tr>
     </ng-template>
+
+
     <ng-template pTemplate="body" let-questao>
         <tr>
             <td>{{ questao.titulo }}</td>

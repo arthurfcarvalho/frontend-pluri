@@ -24,20 +24,20 @@
                                   [options]="dificuldades"
                                   formControlName="dificuldade"
                                   inputId="dificuldade" />
-                              <label class="label-dificuldade" for="dificuldade">Dificuldade</label>
+                              <label class="label-dificuldade">Dificuldade</label>
                           </p-floatLabel>
                           </div>
                           <div class="input-container">
                             <p-floatLabel>
                               <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
-                              <label class="label-dificuldade" for="assunto">Assunto</label>
+                              <label class="label-dificuldade" >Assunto</label>
                             </p-floatLabel>
                           </div>
-                          <div class="inpout-container">
+                          <div class="input-container">
                             <p-floatLabel>
                               <p-dropdown [options]="areasRecebidas" formControlName="idArea" optionLabel="nome"
                               placeholder="Selecione a area" />
-                              <label class="label-dificuldade" for="area">Area</label>
+                              <label class="label-areas" >Selecione a Área</label>
                             </p-floatLabel>
                           </div>
                         </div>
@@ -63,11 +63,13 @@
                         </div>
                       </div>
                   </div>
-                  <div class="action-buttons">
-                    <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarCorpo(nextCallback)" />
-                  </div>
+                <div class="action-buttons">
+                  <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()" />
+                  <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>
+                </div>
               </div>
+
           </ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Alternativas">

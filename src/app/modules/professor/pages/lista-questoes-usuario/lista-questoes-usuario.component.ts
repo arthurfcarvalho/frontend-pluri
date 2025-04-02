@@ -34,11 +34,11 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
     login: ''
   }
   totalRecords = 0;
+  rowsPerPage: number = 10;//inicie uma variavel para pegar o valor do filtro
 
   constructor(
     private toastService: ToastrService,
-    private snackBar: MatSnackBar, private questaoService: QuestionService, private userService: UserService, private tokenService: TokenService){
-  }
+    private snackBar: MatSnackBar, private questaoService: QuestionService, private userService: UserService, private tokenService: TokenService){}
 
   /*ngAfterViewInit(){
     this.userService.returnUserLogin().subscribe(
@@ -52,33 +52,36 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
         })
       })
     }*/
-      ngAfterViewInit() {
-        this.userService.returnUserLogin().subscribe(
-          (login: any | null) => {
-            this.userService.returnUserByLogin(login.sub).subscribe((user) => {
-              this.user = user;
-              this.loadQuestions(0, 10);
-            });
-          }
-        );
-      }
+  ngAfterViewInit() {
+    this.userService.returnUserLogin().subscribe((login: any | null) => {
+        this.userService.returnUserByLogin(login.sub).subscribe((user) => {
+        this.user = user;
+        this.loadQuestions(0, this.rowsPerPage);//carregando a pagina ao inciiar com base na qtd de rowsPerPage
+      });
+    });
+  }
 
-      loadQuestions(page: number = 0, size: number = 10) {
-        this.questaoService.listQuestionsUser(this.user.id, page, size).subscribe((data) => {
-          this.dataQuestao = data.content;
-          this.totalRecords = data.totalElements;
-        });
-      }
-    deletarQuestao(id: number): void {
-        this.questaoService.deleteQuestao(id).subscribe(
-          () => {
-            this.loadQuestions(0, 10);
-          },
-          (error) => {
-            const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
-            this.toastService.error(errorMessage);
-          }
-        );
-    }
+  loadQuestions(page: number = 0, size: number) {
+    this.questaoService.listQuestionsUser(this.user.id, page, size).subscribe((data) => {
+      this.dataQuestao = data.content;
+      this.totalRecords = data.totalElements;
+    });
+  }
+
+  deletarQuestao(id: number): void {
+    this.questaoService.deleteQuestao(id).subscribe(() => {
+        this.loadQuestions(0, this.rowsPerPage);//ao deletar a questão, vai carregar a qtd de questões baseada na this.rowsPerPage
+      },
+      (error) => {
+        const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+        this.toastService.error(errorMessage);
+      });
+  }
+
+  onPageChange(event: any): void {
+    // Atualiza o valor de rowsPerPage quando  mudar a quantidade de itens por página no filtro
+    this.rowsPerPage = event.rows;
+    this.loadQuestions(event.first / event.rows, event.rows);
+  }
 }
 

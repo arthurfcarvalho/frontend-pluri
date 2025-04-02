@@ -55,7 +55,7 @@
                     </div>
                 </div>
               <div class="action-buttons">
-                <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancar(nextCallback)"/>
+                <p-button label="Próximo" class="btn-informacoes" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancar(nextCallback)"/>
               </div>
             </ng-template>
         </p-stepperPanel>
@@ -72,12 +72,13 @@
                           </div>
                         </div>
                     </div>
-                </div>
-                <div class="action-buttons">
-                    <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
-                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarCorpo(nextCallback)" />
+                  <div class="action-buttons">
+                    <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()" />
+                    <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarCorpo(nextCallback)" />
                     <!--<button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()" label="Preview Questão"></button>-->
+                  </div>
                 </div>
+
             </ng-template>
         </p-stepperPanel>
         <p-stepperPanel header="Alternativas">
@@ -121,10 +122,9 @@
                         <div>
                           <div class="button-checkbox-container">
                             <p-button
-                            type="button"
-                            (click)="toggleEditor(1)"
-                            [class.active]="expandedIndexes[1]"
-                          >
+                              type="button"
+                              (click)="toggleEditor(1)"
+                              [class.active]="expandedIndexes[1]">
                             Alternativa B
                           </p-button>
                           <div *ngIf="expandedIndexes[1]">
@@ -245,11 +245,13 @@
     </div>
   </form>
 
+
   <div *ngIf="carregamento" class="custom-spinner-container">
     <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
   </div>
   <br>
-  <!-- <div *ngIf="!carregamento && pdfUrl">
+
+  <!--<div *ngIf="!carregamento && pdfUrl">
     <iframe [src]="pdfUrl" style="width: 100%; height: 600px; border: none;"></iframe>
-  </div> -->
+  </div>-->
 </body>
