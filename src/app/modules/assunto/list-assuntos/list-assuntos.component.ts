@@ -7,6 +7,7 @@ import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
 import Assunto from "../../../models/Assunto.model";
 import {AssuntoService} from "../../../services/assunto.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-list-assuntos',
@@ -27,7 +28,7 @@ export class ListAssuntosComponent {
   totalRecords = 0;
 
 
-  constructor(private assuntoService: AssuntoService) {
+  constructor(private toastService: ToastrService,private assuntoService: AssuntoService) {
   }
   ngOnInit() {
     this.loadAssuntos();
@@ -41,5 +42,14 @@ export class ListAssuntosComponent {
   }
 
   deletarAssunto(id: number) {
+    this.assuntoService.deleteAssunto(id).subscribe(
+      () => {
+        this.loadAssuntos(0, 10);
+      },
+      (error) => {
+        const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+        this.toastService.error(errorMessage);
+      }
+    );
   }
 }

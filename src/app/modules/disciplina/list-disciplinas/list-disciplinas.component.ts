@@ -8,6 +8,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import Assunto from "../../../models/Assunto.model";
 import {AssuntoService} from "../../../services/assunto.service";
 import {DisciplinaService} from "../../../services/disciplina.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-list-disciplinas',
@@ -29,7 +30,7 @@ export class ListDisciplinasComponent {
   totalRecords = 0;
 
 
-  constructor(private disciplinaService: DisciplinaService) {
+  constructor(private toastService: ToastrService, private disciplinaService: DisciplinaService) {
   }
   ngOnInit() {
     this.loadDisciplinas();
@@ -43,5 +44,14 @@ export class ListDisciplinasComponent {
   }
 
   deletarDisciplina(id: number) {
+    this.disciplinaService.deleteDisciplina(id).subscribe(
+      () => {
+        this.loadDisciplinas(0, 10);
+      },
+      (error) => {
+        const errorMessage = error.error.mensagem || 'Erro desconhecido ao excluir a questão';
+        this.toastService.error(errorMessage);
+      }
+    );
   }
 }

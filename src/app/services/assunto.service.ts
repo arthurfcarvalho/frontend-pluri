@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import {map, Observable} from "rxjs";
+import {catchError, map, Observable, throwError} from "rxjs";
 
 import { TokenService } from "./token.service";
 import { ApiResponsePageable } from "../types/api-response-pageable.type";
@@ -50,5 +50,11 @@ export class AssuntoService {
   listarPorDisciplina(id: any) {
     const url =  this.baseUrl + 'listar-assuntos-por-disciplina?disciplinaId=' + id +'&page=0&size=10&sort=nome';
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
+  }
+  deleteAssunto(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}deletar/${id}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      }));
   }
 }

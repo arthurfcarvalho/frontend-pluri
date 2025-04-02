@@ -105,6 +105,7 @@ export class CreateQuestionsComponent implements OnInit {
   ) {
     this.areaService.returnAllAreas().subscribe(areas => {
       this.areasRecebidas = areas.content
+      console.log(this.areasRecebidas);
     })
     this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')
@@ -126,9 +127,10 @@ export class CreateQuestionsComponent implements OnInit {
       alternativa2: new FormControl(' '),
       alternativa3: new FormControl(' '),
       alternativa4: new FormControl(' '),
-      codigo_assuntos: [[]],
-      area: [''],
-      correta: new FormControl(''),
+      assuntos: [[]],
+      disciplinas: [[]],
+      area: new FormControl(),
+      correta: new FormControl(),
     });
   }
 
@@ -202,19 +204,11 @@ export class CreateQuestionsComponent implements OnInit {
     const formValue = this.criarQuestaoForm.value;
 
     formValue.corpo = this.corpo;
-
-
     formValue.alternativas = this.alternativas;
-
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos
-      .map((assunto: { codigo: string }) => assunto.codigo)
-      .filter((codigo: any) => codigo !== null && codigo !== 0 && codigo !== '');
-
-    formValue.codigo_assuntos = assuntosCodigosSelecionados;
-
-    formValue.area = formValue.area.id;
+    formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
+    formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
+    formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     console.log(formValue)
-
 
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
@@ -229,9 +223,6 @@ export class CreateQuestionsComponent implements OnInit {
   existsAlternativaCorreta(){
       return this.alternativas.some((a) => a.correta === true);
   }
-
-
-
 
   public configPre: SummernoteOptions = {
     airMode: false,
@@ -260,12 +251,6 @@ export class CreateQuestionsComponent implements OnInit {
     this.showPreview = true;
     this.carregamento = true;
     const formValue = { ...this.criarQuestaoForm.value };
-
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
-
-    formValue.codigo_assuntos = assuntosCodigosSelecionados;
 
     formValue.area = formValue.area.id;
 

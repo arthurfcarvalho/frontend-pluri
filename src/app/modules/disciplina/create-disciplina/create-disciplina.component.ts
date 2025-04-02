@@ -12,6 +12,7 @@ import {MultiSelectModule} from "primeng/multiselect";
 import Assunto from "../../../models/Assunto.model";
 import {AssuntoService} from "../../../services/assunto.service";
 import {DisciplinaService} from "../../../services/disciplina.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-disciplina',
@@ -35,7 +36,7 @@ export class CreateDisciplinaComponent {
   areaSelected!: Area;
   assuntosList: Assunto[] = [];
 
-  constructor(private formBuilder: FormBuilder, private disciplinaService: DisciplinaService, private areaService: AreaService, private assuntoService: AssuntoService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private disciplinaService: DisciplinaService, private areaService: AreaService, private assuntoService: AssuntoService) {
   }
 
   ngOnInit(): void {
@@ -57,6 +58,7 @@ export class CreateDisciplinaComponent {
     this.disciplinaService.createDisciplina(this.createDisciplinaForm.value).subscribe(
       data => {
         console.log(data);
+        this.router.navigate(['/pesquisar-disciplinas']);
       },
       error => {
         console.log(error);

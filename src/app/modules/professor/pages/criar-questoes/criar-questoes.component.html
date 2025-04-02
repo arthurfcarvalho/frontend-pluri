@@ -30,14 +30,14 @@
                             </div>
                             <div class="input-container">
                               <p-floatLabel>
-                                <p-dropdown [options]="areasRecebidas" formControlName="idArea" optionLabel="nome" (onChange)="loadFieldsArea($event)"
+                                <p-dropdown [options]="areasRecebidas" formControlName="area" optionLabel="nome" (onChange)="loadFieldsArea($event)"
                                             placeholder="Selecione a area" />
                                 <label class="label-dificuldade">Area</label>
                               </p-floatLabel>
                             </div>
                             <div class="input-container">
                               <p-floatLabel>
-                                <p-multiSelect [options]="disciplinas" formControlName="disciplina" optionLabel="nome" placeholder="Selecione a disciplina"
+                                <p-multiSelect [options]="disciplinas" formControlName="disciplinas" optionLabel="nome" placeholder="Selecione a disciplina"
                                                (onChange)="loadFieldsDisciplinas($event)"></p-multiSelect>
                                 <label class="label-dificuldade" >Disciplina</label>
                               </p-floatLabel>
@@ -45,7 +45,7 @@
 
                             <div class="input-container">
                               <p-floatLabel>
-                                <p-multiSelect [options]="assuntos" formControlName="codigo_assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
+                                <p-multiSelect [options]="assuntos" formControlName="assuntos" optionLabel="codigo" placeholder="Selecione os assuntos"></p-multiSelect>
                                 <label class="label-dificuldade" >Assunto</label>
                               </p-floatLabel>
                             </div>
@@ -67,7 +67,7 @@
                         <p class="titulo">Informe o corpo</p>
                       </div>
                         <div class="box-corpo">
-                          <div class="box-summernote">
+                          <div class="box-summernote" style="width: 25rem">
                             <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo" [(summernoteModel)]="corpo"></div>
                           </div>
                         </div>

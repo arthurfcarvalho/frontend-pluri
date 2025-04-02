@@ -1,10 +1,11 @@
 .box-summernote{
-    height: 45%;
+  height: 45%;
+  width: 25rem;
 }
 .dialog-actions {
     margin: 0.5em;
     display: flex;
-    
+
     .dialog-checkbox {
         display: flex;
         flex-direction: column;
@@ -26,7 +27,7 @@
         }
     }
 
-    
+
 }
 
 .note-dialog .modal-dialog{ z-index:999; }

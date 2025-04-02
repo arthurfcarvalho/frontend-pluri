@@ -13,6 +13,8 @@ import {AreaService} from "../../../services/area.service";
 import {AssuntoService} from "../../../services/assunto.service";
 import {Disciplina} from "../../disciplina/models/disciplina";
 import {DisciplinaService} from "../../../services/disciplina.service";
+import {provideToastr, ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-assunto',
@@ -37,7 +39,7 @@ export class CreateAssuntoComponent {
   createAssuntoForm!: FormGroup;
   disciplinaList: Disciplina[] = [];
 
-  constructor(private disciplinaService: DisciplinaService, private formBuilder: FormBuilder, private areaService: AreaService, private assuntoService: AssuntoService) {
+  constructor(private router: Router,private toastService: ToastrService, private disciplinaService: DisciplinaService, private formBuilder: FormBuilder, private areaService: AreaService, private assuntoService: AssuntoService) {
   }
 
   ngOnInit(): void {
@@ -60,10 +62,12 @@ export class CreateAssuntoComponent {
 
     this.assuntoService.createAssunto(this.createAssuntoForm.value).subscribe(
       data => {
-        console.log(data);
+        this.toastService.success("Assunto criado com sucesso!")
+        this.router.navigate(['/pesquisar-assuntos']);
       },
       error => {
         console.log(error);
+        this.toastService.error("Erro ao criar assunto!")
       }
     )
   }

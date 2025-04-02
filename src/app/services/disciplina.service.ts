@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import {map, Observable} from "rxjs";
+import {catchError, map, Observable, throwError} from "rxjs";
 
 import { TokenService } from "./token.service";
 import { environment } from "../../environments/environment";
@@ -36,5 +36,11 @@ export class DisciplinaService {
   listarDisciplinas() {
     const url = this.baseUrl + 'listar-disciplinas';
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
+  }
+  deleteDisciplina(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}deletar/${id}`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      }));
   }
 }
