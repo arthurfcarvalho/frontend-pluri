@@ -1,48 +1,42 @@
-import { ToastrService } from 'ngx-toastr';
-import {ChangeDetectorRef, Component} from '@angular/core';
-import { HeaderComponent } from '../../../home/components/header/header.component';
-import {Form, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { NgxSummernoteModule } from 'ngx-summernote';
-import { StepperModule } from 'primeng/stepper';
-import { CalendarModule } from 'primeng/calendar';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
+import {ToastrService} from 'ngx-toastr';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {HeaderComponent} from '../../../home/components/header/header.component';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {NgxSummernoteModule} from 'ngx-summernote';
+import {StepperModule} from 'primeng/stepper';
+import {CalendarModule} from 'primeng/calendar';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {DropdownModule} from 'primeng/dropdown';
+import {InputTextModule} from 'primeng/inputtext';
+import {SummernoteOptions} from 'ngx-summernote/lib/summernote-options';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { QuestionService } from '../../../../services/question.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DadosAtualizarQuestao } from '../../models/DadosAtualizarQuestao.model';
+import {QuestionService} from '../../../../services/question.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DadosAtualizarQuestao} from '../../models/DadosAtualizarQuestao.model';
 import Assunto from '../../../../models/Assunto.model';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { AssuntoService } from '../../../../services/assunto.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { RelatoriosService } from '../../../../services/relatorios.service';
-import { catchError, map, throwError, timeout } from 'rxjs';
-import { ListboxModule } from 'primeng/listbox';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { Alternativa } from '../../models/Alternativa.model';
-import { Area } from '../../../../models/Area.model';
-import { AreaService } from '../../../../services/area.service';
-import { environment } from '../../../../../environments/environment';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {AssuntoService} from '../../../../services/assunto.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {RelatoriosService} from '../../../../services/relatorios.service';
+import {catchError, map, throwError, timeout} from 'rxjs';
+import {ListboxModule} from 'primeng/listbox';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import {IconFieldModule} from 'primeng/iconfield';
+import {InputIconModule} from 'primeng/inputicon';
+import {Alternativa} from '../../models/Alternativa.model';
+import {Area} from '../../../../models/Area.model';
+import {AreaService} from '../../../../services/area.service';
+import {environment} from '../../../../../environments/environment';
 import {CheckboxModule} from "primeng/checkbox";
 import {InputSwitchModule} from "primeng/inputswitch";
+import {DisciplinaService} from "../../../../services/disciplina.service";
+import {Disciplina} from "../../../disciplina/models/disciplina";
 
-
-interface DynamicFields {
-  corpo: string;
-  alternativa1: string;
-  alternativa2: string;
-  alternativa3: string;
-  alternativa4: string;
-}
 
 @Component({
   selector: 'app-editar-questao',
@@ -72,7 +66,7 @@ interface DynamicFields {
   templateUrl: './editar-questao.component.html',
   styleUrls: ['./editar-questao.component.scss']
 })
-export class EditarQuestaoComponent {
+export class EditarQuestaoComponent implements  OnInit{
 
   idQuestao: number = 0;
 
@@ -98,11 +92,12 @@ export class EditarQuestaoComponent {
   areaQuestao!: Area
   expandedIndexes: boolean[] = [true, true, true, true];
   alternativas: Alternativa[] = [];
-
-  alternativaCorreta: boolean[] = [true, true, true, true];
+  disciplinas: Disciplina[] = [];
+  areas!: Area[];
 
   constructor(
     private cdRef: ChangeDetectorRef,
+    private disciplinaService: DisciplinaService,
     private areaService: AreaService,
     private relatoriosService: RelatoriosService,
     private fb: FormBuilder, private router: Router,
@@ -116,55 +111,62 @@ export class EditarQuestaoComponent {
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
       dificuldade: new FormControl('', Validators.required),
-      alternativas: new FormControl('', Validators.required),
-      codigo_assuntos: [[]],
-      idArea: new FormControl()
+      assuntos: [[]],
+      disciplinas: [[]],
+      area: new FormControl(),
+      correta: new FormControl(),
     });
   }
 
   ngOnInit() {
-    this.idQuestao = (Number(this.route.snapshot.paramMap.get('id')));
+    this.idQuestao = Number(this.route.snapshot.paramMap.get('id'));
+
     if (this.idQuestao) {
-      this.questaoService.listById(Number(this.idQuestao)).subscribe(questaoRecebida => {
+      this.questaoService.listById(this.idQuestao).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
+        console.log(this.questao);
         this.cdRef.detectChanges();
 
-        this.corpo = this.questao.corpo;
-
+        // Definir as alternativas
         if (this.questao.alternativas && this.questao.alternativas.length > 0) {
-          this.alternativa1 = this.questao.alternativas[0];
-          this.alternativa2 = this.questao.alternativas[1];
-          this.alternativa3 = this.questao.alternativas[2];
-          this.alternativa4 = this.questao.alternativas[3];
-          this.alternativas = this.questao?.alternativas;
+          this.alternativas = this.questao.alternativas;
         }
 
-        this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
-          this.assuntos = assuntosRecebidos.content;
-
-          this.atualizarQuestaoForm.patchValue({
-            ...this.questao,
-            codigo_assuntos: this.questao.assuntos,
-          });
-          this.areaService.returnAllAreas().subscribe(areas => {
-            this.areasRecebidas = areas.content
-          })
-
-          this.areaService.listarPorId(this.questao.idArea).subscribe((area)=>{
-              this.areaQuestao = area
-              this.atualizarQuestaoForm.patchValue({ idArea: area });
-            })
-          this.updatePreview();
+        this.atualizarQuestaoForm.patchValue({
+          titulo: this.questao.titulo,
+          corpo: this.questao.corpo,
+          dificuldade: this.questao.dificuldade,
+          opcaoCorreta: this.questao.opcaoCorreta,
+          area: this.questao.area,
+          disciplinas: this.questao.disciplinas.map(d => d.id),
+          assuntos: this.questao.assuntos.map(a => a.id)
         });
-      });
 
+        this.areaService.returnAllAreas().subscribe(areas => {
+          this.areasRecebidas = areas.content;
+        });
+
+        this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
+          this.areaQuestao = area;
+          this.loadFieldsArea(area);
+
+          const disciplinaIds = this.questao.disciplinas.map(d => d.id);
+          if (disciplinaIds.length > 0) {
+            this.assuntoService.listarPorDisciplina(disciplinaIds).subscribe(assuntosRecebidos => {
+              this.assuntos = assuntosRecebidos.content;
+            });
+          }
+        });
+
+        this.updatePreview();
+      });
     }
   }
+
 
   toggleEditor(index: number) {
     this.expandedIndexes[index] = this.expandedIndexes[index];
     //if(this.questao.alternativas[index].correta) {
-
     //}
   }
 
@@ -173,22 +175,16 @@ export class EditarQuestaoComponent {
 
       formValue.corpo = this.corpo;
 
-      const alternativas = [
-        this.alternativa1,
-        this.alternativa2,
-        this.alternativa3,
-        this.alternativa4
+    formValue.alternativas = [
+      this.alternativa1,
+      this.alternativa2,
+      this.alternativa3,
+      this.alternativa4
     ];
 
-    formValue.alternativas = alternativas;
-
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
-
-
-    //formValue.codigo_assuntos = assuntosCodigosSelecionados;
-    formValue.codigoAssuntos = assuntosCodigosSelecionados;
+    formValue.codigoAssuntos = formValue.assuntos
+      .map((assunto: { codigo: string }) => assunto.codigo)
+      .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
     formValue.id = this.idQuestao;
 
     this.questaoService.updateQuestion(formValue).subscribe({
@@ -197,7 +193,7 @@ export class EditarQuestaoComponent {
           this.router.navigate(['/', value]);
         },
         error: (e) => {
-          this.toastService.error("Erro ao atualizar o Questão!");
+          this.toastService.error("Erro ao atualizar o Questão!", e);
         }
       });
   }
@@ -205,20 +201,9 @@ export class EditarQuestaoComponent {
   setCorreta(index: number) {
     console.log(this.alternativas)
     this.alternativas.forEach((alternativa, i) => {
-      if (i === index) {
-        alternativa.correta = true;
-      } else {
-        alternativa.correta = false;
-      }
+      alternativa.correta = i === index;
     });
   }
-
-  public configPre: SummernoteOptions = {
-    airMode: false,
-    toolbar: [
-      ['print', ['print']]
-    ],
-  };
 
   public config: SummernoteOptions = {
     airMode: false,
@@ -254,24 +239,20 @@ export class EditarQuestaoComponent {
     this.carregamento = true;
     const formValue = {...this.atualizarQuestaoForm.value};
 
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
-
-    formValue.codigo_assuntos = assuntosCodigosSelecionados;
+    formValue.assuntos = formValue.assuntos
+      .map((assunto: { codigo: string }) => assunto.codigo)
+      .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
 
     formValue.idArea = formValue.idArea.id;
 
     formValue.corpo = this.corpo;
 
-    const alternativas = [
+    formValue.alternativas = [
       this.alternativa1,
       this.alternativa2,
       this.alternativa3,
       this.alternativa4
     ];
-
-    formValue.alternativas = alternativas;
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(3000),
@@ -318,13 +299,6 @@ export class EditarQuestaoComponent {
       nextCallback.emit(); // Avança para a próxima etapa
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
-    }
-  }
-  validarAntesDeAvancarCorpo(nextCallback: any) {
-    if (this.corpo && this.corpo.trim() !== '' && this.corpo !== "<br>" && this.corpo !== "") {
-      nextCallback.emit();
-    } else {
-      this.toastService.error('Preencha o corpo antes de avançar.');
     }
   }
 
@@ -378,4 +352,43 @@ export class EditarQuestaoComponent {
       document.body.removeChild(tempElement);
     });
   }
+  loadFieldsArea(event: any) {
+    const selectedArea = event.value ? event.value : event;
+    this.atualizarQuestaoForm.patchValue({ area: selectedArea });
+
+    this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
+      this.disciplinas = disciplinasRecebidas.content;
+
+      // Se a questão já tem disciplinas, preencher o formulário
+      if (this.questao?.disciplinas) {
+        this.atualizarQuestaoForm.patchValue({
+          disciplinas: this.questao.disciplinas
+        });
+      }
+    });
+  }
+  loadFieldsDisciplinas(event: any) {
+    const disciplinasSelecionadas = event.value || [];
+
+    if (disciplinasSelecionadas.length > 0) {
+      const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);
+
+      this.assuntoService.listarPorDisciplina(disciplinaIds).subscribe(assuntosRecebidos => {
+        this.assuntos = assuntosRecebidos.content;
+
+        // Limpar assuntos já selecionados
+        this.atualizarQuestaoForm.patchValue({
+          assuntos: []
+        });
+      });
+    } else {
+      // Nenhuma disciplina selecionada, limpar os assuntos
+      this.assuntos = [];
+      this.atualizarQuestaoForm.patchValue({
+        assuntos: []
+      });
+    }
+  }
+
+
 }

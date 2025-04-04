@@ -13,6 +13,7 @@ import Assunto from "../../../models/Assunto.model";
 import {AssuntoService} from "../../../services/assunto.service";
 import {DisciplinaService} from "../../../services/disciplina.service";
 import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-create-disciplina',
@@ -33,17 +34,16 @@ import {Router} from "@angular/router";
 export class CreateDisciplinaComponent {
   createDisciplinaForm!: FormGroup;
   areaList: DadosDetalhamentoArea[] = [];
-  areaSelected!: Area;
   assuntosList: Assunto[] = [];
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private disciplinaService: DisciplinaService, private areaService: AreaService, private assuntoService: AssuntoService) {
+  constructor(private toastService: ToastrService,private router: Router, private formBuilder: FormBuilder, private disciplinaService: DisciplinaService, private areaService: AreaService, private assuntoService: AssuntoService) {
   }
 
   ngOnInit(): void {
     this.createDisciplinaForm = this.formBuilder.group({
       nome: new FormControl('', Validators.required),
       area: new FormControl(''),
-      assuntos: new FormControl(),
+      assuntos: [[]],
     });
     this.loadAreas();
     this.loadAssuntos();
@@ -55,10 +55,12 @@ export class CreateDisciplinaComponent {
   }
 
   submit() {
-    this.disciplinaService.createDisciplina(this.createDisciplinaForm.value).subscribe(
+    console.log(this.createDisciplinaForm.value);
+    const data = this.createDisciplinaForm.value;
+    this.disciplinaService.createDisciplina(data).subscribe(
       data => {
-        console.log(data);
         this.router.navigate(['/pesquisar-disciplinas']);
+        this.toastService.success("Disciplina criada com sucesso")
       },
       error => {
         console.log(error);

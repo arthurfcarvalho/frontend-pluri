@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import {catchError, map, Observable, throwError} from "rxjs";
 
@@ -20,9 +20,15 @@ export class DisciplinaService {
     private tokenService: TokenService
   ) {}
 
+  // createDisciplina(data: Disciplina): Observable<Disciplina> {
+  //   const url = this.baseUrl + 'criar-disciplina';
+  //   return this.httpClient.post<any>(url, data);
+  // }
   createDisciplina(data: Disciplina): Observable<Disciplina> {
     const url = this.baseUrl + 'criar-disciplina';
-    return this.httpClient.post<Disciplina>(url, data);
+    return this.httpClient.post<Disciplina>(url, data, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    });
   }
 
   listarDisciplinasPorArea(idArea: number) {

@@ -15,7 +15,7 @@
           [options]="areaList"
           optionLabel="nome"
           (onChange)="onAreaChange($event)"
-          [(ngModel)]="areaSelected"
+          formControlName="area"
         >
         </p-dropdown>
       </div>
@@ -24,6 +24,7 @@
         <label>Assuntos</label>
         <p-multiSelect
           [options]="assuntosList"
+          formControlName="assuntos"
           optionLabel="nome">
         </p-multiSelect>
       </div>
