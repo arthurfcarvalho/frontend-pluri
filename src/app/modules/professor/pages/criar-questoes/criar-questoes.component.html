@@ -1,7 +1,5 @@
 <app-header></app-header>
 
-<!--<label *ngIf="passou" class="message-label">O editor está desativado</label>-->
-
 <body>
   <form [formGroup]="criarQuestaoForm" class="create-question-form">
   <div class="card">
@@ -108,6 +106,7 @@
                               />
                             <label id="alternativa1-cb">Alternativa correta?</label>
                           </div>
+                            <app-editor-tiptap [(content)]="alternativas[0].corpo"></app-editor-tiptap>
                           </div>
                           <div *ngIf="expandedIndexes[0]">
                           <div
@@ -117,6 +116,7 @@
                             [ngxSummernoteView]="alternativas[0].corpo"
                           >
                           </div>
+                            <div>{{ alternativas[0].corpo }}</div>
                         </div>
                         </div>
                         <div>

@@ -1,9 +1,8 @@
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
-import { Alternativa } from './../../models/Alternativa.model';
 import { catchError, map, throwError, timeout } from 'rxjs';
-import { AssuntoService } from './../../../../services/assunto.service';
-import { QuestionService } from './../../../../services/question.service';
-import { Component, ElementRef, OnInit, ViewChild, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { AssuntoService } from '../../../../services/assunto.service';
+import { QuestionService } from '../../../../services/question.service';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +17,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { Area } from '../../../../models/Area.model';
 import { ListboxModule } from 'primeng/listbox';
 import { AreaService } from '../../../../services/area.service';
-import { HttpClient } from '@angular/common/http';
 import { RelatoriosService } from '../../../../services/relatorios.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
@@ -56,43 +54,40 @@ import {ApiResponsePageable} from "../../../../types/api-response-pageable.type"
     IconFieldModule,
     InputIconModule,
     CheckboxModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush  // Habilita OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateQuestionsComponent implements OnInit {
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = ' ';
   alternativas = [
-    {corpo: '', correta: false, posicao: 1},
-    {corpo: '', correta: false, posicao: 2},
-    {corpo: '', correta: false, posicao: 3},
-    {corpo: '', correta: false, posicao: 4}
+    {corpo: ' ', correta: false, posicao: 1},
+    {corpo: ' ', correta: false, posicao: 2},
+    {corpo: ' ', correta: false, posicao: 3},
+    {corpo: ' ', correta: false, posicao: 4}
   ];
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
-  previewContent = '';
   assuntos!: Assunto[];
   disciplinas: Disciplina[] = [];
   areas!: Area[];
   criarQuestaoForm: FormGroup;
-  areaSelecionada!: number;
   areasRecebidas!: Area[]
-  desabilitado = true;
-  passou = false;
   showPreview = false;
   btnCriarEnviar = 'Criar';
   expandedIndexes: boolean[] = [true, true, true, true];
   @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
-  active: number | undefined = 0;
+  fonteTitulo: string = "";
+  fonteLink = '';
+  fonteData = '';
 
   constructor(
     private relatoriosService: RelatoriosService,
-    private http: HttpClient,
     private disciplinaService: DisciplinaService,
     private areaService: AreaService,
     private assuntoService: AssuntoService,
@@ -106,7 +101,6 @@ export class CreateQuestionsComponent implements OnInit {
   ) {
     this.areaService.returnAllAreas().subscribe(areas => {
       this.areasRecebidas = areas.content
-      console.log(this.areasRecebidas);
     })
     this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')
@@ -120,14 +114,14 @@ export class CreateQuestionsComponent implements OnInit {
     })
 
     this.criarQuestaoForm = this.fb.group({
-      titulo: new FormControl('', Validators.required),
-      corpo: new FormControl(' ', Validators.required),
-      dificuldade: new FormControl('', Validators.required),
-      alternativas: new FormControl(' '),
-      alternativa1: new FormControl(' '),
-      alternativa2: new FormControl(' '),
-      alternativa3: new FormControl(' '),
-      alternativa4: new FormControl(' '),
+      titulo: new FormControl(),
+      corpo: new FormControl(),
+      dificuldade: new FormControl(),
+      alternativas: new FormControl(),
+      alternativa1: new FormControl(),
+      alternativa2: new FormControl(),
+      alternativa3: new FormControl(),
+      alternativa4: new FormControl(),
       assuntos: [[]],
       disciplinas: [[]],
       area: new FormControl(),
@@ -160,7 +154,6 @@ export class CreateQuestionsComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.updatePreview();
   }
 
   get f() {
@@ -173,11 +166,7 @@ export class CreateQuestionsComponent implements OnInit {
 
   setCorreta(index: number) {
     this.alternativas.forEach((alternativa, i) => {
-      if (i === index) {
-        alternativa.correta = true;
-      } else {
-        alternativa.correta = false;
-      }
+      alternativa.correta = i === index;
 
     });
 
@@ -190,7 +179,7 @@ export class CreateQuestionsComponent implements OnInit {
   verMarcado(nextCallback: any): void {
     let cont = 0;
     this.alternativas.forEach((alternativas, i) => {
-      if (alternativas.correta === false) {
+      if (!alternativas.correta) {
         cont = cont + 1;
       }
     });
@@ -203,13 +192,10 @@ export class CreateQuestionsComponent implements OnInit {
 
   }
 
-  onSubmit() {
-    const formData = this.criarQuestaoForm.value;
-    }
-
   validarAntesDeAvancar(nextCallback: any) {
+     nextCallback.emit();
     if (this.criarQuestaoForm.valid) {
-      nextCallback.emit(); // Avança para a próxima etapa
+
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
@@ -219,9 +205,10 @@ export class CreateQuestionsComponent implements OnInit {
     const parser = new DOMParser();
     const doc = parser.parseFromString(this.corpo , "text/html");/*interpreta o texto como html*/
     const corpoLimpo = doc.body.textContent?.trim() || "";/*se o doc tiver tags html, doc.body.textContent?.trim() || "" vai tirar as tags como <br> <p>
-                                                                   e o trim() remove os espaços*/
+                                                                 e o trim() remove os espaços*/
+    nextCallback.emit();
     if (corpoLimpo.length > 0) {
-      nextCallback.emit();
+
     } else {
       this.toastService.error('Preencha o corpo antes de avançar.');
     }
@@ -258,31 +245,6 @@ export class CreateQuestionsComponent implements OnInit {
       }
     });
   }
-  existsAlternativaCorreta(){
-      return this.alternativas.some((a) => a.correta === true);
-  }
-
-  public configPre: SummernoteOptions = {
-    airMode: false,
-    toolbar: [],
-  };
-
-  updatePreview() {
-    this.previewContent = this.getPreviewContent();
-  }
-
-  getPreviewContent(): string {
-    const { corpo, alternativa1, alternativa2, alternativa3, alternativa4 } = this.criarQuestaoForm.value;
-    return `
-      <div>
-        <div>${corpo || this.corpo}</div><br>
-        <p><strong>1)</strong> ${alternativa1.texto || this.alternativas[0].corpo}</p>
-        <p><strong>2)</strong> ${alternativa2.corpo || this.alternativas[1].corpo}</p>
-        <p><strong>3)</strong> ${alternativa3.corpo || this.alternativas[2].corpo}</p>
-        <p><strong>4)</strong> ${alternativa4.corpo || this.alternativas[3].corpo}</p>
-      </div>
-    `;
-  }
 
   previewQuestaoNoModelo() {
     this.pdfUrl = "";
@@ -290,7 +252,7 @@ export class CreateQuestionsComponent implements OnInit {
     this.carregamento = true;
     const formValue = { ...this.criarQuestaoForm.value };
 
-    formValue.area = formValue.area.id;
+    formValue.area = formValue.area;
 
     formValue.corpo = this.corpo;
 
@@ -336,14 +298,6 @@ export class CreateQuestionsComponent implements OnInit {
       btnDestroiIframe?.remove()
     }
     this.pdfUrl = null
-  }
-
-  mouseEntrou() {
-    this.passou = true;
-  }
-
-  mouseSaiu() {
-    this.passou = false;
   }
 
   loadFieldsArea(event: any) {

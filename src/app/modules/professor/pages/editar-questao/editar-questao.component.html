@@ -45,7 +45,11 @@
                   </div>
                   <div class="input-container">
                     <p-floatLabel>
-                      <p-multiSelect [options]="assuntos" formControlName="assuntos" optionLabel="nome"
+                      <p-multiSelect [options]="assuntos"
+                                     formControlName="assuntos"
+                                     optionLabel="nome"
+                                     filter="true"
+                                     [display]="'chip'"
                                      placeholder="Selecione os assuntos"></p-multiSelect>
                       <label class="label-dificuldade">Assunto</label>
                     </p-floatLabel>
@@ -72,7 +76,7 @@
               </div>
               <div class="box-corpo">
                 <div class="box-summernote">
-                  <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo"
+                  <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo" formControlName="corpo"
                        [(summernoteModel)]="corpo"></div>
                 </div>
               </div>
@@ -225,12 +229,12 @@
             </div>
             <div *ngIf="pdfUrl" class="box-preview">
               <div class="box-btn-fechar">
-                <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe" (click)="fecharIframe()">Fechar
+                <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe1" (click)="fecharIframe()">Fechar
                   Preview
                 </button>
               </div>
               <p>Sua questão exemplo e a número 01.</p>
-              <iframe id="iFramePdf" [src]="pdfUrl"></iframe>
+              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
             </div>
           </div>
         </ng-template>

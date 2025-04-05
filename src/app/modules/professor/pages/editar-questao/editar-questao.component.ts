@@ -70,7 +70,7 @@ export class EditarQuestaoComponent implements  OnInit{
 
   idQuestao: number = 0;
 
-
+  compararPorId = (a: any, b: any) => a && b && a.id === b.id;
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
@@ -114,7 +114,8 @@ export class EditarQuestaoComponent implements  OnInit{
       assuntos: [[]],
       disciplinas: [[]],
       area: new FormControl(),
-      correta: new FormControl(),
+      alternativaCorreta: new FormControl(),
+      alternativas: new FormControl(),
     });
   }
 
@@ -131,17 +132,6 @@ export class EditarQuestaoComponent implements  OnInit{
         if (this.questao.alternativas && this.questao.alternativas.length > 0) {
           this.alternativas = this.questao.alternativas;
         }
-
-        this.atualizarQuestaoForm.patchValue({
-          titulo: this.questao.titulo,
-          corpo: this.questao.corpo,
-          dificuldade: this.questao.dificuldade,
-          opcaoCorreta: this.questao.opcaoCorreta,
-          area: this.questao.area,
-          disciplinas: this.questao.disciplinas.map(d => d.id),
-          assuntos: this.questao.assuntos.map(a => a.id)
-        });
-
         this.areaService.returnAllAreas().subscribe(areas => {
           this.areasRecebidas = areas.content;
         });
@@ -152,13 +142,22 @@ export class EditarQuestaoComponent implements  OnInit{
 
           const disciplinaIds = this.questao.disciplinas.map(d => d.id);
           if (disciplinaIds.length > 0) {
-            this.assuntoService.listarPorDisciplina(disciplinaIds).subscribe(assuntosRecebidos => {
-              this.assuntos = assuntosRecebidos.content;
+            this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+              this.assuntos = assuntosRecebidos;
             });
           }
         });
 
-        this.updatePreview();
+        this.atualizarQuestaoForm.patchValue({
+          titulo: this.questao.titulo,
+          corpo: this.questao?.corpo,
+          dificuldade: this.questao.dificuldade,
+          area: this.questao?.area,
+          disciplinas: this.questao.disciplinas.map(d => d),
+          assuntos: this.questao.assuntos.map(a => a),
+          alternativaCorreta: this.questao.alternativaCorreta,
+          alternativas: this.questao.alternativas
+        });
       });
     }
   }
@@ -166,8 +165,6 @@ export class EditarQuestaoComponent implements  OnInit{
 
   toggleEditor(index: number) {
     this.expandedIndexes[index] = this.expandedIndexes[index];
-    //if(this.questao.alternativas[index].correta) {
-    //}
   }
 
   submitAtualizarQuestao() {
@@ -229,21 +226,11 @@ export class EditarQuestaoComponent implements  OnInit{
 
   };
 
-  updatePreview() {
-    //this.previewContent = this.getPreviewContent();
-  }
-
   previewQuestaoNoModelo() {
     this.pdfUrl = "";
     this.showPreview = true;
     this.carregamento = true;
     const formValue = {...this.atualizarQuestaoForm.value};
-
-    formValue.assuntos = formValue.assuntos
-      .map((assunto: { codigo: string }) => assunto.codigo)
-      .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
-
-    formValue.idArea = formValue.idArea.id;
 
     formValue.corpo = this.corpo;
 
@@ -296,7 +283,7 @@ export class EditarQuestaoComponent implements  OnInit{
 
   validarAntesDeAvancar(nextCallback: any) {
     if (this.atualizarQuestaoForm.valid) {
-      nextCallback.emit(); // Avança para a próxima etapa
+      nextCallback.emit();
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
@@ -352,37 +339,38 @@ export class EditarQuestaoComponent implements  OnInit{
       document.body.removeChild(tempElement);
     });
   }
-  loadFieldsArea(event: any) {
-    const selectedArea = event.value ? event.value : event;
-    this.atualizarQuestaoForm.patchValue({ area: selectedArea });
-
-    this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
-      this.disciplinas = disciplinasRecebidas.content;
-
-      // Se a questão já tem disciplinas, preencher o formulário
-      if (this.questao?.disciplinas) {
-        this.atualizarQuestaoForm.patchValue({
-          disciplinas: this.questao.disciplinas
-        });
-      }
-    });
-  }
   loadFieldsDisciplinas(event: any) {
     const disciplinasSelecionadas = event.value || [];
 
     if (disciplinasSelecionadas.length > 0) {
       const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);
 
-      this.assuntoService.listarPorDisciplina(disciplinaIds).subscribe(assuntosRecebidos => {
-        this.assuntos = assuntosRecebidos.content;
+      this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+        const assuntosDaDisciplina = assuntosRecebidos;
 
-        // Limpar assuntos já selecionados
+        // Assuntos previamente selecionados na questão
+        const assuntosSelecionados = this.questao?.assuntos || [];
+
+        // Merge com assuntos já selecionados (evitando duplicatas)
+        const todosAssuntos = [
+          ...assuntosDaDisciplina,
+          ...assuntosSelecionados.filter(
+            asel => !assuntosDaDisciplina.some(a => a.id === asel.id)
+          )
+        ];
+
+        this.assuntos = todosAssuntos;
+
+        // Marcar os que estavam selecionados
+        const assuntosMatch = todosAssuntos.filter(a =>
+          assuntosSelecionados.some(asel => asel.id === a.id)
+        );
+
         this.atualizarQuestaoForm.patchValue({
-          assuntos: []
+          assuntos: assuntosMatch
         });
       });
     } else {
-      // Nenhuma disciplina selecionada, limpar os assuntos
       this.assuntos = [];
       this.atualizarQuestaoForm.patchValue({
         assuntos: []
@@ -390,5 +378,34 @@ export class EditarQuestaoComponent implements  OnInit{
     }
   }
 
+  loadFieldsArea(event: any) {
+    const selectedArea = event.value ? event.value : event;
+    this.atualizarQuestaoForm.patchValue({ area: selectedArea });
 
+    this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
+      let disciplinasDaArea = disciplinasRecebidas.content;
+
+      // Verifica se a questão já possui disciplinas selecionadas
+      const disciplinasSelecionadas = this.questao?.disciplinas || [];
+
+      // Faz merge das disciplinas recebidas com as já selecionadas, sem duplicar (com base no ID)
+      const todasDisciplinas = [
+        ...disciplinasDaArea,
+        ...disciplinasSelecionadas.filter(
+          sel => !disciplinasDaArea.some(d => d.id === sel.id)
+        )
+      ];
+
+      this.disciplinas = todasDisciplinas;
+
+      // Atualiza o form com as disciplinas selecionadas (mas que agora são referências da lista nova)
+      const disciplinasMatch = todasDisciplinas.filter(d =>
+        disciplinasSelecionadas.some(ds => ds.id === d.id)
+      );
+
+      this.atualizarQuestaoForm.patchValue({
+        disciplinas: disciplinasMatch
+      });
+    });
+  }
 }

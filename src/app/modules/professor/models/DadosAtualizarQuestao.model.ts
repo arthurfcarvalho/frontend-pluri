@@ -8,7 +8,7 @@ export interface DadosAtualizarQuestao{
     corpo: string,
     titulo: string,
     alternativas: Alternativa[],
-    opcaoCorreta: number,
+    alternativaCorreta: number,
     dataCriacao: Date,
     dificuldade: string,
     aprovada: boolean,
