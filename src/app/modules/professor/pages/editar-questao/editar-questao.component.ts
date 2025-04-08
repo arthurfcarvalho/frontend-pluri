@@ -125,10 +125,6 @@ export class EditarQuestaoComponent implements  OnInit{
     if (this.idQuestao) {
       this.questaoService.listById(this.idQuestao).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
-        console.log(this.questao);
-        this.cdRef.detectChanges();
-
-        // Definir as alternativas
         if (this.questao.alternativas && this.questao.alternativas.length > 0) {
           this.alternativas = this.questao.alternativas;
         }
@@ -139,7 +135,6 @@ export class EditarQuestaoComponent implements  OnInit{
         this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
           this.areaQuestao = area;
           this.loadFieldsArea(area);
-
           const disciplinaIds = this.questao.disciplinas.map(d => d.id);
           if (disciplinaIds.length > 0) {
             this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
@@ -152,7 +147,7 @@ export class EditarQuestaoComponent implements  OnInit{
           titulo: this.questao.titulo,
           corpo: this.questao?.corpo,
           dificuldade: this.questao.dificuldade,
-          area: this.questao?.area,
+          area: this.questao.area,
           disciplinas: this.questao.disciplinas.map(d => d),
           assuntos: this.questao.assuntos.map(a => a),
           alternativaCorreta: this.questao.alternativaCorreta,
@@ -170,24 +165,17 @@ export class EditarQuestaoComponent implements  OnInit{
   submitAtualizarQuestao() {
     const formValue = this.atualizarQuestaoForm.value;
 
-      formValue.corpo = this.corpo;
-
-    formValue.alternativas = [
-      this.alternativa1,
-      this.alternativa2,
-      this.alternativa3,
-      this.alternativa4
-    ];
-
-    formValue.codigoAssuntos = formValue.assuntos
-      .map((assunto: { codigo: string }) => assunto.codigo)
-      .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
+    formValue.corpo = this.atualizarQuestaoForm.value.corpo;
+    formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
     formValue.id = this.idQuestao;
+    formValue.area = this.atualizarQuestaoForm.value.area.id;
+    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
+    formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any)=> a.id);
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
           this.toastService.success("Questao atualizada com sucesso!");
-          this.router.navigate(['/', value]);
+          this.router.navigate(['/minhas-questoes', value]);
         },
         error: (e) => {
           this.toastService.error("Erro ao atualizar o Questão!", e);
@@ -196,19 +184,17 @@ export class EditarQuestaoComponent implements  OnInit{
   }
 
   setCorreta(index: number) {
-    console.log(this.alternativas)
     this.alternativas.forEach((alternativa, i) => {
       alternativa.correta = i === index;
     });
+    console.log(this.alternativas)
   }
 
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
       ['style', ['style']],
-      ['font', ['bold', 'italic', 'underline', 'clear']],
-      ['fontname', ['fontname']],
-      ['color', ['color']],
+      ['font', ['bold', 'italic', 'underline']],
       ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'math']],
       ['custom', ['customButton']]
@@ -232,14 +218,13 @@ export class EditarQuestaoComponent implements  OnInit{
     this.carregamento = true;
     const formValue = {...this.atualizarQuestaoForm.value};
 
-    formValue.corpo = this.corpo;
+    formValue.corpo = this.atualizarQuestaoForm.value.corpo;
+    formValue.area = this.atualizarQuestaoForm.value?.area?.id;
 
-    formValue.alternativas = [
-      this.alternativa1,
-      this.alternativa2,
-      this.alternativa3,
-      this.alternativa4
-    ];
+    formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any) => a.id);
+
+    formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
+    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any) => d.id);
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(3000),
@@ -278,7 +263,7 @@ export class EditarQuestaoComponent implements  OnInit{
     if(btnDestroiIframe){
       btnDestroiIframe?.remove()
     }
-    this.pdfUrl = null
+    this.pdfUrl = ""
   }
 
   validarAntesDeAvancar(nextCallback: any) {
@@ -339,6 +324,8 @@ export class EditarQuestaoComponent implements  OnInit{
       document.body.removeChild(tempElement);
     });
   }
+  ultimaAreaSelecionada: any = null;
+  selecoesPorArea: Map<number, { disciplinas: any[], assuntos: any[] }> = new Map();
   loadFieldsDisciplinas(event: any) {
     const disciplinasSelecionadas = event.value || [];
 
@@ -348,10 +335,7 @@ export class EditarQuestaoComponent implements  OnInit{
       this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
         const assuntosDaDisciplina = assuntosRecebidos;
 
-        // Assuntos previamente selecionados na questão
         const assuntosSelecionados = this.questao?.assuntos || [];
-
-        // Merge com assuntos já selecionados (evitando duplicatas)
         const todosAssuntos = [
           ...assuntosDaDisciplina,
           ...assuntosSelecionados.filter(
@@ -361,7 +345,6 @@ export class EditarQuestaoComponent implements  OnInit{
 
         this.assuntos = todosAssuntos;
 
-        // Marcar os que estavam selecionados
         const assuntosMatch = todosAssuntos.filter(a =>
           assuntosSelecionados.some(asel => asel.id === a.id)
         );
@@ -377,35 +360,75 @@ export class EditarQuestaoComponent implements  OnInit{
       });
     }
   }
-
   loadFieldsArea(event: any) {
     const selectedArea = event.value ? event.value : event;
+
+    // Se ainda não foi setada nenhuma área, considera esse o primeiro carregamento
+    const areaMudou = this.ultimaAreaSelecionada && this.ultimaAreaSelecionada.id !== selectedArea.id;
+
+    if (areaMudou) {
+      this.atualizarQuestaoForm.patchValue({
+        disciplinas: [],
+        assuntos: []
+      });
+      this.disciplinas = [];
+      this.assuntos = [];
+    }
+
+    // Sempre atualiza a última área após verificar mudança
+    this.ultimaAreaSelecionada = selectedArea;
+
     this.atualizarQuestaoForm.patchValue({ area: selectedArea });
 
     this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
-      let disciplinasDaArea = disciplinasRecebidas.content;
+      const disciplinasDaArea = disciplinasRecebidas.content;
 
-      // Verifica se a questão já possui disciplinas selecionadas
-      const disciplinasSelecionadas = this.questao?.disciplinas || [];
+      const disciplinasSelecionadas = this.atualizarQuestaoForm.get('disciplinas')?.value || [];
 
-      // Faz merge das disciplinas recebidas com as já selecionadas, sem duplicar (com base no ID)
       const todasDisciplinas = [
         ...disciplinasDaArea,
         ...disciplinasSelecionadas.filter(
-          sel => !disciplinasDaArea.some(d => d.id === sel.id)
+          (sel:any) => !disciplinasDaArea.some(d => d.id === sel.id)
         )
       ];
 
       this.disciplinas = todasDisciplinas;
 
-      // Atualiza o form com as disciplinas selecionadas (mas que agora são referências da lista nova)
       const disciplinasMatch = todasDisciplinas.filter(d =>
-        disciplinasSelecionadas.some(ds => ds.id === d.id)
+        disciplinasSelecionadas.some((ds:any) => ds.id === d.id)
       );
 
       this.atualizarQuestaoForm.patchValue({
         disciplinas: disciplinasMatch
       });
+
+      const disciplinaIds = disciplinasMatch.map((d: any) => d.id);
+
+      if (disciplinaIds.length > 0) {
+        this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+          const assuntosSelecionados = this.atualizarQuestaoForm.get('assuntos')?.value || [];
+
+          const todosAssuntos = [
+            ...assuntosRecebidos,
+            ...assuntosSelecionados.filter(
+              (asel:any) => !assuntosRecebidos.some(a => a.id === asel.id)
+            )
+          ];
+
+          this.assuntos = todosAssuntos;
+
+          const assuntosMatch = todosAssuntos.filter(a =>
+            assuntosSelecionados.some((asel:any) => asel.id === a.id)
+          );
+
+          this.atualizarQuestaoForm.patchValue({
+            assuntos: assuntosMatch
+          });
+        });
+      } else {
+        this.assuntos = [];
+        this.atualizarQuestaoForm.patchValue({ assuntos: [] });
+      }
     });
   }
 }

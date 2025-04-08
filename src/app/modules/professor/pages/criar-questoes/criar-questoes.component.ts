@@ -6,7 +6,7 @@ import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } fro
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
@@ -32,6 +32,7 @@ import { environment } from '../../../../../environments/environment';
 import {Disciplina} from "../../../disciplina/models/disciplina";
 import {DisciplinaService} from "../../../../services/disciplina.service";
 import {ApiResponsePageable} from "../../../../types/api-response-pageable.type";
+import {DadosAtualizarQuestao} from "../../models/DadosAtualizarQuestao.model";
 
 @Component({
   selector: 'app-criar-questoes',
@@ -82,9 +83,9 @@ export class CreateQuestionsComponent implements OnInit {
   btnCriarEnviar = 'Criar';
   expandedIndexes: boolean[] = [true, true, true, true];
   @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
-  fonteTitulo: string = "";
-  fonteLink = '';
-  fonteData = '';
+  ultimaAreaSelecionada: any = null;
+  questao!: DadosAtualizarQuestao;
+
 
   constructor(
     private relatoriosService: RelatoriosService,
@@ -125,20 +126,18 @@ export class CreateQuestionsComponent implements OnInit {
       assuntos: [[]],
       disciplinas: [[]],
       area: new FormControl(),
-      correta: new FormControl(),
+      alternativaCorreta: new FormControl(),
     });
   }
 
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
-      // ['style', ['style']],
-      // ['font', ['bold', 'italic', 'underline', 'clear']],
-      // ['fontname', ['fontname']],
-      // ['color', ['color']],
-      // ['para', ['ul', 'ol', 'paragraph']],
+      ['style', ['style']],
+      ['font', ['bold', 'italic', 'underline']],
+      ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'math']],
-      ['custom', ['customButton']],
+      ['custom', ['customButton']]
     ],
     lang: 'pt-BR',
     popover: {
@@ -148,9 +147,9 @@ export class CreateQuestionsComponent implements OnInit {
         ['custom', ['imageAttributes']],
       ]
     },
-    //uploadImagePath: "http://200.131.116.21:8081/controle-de-arquivos/enviar/",
     uploadImagePath: `${environment.apiUrl}/controle-de-arquivos/enviar/`,
     buttons: {}
+
   };
 
   ngOnInit(): void {
@@ -252,16 +251,15 @@ export class CreateQuestionsComponent implements OnInit {
     this.carregamento = true;
     const formValue = { ...this.criarQuestaoForm.value };
 
-    formValue.area = formValue.area;
-
-    formValue.corpo = this.corpo;
+    formValue.corpo = this.criarQuestaoForm.value.corpo;
+    formValue.area = this.criarQuestaoForm.value?.area?.id;
+    formValue.assuntos = this.criarQuestaoForm.value?.assuntos.map((a: any) => a?.id);
 
     formValue.alternativas = this.alternativas;
+    formValue.disciplinas = this.criarQuestaoForm.value?.disciplinas.map((d: any) => d?.id);
 
-
-    console.log(formValue)
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(10000),
+      timeout(30000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);
@@ -275,10 +273,9 @@ export class CreateQuestionsComponent implements OnInit {
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
+        this.carregamento = false;
 
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-
-        this.carregamento = false;
         this.toastService.success("Preview gerado com sucesso!");
 
       },
@@ -297,19 +294,110 @@ export class CreateQuestionsComponent implements OnInit {
     if(btnDestroiIframe){
       btnDestroiIframe?.remove()
     }
-    this.pdfUrl = null
-  }
-
-  loadFieldsArea(event: any) {
-    this.criarQuestaoForm.patchValue({ area: event.value });
-    this.disciplinaService.listarDisciplinasPorArea(event.value?.id).subscribe(disciplinasRecebidas => {
-      this.disciplinas = disciplinasRecebidas.content;
-    })
+    this.pdfUrl = ""
   }
 
   loadFieldsDisciplinas(event: any) {
-    this.assuntoService.listarPorDisciplina(event.itemValue?.id).subscribe(assuntosRecebidos => {
-      this.assuntos = assuntosRecebidos.content;
-    })
+    const disciplinasSelecionadas = event.value || [];
+
+    if (disciplinasSelecionadas.length > 0) {
+      const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);
+
+      this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+        const assuntosDaDisciplina = assuntosRecebidos;
+
+        const assuntosSelecionados = this.criarQuestaoForm.value?.assuntos || [];
+        const todosAssuntos = [
+          ...assuntosDaDisciplina,
+          ...assuntosSelecionados.filter(
+            (asel:any) => !assuntosDaDisciplina.some(a => a.id === asel.id)
+          )
+        ];
+
+        this.assuntos = todosAssuntos;
+
+        const assuntosMatch = todosAssuntos.filter(a =>
+          assuntosSelecionados.some((asel:any) => asel.id === a.id)
+        );
+
+        this.criarQuestaoForm.patchValue({
+          assuntos: assuntosMatch
+        });
+      });
+    } else {
+      this.assuntos = [];
+      this.criarQuestaoForm.patchValue({
+        assuntos: []
+      });
+    }
+  }
+  loadFieldsArea(event: any) {
+    const selectedArea = event.value ? event.value : event;
+
+    const areaMudou = this.ultimaAreaSelecionada && this.ultimaAreaSelecionada.id !== selectedArea.id;
+
+    if (areaMudou) {
+      this.criarQuestaoForm.patchValue({
+        disciplinas: [],
+        assuntos: []
+      });
+      this.disciplinas = [];
+      this.assuntos = [];
+    }
+
+    this.ultimaAreaSelecionada = selectedArea;
+
+    this.criarQuestaoForm.patchValue({ area: selectedArea });
+
+    this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
+      const disciplinasDaArea = disciplinasRecebidas.content;
+
+      const disciplinasSelecionadas = this.criarQuestaoForm.get('disciplinas')?.value || [];
+
+      const todasDisciplinas = [
+        ...disciplinasDaArea,
+        ...disciplinasSelecionadas.filter(
+          (sel:any) => !disciplinasDaArea.some(d => d.id === sel.id)
+        )
+      ];
+
+      this.disciplinas = todasDisciplinas;
+
+      const disciplinasMatch = todasDisciplinas.filter(d =>
+        disciplinasSelecionadas.some((ds:any) => ds.id === d.id)
+      );
+
+      this.criarQuestaoForm.patchValue({
+        disciplinas: disciplinasMatch
+      });
+
+      const disciplinaIds = disciplinasMatch.map((d: any) => d.id);
+
+      if (disciplinaIds.length > 0) {
+        this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+          const assuntosSelecionados = this.criarQuestaoForm.get('assuntos')?.value || [];
+
+          const todosAssuntos = [
+            ...assuntosRecebidos,
+            ...assuntosSelecionados.filter(
+              (asel:any) => !assuntosRecebidos.some(a => a.id === asel.id)
+            )
+          ];
+
+          this.assuntos = todosAssuntos;
+
+          const assuntosMatch = todosAssuntos.filter(a =>
+            assuntosSelecionados.some((asel:any) => asel.id === a.id)
+          );
+
+          this.criarQuestaoForm.patchValue({
+            assuntos: assuntosMatch
+          });
+        });
+      } else {
+        this.assuntos = [];
+        this.criarQuestaoForm.patchValue({ assuntos: [] });
+      }
+    });
   }
 }
