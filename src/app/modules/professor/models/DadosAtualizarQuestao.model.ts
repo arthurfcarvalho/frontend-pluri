@@ -6,6 +6,7 @@ import {Area} from "../../../models/Area.model";
 export interface DadosAtualizarQuestao{
     id: number;
     corpo: string,
+    fonte: string,
     titulo: string,
     alternativas: Alternativa[],
     alternativaCorreta: number,

@@ -2,7 +2,7 @@ import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { catchError, map, throwError, timeout } from 'rxjs';
 import { AssuntoService } from '../../../../services/assunto.service';
 import { QuestionService } from '../../../../services/question.service';
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
@@ -65,6 +65,7 @@ export class CreateQuestionsComponent implements OnInit {
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = ' ';
+  fonte: string = "";
   alternativas = [
     {corpo: ' ', correta: false, posicao: 1},
     {corpo: ' ', correta: false, posicao: 2},
@@ -98,6 +99,7 @@ export class CreateQuestionsComponent implements OnInit {
     private dialog: MatDialog,
     private toastService: ToastrService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {
     this.areaService.returnAllAreas().subscribe(areas => {
@@ -117,6 +119,7 @@ export class CreateQuestionsComponent implements OnInit {
     this.criarQuestaoForm = this.fb.group({
       titulo: new FormControl(),
       corpo: new FormControl(),
+      fonte: new FormControl(),
       dificuldade: new FormControl(),
       alternativas: new FormControl(),
       alternativa1: new FormControl(),
@@ -248,10 +251,14 @@ export class CreateQuestionsComponent implements OnInit {
   previewQuestaoNoModelo() {
     this.pdfUrl = "";
     this.showPreview = true;
-    this.carregamento = true;
+    // this.carregamento = true;
     const formValue = { ...this.criarQuestaoForm.value };
 
     formValue.corpo = this.criarQuestaoForm.value.corpo;
+    if(this.criarQuestaoForm.value.fonte != ""){
+      formValue.fonte = this.criarQuestaoForm.value.fonte;
+    }
+
     formValue.area = this.criarQuestaoForm.value?.area?.id;
     formValue.assuntos = this.criarQuestaoForm.value?.assuntos.map((a: any) => a?.id);
 
@@ -273,11 +280,13 @@ export class CreateQuestionsComponent implements OnInit {
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
-        this.carregamento = false;
+
 
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+        this.cdr.detectChanges();
         this.toastService.success("Preview gerado com sucesso!");
 
+        // this.carregamento = !this.carregamento;
       },
       error => {
         this.toastService.error("Erro ao gerar preview! Evite deixar espaços em branco e quebras de linha");

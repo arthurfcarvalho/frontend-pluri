@@ -74,10 +74,7 @@ export class EditarQuestaoComponent implements  OnInit{
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1!: Alternativa;
-  alternativa2!: Alternativa;
-  alternativa3!: Alternativa;
-  alternativa4!: Alternativa;
+  fonte: string = "";
 
   pdfUrl: SafeResourceUrl | null = null;
 
@@ -110,6 +107,7 @@ export class EditarQuestaoComponent implements  OnInit{
     this.atualizarQuestaoForm = this.fb.group({
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
+      fonte: new FormControl(Validators.required),
       dificuldade: new FormControl('', Validators.required),
       assuntos: [[]],
       disciplinas: [[]],
@@ -146,6 +144,7 @@ export class EditarQuestaoComponent implements  OnInit{
         this.atualizarQuestaoForm.patchValue({
           titulo: this.questao.titulo,
           corpo: this.questao?.corpo,
+          fonte: this.questao?.fonte,
           dificuldade: this.questao.dificuldade,
           area: this.questao.area,
           disciplinas: this.questao.disciplinas.map(d => d),
@@ -241,12 +240,10 @@ export class EditarQuestaoComponent implements  OnInit{
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
+        this.carregamento = false;
 
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-
-        this.carregamento = false;
         this.toastService.success("Preview gerado com sucesso!");
-
       },
       error => {
         this.toastService.error("Erro ao gerar preview! Evite deixar espaços em branco e quebras de linha");
@@ -363,7 +360,6 @@ export class EditarQuestaoComponent implements  OnInit{
   loadFieldsArea(event: any) {
     const selectedArea = event.value ? event.value : event;
 
-    // Se ainda não foi setada nenhuma área, considera esse o primeiro carregamento
     const areaMudou = this.ultimaAreaSelecionada && this.ultimaAreaSelecionada.id !== selectedArea.id;
 
     if (areaMudou) {

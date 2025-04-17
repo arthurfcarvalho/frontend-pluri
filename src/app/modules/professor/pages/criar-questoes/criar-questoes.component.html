@@ -1,6 +1,5 @@
 <app-header></app-header>
 
-<body>
 <form [formGroup]="criarQuestaoForm" class="create-question-form">
   <div class="card">
     <p-stepper [linear]="true">
@@ -67,7 +66,7 @@
                      let-index="index">
           <div class="flex flex-column h-12rem">
             <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-column flex-auto flex justify-content-center align-items-center font-medium">
+              class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <div class="box-questoes-sup">
                 <p class="titulo">Informe o corpo</p>
               </div>
@@ -75,6 +74,13 @@
                 <div class="box-summernote" style="width: 25rem">
                   <div id="summernote" formControlName="corpo" [ngxSummernote]="config" [ngxSummernoteView]="corpo"
                        [(summernoteModel)]="corpo"></div>
+                </div>
+              </div>
+              <div>
+                <div class="box-summernote" style="width: 25rem">
+                  <p>Digite a Fonte</p>
+                  <div id="summernote-font" formControlName="fonte" [ngxSummernote]="config" [ngxSummernoteView]="fonte"
+                       [(summernoteModel)]="fonte"></div>
                 </div>
               </div>
             </div>
@@ -228,8 +234,11 @@
                   Preview
                 </button>
               </div>
-              <p>Sua questão exemplo e a número 01.</p>
-              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
+<!--              <p>Sua questão exemplo e a número 01.</p>-->
+<!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
+              <ng-container *ngIf="pdfUrl">
+                <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
+              </ng-container>
             </div>
           </div>
         </ng-template>
@@ -260,8 +269,11 @@
                 Preview
               </button>
             </div>
-            <p>Sua questão exemplo e a número 01.</p>
-            <iframe id="iFramePdf" [src]="pdfUrl"></iframe>
+<!--            <p>Sua questão exemplo e a número 01.</p>-->
+<!--            <iframe id="iFramePdf" [src]="pdfUrl"></iframe>-->
+            <ng-container *ngIf="pdfUrl">
+              <iframe id="iFramePdf" [src]="pdfUrl"></iframe>
+            </ng-container>
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -272,4 +284,3 @@
   <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
 </div>
 <br>
-</body>

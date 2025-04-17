@@ -80,6 +80,13 @@
                        [(summernoteModel)]="corpo"></div>
                 </div>
               </div>
+              <div>
+                <div class="box-summernote">
+                  <p>Digite a Fonte</p>
+                  <div id="summernote-font" [ngxSummernote]="config" [ngxSummernoteView]="fonte" formControlName="fonte"
+                       [(summernoteModel)]="fonte"></div>
+                </div>
+              </div>
             </div>
             <div class="action-buttons">
               <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
@@ -233,8 +240,12 @@
                   Preview
                 </button>
               </div>
-              <p>Sua questão exemplo e a número 01.</p>
-              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
+<!--              <p>Sua questão exemplo e a número 01.</p>-->
+<!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
+              <ng-container *ngIf="pdfUrl">
+                <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
+              </ng-container>
+
             </div>
           </div>
         </ng-template>
@@ -273,12 +284,7 @@
     </p-stepper>
   </div>
 </form>
-
 <div *ngIf="carregamento" class="custom-spinner-container">
   <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
 </div>
 <br>
-
-<!-- <div *ngIf="!carregamento && pdfUrl">
-  <iframe [src]="pdfUrl" style="width: 100%; height: 600px; border: none;"></iframe>
-</div> -->

@@ -1,11 +1,5 @@
-body{
-  height: 100%;
-  overflow: auto;
-}
-
 .create-question-form {
   width: 100%;
-  height: 80px;
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
@@ -24,10 +18,12 @@ iframe {
   justify-content: end;
   margin-top: 50px;
 }
+.box-summernote {
+  width: 38rem;
+}
 .box-corpo {
   display: flex;
   justify-content: center;
-  width: 25rem;
 }
 .box-questoes-sup {
   margin-bottom: 20px;
@@ -106,21 +102,12 @@ iframe {
   display: flex;
   justify-content: flex-end;
   gap: 20px;
-  margin-top: auto;
-}
-
-.btn-informacoes{
-  margin-right: 35px;
-  flex-direction: column;
-}
-
-.btns-corpos{
   margin-top: 20px;
 }
+
 .btn-enviar {
   align-self: flex-end;
 }
-
 
 
 .red-border {
