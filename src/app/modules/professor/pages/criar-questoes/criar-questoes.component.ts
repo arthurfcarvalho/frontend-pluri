@@ -136,9 +136,9 @@ export class CreateQuestionsComponent implements OnInit {
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
-      ['style', ['style']],
+      //['style', ['style']],
       ['font', ['bold', 'italic', 'underline']],
-      ['para', ['ul', 'ol', 'paragraph']],
+      //['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'math']],
       ['custom', ['customButton']]
     ],
