@@ -33,6 +33,8 @@ import {Disciplina} from "../../../disciplina/models/disciplina";
 import {DisciplinaService} from "../../../../services/disciplina.service";
 import {ApiResponsePageable} from "../../../../types/api-response-pageable.type";
 import {DadosAtualizarQuestao} from "../../models/DadosAtualizarQuestao.model";
+import {TableModule} from "primeng/table";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-criar-questoes',
@@ -56,6 +58,8 @@ import {DadosAtualizarQuestao} from "../../models/DadosAtualizarQuestao.model";
     InputIconModule,
     CheckboxModule,
     FormsModule,
+    TableModule,
+    TranslatePipe,
   ],
   templateUrl: './criar-questoes.component.html',
   styleUrls: ['./criar-questoes.component.scss'],
@@ -76,6 +80,7 @@ export class CreateQuestionsComponent implements OnInit {
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
   assuntos!: Assunto[];
+  assuntosInterdiciplinares!: Assunto[];
   disciplinas: Disciplina[] = [];
   areas!: Area[];
   criarQuestaoForm: FormGroup;
@@ -105,6 +110,9 @@ export class CreateQuestionsComponent implements OnInit {
     this.areaService.returnAllAreas().subscribe(areas => {
       this.areasRecebidas = areas.content
     })
+    this.assuntoService.listarAssuntos().subscribe(assuntos => {
+      this.assuntosInterdiciplinares = assuntos.content
+    })
     this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')
       if(idArea){
@@ -127,6 +135,7 @@ export class CreateQuestionsComponent implements OnInit {
       alternativa3: new FormControl(),
       alternativa4: new FormControl(),
       assuntos: [[]],
+      assuntosInterdiciplinares: [[]],
       disciplinas: [[]],
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
@@ -233,6 +242,7 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.corpo = this.corpo;
     formValue.alternativas = this.alternativas;
     formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
+    formValue.assuntosInterdiciplinares = this.criarQuestaoForm.value.assuntosInterdiciplinares.map((a: any) => a.id);
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     console.log(formValue)
@@ -261,7 +271,6 @@ export class CreateQuestionsComponent implements OnInit {
 
     formValue.area = this.criarQuestaoForm.value?.area?.id;
     formValue.assuntos = this.criarQuestaoForm.value?.assuntos.map((a: any) => a?.id);
-
     formValue.alternativas = this.alternativas;
     formValue.disciplinas = this.criarQuestaoForm.value?.disciplinas.map((d: any) => d?.id);
 

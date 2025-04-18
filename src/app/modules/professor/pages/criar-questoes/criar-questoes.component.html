@@ -45,8 +45,8 @@
 
                   <div class="input-container">
                     <p-floatLabel>
-                      <p-multiSelect [options]="assuntos" formControlName="assuntos" optionLabel="nome"
-                                     placeholder="Selecione os assuntos"></p-multiSelect>
+                      <p-dropdown [options]="assuntos" formControlName="assuntos" optionLabel="nome"
+                                     placeholder="Selecione os assuntos"></p-dropdown>
                       <label class="label-dificuldade">Assunto</label>
                     </p-floatLabel>
                   </div>
@@ -58,6 +58,24 @@
           <div class="action-buttons">
             <p-button label="Próximo" class="btn-informacoes" icon="pi pi-arrow-right" iconPos="right"
                       (onClick)="validarAntesDeAvancar(nextCallback)"/>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Areas de integração">
+        <ng-template pTemplate="content"  let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+          <p>{{ 'integration_area_text' | translate }}</p>
+
+          <div class="input-container">
+            <p-floatLabel>
+              <p-multiSelect [display]="'chip'" [options]="assuntosInterdiciplinares" formControlName="assuntosInterdiciplinares" optionLabel="nome"
+                          placeholder="Selecione os assuntos"></p-multiSelect>
+              <label class="label-dificuldade">Assunto</label>
+            </p-floatLabel>
+          </div>
+          <div class="action-buttons">
+            <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
+            <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"
+                      (onClick)="nextCallback.emit()"/>
           </div>
         </ng-template>
       </p-stepperPanel>

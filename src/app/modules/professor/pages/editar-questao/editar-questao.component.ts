@@ -36,6 +36,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {DisciplinaService} from "../../../../services/disciplina.service";
 import {Disciplina} from "../../../disciplina/models/disciplina";
+import {TranslatePipe} from "@ngx-translate/core";
 
 
 @Component({
@@ -61,7 +62,8 @@ import {Disciplina} from "../../../disciplina/models/disciplina";
     InputIconModule,
     CheckboxModule,
     FormsModule,
-    InputSwitchModule
+    InputSwitchModule,
+    TranslatePipe
   ],
   templateUrl: './editar-questao.component.html',
   styleUrls: ['./editar-questao.component.scss']
@@ -83,6 +85,7 @@ export class EditarQuestaoComponent implements  OnInit{
   previewContent = '';
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   assuntos!: Assunto[];
+  assuntosInterdiciplinares!: Assunto[];
   carregamento: boolean = false;
   showPreview = false;
   areasRecebidas!: Area[]
@@ -110,6 +113,7 @@ export class EditarQuestaoComponent implements  OnInit{
       fonte: new FormControl(Validators.required),
       dificuldade: new FormControl('', Validators.required),
       assuntos: [[]],
+      assuntosInterdiciplinares: [[]],
       disciplinas: [[]],
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
@@ -129,6 +133,9 @@ export class EditarQuestaoComponent implements  OnInit{
         this.areaService.returnAllAreas().subscribe(areas => {
           this.areasRecebidas = areas.content;
         });
+        this.assuntoService.listarAssuntos().subscribe(assuntos => {
+          this.assuntosInterdiciplinares = assuntos.content
+        })
 
         this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
           this.areaQuestao = area;
@@ -149,6 +156,7 @@ export class EditarQuestaoComponent implements  OnInit{
           area: this.questao.area,
           disciplinas: this.questao.disciplinas.map(d => d),
           assuntos: this.questao.assuntos.map(a => a),
+          assuntosInterdiciplinares: this.questao.assuntos.map(a => a),
           alternativaCorreta: this.questao.alternativaCorreta,
           alternativas: this.questao.alternativas
         });
@@ -170,6 +178,7 @@ export class EditarQuestaoComponent implements  OnInit{
     formValue.area = this.atualizarQuestaoForm.value.area.id;
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
     formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any)=> a.id);
+    formValue.assuntosInterdiciplinares = this.atualizarQuestaoForm.value.assuntosInterdiciplinares.map((a: any)=> a.id);
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
