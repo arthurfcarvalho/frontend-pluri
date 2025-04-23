@@ -7,7 +7,7 @@
         <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
           <div class="flex flex-column h-12rem">
             <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium pai-box-questoes-sup">
               <div class="box-questoes-sup">
                 <p class="titulo">Informe as informações basicas da questão</p>
                 <div class="box-inputs">
@@ -31,7 +31,7 @@
                       <p-dropdown [options]="areasRecebidas" formControlName="area" optionLabel="nome"
                                   (onChange)="loadFieldsArea($event)"
                                   placeholder="Selecione a area"/>
-                      <label class="label-dificuldade">Area</label>
+                      <label class="label-area">Area</label>
                     </p-floatLabel>
                   </div>
                   <div class="input-container">
@@ -39,7 +39,7 @@
                       <p-multiSelect [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"
                                      placeholder="Selecione a disciplina"
                                      (onChange)="loadFieldsDisciplinas($event)"></p-multiSelect>
-                      <label class="label-dificuldade">Disciplina</label>
+                      <label class="label-multi">Disciplina</label>
                     </p-floatLabel>
                   </div>
 
@@ -55,11 +55,12 @@
                     </p-floatLabel>
                   </div>
                 </div>
+
               </div>
 
             </div>
           </div>
-          <div class="action-buttons">
+          <div class="action-buttons prox-info">
             <p-button label="Próximo" class="btn-informacoes" icon="pi pi-arrow-right" iconPos="right"
                       (onClick)="validarAntesDeAvancar(nextCallback)"/>
           </div>
@@ -82,6 +83,7 @@
             <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"
                       (onClick)="nextCallback.emit()"/>
           </div>
+
         </ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Corpo">
