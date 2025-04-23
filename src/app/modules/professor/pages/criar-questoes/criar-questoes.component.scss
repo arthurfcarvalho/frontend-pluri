@@ -21,7 +21,37 @@ iframe {
 }
 .box-summernote {
   width: 38rem;
+  max-width: 100%;
+  margin: 0 auto;
 }
+@media (min-width: 1200px) {
+  .box-summernote {
+    width: 38rem;
+  }
+}
+
+/* Telas médias*/
+@media (max-width: 1199px) {
+  .box-summernote {
+    width: 32rem;
+  }
+}
+
+/* Telas pequenas */
+@media (max-width: 767px) {
+  .box-summernote {
+    width: 28rem;
+  }
+}
+
+/* Telas muito pequenas  — tipo celulares */
+@media (max-width: 479px) {
+  .box-summernote {
+    width: 100%;
+    padding: 0 1rem;
+  }
+}
+
 .box-corpo {
   display: flex;
   justify-content: center;
