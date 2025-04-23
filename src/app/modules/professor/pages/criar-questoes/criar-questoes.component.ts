@@ -6,7 +6,7 @@ import {Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy, Chang
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
@@ -31,6 +31,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { environment } from '../../../../../environments/environment';
 import {Disciplina} from "../../../disciplina/models/disciplina";
 import {DisciplinaService} from "../../../../services/disciplina.service";
+import {ApiResponsePageable} from "../../../../types/api-response-pageable.type";
 import {DadosAtualizarQuestao} from "../../models/DadosAtualizarQuestao.model";
 import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -124,10 +125,10 @@ export class CreateQuestionsComponent implements OnInit {
     })
 
     this.criarQuestaoForm = this.fb.group({
-      titulo: new FormControl(),
+      titulo: new FormControl('', Validators.required),
       corpo: new FormControl(),
       fonte: new FormControl(),
-      dificuldade: new FormControl(),
+      dificuldade: new FormControl('', Validators.required),
       alternativas: new FormControl(),
       alternativa1: new FormControl(),
       alternativa2: new FormControl(),
@@ -144,9 +145,9 @@ export class CreateQuestionsComponent implements OnInit {
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
-      ['style', ['style']],
+      /*['style', ['style']],*/
       ['font', ['bold', 'italic', 'underline']],
-      ['para', ['ul', 'ol', 'paragraph']],
+      /*['para', ['ul', 'ol', 'paragraph']],*/
       ['insert', ['picture', 'math']],
       ['custom', ['customButton']]
     ],
@@ -201,10 +202,9 @@ export class CreateQuestionsComponent implements OnInit {
 
   }
 
-  validarAntesDeAvancar(nextCallback: any) {
-     nextCallback.emit();
+  validarAntesDeAvancarInformacoes(nextCallback: any) {
     if (this.criarQuestaoForm.valid) {
-
+      nextCallback.emit();
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
@@ -215,9 +215,8 @@ export class CreateQuestionsComponent implements OnInit {
     const doc = parser.parseFromString(this.corpo , "text/html");/*interpreta o texto como html*/
     const corpoLimpo = doc.body.textContent?.trim() || "";/*se o doc tiver tags html, doc.body.textContent?.trim() || "" vai tirar as tags como <br> <p>
                                                                  e o trim() remove os espaços*/
-    nextCallback.emit();
     if (corpoLimpo.length > 0) {
-
+      nextCallback.emit();
     } else {
       this.toastService.error('Preencha o corpo antes de avançar.');
     }
@@ -250,7 +249,6 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
-    console.log(formValue)
 
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {

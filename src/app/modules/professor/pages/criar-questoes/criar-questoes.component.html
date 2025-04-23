@@ -60,8 +60,7 @@
             </div>
           </div>
           <div class="action-buttons">
-            <p-button label="Próximo" class="btn-informacoes" icon="pi pi-arrow-right" iconPos="right"
-                      (onClick)="validarAntesDeAvancar(nextCallback)"/>
+            <p-button label="Próximo" class="btn-informacoes" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarInformacoes(nextCallback)"/>
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -94,13 +93,13 @@
                 <p class="titulo">Informe o corpo</p>
               </div>
               <div class="box-corpo">
-                <div class="box-summernote" style="width: 25rem">
+                <div class="box-summernote" >
                   <div id="summernote" formControlName="corpo" [ngxSummernote]="config" [ngxSummernoteView]="corpo"
                        [(summernoteModel)]="corpo"></div>
                 </div>
               </div>
               <div>
-                <div class="box-summernote" style="width: 25rem">
+                <div class="box-summernote" >
                   <p>Digite a Fonte</p>
                   <div id="summernote-font" formControlName="fonte" [ngxSummernote]="config" [ngxSummernoteView]="fonte"
                        [(summernoteModel)]="fonte"></div>
@@ -109,8 +108,7 @@
             </div>
             <div class="action-buttons">
               <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"
-                        (onClick)="validarAntesDeAvancarCorpo(nextCallback)"/>
+              <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right" (onClick)="validarAntesDeAvancarCorpo(nextCallback)"/>
             </div>
           </div>
 
