@@ -178,7 +178,6 @@ export class CreateQuestionsComponent implements OnInit {
   setCorreta(index: number) {
     this.alternativas.forEach((alternativa, i) => {
       alternativa.correta = i === index;
-      this.criarQuestaoForm.value.alternativaCorreta = alternativa
     });
   }
 
@@ -273,13 +272,18 @@ export class CreateQuestionsComponent implements OnInit {
     }
 
     formValue.area = this.criarQuestaoForm.value?.area?.id;
-    // formValue.assuntos = this.criarQuestaoForm.value?.assuntos?.map((a: any) => a?.id);
     const assuntosValue = this.criarQuestaoForm.value?.assuntos;
     formValue.assuntos = Array.isArray(assuntosValue)
       ? assuntosValue.map((a: any) => a?.id)
       : [assuntosValue?.id];
+    const assuntosIValue = this.criarQuestaoForm.value?.assuntosInterdisciplinares;
+    formValue.assuntosInterdisciplinares = Array.isArray(assuntosIValue)
+      ? assuntosIValue.map((a: any) => a?.id)
+      : [assuntosIValue?.id];
+
     formValue.alternativas = this.alternativas;
     formValue.disciplinas = this.criarQuestaoForm.value?.disciplinas.map((d: any) => d?.id);
+    console.log(formValue)
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(30000),
