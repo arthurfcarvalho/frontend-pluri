@@ -31,7 +31,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { environment } from '../../../../../environments/environment';
 import {Disciplina} from "../../../disciplina/models/disciplina";
 import {DisciplinaService} from "../../../../services/disciplina.service";
-import {ApiResponsePageable} from "../../../../types/api-response-pageable.type";
 import {DadosAtualizarQuestao} from "../../models/DadosAtualizarQuestao.model";
 import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -80,7 +79,7 @@ export class CreateQuestionsComponent implements OnInit {
   carregamento: boolean = false;
   pdfUrl: SafeResourceUrl | null = null;
   assuntos!: Assunto[];
-  assuntosInterdiciplinares!: Assunto[];
+  assuntosInterdisciplinares!: Assunto[];
   disciplinas: Disciplina[] = [];
   areas!: Area[];
   criarQuestaoForm: FormGroup;
@@ -110,8 +109,8 @@ export class CreateQuestionsComponent implements OnInit {
     this.areaService.returnAllAreas().subscribe(areas => {
       this.areasRecebidas = areas.content
     })
-    this.assuntoService.listarAssuntos().subscribe(assuntos => {
-      this.assuntosInterdiciplinares = assuntos.content
+    this.assuntoService.listarAssuntos().subscribe(assuntosInterdisciplinares => {
+      this.assuntosInterdisciplinares = assuntosInterdisciplinares.content
     })
     this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')
@@ -134,8 +133,8 @@ export class CreateQuestionsComponent implements OnInit {
       alternativa2: new FormControl(),
       alternativa3: new FormControl(),
       alternativa4: new FormControl(),
-      assuntos: [[]],
-      assuntosInterdiciplinares: [[]],
+      assuntos: [],
+      assuntosInterdisciplinares: [],
       disciplinas: [[]],
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
@@ -178,9 +177,8 @@ export class CreateQuestionsComponent implements OnInit {
   setCorreta(index: number) {
     this.alternativas.forEach((alternativa, i) => {
       alternativa.correta = i === index;
-
+      this.criarQuestaoForm.value.alternativaCorreta = alternativa
     });
-
   }
 
   validarAcoes(nextCallback: any){
@@ -241,10 +239,17 @@ export class CreateQuestionsComponent implements OnInit {
 
     formValue.corpo = this.corpo;
     formValue.alternativas = this.alternativas;
-    formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
-    formValue.assuntosInterdiciplinares = this.criarQuestaoForm.value.assuntosInterdiciplinares.map((a: any) => a.id);
+    // formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
+    const assuntosValue = this.criarQuestaoForm.value?.assuntos;
+    formValue.assuntos = Array.isArray(assuntosValue)
+      ? assuntosValue.map((a: any) => a?.id)
+      : [assuntosValue?.id];
+    console.log(this.criarQuestaoForm.value)
+    formValue.assuntosInterdisciplinares = this.criarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
+    console.log(this.assuntosInterdisciplinares)
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
+    formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
     console.log(formValue)
 
     this.questaoService.createQuestion(formValue).subscribe({
@@ -270,7 +275,11 @@ export class CreateQuestionsComponent implements OnInit {
     }
 
     formValue.area = this.criarQuestaoForm.value?.area?.id;
-    formValue.assuntos = this.criarQuestaoForm.value?.assuntos.map((a: any) => a?.id);
+    // formValue.assuntos = this.criarQuestaoForm.value?.assuntos?.map((a: any) => a?.id);
+    const assuntosValue = this.criarQuestaoForm.value?.assuntos;
+    formValue.assuntos = Array.isArray(assuntosValue)
+      ? assuntosValue.map((a: any) => a?.id)
+      : [assuntosValue?.id];
     formValue.alternativas = this.alternativas;
     formValue.disciplinas = this.criarQuestaoForm.value?.disciplinas.map((d: any) => d?.id);
 
@@ -395,9 +404,16 @@ export class CreateQuestionsComponent implements OnInit {
         this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
           const assuntosSelecionados = this.criarQuestaoForm.get('assuntos')?.value || [];
 
+          console.log(assuntosSelecionados);
+          console.log(assuntosRecebidos);
+
+          const selecionadosArray = Array.isArray(assuntosSelecionados)
+            ? assuntosSelecionados
+            : [assuntosSelecionados];
+
           const todosAssuntos = [
             ...assuntosRecebidos,
-            ...assuntosSelecionados.filter(
+            ...selecionadosArray.filter(
               (asel:any) => !assuntosRecebidos.some(a => a.id === asel.id)
             )
           ];
@@ -417,5 +433,11 @@ export class CreateQuestionsComponent implements OnInit {
         this.criarQuestaoForm.patchValue({ assuntos: [] });
       }
     });
+  }
+
+  filterAssuntosInterdisciplinares(assuntoSelecionado: any) {
+    this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
+      (assunto: any) => assunto.id !== assuntoSelecionado?.value?.id
+    );
   }
 }

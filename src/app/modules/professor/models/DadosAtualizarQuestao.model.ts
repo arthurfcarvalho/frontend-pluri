@@ -14,6 +14,7 @@ export interface DadosAtualizarQuestao{
     dificuldade: string,
     aprovada: boolean,
     assuntos: Assunto[];
+    assuntosInterdisciplinares: Assunto[];
     disciplinas: Disciplina[];
     codigoAssuntos: Assunto[];
     area: Area;

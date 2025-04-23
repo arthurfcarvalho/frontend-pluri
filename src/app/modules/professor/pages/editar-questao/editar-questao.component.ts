@@ -85,7 +85,7 @@ export class EditarQuestaoComponent implements  OnInit{
   previewContent = '';
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   assuntos!: Assunto[];
-  assuntosInterdiciplinares!: Assunto[];
+  assuntosInterdisciplinares!: Assunto[];
   carregamento: boolean = false;
   showPreview = false;
   areasRecebidas!: Area[]
@@ -113,8 +113,8 @@ export class EditarQuestaoComponent implements  OnInit{
       fonte: new FormControl(Validators.required),
       dificuldade: new FormControl('', Validators.required),
       assuntos: [[]],
-      assuntosInterdiciplinares: [[]],
-      disciplinas: [[]],
+      assuntosInterdisciplinares: [],
+      disciplinas: [],
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
       alternativas: new FormControl(),
@@ -134,7 +134,7 @@ export class EditarQuestaoComponent implements  OnInit{
           this.areasRecebidas = areas.content;
         });
         this.assuntoService.listarAssuntos().subscribe(assuntos => {
-          this.assuntosInterdiciplinares = assuntos.content
+          this.assuntosInterdisciplinares = assuntos.content
         })
 
         this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
@@ -147,7 +147,6 @@ export class EditarQuestaoComponent implements  OnInit{
             });
           }
         });
-
         this.atualizarQuestaoForm.patchValue({
           titulo: this.questao.titulo,
           corpo: this.questao?.corpo,
@@ -155,8 +154,8 @@ export class EditarQuestaoComponent implements  OnInit{
           dificuldade: this.questao.dificuldade,
           area: this.questao.area,
           disciplinas: this.questao.disciplinas.map(d => d),
-          assuntos: this.questao.assuntos.map(a => a),
-          assuntosInterdiciplinares: this.questao.assuntos.map(a => a),
+          assuntos: this.questao.assuntos?.[0] ?? null,
+          assuntosInterdisciplinares: this.questao?.assuntosInterdisciplinares?.map(a => a),
           alternativaCorreta: this.questao.alternativaCorreta,
           alternativas: this.questao.alternativas
         });
@@ -178,7 +177,7 @@ export class EditarQuestaoComponent implements  OnInit{
     formValue.area = this.atualizarQuestaoForm.value.area.id;
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
     formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any)=> a.id);
-    formValue.assuntosInterdiciplinares = this.atualizarQuestaoForm.value.assuntosInterdiciplinares.map((a: any)=> a.id);
+    formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any)=> a.id);
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
@@ -195,7 +194,6 @@ export class EditarQuestaoComponent implements  OnInit{
     this.alternativas.forEach((alternativa, i) => {
       alternativa.correta = i === index;
     });
-    console.log(this.alternativas)
   }
 
   public config: SummernoteOptions = {
@@ -342,9 +340,13 @@ export class EditarQuestaoComponent implements  OnInit{
         const assuntosDaDisciplina = assuntosRecebidos;
 
         const assuntosSelecionados = this.questao?.assuntos || [];
+        const selecionadosArray = Array.isArray(assuntosSelecionados)
+          ? assuntosSelecionados
+          : [assuntosSelecionados];
+
         const todosAssuntos = [
           ...assuntosDaDisciplina,
-          ...assuntosSelecionados.filter(
+          ...selecionadosArray.filter(
             asel => !assuntosDaDisciplina.some(a => a.id === asel.id)
           )
         ];
@@ -413,27 +415,41 @@ export class EditarQuestaoComponent implements  OnInit{
         this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
           const assuntosSelecionados = this.atualizarQuestaoForm.get('assuntos')?.value || [];
 
+          const selecionadosArray = Array.isArray(assuntosSelecionados)
+            ? assuntosSelecionados
+            : (assuntosSelecionados ? [assuntosSelecionados] : []);
+
           const todosAssuntos = [
             ...assuntosRecebidos,
-            ...assuntosSelecionados.filter(
+            ...selecionadosArray.filter(
               (asel:any) => !assuntosRecebidos.some(a => a.id === asel.id)
             )
           ];
 
           this.assuntos = todosAssuntos;
+          console.log(this.assuntos);
 
           const assuntosMatch = todosAssuntos.filter(a =>
-            assuntosSelecionados.some((asel:any) => asel.id === a.id)
+            selecionadosArray.some((asel:any) => asel.id === a.id)
           );
 
+          // this.atualizarQuestaoForm.patchValue({
+          //   assuntos: assuntosMatch
+          // });
           this.atualizarQuestaoForm.patchValue({
-            assuntos: assuntosMatch
+            assuntos: assuntosMatch.length > 0 ? assuntosMatch[0] : null
           });
+
         });
       } else {
         this.assuntos = [];
         this.atualizarQuestaoForm.patchValue({ assuntos: [] });
       }
     });
+  }
+  filterAssuntosInterdisciplinares(assuntoSelecionado: any) {
+    this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
+      (assunto: any) => assunto.id !== assuntoSelecionado?.value?.id
+    );
   }
 }

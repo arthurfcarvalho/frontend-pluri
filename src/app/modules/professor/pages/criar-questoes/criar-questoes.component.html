@@ -45,7 +45,11 @@
 
                   <div class="input-container">
                     <p-floatLabel>
-                      <p-dropdown [options]="assuntos" formControlName="assuntos" optionLabel="nome"
+                      <p-dropdown [options]="assuntos"
+                                  filter="true"
+                                  formControlName="assuntos"
+                                  optionLabel="nome"
+                                  (onChange)="filterAssuntosInterdisciplinares($event)"
                                      placeholder="Selecione os assuntos"></p-dropdown>
                       <label class="label-dificuldade">Assunto</label>
                     </p-floatLabel>
@@ -67,7 +71,8 @@
 
           <div class="input-container">
             <p-floatLabel>
-              <p-multiSelect [display]="'chip'" [options]="assuntosInterdiciplinares" formControlName="assuntosInterdiciplinares" optionLabel="nome"
+              <p-multiSelect [display]="'chip'"
+                             [options]="assuntosInterdisciplinares" formControlName="assuntosInterdisciplinares" optionLabel="nome"
                           placeholder="Selecione os assuntos"></p-multiSelect>
               <label class="label-dificuldade">Assunto</label>
             </p-floatLabel>
