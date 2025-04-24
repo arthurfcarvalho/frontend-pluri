@@ -28,7 +28,9 @@
                   </div>
                   <div class="input-container">
                     <p-floatLabel>
-                      <p-dropdown [options]="areasRecebidas" formControlName="area" optionLabel="nome"
+                      <p-dropdown
+                        filter="true"
+                        [options]="areasRecebidas" formControlName="area" optionLabel="nome"
                                   (onChange)="loadFieldsArea($event)"
                                   placeholder="Selecione a area"/>
                       <label class="label-area">Area</label>
@@ -36,9 +38,11 @@
                   </div>
                   <div class="input-container">
                     <p-floatLabel>
-                      <p-multiSelect [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"
+                      <p-dropdown
+                        filter="true"
+                        [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"
                                      placeholder="Selecione a disciplina"
-                                     (onChange)="loadFieldsDisciplinas($event)"></p-multiSelect>
+                                     (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
                       <label class="label-multi">Disciplina</label>
                     </p-floatLabel>
                   </div>

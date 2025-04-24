@@ -136,7 +136,7 @@ export class CreateQuestionsComponent implements OnInit {
       alternativa4: new FormControl(),
       assuntos: [],
       assuntosInterdisciplinares: [],
-      disciplinas: [[]],
+      disciplinas: [],
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
     });
@@ -242,9 +242,9 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.assuntos = Array.isArray(assuntosValue)
       ? assuntosValue.map((a: any) => a?.id)
       : [assuntosValue?.id];
-    console.log(this.criarQuestaoForm.value)
+
     formValue.assuntosInterdisciplinares = this.criarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
-    console.log(this.assuntosInterdisciplinares)
+    this.criarQuestaoForm.value.disciplinas = Array(this.criarQuestaoForm.value.disciplinas)
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
@@ -327,7 +327,7 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   loadFieldsDisciplinas(event: any) {
-    const disciplinasSelecionadas = event.value || [];
+    const disciplinasSelecionadas = Array(event.value) || [];
 
     if (disciplinasSelecionadas.length > 0) {
       const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);

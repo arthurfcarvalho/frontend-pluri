@@ -38,8 +38,10 @@
                   </div>
                   <div class="input-container">
                     <p-floatLabel>
-                      <p-multiSelect [options]="disciplinas" formControlName="disciplinas" optionLabel="nome" placeholder="Selecione a disciplina"
-                                     (onChange)="loadFieldsDisciplinas($event)"></p-multiSelect>
+                      <p-dropdown
+                        filter="true"
+                        [options]="disciplinas" formControlName="disciplinas" optionLabel="nome" placeholder="Selecione a disciplina"
+                                     (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
                       <label class="label-dificuldade" >Disciplina</label>
                     </p-floatLabel>
                   </div>

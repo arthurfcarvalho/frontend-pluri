@@ -153,8 +153,8 @@ export class EditarQuestaoComponent implements  OnInit{
           fonte: this.questao?.fonte,
           dificuldade: this.questao.dificuldade,
           area: this.questao.area,
-          disciplinas: this.questao.disciplinas.map(d => d),
-          assuntos: this.questao.assuntos?.[0] ?? null,
+          disciplinas: this.questao?.disciplinas[0] ?? null,
+          assuntos: this.questao?.assuntos?.[0] ?? null,
           assuntosInterdisciplinares: this.questao?.assuntosInterdisciplinares?.map(a => a),
           alternativaCorreta: this.questao.alternativaCorreta,
           alternativas: this.questao.alternativas
@@ -175,6 +175,7 @@ export class EditarQuestaoComponent implements  OnInit{
     formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
     formValue.id = this.idQuestao;
     formValue.area = this.atualizarQuestaoForm.value.area.id;
+    this.atualizarQuestaoForm.value.disciplinas = Array(this.atualizarQuestaoForm.value.disciplinas)
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
     formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any)=> a.id);
     formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any)=> a.id);
@@ -329,9 +330,8 @@ export class EditarQuestaoComponent implements  OnInit{
     });
   }
   ultimaAreaSelecionada: any = null;
-  selecoesPorArea: Map<number, { disciplinas: any[], assuntos: any[] }> = new Map();
   loadFieldsDisciplinas(event: any) {
-    const disciplinasSelecionadas = event.value || [];
+    const disciplinasSelecionadas = Array(event.value) || [];
 
     if (disciplinasSelecionadas.length > 0) {
       const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);
@@ -389,12 +389,17 @@ export class EditarQuestaoComponent implements  OnInit{
 
     this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
       const disciplinasDaArea = disciplinasRecebidas.content;
+      console.log(disciplinasDaArea);
 
-      const disciplinasSelecionadas = this.atualizarQuestaoForm.get('disciplinas')?.value || [];
+      const selecionadosArray = Array.isArray(disciplinasDaArea)
+        ? disciplinasDaArea
+        : (disciplinasDaArea ? [disciplinasDaArea] : []);
+
+      // const disciplinasSelecionadas = this.atualizarQuestaoForm.get('disciplinas')?.value || [];
 
       const todasDisciplinas = [
         ...disciplinasDaArea,
-        ...disciplinasSelecionadas.filter(
+        ...selecionadosArray.filter(
           (sel:any) => !disciplinasDaArea.some(d => d.id === sel.id)
         )
       ];
@@ -402,11 +407,11 @@ export class EditarQuestaoComponent implements  OnInit{
       this.disciplinas = todasDisciplinas;
 
       const disciplinasMatch = todasDisciplinas.filter(d =>
-        disciplinasSelecionadas.some((ds:any) => ds.id === d.id)
+        selecionadosArray.some((ds:any) => ds.id === d.id)
       );
 
       this.atualizarQuestaoForm.patchValue({
-        disciplinas: disciplinasMatch
+        disciplinas: disciplinasMatch.length > 0 ? disciplinasMatch[0] : null
       });
 
       const disciplinaIds = disciplinasMatch.map((d: any) => d.id);
