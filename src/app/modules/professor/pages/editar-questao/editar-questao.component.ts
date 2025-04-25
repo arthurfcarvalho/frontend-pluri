@@ -146,6 +146,9 @@ export class EditarQuestaoComponent implements  OnInit{
               this.assuntos = assuntosRecebidos;
             });
           }
+          this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
+            (assunto: any) => assunto.id !== this.questao.assuntos?.[0]?.id
+          );
         });
         this.atualizarQuestaoForm.patchValue({
           titulo: this.questao.titulo,

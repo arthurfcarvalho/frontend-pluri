@@ -254,10 +254,8 @@
             </div>
             <div class="action-buttons">
               <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <button pButton type="button" class="btn-enviar" (click)="submitAtualizarQuestao()"
+              <button pButton type="button" class="btn-enviar" (click)="validarAcoes(nextCallback)"
                       label="Atualizar"></button>
-              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"
-                        (onClick)="validarAcoes(nextCallback)"/>
               <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
                       label="Preview Questão"></button>
             </div>
