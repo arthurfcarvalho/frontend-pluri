@@ -182,10 +182,10 @@ export class CreateQuestionsComponent implements OnInit {
   }
 
   validarAcoes(nextCallback: any){
-    this.validarAlternativasCorpo(nextCallback);
+    this.validarAlternativasCorpo();
   }
 
-  verMarcado(nextCallback: any): void {
+  verMarcado(): void {
     let cont = 0;
     this.alternativas.forEach((alternativas, i) => {
       if (!alternativas.correta) {
@@ -196,7 +196,7 @@ export class CreateQuestionsComponent implements OnInit {
     if (cont === 4) {
       this.toastService.error('Escolha uma questão correta.');
     }else{
-      nextCallback.emit();
+      this.submitCriarQuestao();
     }
 
   }
@@ -221,12 +221,12 @@ export class CreateQuestionsComponent implements OnInit {
     }
   }
 
-  validarAlternativasCorpo(nextCallback: any) {
+  validarAlternativasCorpo() {
 
     const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
 
     if (!alternativasVazias) {
-      this.verMarcado(nextCallback);
+      this.verMarcado();
     } else {
       this.toastService.error('Preencha todas as alternativas antes de avançar.');
     }
@@ -263,7 +263,7 @@ export class CreateQuestionsComponent implements OnInit {
   previewQuestaoNoModelo() {
     this.pdfUrl = "";
     this.showPreview = true;
-    // this.carregamento = true;
+    this.carregamento = true;
     const formValue = { ...this.criarQuestaoForm.value };
 
     formValue.corpo = this.criarQuestaoForm.value.corpo;
@@ -282,11 +282,12 @@ export class CreateQuestionsComponent implements OnInit {
       : [assuntosIValue?.id];
 
     formValue.alternativas = this.alternativas;
-    formValue.disciplinas = this.criarQuestaoForm.value?.disciplinas.map((d: any) => d?.id);
-    console.log(formValue)
+    const disciplinas = this.criarQuestaoForm.value?.disciplinas;
+    formValue.disciplinas = Array.isArray(disciplinas)
+      ? disciplinas.map((a: any) => a?.id)
+      : [disciplinas?.id];
 
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(30000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);
@@ -300,13 +301,11 @@ export class CreateQuestionsComponent implements OnInit {
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
-
+        this.carregamento = false;
 
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
         this.cdr.detectChanges();
         this.toastService.success("Preview gerado com sucesso!");
-
-        // this.carregamento = !this.carregamento;
       },
       error => {
         this.toastService.error("Erro ao gerar preview! Evite deixar espaços em branco e quebras de linha");

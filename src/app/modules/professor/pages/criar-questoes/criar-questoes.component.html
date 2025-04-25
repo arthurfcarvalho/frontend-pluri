@@ -96,7 +96,7 @@
             <div
               class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <div class="box-questoes-sup">
-                <p class="titulo">Informe o corpo</p>
+                <p class="titulo">{{ 'text_body' | translate }}</p>
               </div>
               <div class="box-corpo">
                 <div class="box-summernote" >
@@ -104,9 +104,9 @@
                        [(summernoteModel)]="corpo"></div>
                 </div>
               </div>
-              <div>
+              <div class="box-corpo">
                 <div class="box-summernote" >
-                  <p>Digite a Fonte</p>
+                  <p>{{ 'text_font' | translate}}</p>
                   <div id="summernote-font" formControlName="fonte" [ngxSummernote]="config" [ngxSummernoteView]="fonte"
                        [(summernoteModel)]="fonte"></div>
                 </div>
@@ -250,8 +250,10 @@
             </div>
             <div class="action-buttons">
               <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"
-                        (onClick)="validarAcoes(nextCallback)"/>
+              <button pButton type="button" class="btn-enviar" (click)="validarAcoes(nextCallback)"
+                      [label]="btnCriarEnviar"></button>
+<!--              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"-->
+<!--                        (onClick)="validarAcoes(nextCallback)"/>-->
               <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
                       label="Preview Questão"></button>
             </div>
@@ -270,40 +272,6 @@
           </div>
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="Preview">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-                     let-index="index">
-          <div class="flex flex-column h-12rem">
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              Clique para gerar o preview e confira sua questão
-            </div>
-          </div>
-          <div class="flex pt-4 justify-content-start">
-
-          </div>
-          <div class="action-buttons">
-
-            <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-            <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()"
-                    [label]="btnCriarEnviar"></button>
-            <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
-                    label="Preview Questão"></button>
-          </div>
-          <div *ngIf="pdfUrl" class="box-preview">
-            <div class="box-btn-fechar">
-              <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe" (click)="fecharIframe()">Fechar
-                Preview
-              </button>
-            </div>
-<!--            <p>Sua questão exemplo e a número 01.</p>-->
-<!--            <iframe id="iFramePdf" [src]="pdfUrl"></iframe>-->
-            <ng-container *ngIf="pdfUrl">
-              <iframe id="iFramePdf" [src]="pdfUrl"></iframe>
-            </ng-container>
-          </div>
-        </ng-template>
-      </p-stepperPanel>
     </p-stepper>
   </div>
 </form>
@@ -311,3 +279,4 @@
   <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
 </div>
 <br>
+

@@ -177,8 +177,13 @@ export class EditarQuestaoComponent implements  OnInit{
     formValue.area = this.atualizarQuestaoForm.value.area.id;
     this.atualizarQuestaoForm.value.disciplinas = Array(this.atualizarQuestaoForm.value.disciplinas)
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
-    formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any)=> a.id);
-    formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any)=> a.id);
+    const assuntosValue = this.atualizarQuestaoForm.value?.assuntos;
+    formValue.assuntos = Array.isArray(assuntosValue)
+      ? assuntosValue.map((a: any) => a?.id)
+      : [assuntosValue?.id];
+
+    formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
+    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
@@ -227,11 +232,21 @@ export class EditarQuestaoComponent implements  OnInit{
 
     formValue.corpo = this.atualizarQuestaoForm.value.corpo;
     formValue.area = this.atualizarQuestaoForm.value?.area?.id;
+    const assuntosValue = this.atualizarQuestaoForm.value?.assuntos;
+    formValue.assuntos = Array.isArray(assuntosValue)
+      ? assuntosValue.map((a: any) => a?.id)
+      : [assuntosValue?.id];
 
-    formValue.assuntos = this.atualizarQuestaoForm.value.assuntos.map((a: any) => a.id);
+    const assuntosIValue = this.atualizarQuestaoForm.value?.assuntosInterdisciplinares;
+    formValue.assuntosInterdisciplinares = Array.isArray(assuntosIValue)
+      ? assuntosIValue.map((a: any) => a?.id)
+      : [assuntosIValue?.id];
 
     formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
-    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any) => d.id);
+    const disciplinas = this.atualizarQuestaoForm.value?.disciplinas;
+    formValue.disciplinas = Array.isArray(disciplinas)
+      ? disciplinas.map((a: any) => a?.id)
+      : [disciplinas?.id];
 
     this.relatoriosService.previewQuestao(formValue).pipe(
       timeout(3000),
@@ -279,7 +294,7 @@ export class EditarQuestaoComponent implements  OnInit{
     }
   }
 
-  verMarcado(nextCallback: any): void {
+  verMarcado(): void {
     let cont = 0;
     this.alternativas.forEach((alternativas, i) => {
       if (alternativas.correta === false) {
@@ -290,21 +305,21 @@ export class EditarQuestaoComponent implements  OnInit{
     if (cont === 4) {
       this.toastService.error('Escolha uma questão correta.');
     }else{
-      nextCallback.emit();
+      this.submitAtualizarQuestao()
     }
 
   }
 
   validarAcoes(nextCallback: any){
-    this.validarAlternativasCorpo(nextCallback);
+    this.validarAlternativasCorpo();
   }
 
-  validarAlternativasCorpo(nextCallback: any) {
+  validarAlternativasCorpo() {
 
     const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
 
     if (!alternativasVazias) {
-      this.verMarcado(nextCallback);
+      this.verMarcado();
     } else {
       this.toastService.error('Preencha todas as alternativas antes de avançar.');
     }

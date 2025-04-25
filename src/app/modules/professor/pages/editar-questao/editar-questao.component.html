@@ -6,7 +6,8 @@
   <div class="card">
     <p-stepper [linear]="true">
       <p-stepperPanel header="Informações">
-        <ng-template pTemplate="content"  let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
+                     let-index="index">
           <div class="flex flex-column h-12rem">
             <div
               class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
@@ -40,19 +41,20 @@
                     <p-floatLabel>
                       <p-dropdown
                         filter="true"
-                        [options]="disciplinas" formControlName="disciplinas" optionLabel="nome" placeholder="Selecione a disciplina"
-                                     (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
-                      <label class="label-dificuldade" >Disciplina</label>
+                        [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"
+                        placeholder="Selecione a disciplina"
+                        (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
+                      <label class="label-dificuldade">Disciplina</label>
                     </p-floatLabel>
                   </div>
                   <div class="input-container">
                     <p-floatLabel>
                       <p-dropdown [options]="assuntos"
-                                     formControlName="assuntos"
-                                     optionLabel="nome"
-                                     filter="true"
-                                    (onChange)="filterAssuntosInterdisciplinares($event)"
-                                     placeholder="Selecione os assuntos"></p-dropdown>
+                                  formControlName="assuntos"
+                                  optionLabel="nome"
+                                  filter="true"
+                                  (onChange)="filterAssuntosInterdisciplinares($event)"
+                                  placeholder="Selecione os assuntos"></p-dropdown>
                       <label class="label-dificuldade">Assunto</label>
                     </p-floatLabel>
                   </div>
@@ -68,11 +70,13 @@
         </ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Areas de integração">
-        <ng-template pTemplate="content"  let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
+                     let-index="index">
           <p>{{ 'integration_area_text' | translate }}</p>
           <div class="input-container">
             <p-floatLabel>
-              <p-multiSelect [display]="'chip'" [options]="assuntosInterdisciplinares" formControlName="assuntosInterdisciplinares" optionLabel="nome"
+              <p-multiSelect [display]="'chip'" [options]="assuntosInterdisciplinares"
+                             formControlName="assuntosInterdisciplinares" optionLabel="nome"
                              placeholder="Selecione os assuntos"></p-multiSelect>
               <label class="label-dificuldade">Assunto</label>
             </p-floatLabel>
@@ -91,7 +95,7 @@
             <div
               class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <div class="box-questoes-sup">
-                <p class="titulo">Informe o corpo</p>
+                <p class="titulo">{{ 'text_body' | translate }}</p>
               </div>
               <div class="box-corpo">
                 <div class="box-summernote">
@@ -100,10 +104,13 @@
                 </div>
               </div>
               <div>
-                <div class="box-summernote">
-                  <p>Digite a Fonte</p>
-                  <div id="summernote-font" [ngxSummernote]="config" [ngxSummernoteView]="fonte" formControlName="fonte"
-                       [(summernoteModel)]="fonte"></div>
+                <div class="box-corpo">
+                  <div class="box-summernote">
+                    <p>Digite a Fonte</p>
+                    <div id="summernote-font" [ngxSummernote]="config" [ngxSummernoteView]="fonte"
+                         formControlName="fonte"
+                         [(summernoteModel)]="fonte"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -248,6 +255,8 @@
             </div>
             <div class="action-buttons">
               <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
+              <button pButton type="button" class="btn-enviar" (click)="submitAtualizarQuestao()"
+                      label="Atualizar"></button>
               <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"
                         (onClick)="validarAcoes(nextCallback)"/>
               <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
@@ -259,44 +268,13 @@
                   Preview
                 </button>
               </div>
-<!--              <p>Sua questão exemplo e a número 01.</p>-->
-<!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
+              <!--              <p>Sua questão exemplo e a número 01.</p>-->
+              <!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
               <ng-container *ngIf="pdfUrl">
                 <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
               </ng-container>
 
             </div>
-          </div>
-        </ng-template>
-      </p-stepperPanel>
-      <p-stepperPanel header="Preview">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-                     let-index="index">
-          <div class="flex flex-column h-12rem">
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              Clique para gerar o preview e confira sua questão
-            </div>
-          </div>
-          <div class="flex pt-4 justify-content-start">
-
-          </div>
-          <div class="action-buttons">
-
-            <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-            <button pButton type="button" class="btn-enviar" (click)="submitAtualizarQuestao()"
-                    label="Atualizar"></button>
-            <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
-                    label="Preview Questão"></button>
-          </div>
-          <div *ngIf="pdfUrl" class="box-preview">
-            <div class="box-btn-fechar">
-              <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe" (click)="fecharIframe()">Fechar
-                Preview
-              </button>
-            </div>
-            <p>Sua questão exemplo e a número 01.</p>
-            <iframe id="iFramePdf" [src]="pdfUrl"></iframe>
           </div>
         </ng-template>
       </p-stepperPanel>
