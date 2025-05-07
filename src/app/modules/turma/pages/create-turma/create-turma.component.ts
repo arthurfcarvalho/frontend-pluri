@@ -72,7 +72,6 @@ export class CreateTurmaComponent implements OnInit{
   submit() {
     if (this.createTurmaForm.valid) {
       // integrar com o back-end quando estiver pronto
-      console.log('Dados do Formulário:', this.createTurmaForm.value);
       this.toastService.success('Turma criada com sucesso!');
     } else {
       if (this.createTurmaForm.hasError('invalidFormat', 'codigo')) {

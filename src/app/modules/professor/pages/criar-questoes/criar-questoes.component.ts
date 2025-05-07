@@ -405,9 +405,6 @@ export class CreateQuestionsComponent implements OnInit {
         this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
           const assuntosSelecionados = this.criarQuestaoForm.get('assuntos')?.value || [];
 
-          console.log(assuntosSelecionados);
-          console.log(assuntosRecebidos);
-
           const selecionadosArray = Array.isArray(assuntosSelecionados)
             ? assuntosSelecionados
             : [assuntosSelecionados];

@@ -168,7 +168,6 @@ export class IndicacaoDocentesComponent {
     }
 
   saveAmount(teacherId: number, amount: number){
-    console.log(amount);
     if(amount > 0) {
       this.indicacaoDocentesForm.patchValue({
         idUsuario: teacherId,

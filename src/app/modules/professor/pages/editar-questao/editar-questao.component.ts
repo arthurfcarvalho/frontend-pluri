@@ -135,6 +135,9 @@ export class EditarQuestaoComponent implements  OnInit{
         });
         this.assuntoService.listarAssuntos().subscribe(assuntos => {
           this.assuntosInterdisciplinares = assuntos.content
+          this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
+            (assunto: any) => assunto.id !== this.questao.assuntos?.[0]?.id
+          );
         })
 
         this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
@@ -146,9 +149,6 @@ export class EditarQuestaoComponent implements  OnInit{
               this.assuntos = assuntosRecebidos;
             });
           }
-          this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
-            (assunto: any) => assunto.id !== this.questao.assuntos?.[0]?.id
-          );
         });
         this.atualizarQuestaoForm.patchValue({
           titulo: this.questao.titulo,
@@ -252,7 +252,7 @@ export class EditarQuestaoComponent implements  OnInit{
       : [disciplinas?.id];
 
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(3000),
+      timeout(10000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);
@@ -407,7 +407,6 @@ export class EditarQuestaoComponent implements  OnInit{
 
     this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
       const disciplinasDaArea = disciplinasRecebidas.content;
-      console.log(disciplinasDaArea);
 
       const selecionadosArray = Array.isArray(disciplinasDaArea)
         ? disciplinasDaArea
@@ -450,7 +449,6 @@ export class EditarQuestaoComponent implements  OnInit{
           ];
 
           this.assuntos = todosAssuntos;
-          console.log(this.assuntos);
 
           const assuntosMatch = todosAssuntos.filter(a =>
             selecionadosArray.some((asel:any) => asel.id === a.id)

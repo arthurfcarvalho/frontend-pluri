@@ -137,7 +137,6 @@ export class EnviarQuestaoComponent {
 
     if(questao != null){
       id = questao?.id;
-      console.log(questao)
     }
 
     this.relatorioService.previewQuestaoSelecionada(id).subscribe(

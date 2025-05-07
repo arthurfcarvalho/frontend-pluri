@@ -55,7 +55,6 @@ export class CreateDisciplinaComponent {
   }
 
   submit() {
-    console.log(this.createDisciplinaForm.value);
     const data = this.createDisciplinaForm.value;
     this.disciplinaService.createDisciplina(data).subscribe(
       data => {

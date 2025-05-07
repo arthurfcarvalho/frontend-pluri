@@ -80,7 +80,6 @@ export class AccordionAreasComponent {
   }
 
   onInputSwitchChange(checked: boolean, questao: Questao) {
-    console.log("CHEGOU NO CHECK", checked, questao)
     if (checked) {
       if (!this.idQuestoesPreview.includes(questao.id)) {
         this.idQuestoesPreview.push(questao.id);
@@ -89,7 +88,6 @@ export class AccordionAreasComponent {
       this.idQuestoesPreview = this.idQuestoesPreview.filter(id => id !== questao.id);
     }
     this.questaoSelecionada.emit({checked, questao});
-    console.log(this.questaoSelecionada)
   }
 
   gerarPdfPreviewQuestion(questao: Questao) {
@@ -98,7 +96,6 @@ export class AccordionAreasComponent {
 
     if(questao != null){
       id = questao?.id;
-      console.log(questao)
     }
 
     this.relatorioService.previewQuestaoSelecionada(id).subscribe(
