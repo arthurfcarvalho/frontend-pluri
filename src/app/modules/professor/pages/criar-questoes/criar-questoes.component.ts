@@ -200,13 +200,24 @@ export class CreateQuestionsComponent implements OnInit {
     }
 
   }
-
   validarAntesDeAvancarInformacoes(nextCallback: any) {
-    if (this.criarQuestaoForm.valid) {
+    const formValue = this.criarQuestaoForm.value;
+
+    const assuntosValidos = this.isValidValue(formValue.assuntos);
+    const disciplinasValidas = this.isValidValue(formValue.disciplinas); // mesma lógica se necessário
+
+    if (this.criarQuestaoForm.valid && assuntosValidos && disciplinasValidas) {
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
+  }
+
+  isValidValue(value: any): boolean {
+    if (!value) return false;
+    if (Array.isArray(value)) return value.length > 0 && !!value[0]?.nome;
+    if (typeof value === 'object') return !!value.nome;
+    return false;
   }
 
   validarAntesDeAvancarCorpo(nextCallback: any) {

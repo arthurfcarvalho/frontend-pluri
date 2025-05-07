@@ -112,7 +112,7 @@ export class EditarQuestaoComponent implements  OnInit{
       corpo: new FormControl('', Validators.required),
       fonte: new FormControl(Validators.required),
       dificuldade: new FormControl('', Validators.required),
-      assuntos: [[]],
+      assuntos: new FormControl([], Validators.required),
       assuntosInterdisciplinares: [],
       disciplinas: [],
       area: new FormControl(),
@@ -288,13 +288,23 @@ export class EditarQuestaoComponent implements  OnInit{
     }
     this.pdfUrl = ""
   }
-
   validarAntesDeAvancar(nextCallback: any) {
-    if (this.atualizarQuestaoForm.valid) {
+    const formValue = this.atualizarQuestaoForm.value;
+
+    const assuntosValidos = this.isValidValue(formValue.assuntos);
+    const disciplinasValidas = this.isValidValue(formValue.disciplinas); // mesma lógica se necessário
+
+    if (this.atualizarQuestaoForm.valid && assuntosValidos && disciplinasValidas) {
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
     }
+  }
+  isValidValue(value: any): boolean {
+    if (!value) return false;
+    if (Array.isArray(value)) return value.length > 0 && !!value[0]?.nome;
+    if (typeof value === 'object') return !!value.nome;
+    return false;
   }
 
   verMarcado(): void {
