@@ -1,8 +1,9 @@
+<script src="edit-disciplina.component.ts"></script>
 <app-header/>
 
 <div class="container">
   <p-fieldset legend="Criar Disciplina">
-    <form class="form-container" [formGroup]="createDisciplinaForm">
+    <form class="form-container" [formGroup]="updateDisciplinaForm">
       <div class="name-element">
         <label for="nome">Nome</label>
         <input id="nome" type="text" pInputText formControlName="nome"/>

@@ -185,7 +185,10 @@ export class EditarQuestaoComponent implements  OnInit{
       ? assuntosValue.map((a: any) => a?.id)
       : [assuntosValue?.id];
 
-    formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
+    if(this.atualizarQuestaoForm.value.assuntosInterdisciplinares?.length > 0){
+      formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
+    }
+
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas
 
     this.questaoService.updateQuestion(formValue).subscribe({
@@ -252,7 +255,7 @@ export class EditarQuestaoComponent implements  OnInit{
       : [disciplinas?.id];
 
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(10000),
+      timeout(20000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);

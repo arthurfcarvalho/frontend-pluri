@@ -31,7 +31,7 @@
       <td>{{ disciplina.nome}}</td>
       <td>{{ disciplina?.areaNome }}</td>
       <td class="box-btns">
-        <button pButton type="button" label="Editar" routerLink="/editar-assunto/{{disciplina.id}}"></button>
+        <button pButton type="button" label="Editar" routerLink="/editar-disciplina/{{disciplina.id}}"></button>
         <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="deletarDisciplina(disciplina.id)"></button>
       </td>
     </tr>

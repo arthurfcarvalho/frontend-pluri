@@ -50,6 +50,7 @@ import {CreateDisciplinaComponent} from "./modules/disciplina/create-disciplina/
 import {CreateAssuntoComponent} from "./modules/assunto/create-assunto/create-assunto.component";
 import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assuntos.component";
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
+import {EditDisciplinaComponent} from "./modules/disciplina/edit-disciplina/edit-disciplina.component";
 
 export const routes: Routes = [
     // Antes de autenticar
@@ -91,6 +92,7 @@ export const routes: Routes = [
   { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard] },
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
   { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard] },
+  { path: 'editar-disciplina/:id', component: EditDisciplinaComponent, title: 'Editar - Disciplina', canActivate: [authGuard] },
   { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
   { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar - Assunto', canActivate: [authGuard] },
   { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar - Assuntos', canActivate: [authGuard] },

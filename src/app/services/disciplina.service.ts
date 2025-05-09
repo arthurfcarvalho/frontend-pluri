@@ -30,10 +30,20 @@ export class DisciplinaService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
+  editDisciplina(data: Disciplina): Observable<Disciplina> {
+    const url = this.baseUrl + 'editar-disciplina';
+    return this.httpClient.put<Disciplina>(url, data, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    });
+  }
 
   listarDisciplinasPorArea(idArea: number) {
     const url =  this.baseUrl + 'listar-disciplinas-por-area?areaId=' + idArea +'&page=0&size=10&sort=nome';
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
+  }
+  listById(id: number) {
+    const url =  this.baseUrl + 'listar-disciplina/'+id;
+    return this.httpClient.get<Disciplina>(url).pipe(map(obj => obj));
   }
   listarDisciplinasPage(page: number = 0, size: number = 10): Observable<any> {
     const url = this.baseUrl + `listar-disciplinas-page?page=${page}&size=${size}`;
