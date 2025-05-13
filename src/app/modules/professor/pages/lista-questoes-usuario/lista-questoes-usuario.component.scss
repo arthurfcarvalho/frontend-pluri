@@ -2,3 +2,71 @@
   display: flex;
   gap: 5px;
 }
+
+
+.modal {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  min-width: 300px;
+}
+
+button {
+  margin: 10px;
+}
+.btnCancelarDelete,
+.btnConfirmarDelete {
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 120px;
+  text-align: center;
+  color: white;
+}
+
+.btnConfirmarDelete {
+  background-color: red;
+  border: 1px solid red;
+}
+
+.btnCancelarDelete {
+  background-color: #6366F1;
+  border: 1px solid #6366F1;
+}
+
+.btnConfirmarDelete:hover {
+  background-color: #810303;
+}
+
+.btnCancelarDelete:hover {
+  background-color: #3637c5;
+}
+
+.btnConfirmarDelete:active,
+.btnCancelarDelete:active {
+  transform: scale(0.95);
+}
+
+.textoConfirmarDelete{
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+

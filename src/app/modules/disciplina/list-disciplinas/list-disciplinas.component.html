@@ -1,0 +1,39 @@
+<app-header/>
+
+<p-table
+  [value]="listDisciplinas"
+  styleClass="p-datatable-striped"
+  [paginator]="true"
+  [rows]="10"
+  [totalRecords]="totalRecords"
+  [lazy]="true"
+  (onLazyLoad)="loadDisciplinas(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+  [rowsPerPageOptions]="[5,10, 20]"
+  [tableStyle]="{'min-width': '50rem'}"
+  sortField="data_inicio_pluri"
+  [sortOrder]="1">
+  <ng-template pTemplate="caption">
+    <div>
+      Disciplinas
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id">{{ 'label_table_id' | translate }}<p-sortIcon field="id"/></th>
+      <th pSortableColumn="nome">{{ 'label_table_name' | translate }}<p-sortIcon field="nome"/></th>
+      <th pSortableColumn="area">{{ 'label_table_area' | translate }}<p-sortIcon field="area"/></th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-disciplina>
+    <tr>
+      <td>{{ disciplina.id }}</td>
+      <td>{{ disciplina.nome}}</td>
+      <td>{{ disciplina?.areaNome }}</td>
+      <td class="box-btns">
+        <button pButton type="button" label="Editar" routerLink="/editar-assunto/{{disciplina.id}}"></button>
+        <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="deletarDisciplina(disciplina.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

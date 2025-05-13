@@ -304,7 +304,6 @@ export class UpdatePluriComponent {
   deleteArea(i: any) {
     const area = this.areas[i];
     let id: number = +area.idPluriArea;
-    console.log(area);
     if(id){
       this.pluriService.deleteArea(id).subscribe(
         () => {

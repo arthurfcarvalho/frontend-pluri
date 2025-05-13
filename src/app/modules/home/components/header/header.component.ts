@@ -58,6 +58,8 @@ export class HeaderComponent {
           'MENU.CREATE_AREA',
           'MENU.SEARCH_AREAS',
           'MENU.TEACHER',
+          'MENU.CREATE_SUBJECT',
+          'MENU.SUBJECT',
           'MENU.CREATE_QUESTION',
           'MENU.MY_QUESTIONS',
           'MENU.QUESTIONS_TO_SEND',
@@ -65,6 +67,10 @@ export class HeaderComponent {
           'MENU.ASSIGN_DOCENT',
           'MENU.DESIGNER',
           'MENU.LIST_QUESTIONS',
+          'MENU.CREATE_DISCIPLINE',
+          'MENU.DISCIPLINE',
+          'MENU.SEARCH_DISCIPLINE',
+          'MENU.SEARCH_SUBJECT',
           'MENU.SEARCH_PLURI_OVERVIEW'
         ]).subscribe((translations) => {
           this.menuItems = [
@@ -131,7 +137,35 @@ export class HeaderComponent {
                       routerLink: '/pesquisar-areas'
                     }
                   ]
-                }
+                },
+                {
+                  label: translations['MENU.DISCIPLINE'],
+                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  items: [
+                    {
+                      label: translations['MENU.CREATE_DISCIPLINE'],
+                      routerLink: '/criar-disciplina'
+                    },
+                    {
+                      label: translations['MENU.SEARCH_DISCIPLINE'],
+                      routerLink: '/pesquisar-disciplinas'
+                    }
+                  ]
+                },
+                {
+                  label: translations['MENU.SUBJECT'],
+                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  items: [
+                    {
+                      label: translations['MENU.CREATE_SUBJECT'],
+                      routerLink: '/criar-assunto'
+                    },
+                    {
+                      label: translations['MENU.SEARCH_SUBJECT'],
+                      routerLink: '/pesquisar-assuntos'
+                    }
+                  ]
+                },
               ]
             },
             {

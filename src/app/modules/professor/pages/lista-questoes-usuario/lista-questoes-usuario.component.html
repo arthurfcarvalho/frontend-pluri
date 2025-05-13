@@ -1,39 +1,54 @@
 <app-header/>
-
+<!-- [rows]="rowsPerPage" define quantos itens vao aparecer com base no valor do filtro-->
+<!-- (onPage)="onPageChange($event)" quando a pagina e atualizada $event pega as informaçoes(numero de itens)-->
 <p-table
     [value]="dataQuestao"
     styleClass="p-datatable-striped"
     [paginator]="true"
-    [rows]="10"
+    [rows]="rowsPerPage"
     [totalRecords]="totalRecords"
     [lazy]="true"
     (onLazyLoad)="loadQuestions(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+    (onPage)="onPageChange($event)"
     [rowsPerPageOptions]="[5,10, 20]"
     [tableStyle]="{'min-width': '50rem'}"
     sortField="data_inicio_pluri"
     [sortOrder]="1">
     <ng-template pTemplate="caption">
         <div>
-            Questoes
+            Questões
         </div>
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="titulo">{{ 'label_table_title' | translate }}<p-sortIcon field="titulo"/></th>
-            <th pSortableColumn="area_nome">{{ 'label_table_area' | translate }}<p-sortIcon field="area_nome"/></th>
+            <th pSortableColumn="areaNome">{{ 'label_table_area' | translate }}<p-sortIcon field="areaNome"/></th>
             <th pSortableColumn="aprovada">{{ 'label_table_approved' | translate }}<p-sortIcon field="aprovada"/></th>
             <th></th>
         </tr>
     </ng-template>
+
+
+
     <ng-template pTemplate="body" let-questao>
         <tr>
             <td>{{ questao.titulo }}</td>
-            <td>{{ questao.area_nome}}</td>
+            <td>{{ questao.areaNome}}</td>
             <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
             <td class="box-btns">
                 <button pButton type="button" label="Editar" routerLink="/editar-questao/{{questao.id}}"></button>
-                <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="deletarQuestao(questao.id)"></button>
+                <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="confirmarDeletar(questao.id)"></button>
             </td>
         </tr>
     </ng-template>
+
 </p-table>
+<div class="modal" #modalDeletar style="display: none;">
+  <div class="modal-content">
+    <p class="textoConfirmarDelete">Você tem certeza que deseja deletar?</p>
+
+    <button pButton class="btnCancelarDelete" (click)="fecharConfirmacao()">Cancelar</button>
+    <button pButton class="btnConfirmarDelete" (click)="deletarQuestao(idToDelete)">Deletar</button>
+
+  </div>
+</div>

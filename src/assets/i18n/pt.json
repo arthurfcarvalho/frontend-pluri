@@ -1,4 +1,6 @@
 {
+  "integration_area_text": "Professor nesse momento você deve selecionar assuntos que sua questão faz interdisciplinariedade",
+
   "label_table_title": "Título",
   "label_table_approved": "Aprovada",
   "label_table_area": "Área",
@@ -12,15 +14,24 @@
   "label_table_total_areas": "Quantidade de áreas",
 
 
+  "text_body": "Informe o corpo",
+  "text_font": "Digite a referência",
+
   "MENU": {
     "HOME": "Início",
     "PLURI": "Pluri",
     "CREATE_PLURI": "Criar Pluri",
     "SEARCH_PLURI": "Pesquisar Pluri",
     "ADMINISTRATION": "Administração",
+    "DISCIPLINE": "Disciplina",
+    "SUBJECT": "Assunto",
+    "CREATE_SUBJECT": "Criar Assunto",
     "USERS": "Usuários",
     "CREATE_USER": "Criar Usuário",
+    "CREATE_DISCIPLINE": "Criar Disciplina",
     "SEARCH_USERS": "Pesquisar Usuários",
+    "SEARCH_DISCIPLINE": "Pesquisar Disciplina",
+    "SEARCH_SUBJECT": "Pesquisar Assunto",
     "PROFILES": "Perfis",
     "CREATE_PROFILE": "Criar Perfil",
     "SEARCH_PROFILES": "Pesquisar Perfis",

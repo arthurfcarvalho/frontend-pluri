@@ -4,6 +4,7 @@ export interface Questao{
     id_questao: number;
     id: number;
     corpo: string,
+    fonte: string,
     titulo: string,
     alternativas: Alternativa[];
     /*alternativa1: string,

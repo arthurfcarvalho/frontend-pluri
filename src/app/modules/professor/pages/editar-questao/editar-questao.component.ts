@@ -1,48 +1,43 @@
-import { ToastrService } from 'ngx-toastr';
-import {ChangeDetectorRef, Component} from '@angular/core';
-import { HeaderComponent } from '../../../home/components/header/header.component';
-import {Form, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { NgxSummernoteModule } from 'ngx-summernote';
-import { StepperModule } from 'primeng/stepper';
-import { CalendarModule } from 'primeng/calendar';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
+import {ToastrService} from 'ngx-toastr';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {HeaderComponent} from '../../../home/components/header/header.component';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {NgxSummernoteModule} from 'ngx-summernote';
+import {StepperModule} from 'primeng/stepper';
+import {CalendarModule} from 'primeng/calendar';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {DropdownModule} from 'primeng/dropdown';
+import {InputTextModule} from 'primeng/inputtext';
+import {SummernoteOptions} from 'ngx-summernote/lib/summernote-options';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { QuestionService } from '../../../../services/question.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DadosAtualizarQuestao } from '../../models/DadosAtualizarQuestao.model';
+import {QuestionService} from '../../../../services/question.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DadosAtualizarQuestao} from '../../models/DadosAtualizarQuestao.model';
 import Assunto from '../../../../models/Assunto.model';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { AssuntoService } from '../../../../services/assunto.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { RelatoriosService } from '../../../../services/relatorios.service';
-import { catchError, map, throwError, timeout } from 'rxjs';
-import { ListboxModule } from 'primeng/listbox';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { Alternativa } from '../../models/Alternativa.model';
-import { Area } from '../../../../models/Area.model';
-import { AreaService } from '../../../../services/area.service';
-import { environment } from '../../../../../environments/environment';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {AssuntoService} from '../../../../services/assunto.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {RelatoriosService} from '../../../../services/relatorios.service';
+import {catchError, map, throwError, timeout} from 'rxjs';
+import {ListboxModule} from 'primeng/listbox';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import {IconFieldModule} from 'primeng/iconfield';
+import {InputIconModule} from 'primeng/inputicon';
+import {Alternativa} from '../../models/Alternativa.model';
+import {Area} from '../../../../models/Area.model';
+import {AreaService} from '../../../../services/area.service';
+import {environment} from '../../../../../environments/environment';
 import {CheckboxModule} from "primeng/checkbox";
 import {InputSwitchModule} from "primeng/inputswitch";
+import {DisciplinaService} from "../../../../services/disciplina.service";
+import {Disciplina} from "../../../disciplina/models/disciplina";
+import {TranslatePipe} from "@ngx-translate/core";
 
-
-interface DynamicFields {
-  corpo: string;
-  alternativa1: string;
-  alternativa2: string;
-  alternativa3: string;
-  alternativa4: string;
-}
 
 @Component({
   selector: 'app-editar-questao',
@@ -67,23 +62,21 @@ interface DynamicFields {
     InputIconModule,
     CheckboxModule,
     FormsModule,
-    InputSwitchModule
+    InputSwitchModule,
+    TranslatePipe
   ],
   templateUrl: './editar-questao.component.html',
   styleUrls: ['./editar-questao.component.scss']
 })
-export class EditarQuestaoComponent {
+export class EditarQuestaoComponent implements  OnInit{
 
   idQuestao: number = 0;
 
-
+  compararPorId = (a: any, b: any) => a && b && a.id === b.id;
   content = "Digite";
   titulo = 'Digite o titulo';
   corpo = " ";
-  alternativa1!: Alternativa;
-  alternativa2!: Alternativa;
-  alternativa3!: Alternativa;
-  alternativa4!: Alternativa;
+  fonte: string = "";
 
   pdfUrl: SafeResourceUrl | null = null;
 
@@ -92,17 +85,19 @@ export class EditarQuestaoComponent {
   previewContent = '';
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   assuntos!: Assunto[];
+  assuntosInterdisciplinares!: Assunto[];
   carregamento: boolean = false;
   showPreview = false;
   areasRecebidas!: Area[]
   areaQuestao!: Area
-  expandedIndexes: boolean[] = [false, false, false, false];
+  expandedIndexes: boolean[] = [true, true, true, true];
   alternativas: Alternativa[] = [];
-
-  alternativaCorreta: boolean[] = [true, true, true, true];
+  disciplinas: Disciplina[] = [];
+  areas!: Area[];
 
   constructor(
     private cdRef: ChangeDetectorRef,
+    private disciplinaService: DisciplinaService,
     private areaService: AreaService,
     private relatoriosService: RelatoriosService,
     private fb: FormBuilder, private router: Router,
@@ -115,118 +110,106 @@ export class EditarQuestaoComponent {
     this.atualizarQuestaoForm = this.fb.group({
       titulo: new FormControl('', Validators.required),
       corpo: new FormControl('', Validators.required),
+      fonte: new FormControl(Validators.required),
       dificuldade: new FormControl('', Validators.required),
-      alternativas: new FormControl('', Validators.required),
-      codigo_assuntos: [[]],
-      idArea: new FormControl()
+      assuntos: new FormControl([], Validators.required),
+      assuntosInterdisciplinares: [],
+      disciplinas: [],
+      area: new FormControl(),
+      alternativaCorreta: new FormControl(),
+      alternativas: new FormControl(),
     });
   }
 
   ngOnInit() {
-    this.idQuestao = (Number(this.route.snapshot.paramMap.get('id')));
+    this.idQuestao = Number(this.route.snapshot.paramMap.get('id'));
+
     if (this.idQuestao) {
-      this.questaoService.listById(Number(this.idQuestao)).subscribe(questaoRecebida => {
+      this.questaoService.listById(this.idQuestao).subscribe(questaoRecebida => {
         this.questao = questaoRecebida;
-        this.cdRef.detectChanges();
-
-        this.corpo = this.questao.corpo;
-
         if (this.questao.alternativas && this.questao.alternativas.length > 0) {
-          this.alternativa1 = this.questao.alternativas[0];
-          this.alternativa2 = this.questao.alternativas[1];
-          this.alternativa3 = this.questao.alternativas[2];
-          this.alternativa4 = this.questao.alternativas[3];
-          this.alternativas = this.questao?.alternativas;
+          this.alternativas = this.questao.alternativas;
         }
+        this.areaService.returnAllAreas().subscribe(areas => {
+          this.areasRecebidas = areas.content;
+        });
+        this.assuntoService.listarAssuntos().subscribe(assuntos => {
+          this.assuntosInterdisciplinares = assuntos.content
+          this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
+            (assunto: any) => assunto.id !== this.questao.assuntos?.[0]?.id
+          );
+        })
 
-        this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
-          this.assuntos = assuntosRecebidos.content;
-
-          this.atualizarQuestaoForm.patchValue({
-            ...this.questao,
-            codigo_assuntos: this.questao.assuntos,
-          });
-          this.areaService.returnAllAreas().subscribe(areas => {
-            this.areasRecebidas = areas.content
-          })
-
-          this.areaService.listarPorId(this.questao.idArea).subscribe((area)=>{
-              this.areaQuestao = area
-              this.atualizarQuestaoForm.patchValue({ idArea: area });
-            })
-          this.updatePreview();
+        this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
+          this.areaQuestao = area;
+          this.loadFieldsArea(area);
+          const disciplinaIds = this.questao.disciplinas.map(d => d.id);
+          if (disciplinaIds.length > 0) {
+            this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+              this.assuntos = assuntosRecebidos;
+            });
+          }
+        });
+        this.atualizarQuestaoForm.patchValue({
+          titulo: this.questao.titulo,
+          corpo: this.questao?.corpo,
+          fonte: this.questao?.fonte,
+          dificuldade: this.questao.dificuldade,
+          area: this.questao.area,
+          disciplinas: this.questao?.disciplinas[0] ?? null,
+          assuntos: this.questao?.assuntos?.[0] ?? null,
+          assuntosInterdisciplinares: this.questao?.assuntosInterdisciplinares?.map(a => a),
+          alternativaCorreta: this.questao.alternativaCorreta,
+          alternativas: this.questao.alternativas
         });
       });
-
     }
   }
 
-  toggleEditor(index: number) {
-    this.expandedIndexes[index] = !this.expandedIndexes[index];
-    if(this.questao.alternativas[index].correta) {
 
-    }
+  toggleEditor(index: number) {
+    this.expandedIndexes[index] = this.expandedIndexes[index];
   }
 
   submitAtualizarQuestao() {
     const formValue = this.atualizarQuestaoForm.value;
 
-      formValue.corpo = this.corpo;
-
-      const alternativas = [
-        this.alternativa1,
-        this.alternativa2,
-        this.alternativa3,
-        this.alternativa4
-    ];
-
-    formValue.alternativas = alternativas;
-
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
-
-
-    //formValue.codigo_assuntos = assuntosCodigosSelecionados;
-    formValue.codigoAssuntos = assuntosCodigosSelecionados;
+    formValue.corpo = this.atualizarQuestaoForm.value.corpo;
+    formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
     formValue.id = this.idQuestao;
+    formValue.area = this.atualizarQuestaoForm.value.area.id;
+    this.atualizarQuestaoForm.value.disciplinas = Array(this.atualizarQuestaoForm.value.disciplinas)
+    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
+    const assuntosValue = this.atualizarQuestaoForm.value?.assuntos;
+    formValue.assuntos = Array.isArray(assuntosValue)
+      ? assuntosValue.map((a: any) => a?.id)
+      : [assuntosValue?.id];
+
+    formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
+    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
           this.toastService.success("Questao atualizada com sucesso!");
-          this.router.navigate(['/', value]);
+          this.router.navigate(['/minhas-questoes', value]);
         },
         error: (e) => {
-          this.toastService.error("Erro ao atualizar o Questão!");
+          this.toastService.error("Erro ao atualizar o Questão!", e);
         }
       });
   }
 
   setCorreta(index: number) {
-    console.log(this.alternativas)
     this.alternativas.forEach((alternativa, i) => {
-      if (i === index) {
-        alternativa.correta = true;
-      } else {
-        alternativa.correta = false;
-      }
+      alternativa.correta = i === index;
     });
   }
-
-  public configPre: SummernoteOptions = {
-    airMode: false,
-    toolbar: [
-      ['print', ['print']]
-    ],
-  };
 
   public config: SummernoteOptions = {
     airMode: false,
     toolbar: [
       ['style', ['style']],
-      ['font', ['bold', 'italic', 'underline', 'clear']],
-      ['fontname', ['fontname']],
-      ['color', ['color']],
+      ['font', ['bold', 'italic', 'underline']],
       ['para', ['ul', 'ol', 'paragraph']],
       ['insert', ['picture', 'math']],
       ['custom', ['customButton']]
@@ -244,35 +227,32 @@ export class EditarQuestaoComponent {
 
   };
 
-  updatePreview() {
-    //this.previewContent = this.getPreviewContent();
-  }
-
   previewQuestaoNoModelo() {
+    this.pdfUrl = "";
     this.showPreview = true;
     this.carregamento = true;
     const formValue = {...this.atualizarQuestaoForm.value};
 
-    const assuntosCodigosSelecionados = formValue.codigo_assuntos
-    .map((assunto: { codigo: string }) => assunto.codigo)
-    .filter((codigo: any) => codigo !== null && codigo !== undefined && codigo !== 0 && codigo !== '');
+    formValue.corpo = this.atualizarQuestaoForm.value.corpo;
+    formValue.area = this.atualizarQuestaoForm.value?.area?.id;
+    const assuntosValue = this.atualizarQuestaoForm.value?.assuntos;
+    formValue.assuntos = Array.isArray(assuntosValue)
+      ? assuntosValue.map((a: any) => a?.id)
+      : [assuntosValue?.id];
 
-    formValue.codigo_assuntos = assuntosCodigosSelecionados;
+    const assuntosIValue = this.atualizarQuestaoForm.value?.assuntosInterdisciplinares;
+    formValue.assuntosInterdisciplinares = Array.isArray(assuntosIValue)
+      ? assuntosIValue.map((a: any) => a?.id)
+      : [assuntosIValue?.id];
 
-
-    formValue.corpo = this.corpo;
-
-    const alternativas = [
-      this.alternativa1,
-      this.alternativa2,
-      this.alternativa3,
-      this.alternativa4
-    ];
-
-    formValue.alternativas = alternativas;
+    formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
+    const disciplinas = this.atualizarQuestaoForm.value?.disciplinas;
+    formValue.disciplinas = Array.isArray(disciplinas)
+      ? disciplinas.map((a: any) => a?.id)
+      : [disciplinas?.id];
 
     this.relatoriosService.previewQuestao(formValue).pipe(
-      timeout(3000),
+      timeout(10000),
       map(response => response),
       catchError(error => {
         console.error('Error while previewing question:', error);
@@ -286,12 +266,10 @@ export class EditarQuestaoComponent {
         const file = new Blob([data], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
+        this.carregamento = false;
 
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-
-        this.carregamento = false;
         this.toastService.success("Preview gerado com sucesso!");
-
       },
       error => {
         this.toastService.error("Erro ao gerar preview! Evite deixar espaços em branco e quebras de linha");
@@ -308,9 +286,57 @@ export class EditarQuestaoComponent {
     if(btnDestroiIframe){
       btnDestroiIframe?.remove()
     }
-    this.pdfUrl = null
+    this.pdfUrl = ""
+  }
+  validarAntesDeAvancar(nextCallback: any) {
+    const formValue = this.atualizarQuestaoForm.value;
+
+    const assuntosValidos = this.isValidValue(formValue.assuntos);
+    const disciplinasValidas = this.isValidValue(formValue.disciplinas); // mesma lógica se necessário
+
+    if (this.atualizarQuestaoForm.valid && assuntosValidos && disciplinasValidas) {
+      nextCallback.emit();
+    } else {
+      this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
+    }
+  }
+  isValidValue(value: any): boolean {
+    if (!value) return false;
+    if (Array.isArray(value)) return value.length > 0 && !!value[0]?.nome;
+    if (typeof value === 'object') return !!value.nome;
+    return false;
   }
 
+  verMarcado(): void {
+    let cont = 0;
+    this.alternativas.forEach((alternativas, i) => {
+      if (alternativas.correta === false) {
+        cont = cont + 1;
+      }
+    });
+
+    if (cont === 4) {
+      this.toastService.error('Escolha uma questão correta.');
+    }else{
+      this.submitAtualizarQuestao()
+    }
+
+  }
+
+  validarAcoes(nextCallback: any){
+    this.validarAlternativasCorpo();
+  }
+
+  validarAlternativasCorpo() {
+
+    const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
+
+    if (!alternativasVazias) {
+      this.verMarcado();
+    } else {
+      this.toastService.error('Preencha todas as alternativas antes de avançar.');
+    }
+  }
 
   saveContent() {
     const content = this.previewContent;
@@ -330,5 +356,131 @@ export class EditarQuestaoComponent {
       doc.save('conteudo.pdf');
       document.body.removeChild(tempElement);
     });
+  }
+  ultimaAreaSelecionada: any = null;
+  loadFieldsDisciplinas(event: any) {
+    const disciplinasSelecionadas = Array(event.value) || [];
+
+    if (disciplinasSelecionadas.length > 0) {
+      const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);
+
+      this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+        const assuntosDaDisciplina = assuntosRecebidos;
+
+        const assuntosSelecionados = this.questao?.assuntos || [];
+        const selecionadosArray = Array.isArray(assuntosSelecionados)
+          ? assuntosSelecionados
+          : [assuntosSelecionados];
+
+        const todosAssuntos = [
+          ...assuntosDaDisciplina,
+          ...selecionadosArray.filter(
+            asel => !assuntosDaDisciplina.some(a => a.id === asel.id)
+          )
+        ];
+
+        this.assuntos = todosAssuntos;
+
+        const assuntosMatch = todosAssuntos.filter(a =>
+          assuntosSelecionados.some(asel => asel.id === a.id)
+        );
+
+        this.atualizarQuestaoForm.patchValue({
+          assuntos: assuntosMatch
+        });
+      });
+    } else {
+      this.assuntos = [];
+      this.atualizarQuestaoForm.patchValue({
+        assuntos: []
+      });
+    }
+  }
+  loadFieldsArea(event: any) {
+    const selectedArea = event.value ? event.value : event;
+
+    const areaMudou = this.ultimaAreaSelecionada && this.ultimaAreaSelecionada.id !== selectedArea.id;
+
+    if (areaMudou) {
+      this.atualizarQuestaoForm.patchValue({
+        disciplinas: [],
+        assuntos: []
+      });
+      this.disciplinas = [];
+      this.assuntos = [];
+    }
+
+    // Sempre atualiza a última área após verificar mudança
+    this.ultimaAreaSelecionada = selectedArea;
+
+    this.atualizarQuestaoForm.patchValue({ area: selectedArea });
+
+    this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
+      const disciplinasDaArea = disciplinasRecebidas.content;
+
+      const selecionadosArray = Array.isArray(disciplinasDaArea)
+        ? disciplinasDaArea
+        : (disciplinasDaArea ? [disciplinasDaArea] : []);
+
+      // const disciplinasSelecionadas = this.atualizarQuestaoForm.get('disciplinas')?.value || [];
+
+      const todasDisciplinas = [
+        ...disciplinasDaArea,
+        ...selecionadosArray.filter(
+          (sel:any) => !disciplinasDaArea.some(d => d.id === sel.id)
+        )
+      ];
+
+      this.disciplinas = todasDisciplinas;
+
+      const disciplinasMatch = todasDisciplinas.filter(d =>
+        selecionadosArray.some((ds:any) => ds.id === d.id)
+      );
+
+      this.atualizarQuestaoForm.patchValue({
+        disciplinas: disciplinasMatch.length > 0 ? disciplinasMatch[0] : null
+      });
+
+      const disciplinaIds = disciplinasMatch.map((d: any) => d.id);
+
+      if (disciplinaIds.length > 0) {
+        this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+          const assuntosSelecionados = this.atualizarQuestaoForm.get('assuntos')?.value || [];
+
+          const selecionadosArray = Array.isArray(assuntosSelecionados)
+            ? assuntosSelecionados
+            : (assuntosSelecionados ? [assuntosSelecionados] : []);
+
+          const todosAssuntos = [
+            ...assuntosRecebidos,
+            ...selecionadosArray.filter(
+              (asel:any) => !assuntosRecebidos.some(a => a.id === asel.id)
+            )
+          ];
+
+          this.assuntos = todosAssuntos;
+
+          const assuntosMatch = todosAssuntos.filter(a =>
+            selecionadosArray.some((asel:any) => asel.id === a.id)
+          );
+
+          // this.atualizarQuestaoForm.patchValue({
+          //   assuntos: assuntosMatch
+          // });
+          this.atualizarQuestaoForm.patchValue({
+            assuntos: assuntosMatch.length > 0 ? assuntosMatch[0] : null
+          });
+
+        });
+      } else {
+        this.assuntos = [];
+        this.atualizarQuestaoForm.patchValue({ assuntos: [] });
+      }
+    });
+  }
+  filterAssuntosInterdisciplinares(assuntoSelecionado: any) {
+    this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
+      (assunto: any) => assunto.id !== assuntoSelecionado?.value?.id
+    );
   }
 }

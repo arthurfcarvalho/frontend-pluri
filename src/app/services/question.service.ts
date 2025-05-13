@@ -60,7 +60,6 @@ export class QuestionService {
    */
   updateQuestion(questao: DadosAtualizarQuestao){
     const url = this.baseUrl + `atualizar-questao`
-    console.log("questaoService", questao)
     return this.httpClient.put(url,questao);
   }
 

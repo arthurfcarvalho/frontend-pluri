@@ -71,30 +71,24 @@ export class OverviewComponent implements OnInit{
   }
 
   atualizarQuestoesSelecionadas(questoes: Questao[]) {
-    console.log("QUESTOES RECEBIDAS", questoes);
     questoes.forEach(questao => {
       this.questoesSelecionadas.push(questao);
     })
   }
 
   questionReceive(questionReceiveModel: { checked: boolean; questao: Questao }) {
-    console.log("Questao recebida", questionReceiveModel)
     if (questionReceiveModel) {
       if (questionReceiveModel.checked) {
         if (!this.questoesSelecionadas.some(q => q.id === questionReceiveModel.questao.id)) {
           this.questoesSelecionadas.push(questionReceiveModel.questao);
-          console.log("Input",this.questoesSelecionadas)
         }
-        console.log(questionReceiveModel.checked);
       } else {
-        console.log("Remove", this.questionReceiveModel)
         this.questoesSelecionadas = this.questoesSelecionadas.filter(
           questao => questao.id !== questionReceiveModel.questao.id
         );
-        console.log("Output",this.questoesSelecionadas)
       }
     }
-    this.cdr.detectChanges();  // Força a detecção de mudanças após a atualização
+    this.cdr.detectChanges();
   }
 
   gerarPdfPreview() {
