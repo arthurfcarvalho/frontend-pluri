@@ -254,7 +254,7 @@ export class CreateQuestionsComponent implements OnInit {
       ? assuntosValue.map((a: any) => a?.id)
       : [assuntosValue?.id];
 
-    if(this.criarQuestaoForm.value.assuntosInterdisciplinares?.length > 0){
+    if(this.criarQuestaoForm.value?.assuntosInterdisciplinares?.length > 0){
       formValue.assuntosInterdisciplinares = this.criarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
     }
     this.criarQuestaoForm.value.disciplinas = Array(this.criarQuestaoForm.value.disciplinas)
