@@ -188,7 +188,7 @@ export class HeaderComponent {
             },
             {
               label: translations['MENU.ADJUSTER'],
-              visible: this.userHasPermission(["CRIAR_QUESTAO"]),
+              visible: this.userHasPermission(["AJUNTAR_QUESTOES"]),
               items: [
                 {
                   label: translations['MENU.ASSIGN_DOCENT'],
@@ -198,6 +198,7 @@ export class HeaderComponent {
             },
             {
               label: translations['MENU.DESIGNER'],
+              visible: this.userHasPermission(["DIAGRAMADOR_QUESTOES"]),
               items: [
                 {
                   label: translations['MENU.LIST_QUESTIONS'],
