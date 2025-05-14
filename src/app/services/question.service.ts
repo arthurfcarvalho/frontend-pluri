@@ -9,6 +9,7 @@ import { ApiResponsePageable } from "../types/api-response-pageable.type";
 import { DadosAtualizarQuestao } from "../modules/professor/models/DadosAtualizarQuestao.model";
 import { DadosDetalhamentoQuestao } from "../modules/professor/models/DadosDetalhamentoQuestao.model";
 import { environment } from "../../environments/environment";
+import {PlainQuestion} from "../modules/professor/models/PlainQuestion.model";
 
 @Injectable({
   providedIn: 'root'
@@ -145,5 +146,10 @@ export class QuestionService {
       catchError(error => {
         return throwError(() => error);
       }));
+  }
+
+  createPlainQuestion(plainQuestion: PlainQuestion) {
+    const url = this.baseUrl + 'criar-questao-plana';
+    return this.httpClient.post(url, plainQuestion);
   }
 }

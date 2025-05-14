@@ -102,6 +102,7 @@
                 <div class="box-summernote" >
                   <div id="summernote" formControlName="corpo" [ngxSummernote]="config" [ngxSummernoteView]="corpo"
                        [(summernoteModel)]="corpo"></div>
+                  {{corpo}}
                 </div>
               </div>
               <div class="box-questoes-sup">
@@ -252,7 +253,7 @@
             </div>
             <div class="action-buttons">
               <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <button pButton type="button" class="btn-enviar" (click)="validarAcoes(nextCallback)"
+              <button pButton type="button" class="btn-enviar" (click)="validarAcoes()"
                       [label]="btnCriarEnviar"></button>
 <!--              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"-->
 <!--                        (onClick)="validarAcoes(nextCallback)"/>-->

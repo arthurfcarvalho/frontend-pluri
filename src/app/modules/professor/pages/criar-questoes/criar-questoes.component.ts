@@ -1,5 +1,5 @@
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
-import { catchError, map, throwError, timeout } from 'rxjs';
+import { catchError, map, throwError} from 'rxjs';
 import { AssuntoService } from '../../../../services/assunto.service';
 import { QuestionService } from '../../../../services/question.service';
 import {Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
@@ -35,6 +35,9 @@ import {ApiResponsePageable} from "../../../../types/api-response-pageable.type"
 import {DadosAtualizarQuestao} from "../../models/DadosAtualizarQuestao.model";
 import {TableModule} from "primeng/table";
 import {TranslatePipe} from "@ngx-translate/core";
+import TurndownService from "turndown";
+import {PlainAlternative} from "../../models/PlainAlternative.model";
+import {PlainQuestion} from "../../models/PlainQuestion.model";
 
 @Component({
   selector: 'app-criar-questoes',
@@ -167,10 +170,6 @@ export class CreateQuestionsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get f() {
-    return this.criarQuestaoForm.controls;
-  }
-
   toggleEditor(index: number) {
     this.expandedIndexes[index] = this.expandedIndexes[index];
   }
@@ -181,7 +180,7 @@ export class CreateQuestionsComponent implements OnInit {
     });
   }
 
-  validarAcoes(nextCallback: any){
+  validarAcoes(){
     this.validarAlternativasCorpo();
   }
 
@@ -261,9 +260,25 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
-
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
+        console.log(value)
+        const plainQuestion: PlainQuestion = {
+          titulo: formValue.titulo,
+          corpoPlano: this.getTextPlain(formValue.corpo),
+          corpoMarkdown: this.getMarkdownFromHtml(formValue.corpo),
+          fonteMarkdown: formValue?.fonte ? this.getMarkdownFromHtml(formValue.fonte) : null,
+          fontePlana: formValue?.fonte ? this.getTextPlain(formValue.fonte) : null,
+          alternativasPlanas: this.alternativas.map(a => ({
+            corpoPlano: this.getTextPlain(a.corpo),
+            corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
+          }))
+        };
+        this.questaoService.createPlainQuestion(plainQuestion).subscribe({
+          next: () => {
+            this.toastService.success("Questao plana criada com sucesso!");
+          }
+        });
         this.toastService.success("Questao criada com sucesso!");
         this.router.navigate(['/minhas-questoes', value]);
       },
@@ -271,6 +286,15 @@ export class CreateQuestionsComponent implements OnInit {
         this.toastService.error("Erro ao criar a questão!");
       }
     });
+  }
+  getTextPlain(html: string): string {
+    let tempElement = document.createElement("div");
+    tempElement.innerHTML = html;
+    return tempElement.innerText;
+  }
+  getMarkdownFromHtml(html: string): string {
+    const turndownService = new TurndownService();
+    return turndownService.turndown(html);
   }
 
   previewQuestaoNoModelo() {
