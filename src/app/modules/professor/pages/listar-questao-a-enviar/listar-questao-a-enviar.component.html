@@ -15,11 +15,11 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="pluri">Pluri<p-sortIcon field="pluri"/></th>
-            <th pSortableColumn="area">Area<p-sortIcon field="area"/></th>
-            <th pSortableColumn="quantidadeQuestoesNecessaria">Quantidade Necessaria<p-sortIcon field="quantidadeQuestoesNecessaria"/></th>
-            <th pSortableColumn="quantidadeEnviada">Quantidade Enviada<p-sortIcon field="quantidadeEnviada"/></th>
-            <th pSortableColumn="quantidadeAprovada">Quantidade Aprovada<p-sortIcon field="quantidadeAprovada"/></th>
+            <th pSortableColumn="pluri">{{ 'label_pluri' | translate }}<p-sortIcon field="pluri"/></th>
+            <th pSortableColumn="area">{{ 'label_table_area' | translate }}<p-sortIcon field="area"/></th>
+            <th pSortableColumn="quantidadeQuestoesNecessaria">{{ 'label_table_quantidade_necessaria' | translate }}<p-sortIcon field="quantidadeQuestoesNecessaria"/></th>
+            <th pSortableColumn="quantidadeEnviada">{{ 'label_table_quantidade_enviada' | translate }}<p-sortIcon field="quantidadeEnviada"/></th>
+            <th pSortableColumn="quantidadeAprovada">{{ 'label_table_quantidade_aprovada' | translate }}<p-sortIcon field="quantidadeAprovada"/></th>
             <th pSortableColumn="aprovada">Aprovada<p-sortIcon field="aprovada"/></th>
             <th></th>
         </tr>
@@ -31,7 +31,7 @@
             <td>{{ questaoAEnviar.quantidadeNecessaria }}</td>
             <td>{{ questaoAEnviar.quantidadeEnviada }}</td>
             <td>{{ questaoAEnviar.quantidadeAprovada }}</td>
-            <td>{{ questaoAEnviar.aprovada ? 'Sim' : 'Não' }}</td>
+            <td>{{ questaoAEnviar.completa ? 'Sim' : 'Não' }}</td>
             <td>
                 <button pButton  type="button" label="Enviar" (click)="abrirDialog(questaoAEnviar.idArea, questaoAEnviar.idQuestoesAEnviar)"></button>
             </td>

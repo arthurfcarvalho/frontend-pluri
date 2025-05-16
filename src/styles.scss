@@ -15,3 +15,33 @@ html, body {
 div.note-modal-backdrop {
     z-index: 999;
 }
+.aprovada-true {
+  background-color: #d4edda;
+}
+
+.aprovada-false {
+  background-color: #f8d7da;
+}
+.status-pendente {
+  background-color: yellow;
+  border-radius: 3px;
+  width: 10em;
+}
+
+.status-aprovada {
+  background-color: lightgreen;
+  border-radius: 3px;
+  width: 10em;
+}
+
+.status-reprovada {
+  background-color: lightcoral;
+  border-radius: 3px;
+  width: 10em;
+}
+
+.status-enviada {
+  background-color: lightblue;
+  border-radius: 3px;
+  width: 10em;
+}

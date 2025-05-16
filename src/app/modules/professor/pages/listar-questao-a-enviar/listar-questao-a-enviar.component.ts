@@ -10,6 +10,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { DadosQuestaoAEnviar } from '../../models/DadosQuestaoAEnviar.model';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-listar-questao-a-enviar',
@@ -20,7 +21,8 @@ import { DadosQuestaoAEnviar } from '../../models/DadosQuestaoAEnviar.model';
     ButtonModule,
     RouterModule,
     DialogModule,
-    FormsModule
+    FormsModule,
+    TranslatePipe
   ],
   templateUrl: './listar-questao-a-enviar.component.html',
   styleUrls: ['./listar-questao-a-enviar.component.scss'],
@@ -38,8 +40,8 @@ export class ListarQuestaoAEnviarComponent implements AfterViewInit {
   };
 
   constructor(
-    private questaoService: QuestionService, 
-    private userService: UserService, 
+    private questaoService: QuestionService,
+    private userService: UserService,
     private router: Router
   ) {}
 

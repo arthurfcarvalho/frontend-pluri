@@ -9,6 +9,12 @@
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
                      let-index="index">
           <div class="flex flex-column h-12rem">
+                <span
+                  [ngClass]="{'status-pendente': questao.status.label === 'PENDENTE',
+              'status-aprovada': questao.status.label === 'APROVADA',
+              'status-reprovada': questao.status.label === 'REPROVADA',
+              'status-enviada': questao.status.label === 'ENVIADA'}"
+                >Status: {{ questao.status.label }}</span>
             <div
               class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <div class="box-questoes-sup">

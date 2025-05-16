@@ -88,12 +88,15 @@
             <div class="box-questoes" [ngClass]="{'approved': questao.aprovada, 'not-approved': !questao.aprovada}">
                 <p>Titulo: {{ questao.titulo }}</p>
                 <p>Área: {{ questao.areaNome }}</p>
-                <p>
-                    Aprovada: {{ questao.aprovada ? 'Sim' : 'Não'}}
-                </p>
+              <span
+                [ngClass]="{'status-pendente': questao.status.label === 'PENDENTE',
+              'status-aprovada': questao.status.label === 'APROVADA',
+              'status-reprovada': questao.status.label === 'REPROVADA',
+              'status-enviada': questao.status.label === 'ENVIADA'}"
+              >Status: {{ questao.status.label }}</span>
                 <div class="box-btn">
                     <p-button severity="help" size="small" (onClick)="previewQuestoesNoModelo(questao.id)">visualizar</p-button>
-                    <p-button *ngIf="questao.aprovada" severity="danger" size="small" (onClick)="reprovarQuestao(questao.id)">reprovar</p-button>
+                    <p-button severity="danger" size="small" (onClick)="reprovarQuestao(questao.id)">reprovar</p-button>
                     <p-button *ngIf="!questao.aprovada" severity="success"  size="small" (onClick)="aprovarQuestao(questao.id)">aprovar</p-button>
                 </div>
             </div>

@@ -12,11 +12,13 @@
   "label_table_send_init": "Data Início Envio",
   "label_table_final_init": "Data Final Envio",
   "label_table_total_areas": "Quantidade de áreas",
-
+  "label_pluri": "Pluri",
+  "label_table_quantidade_necessaria": "Quantidade necessaria",
+  "label_table_quantidade_enviada": "Quantidade enviada",
+  "label_table_quantidade_aprovada": "Quantidade aprovada",
 
   "text_body": "Informe o corpo",
   "text_font": "Digite a referência",
-
   "MENU": {
     "HOME": "Início",
     "PLURI": "Pluri",
