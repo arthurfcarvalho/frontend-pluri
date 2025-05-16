@@ -7,7 +7,7 @@
             <p class="blue">Quantidade enviadas: {{questaoAEnviar.quantidadeEnviada}}</p>
             <div class="d-flex">
                 <p class="green">Questoes aprovadas: {{questaoAEnviar.quantidadeAprovada}}</p>
-                <p-button label="Visualizar questões" severity="help" icon="pi pi-check" size="small" (click)="visualizarQuestoesEnviadas()"/>
+                <p-button label="Visualizar questões enviadas" severity="help" icon="pi pi-check" size="small" (click)="visualizarQuestoesEnviadas()"/>
             </div>
             <p>Completa: {{questaoAEnviar.completa}}</p>
             <p>Area: {{questaoAEnviar.nomeArea}}</p>
@@ -21,7 +21,12 @@
 
                 <div class="box-questoes" >
                     <p>Titulo: {{questao.titulo}}</p>
-                    <p>Aprovada: {{questao.aprovada}}</p>
+                  <span
+                    [ngClass]="{'status-pendente': questao.status.label === 'PENDENTE',
+              'status-aprovada': questao.status.label === 'APROVADA',
+              'status-reprovada': questao.status.label === 'REPROVADA',
+              'status-enviada': questao.status.label === 'ENVIADA'}"
+                  >Status: {{ questao.status.label }}</span>
                     <p>Area: {{questao.areaNome}}</p>
                 </div>
             </div>
@@ -70,10 +75,18 @@
     breakpoint="500px">
     <ng-template pTemplate="body" let-questao>
         <p-card class="card">
-            <span>Titulo: {{ questao.titulo }}</span><br>
+          <div class="flex flex-column gap-1">
+            <span>Titulo: {{ questao.titulo }}</span>
             <span>Data Criação: {{ questao.dataCriacao }}</span>
-            <p>Area: {{questao.areaNome}}</p>
+            <span
+              [ngClass]="{'status-pendente': questao.status.label === 'PENDENTE',
+              'status-aprovada': questao.status.label === 'APROVADA',
+              'status-reprovada': questao.status.label === 'REPROVADA',
+              'status-enviada': questao.status.label === 'ENVIADA'}"
+            >Status: {{ questao.status.label }}</span>
+            <span>Area: {{questao.areaNome}}</span>
             <p-button class="btn-preview" (click)="gerarPdfPreviewQuestion(questao)">Preview da questão</p-button>
+          </div>
         </p-card>
     </ng-template>
         <!--<ng-template let-questoesIneditas pTemplate="item">

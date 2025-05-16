@@ -1,4 +1,5 @@
 import Assunto from "../../../models/Assunto.model";
+import {Classificacao} from "./Classificacao.model";
 
 export interface DadosDetalhamentoQuestao{
     id: number;
@@ -10,6 +11,7 @@ export interface DadosDetalhamentoQuestao{
     areaNome: string
     criador: string
     dataCriacao: Date,
-    aprovada: boolean, 
-    
+    aprovada: boolean,
+    status: Classificacao,
+
 }
