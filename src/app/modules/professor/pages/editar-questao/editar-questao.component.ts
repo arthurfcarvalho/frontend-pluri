@@ -118,6 +118,7 @@ export class EditarQuestaoComponent implements  OnInit{
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
       alternativas: new FormControl(),
+      status: new FormControl(),
     });
   }
 
@@ -160,7 +161,8 @@ export class EditarQuestaoComponent implements  OnInit{
           assuntos: this.questao?.assuntos?.[0] ?? null,
           assuntosInterdisciplinares: this.questao?.assuntosInterdisciplinares?.map(a => a),
           alternativaCorreta: this.questao.alternativaCorreta,
-          alternativas: this.questao.alternativas
+          alternativas: this.questao.alternativas,
+          status: this.questao.status,
         });
       });
     }
@@ -190,6 +192,8 @@ export class EditarQuestaoComponent implements  OnInit{
     }
 
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas
+    formValue.status = this.atualizarQuestaoForm.value.status
+    console.log(formValue)
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { InvalidTokenError } from 'jwt-decode';
+import {InvalidTokenError, jwtDecode, JwtPayload} from 'jwt-decode';
 
 const KEY = 'token'; // Chave utilizada para armazenar o token no armazenamento de sessão
 
@@ -18,7 +18,7 @@ export class TokenService {
     if(!token){
       throw new InvalidTokenError('Token cannot be null or empty');
     }
-    
+
     try {
       sessionStorage.setItem(KEY, token);
     } catch (error) {
@@ -49,7 +49,24 @@ export class TokenService {
    * Verifica se existe um token armazenado.
    * @returns `true` se houver um token, caso contrário, `false`.
    */
-  hasToken(){
-    return !!this.returnToken();
+  hasToken() {
+    const token = this.returnToken();
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      const now = Math.floor(Date.now() / 1000);
+
+      if (decoded.exp !== undefined) {
+        return decoded.exp > now;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
   }
+
 }

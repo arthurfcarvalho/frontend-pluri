@@ -61,6 +61,7 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
     this.userService.returnUserLogin().subscribe((login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe((user) => {
         this.user = user;
+        console.log(this.user);
         this.loadQuestions(0, this.rowsPerPage);//carregando a pagina ao inciiar com base na qtd de rowsPerPage
       });
     });
