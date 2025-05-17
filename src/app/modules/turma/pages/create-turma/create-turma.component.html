@@ -1,5 +1,3 @@
-<app-header/>
-
 <div class="container">
     <p-fieldset legend="Criar Turma">
         <form class="form-container" [formGroup]="createTurmaForm">
@@ -15,10 +13,10 @@
 
             <div class="area-element">
                 <label for="area">Área Técnica</label>
-                <p-dropdown 
-                    id="area" 
-                    [options]="areas" 
-                    optionLabel="nome" 
+                <p-dropdown
+                    id="area"
+                    [options]="areas"
+                    optionLabel="nome"
                     formControlName="area"
                     placeholder="Selecione uma área">
                 </p-dropdown>
@@ -26,9 +24,9 @@
 
             <div class="ano-element">
                 <label for="ano">Ano</label>
-                <p-dropdown 
-                    id="ano" 
-                    [options]="anos" 
+                <p-dropdown
+                    id="ano"
+                    [options]="anos"
                     formControlName="ano"
                     placeholder="Selecione o ano">
                 </p-dropdown>
@@ -37,6 +35,6 @@
             <div class="submit-button">
                 <p-button label="Salvar" (click)="submit()"/>
             </div>
-        </form>      
+        </form>
     </p-fieldset>
 </div>

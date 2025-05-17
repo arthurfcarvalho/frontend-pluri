@@ -4,6 +4,7 @@ import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClient} from "@angular/common/http";
 import {TranslateConfigModule} from "./services/translate.service";
+import {HeaderComponent} from "./modules/home/components/header/header.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -16,9 +17,12 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     RouterOutlet,
     TranslateConfigModule,
+    HeaderComponent,
   ],
-  template: `<router-outlet />`
-})
+  template: `
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  `})
 export class AppComponent {
   constructor(private translate: TranslateService) {
     this.translate.setDefaultLang('pt');

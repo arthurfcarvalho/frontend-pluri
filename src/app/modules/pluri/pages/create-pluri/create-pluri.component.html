@@ -1,5 +1,3 @@
-<app-header />
-
 <p-stepper [linear]="true">
     <p-stepperPanel header="Informações Gerais">
         <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
@@ -15,7 +13,7 @@
                             <label for="nome">Nome</label>
                         </p-floatLabel>
                         <p-floatLabel>
-                            <p-dropdown 
+                            <p-dropdown
                                 formControlName="trimestre"
                                 [options]="trimestreOptions"
                             />
@@ -46,12 +44,12 @@
     </p-stepperPanel>
     <p-stepperPanel header="Definir Áreas do Pluri">
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-            
+
         </ng-template>
     </p-stepperPanel>
     <p-stepperPanel header="Atividades da Comissão">
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-            
+
         </ng-template>
     </p-stepperPanel>
 </p-stepper>
