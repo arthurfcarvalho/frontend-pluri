@@ -8,4 +8,5 @@ export interface User {
     data_nascimento?: Date;
     email?: string;
     perfis?: Role[];
+    dadosPerfil?: any;
 }

@@ -22,6 +22,8 @@
                         <p><strong>Questões Necessárias:</strong> {{ area.quantidadeQuestoes }}</p>
                         <p><strong>Questões Recebidas:</strong> {{ area.quantidadeQuestoesRecebidas }}</p>
                         <p><strong>Questões Pedidas:</strong> {{ area.quantidadeQuestoesPedidas }}</p>
+                        <p><strong>Questões Aprovadas:</strong> {{ area.quantidadeQuestoesAprovadas }}</p>
+                        <p [ngClass]="area.completa ? 'status-aprovada' : 'status-reprovada'"><strong >Completa: </strong> {{ area.completa ? 'Sim' : 'Não' }}</p>
                     </div>
                     <div class="professores-list">
                         <p *ngIf="area.questoesAEnviar && area.questoesAEnviar.length" class="professores-title">

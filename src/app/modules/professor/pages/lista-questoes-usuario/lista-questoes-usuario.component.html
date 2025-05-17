@@ -23,18 +23,21 @@
         <tr>
             <th pSortableColumn="titulo">{{ 'label_table_title' | translate }}<p-sortIcon field="titulo"/></th>
             <th pSortableColumn="areaNome">{{ 'label_table_area' | translate }}<p-sortIcon field="areaNome"/></th>
-            <th pSortableColumn="aprovada">{{ 'label_table_approved' | translate }}<p-sortIcon field="aprovada"/></th>
+          <th pSortableColumn="status"><span>{{ 'label_table_status' | translate }}</span><p-sortIcon field="aprovada"/></th>
             <th></th>
         </tr>
     </ng-template>
-
-
-
     <ng-template pTemplate="body" let-questao>
         <tr>
             <td>{{ questao.titulo }}</td>
             <td>{{ questao.areaNome}}</td>
-            <td>{{ questao.aprovada ? 'Sim' : 'Não' }}</td>
+            <td>
+              <span
+                [ngClass]="{'status-pendente': questao.status.label === 'PENDENTE',
+              'status-aprovada': questao.status.label === 'APROVADA',
+              'status-reprovada': questao.status.label === 'REPROVADA',
+              'status-enviada': questao.status.label === 'ENVIADA'}"
+              >{{ questao.status.label }}</span></td>
             <td class="box-btns">
                 <button pButton type="button" label="Editar" routerLink="/editar-questao/{{questao.id}}"></button>
                 <button [style]="'background: red;'" pButton type="button" label="Deletar" (click)="confirmarDeletar(questao.id)"></button>

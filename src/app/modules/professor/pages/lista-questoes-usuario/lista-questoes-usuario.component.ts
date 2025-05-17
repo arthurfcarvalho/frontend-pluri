@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 import { QuestionService } from '../../../../services/question.service';
 import { Questao } from '../../models/Question.model';
 import { UserService } from '../../../../services/user.service';
@@ -23,6 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ButtonModule,
     RouterModule,
     TranslatePipe,
+    NgClass,
   ],
   templateUrl: './lista-questoes-usuario.component.html',
   styleUrl: './lista-questoes-usuario.component.scss'
@@ -61,7 +62,6 @@ export class ListaQuestoesUsuarioComponent implements AfterViewInit{
     this.userService.returnUserLogin().subscribe((login: any | null) => {
         this.userService.returnUserByLogin(login.sub).subscribe((user) => {
         this.user = user;
-        console.log(this.user);
         this.loadQuestions(0, this.rowsPerPage);//carregando a pagina ao inciiar com base na qtd de rowsPerPage
       });
     });

@@ -33,7 +33,7 @@
             <td>{{ questaoAEnviar.quantidadeAprovada }}</td>
             <td>{{ questaoAEnviar.completa ? 'Sim' : 'Não' }}</td>
             <td>
-                <button pButton  type="button" label="Enviar" (click)="abrirDialog(questaoAEnviar.idArea, questaoAEnviar.idQuestoesAEnviar)"></button>
+                <button pButton [disabled]="questaoAEnviar.completa" type="button" label="Enviar" (click)="abrirDialog(questaoAEnviar.idArea, questaoAEnviar.idQuestoesAEnviar)"></button>
             </td>
         </tr>
     </ng-template>

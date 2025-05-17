@@ -85,6 +85,7 @@
               'status-enviada': questao.status.label === 'ENVIADA'}"
             >Status: {{ questao.status.label }}</span>
             <span>Area: {{questao.areaNome}}</span>
+            <span>Inedita: {{questao.inedita ? 'Sim' : 'Não'}}</span>
             <p-button class="btn-preview" (click)="gerarPdfPreviewQuestion(questao)">Preview da questão</p-button>
           </div>
         </p-card>

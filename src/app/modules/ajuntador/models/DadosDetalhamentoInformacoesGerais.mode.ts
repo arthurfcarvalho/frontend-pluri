@@ -16,6 +16,7 @@ export interface DadosDetalhamentoAreaPluri {
     quantidadeQuestoes: number;
     quantidadeQuestoesRecebidas: number;
     quantidadeQuestoesPedidas: number;
+    quantidadeQuestoesAprovadas: number;
     questoesAEnviar: DadosDetalhamentoQuestaoAEnviar[];
     completa: boolean;
 }
