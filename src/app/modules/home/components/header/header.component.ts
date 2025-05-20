@@ -9,6 +9,7 @@ import { MessageModel } from '../../models/MessageModel';
 import { PanelModule } from 'primeng/panel';
 import { BadgeModule } from 'primeng/badge';
 import {TranslateService} from "@ngx-translate/core";
+import {User} from "../../../../models/User.model";
 
 @Component({
   selector: 'app-header',
@@ -35,9 +36,8 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.userService.returnUserLogin().subscribe((login: any | null) => {
-      this.userService.returnUserByLogin(login.sub).subscribe((user) => {
+      this.userService.returnUserByLogin(login?.sub).subscribe((user) => {
         this.user = user;
-
         this.userService.returnUserNotifications(user.id).subscribe((data) => {
           this.notifications = data;
         });
@@ -236,11 +236,13 @@ export class HeaderComponent {
 
   logout(){
     this.userService.logout();
-    this.user = null;
+    this.user = undefined;
     this.router.navigate(['/login']);
   }
 
   toggleNotifications(){
     this.showNotifications = !this.showNotifications;
   }
+
+  protected readonly jQuery = jQuery;
 }

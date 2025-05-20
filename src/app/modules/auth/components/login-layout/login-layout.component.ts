@@ -44,12 +44,9 @@ export class LoginLayoutComponent {
   users!: User[];
 
   constructor(
-    
+
     private userService: UserService
   ){
-    this.userService.returnAllUsers().subscribe(users => {
-      this.users = users;
-    })
   }
 
   onSelect(event: any) {
