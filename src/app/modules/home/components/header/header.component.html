@@ -1,4 +1,4 @@
-<header>
+<header *ngIf="user != undefined">
   <p-menubar [model]="menuItems">
     <ng-template pTemplate="start">
       <img src="assets/images/pluri-logo.png" alt="Logo do Pluri" loading="eager" height="100px" />
@@ -7,7 +7,7 @@
     <ng-container *ngIf="user != undefined">
       <ng-template pTemplate="item" let-item let-root="root">
         <!-- @if(!item.perm || userHasPermission(item.perm)){
-            
+
           } -->
         <a [routerLink]="item.route">
           {{ item.label }}
@@ -15,7 +15,7 @@
       </ng-template>
     </ng-container>
 
-    <div id="p-menubar-end" style="position: relative;">
+    <div *ngIf="user != undefined" id="p-menubar-end" style="position: relative;">
       <div class="notification-wrapper">
         <i class="pi pi-bell" (click)="toggleNotifications()"
           style="font-size: 1.5rem; cursor: pointer; position: relative;">
