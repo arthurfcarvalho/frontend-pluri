@@ -73,7 +73,6 @@ export class EditDisciplinaComponent {
 
   submit() {
     const data = this.updateDisciplinaForm.value;
-    console.log(data);
     this.disciplinaService.editDisciplina(data).subscribe(
       data => {
         this.router.navigate(['/pesquisar-disciplinas']);

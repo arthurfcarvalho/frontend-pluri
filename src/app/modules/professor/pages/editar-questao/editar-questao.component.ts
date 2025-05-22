@@ -193,7 +193,6 @@ export class EditarQuestaoComponent implements  OnInit{
 
     formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas
     formValue.status = this.atualizarQuestaoForm.value.status
-    console.log(formValue)
 
     this.questaoService.updateQuestion(formValue).subscribe({
         next: (value) => {
