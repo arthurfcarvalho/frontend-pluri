@@ -50,12 +50,14 @@ import {CreateDisciplinaComponent} from "./modules/disciplina/create-disciplina/
 import {CreateAssuntoComponent} from "./modules/assunto/create-assunto/create-assunto.component";
 import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assuntos.component";
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
+import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
 
 export const routes: Routes = [
     // Antes de autenticar
   { path: '', redirectTo: '/login', pathMatch: 'full', title: 'Login - Pluri' },
   { path: 'login', component: LoginComponent, title: 'Login - Pluri', canActivate: [redirectIfAuthenticatedGuard] },
   { path: 'cadastrar', component: SignupComponent, title: 'Cadastrar - Pluri' },
+  { path: 'logingoogle', component: LoginGoogleComponent, title: 'Login - Google'},
 
   // Home
   { path: 'home', component: HomeComponent, title: 'Pluri', canActivate: [authGuard] },

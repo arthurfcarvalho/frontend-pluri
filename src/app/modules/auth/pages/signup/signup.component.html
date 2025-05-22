@@ -3,6 +3,7 @@
     title="Cadastrar-se"
     primaryBtnText="Cadastrar"
     secondaryBtnText="Login"
+    isSignup=true
     (submit)="submit()"
     (navigate)="navigate()"
     [disablePrimaryBtn]="!signupForm.valid"
@@ -23,7 +24,7 @@
             label="Email"
             placeholder="usuario@gmail.com"
         >
-         
+
         </app-auth-input>
         <app-auth-input
             formControlName="login"

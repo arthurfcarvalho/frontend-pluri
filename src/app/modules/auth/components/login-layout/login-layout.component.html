@@ -14,7 +14,17 @@
                 <span>ou</span>
                 <div></div>
             </div>
-<!--            <button class="btn-secondary" (click)="navigate()">{{ secondaryBtnText }}</button>-->
+            <button class="btn-secondary" (click)="navigate()">{{ secondaryBtnText }}</button>
+
+          @if (!isSignup){
+            <div class="divider">
+              <div></div>
+              <span>ou</span>
+              <div></div>
+            </div>
+
+            <app-login-google class="lg"></app-login-google>
+          }
         </div>
     </section>
     <section class="main-section">
