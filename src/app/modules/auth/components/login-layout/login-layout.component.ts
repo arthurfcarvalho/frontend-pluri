@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {booleanAttribute, Component, EventEmitter, Input, Output} from '@angular/core';
 import { SearchUsersComponent } from "../../../user-search/pages/search-users/search-users.component";
 import { RoleAssignComponent } from '../../../role-assignment/pages/role-assign/role-assign.component';
 import { ButtonModule } from 'primeng/button';
@@ -8,6 +8,7 @@ import { User } from '../../../../models/User.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UserService } from '../../../../services/user.service';
 import { DialogModule } from 'primeng/dialog';
+import {LoginGoogleComponent} from "../login-google/login-google.component";
 
 @Component({
   selector: 'app-login-layout',
@@ -19,7 +20,9 @@ import { DialogModule } from 'primeng/dialog';
     HeaderComponent,
     DialogModule,
     ButtonModule,
-    RoleAssignComponent],
+    RoleAssignComponent,
+    LoginGoogleComponent
+  ],
   templateUrl: './login-layout.component.html',
   styleUrl: './login-layout.component.scss'
 })
@@ -28,6 +31,7 @@ export class LoginLayoutComponent {
   @Input() primaryBtnText = "";
   @Input() secondaryBtnText = "";
   @Input() disablePrimaryBtn: boolean = false;
+  @Input({transform: booleanAttribute}) isSignup: boolean = false;
 
   @Output("submit") onSubmit = new EventEmitter;
   @Output("navigate") onNavigate = new EventEmitter;

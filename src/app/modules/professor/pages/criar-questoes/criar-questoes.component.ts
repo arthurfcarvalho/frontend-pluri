@@ -1,34 +1,34 @@
-import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
-import { catchError, map, throwError} from 'rxjs';
-import { AssuntoService } from '../../../../services/assunto.service';
-import { QuestionService } from '../../../../services/question.service';
+import {SummernoteOptions} from 'ngx-summernote/lib/summernote-options';
+import {catchError, map, throwError} from 'rxjs';
+import {AssuntoService} from '../../../../services/assunto.service';
+import {QuestionService} from '../../../../services/question.service';
 import {Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
-import { HeaderComponent } from '../../../home/components/header/header.component';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material/dialog';
+import {HeaderComponent} from '../../../home/components/header/header.component';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {MatDialog} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { CalendarModule } from 'primeng/calendar';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { DropdownModule } from 'primeng/dropdown';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import {CalendarModule} from 'primeng/calendar';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {DropdownModule} from 'primeng/dropdown';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 import Assunto from '../../../../models/Assunto.model';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { Area } from '../../../../models/Area.model';
-import { ListboxModule } from 'primeng/listbox';
-import { AreaService } from '../../../../services/area.service';
-import { RelatoriosService } from '../../../../services/relatorios.service';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ButtonModule } from 'primeng/button';
-import { StepperModule } from 'primeng/stepper';
-import { InputTextModule } from 'primeng/inputtext';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { CommonModule } from '@angular/common';
-import { NgxSummernoteModule } from 'ngx-summernote';
-import { CheckboxModule } from 'primeng/checkbox';
-import { environment } from '../../../../../environments/environment';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {Area} from '../../../../models/Area.model';
+import {ListboxModule} from 'primeng/listbox';
+import {AreaService} from '../../../../services/area.service';
+import {RelatoriosService} from '../../../../services/relatorios.service';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {ButtonModule} from 'primeng/button';
+import {StepperModule} from 'primeng/stepper';
+import {InputTextModule} from 'primeng/inputtext';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import {IconFieldModule} from 'primeng/iconfield';
+import {InputIconModule} from 'primeng/inputicon';
+import {CommonModule} from '@angular/common';
+import {NgxSummernoteModule} from 'ngx-summernote';
+import {CheckboxModule} from 'primeng/checkbox';
+import {environment} from '../../../../../environments/environment';
 import {Disciplina} from "../../../disciplina/models/disciplina";
 import {DisciplinaService} from "../../../../services/disciplina.service";
 import {ApiResponsePageable} from "../../../../types/api-response-pageable.type";
@@ -43,7 +43,6 @@ import {PlainQuestion} from "../../models/PlainQuestion.model";
   selector: 'app-criar-questoes',
   standalone: true,
   imports: [
-    HeaderComponent,
     NgxSummernoteModule,
     StepperModule,
     ReactiveFormsModule,
@@ -91,7 +90,7 @@ export class CreateQuestionsComponent implements OnInit {
   showPreview = false;
   btnCriarEnviar = 'Criar';
   expandedIndexes: boolean[] = [true, true, true, true];
-  @ViewChild('iframePDF', { static: false }) iframe!: ElementRef;
+  @ViewChild('iframePDF', {static: false}) iframe!: ElementRef;
   ultimaAreaSelecionada: any = null;
   questao!: DadosAtualizarQuestao;
 
@@ -118,11 +117,11 @@ export class CreateQuestionsComponent implements OnInit {
     })
     this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')
-      if(idArea){
+      if (idArea) {
         this.btnCriarEnviar = 'Enviar'
         const idParaNumber = +idArea
-        this.areaService.listarPorId(idParaNumber).subscribe((area)=>{
-          this.criarQuestaoForm.patchValue({ area: area });
+        this.areaService.listarPorId(idParaNumber).subscribe((area) => {
+          this.criarQuestaoForm.patchValue({area: area});
         })
       }
     })
@@ -180,7 +179,7 @@ export class CreateQuestionsComponent implements OnInit {
     });
   }
 
-  validarAcoes(){
+  validarAcoes() {
     this.validarAlternativasCorpo();
   }
 
@@ -194,11 +193,12 @@ export class CreateQuestionsComponent implements OnInit {
 
     if (cont === 4) {
       this.toastService.error('Escolha uma questão correta.');
-    }else{
+    } else {
       this.submitCriarQuestao();
     }
 
   }
+
   validarAntesDeAvancarInformacoes(nextCallback: any) {
     const formValue = this.criarQuestaoForm.value;
 
@@ -221,7 +221,7 @@ export class CreateQuestionsComponent implements OnInit {
 
   validarAntesDeAvancarCorpo(nextCallback: any) {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(this.corpo , "text/html");/*interpreta o texto como html*/
+    const doc = parser.parseFromString(this.corpo, "text/html");/*interpreta o texto como html*/
     const corpoLimpo = doc.body.textContent?.trim() || "";/*se o doc tiver tags html, doc.body.textContent?.trim() || "" vai tirar as tags como <br> <p>
                                                                  e o trim() remove os espaços*/
     if (corpoLimpo.length > 0) {
@@ -253,7 +253,7 @@ export class CreateQuestionsComponent implements OnInit {
       ? assuntosValue.map((a: any) => a?.id)
       : [assuntosValue?.id];
 
-    if(this.criarQuestaoForm.value?.assuntosInterdisciplinares?.length > 0){
+    if (this.criarQuestaoForm.value?.assuntosInterdisciplinares?.length > 0) {
       formValue.assuntosInterdisciplinares = this.criarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
     }
     this.criarQuestaoForm.value.disciplinas = Array(this.criarQuestaoForm.value.disciplinas)
@@ -287,11 +287,13 @@ export class CreateQuestionsComponent implements OnInit {
       }
     });
   }
+
   getTextPlain(html: string): string {
     let tempElement = document.createElement("div");
     tempElement.innerHTML = html;
     return tempElement.innerText;
   }
+
   getMarkdownFromHtml(html: string): string {
     const turndownService = new TurndownService();
     return turndownService.turndown(html);
@@ -301,10 +303,10 @@ export class CreateQuestionsComponent implements OnInit {
     this.pdfUrl = "";
     this.showPreview = true;
     this.carregamento = true;
-    const formValue = { ...this.criarQuestaoForm.value };
+    const formValue = {...this.criarQuestaoForm.value};
 
     formValue.corpo = this.criarQuestaoForm.value.corpo;
-    if(this.criarQuestaoForm.value.fonte != ""){
+    if (this.criarQuestaoForm.value.fonte != "") {
       formValue.fonte = this.criarQuestaoForm.value.fonte;
     }
 
@@ -335,7 +337,7 @@ export class CreateQuestionsComponent implements OnInit {
     ).subscribe(
       (data: any) => {
 
-        const file = new Blob([data], { type: 'application/pdf' });
+        const file = new Blob([data], {type: 'application/pdf'});
         const fileURL = URL.createObjectURL(file);
         this.fecharIframe();
         this.carregamento = false;
@@ -350,13 +352,14 @@ export class CreateQuestionsComponent implements OnInit {
       }
     );
   }
-  fecharIframe(){
+
+  fecharIframe() {
     const btnDestroiIframe = document.getElementById('btnDestroiIframe')
     const framePdf = document.getElementById('iFramePdf')
-    if(framePdf){
+    if (framePdf) {
       framePdf.remove()
     }
-    if(btnDestroiIframe){
+    if (btnDestroiIframe) {
       btnDestroiIframe?.remove()
     }
     this.pdfUrl = ""
@@ -375,14 +378,14 @@ export class CreateQuestionsComponent implements OnInit {
         const todosAssuntos = [
           ...assuntosDaDisciplina,
           ...assuntosSelecionados.filter(
-            (asel:any) => !assuntosDaDisciplina.some(a => a.id === asel.id)
+            (asel: any) => !assuntosDaDisciplina.some(a => a.id === asel.id)
           )
         ];
 
         this.assuntos = todosAssuntos;
 
         const assuntosMatch = todosAssuntos.filter(a =>
-          assuntosSelecionados.some((asel:any) => asel.id === a.id)
+          assuntosSelecionados.some((asel: any) => asel.id === a.id)
         );
 
         this.criarQuestaoForm.patchValue({
@@ -396,6 +399,7 @@ export class CreateQuestionsComponent implements OnInit {
       });
     }
   }
+
   loadFieldsArea(event: any) {
     const selectedArea = event.value ? event.value : event;
 
@@ -412,7 +416,7 @@ export class CreateQuestionsComponent implements OnInit {
 
     this.ultimaAreaSelecionada = selectedArea;
 
-    this.criarQuestaoForm.patchValue({ area: selectedArea });
+    this.criarQuestaoForm.patchValue({area: selectedArea});
 
     this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
       const disciplinasDaArea = disciplinasRecebidas.content;
@@ -422,14 +426,14 @@ export class CreateQuestionsComponent implements OnInit {
       const todasDisciplinas = [
         ...disciplinasDaArea,
         ...disciplinasSelecionadas.filter(
-          (sel:any) => !disciplinasDaArea.some(d => d.id === sel.id)
+          (sel: any) => !disciplinasDaArea.some(d => d.id === sel.id)
         )
       ];
 
       this.disciplinas = todasDisciplinas;
 
       const disciplinasMatch = todasDisciplinas.filter(d =>
-        disciplinasSelecionadas.some((ds:any) => ds.id === d.id)
+        disciplinasSelecionadas.some((ds: any) => ds.id === d.id)
       );
 
       this.criarQuestaoForm.patchValue({
@@ -449,14 +453,14 @@ export class CreateQuestionsComponent implements OnInit {
           const todosAssuntos = [
             ...assuntosRecebidos,
             ...selecionadosArray.filter(
-              (asel:any) => !assuntosRecebidos.some(a => a.id === asel.id)
+              (asel: any) => !assuntosRecebidos.some(a => a.id === asel.id)
             )
           ];
 
           this.assuntos = todosAssuntos;
 
           const assuntosMatch = todosAssuntos.filter(a =>
-            assuntosSelecionados.some((asel:any) => asel.id === a.id)
+            assuntosSelecionados.some((asel: any) => asel.id === a.id)
           );
 
           this.criarQuestaoForm.patchValue({
@@ -465,7 +469,7 @@ export class CreateQuestionsComponent implements OnInit {
         });
       } else {
         this.assuntos = [];
-        this.criarQuestaoForm.patchValue({ assuntos: [] });
+        this.criarQuestaoForm.patchValue({assuntos: []});
       }
     });
   }
