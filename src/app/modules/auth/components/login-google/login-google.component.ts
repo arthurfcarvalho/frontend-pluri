@@ -29,6 +29,7 @@ export class LoginGoogleComponent implements OnInit {
   ngOnInit(): void {
     google.accounts.id.initialize({
       client_id: '1033319843386-jtmj1srffr4bdkf129thnm1u356tn1k3.apps.googleusercontent.com',
+      callback: (resp: any) => this.handleLogin(resp),
     });
 
     google.accounts.id.renderButton(document.getElementById("google-btn"),
