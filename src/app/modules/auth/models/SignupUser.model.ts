@@ -4,4 +4,5 @@ export interface SignupUser {
     senha: string;
     data_nascimento: Date;
     email: string;
+    isGoogle?: boolean;
 }

@@ -1,4 +1,3 @@
-declare var google: any;
 import {SignupUser} from "../../models/SignupUser.model";
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
@@ -6,7 +5,7 @@ import {UserService} from "../../../../services/user.service";
 import {ToastrService} from "ngx-toastr";
 import {ApiResponse} from "../../../../types/api-response.type";
 import {LoginService} from "../../../../services/login.service";
-
+declare const google: any;
 @Component({
   selector: 'app-login-google',
   standalone: true,
@@ -15,7 +14,6 @@ import {LoginService} from "../../../../services/login.service";
   styleUrl: './login-google.component.scss'
 })
 export class LoginGoogleComponent implements OnInit {
-
   signupData!: SignupUser;
 
   constructor(
@@ -59,19 +57,20 @@ export class LoginGoogleComponent implements OnInit {
         login: informationgoogle["aud"],
         senha: informationgoogle["aud"],
         data_nascimento: new Date(),
+        isGoogle: true
       }
 
 
       this.loginService.login(this.signupData.login, this.signupData.senha).subscribe({
         next: () => {
+          this.toastService.success(response.mensagem);
           this.router.navigate(["/home"]);
-
         },
         error: () => {
           this.userService.signup(this.signupData).subscribe({
             next: (response: ApiResponse) => {
               this.toastService.success(response.mensagem);
-              this.router.navigate(['/home']);
+              //this.router.navigate(['/home']);
               this.loginService.login(this.signupData.login, this.signupData.senha).subscribe({
                 next: () => {
                   this.router.navigate(["/home"]);
