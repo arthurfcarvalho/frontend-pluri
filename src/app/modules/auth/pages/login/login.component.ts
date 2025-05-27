@@ -23,7 +23,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 })
 
 export class LoginComponent {
-  
+
   loginForm!: FormGroup;
   showPassword: boolean = false;
   faEye = faEye;
@@ -44,6 +44,9 @@ export class LoginComponent {
   }
 
   submit() {
+    if (!this.loginForm.value.login || !this.loginForm.value.senha || typeof this.loginForm.value.login !== 'string' || typeof this.loginForm.value.senha !== 'string') {
+      throw new Error('Login ou senha inválidos');
+    }
     this.loginService.login(this.loginForm.value.login, this.loginForm.value.senha).subscribe({
       next: () => {
         this.router.navigate(["/home"]);
