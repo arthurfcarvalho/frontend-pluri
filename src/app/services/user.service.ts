@@ -21,7 +21,7 @@ export class UserService {
 
   private readonly baseUrl = `${environment.apiUrl}/usuario/`;
 
-  constructor(private http: HttpClient, private tokenService: TokenService) { 
+  constructor(private http: HttpClient, private tokenService: TokenService) {
     // Decodifica o token JWT e atualiza o usuário logado ao inicializar o serviço
     if(this.tokenService.hasToken()){
       this.decodeJWT();
@@ -52,7 +52,7 @@ export class UserService {
    * @returns Observable contendo os dados do usuário.
    */
   returnUserByLogin(login: string){
-    const url = this.baseUrl + `listar-usuario/${login}`;
+    const url = this.baseUrl + `listar-usuario`;
     return this.http.get<User>(url);
   }
 
@@ -70,7 +70,7 @@ export class UserService {
    * Salva o token e decodifica o JWT para atualizar o estado do usuário logado.
    * @param token Token de autenticação a ser salvo.
    */
-  saveToken(token: string){ 
+  saveToken(token: string){
     this.tokenService.saveToken(token);
     this.decodeJWT();
   }
@@ -140,7 +140,7 @@ export class UserService {
    */
   retornaProfessores(): Observable<ApiResponsePageable>{
     const url = `${this.baseUrl}listar-usuarios-professor`
-    
+
     return this.http.get<ApiResponsePageable>(url).pipe(map(
       obj => obj
     ));;
@@ -153,7 +153,7 @@ export class UserService {
    */
   retornaProfessoresPorArea(idArea: number): Observable<any>{
     const url = `${this.baseUrl}listar-por-area/${idArea}`
-    
+
     return this.http.get<any>(url).pipe(map(
       obj => obj
     ));;
@@ -166,7 +166,7 @@ export class UserService {
    */
   returnUserNotifications(idUser: number): Observable<MessageModel[]>{
     const url = `${this.baseUrl}messages/${idUser}`
-    
+
     return this.http.get<MessageModel[]>(url).pipe(map(
       obj => obj
     ));;

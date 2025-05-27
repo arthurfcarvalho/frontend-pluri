@@ -1,0 +1,95 @@
+<div class="notification-wrapper">
+  <div class="notification-trigger" (click)="toggleNotifications()">
+    <i class="pi pi-bell notification-bell"
+       [class.has-notifications]="notifications.length >= 0"></i>
+    <p-badge
+      *ngIf="unreadNotifications > 0"
+      [value]="unreadNotifications"
+      severity="danger"
+      styleClass="notification-badge">
+    </p-badge>
+  </div>
+
+  <!-- Panel de notificações -->
+  <p-panel
+    *ngIf="showNotifications"
+    styleClass="notification-panel"
+    [toggleable]="false">
+
+    <ng-template pTemplate="header">
+      <div class="notification-header">
+        <span class="header-title">
+          <i class="pi pi-bell mr-2"></i>
+          Notificações
+        </span>
+        <p-button
+          icon="pi pi-times"
+          styleClass="p-button-text p-button-sm"
+          (onClick)="toggleNotifications()">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <div class="notification-content">
+      <ng-container *ngIf="notifications.length > 0; else noNotifications">
+        <div
+          *ngFor="let notification of notifications; let i = index"
+          class="notification-item"
+          [class.notification-read]="notification.lida"
+          [class.notification-unread]="!notification.lida">
+
+          <!-- Ícone da notificação -->
+          <div class="flex">
+            <div class="notification-icon">
+              <i [class]="getNotificationIcon(notification.tipo)"
+                 [class.text-blue-500]="notification.tipo === 'info'"
+                 [class.text-yellow-500]="notification.tipo === 'warning'"
+                 [class.text-red-500]="notification.tipo === 'error'"
+                 [class.text-green-500]="notification.tipo === 'success'">
+              </i>
+            </div>
+            <div class="notification-subject">
+              {{ notification.assunto }}
+            </div>
+          </div>
+
+          <!-- Conteúdo da notificação -->
+          <div class="notification-body">
+            <div class="notification-description">
+              {{ notification.conteudo }}
+            </div>
+            <div class="notification-time">
+              {{ formatarDataHora(notification.created_at) }}
+            </div>
+          </div>
+
+          <div class="notification-actions">
+            <p-button
+              class="action-btn"
+              *ngIf="!notification.lida"
+              label="Marcar como lida"
+              icon="pi pi-check"
+              styleClass="p-button-sm p-button-outlined p-button-success"
+              (onClick)="marcarComoLida(notification)">
+            </p-button>
+
+            <p-button
+              class="action-btn"
+              label="Ver mais"
+              icon="pi pi-external-link"
+              styleClass="p-button-sm p-button-outlined p-button-info"
+              (onClick)="verMais(notification)">
+            </p-button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noNotifications>
+        <div class="no-notifications">
+          <i class="pi pi-bell-slash"></i>
+          <p>Nenhuma notificação encontrada</p>
+        </div>
+      </ng-template>
+    </div>
+  </p-panel>
+</div>

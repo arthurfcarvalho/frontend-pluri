@@ -9,6 +9,8 @@ import { MessageModel } from '../../models/MessageModel';
 import { PanelModule } from 'primeng/panel';
 import { BadgeModule } from 'primeng/badge';
 import {TranslateService} from "@ngx-translate/core";
+import {MatAnchor} from "@angular/material/button";
+import {NotificationComponent} from "../../../components/notification/notification.component";
 
 @Component({
   selector: 'app-header',
@@ -18,7 +20,8 @@ import {TranslateService} from "@ngx-translate/core";
     MatMenuModule,
     CommonModule,
     PanelModule,
-    BadgeModule
+    BadgeModule,
+    NotificationComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -27,6 +30,7 @@ import {TranslateService} from "@ngx-translate/core";
 export class HeaderComponent {
   menuItems!: MenuItem[];
   user: any;
+
   notifications: MessageModel[] = [];
   showNotifications: boolean = false;
 
@@ -39,7 +43,8 @@ export class HeaderComponent {
         this.userService.returnUserByLogin(login?.sub).subscribe((user) => {
           this.user = user;
           this.userService.returnUserNotifications(user.id).subscribe((data) => {
-            this.notifications = data;
+            console.log(data)
+            this.notifications = data || [];
           });
           this.translate.get([
             'MENU.HOME',

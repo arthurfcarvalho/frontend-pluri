@@ -1,5 +1,8 @@
 export interface MessageModel {
     id?: number,
-    conteudo: string,
+    assunto?: string,
+    conteudo?: string,
     lida: boolean
+    tipo: string;
+    created_at: Date;
 }
