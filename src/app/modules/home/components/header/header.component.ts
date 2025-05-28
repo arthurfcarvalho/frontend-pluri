@@ -80,7 +80,7 @@ export class HeaderComponent {
             },
             {
               label: translations['MENU.PLURI'],
-              visible: this.userHasPermission(["CRIAR_PLURI"]),
+              visible: this.userHasPermission(["GERENCIAR_PLURI"]),
               items: [
                 {
                   label: translations['MENU.CREATE_PLURI'],
@@ -94,11 +94,11 @@ export class HeaderComponent {
             },
             {
               label: translations['MENU.ADMINISTRATION'],
-              visible: this.userHasPermission(["CRIAR_PLURI"]),
+              visible: this.userHasPermission(["GERENCIAR_PERFIS, GERENCIAR_USUARIOS", "GERENCIAR_AREAS", "GERENCIAR_DISCIPLINAS", "GERENCIAR_ASSUNTOS", "GERENCIAR_TURMAS"]),
               items: [
                 {
                   label: translations['MENU.USERS'],
-                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  visible: this.userHasPermission(["GERENCIAR_USUARIOS"]),
                   items: [
                     {
                       label: translations['MENU.CREATE_USER'],
@@ -112,7 +112,7 @@ export class HeaderComponent {
                 },
                 {
                   label: translations['MENU.PROFILES'],
-                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  visible: this.userHasPermission(["GERENCIAR_PERFIS"]),
                   items: [
                     {
                       label: translations['MENU.CREATE_PROFILE'],
@@ -126,7 +126,7 @@ export class HeaderComponent {
                 },
                 {
                   label: translations['MENU.AREAS'],
-                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  visible: this.userHasPermission(["GERENCIAR_AREAS"]),
                   items: [
                     {
                       label: translations['MENU.CREATE_AREA'],
@@ -140,7 +140,7 @@ export class HeaderComponent {
                 },
                 {
                   label: translations['MENU.DISCIPLINE'],
-                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  visible: this.userHasPermission(["GERENCIAR_DISCIPLINAS"]),
                   items: [
                     {
                       label: translations['MENU.CREATE_DISCIPLINE'],
@@ -154,7 +154,7 @@ export class HeaderComponent {
                 },
                 {
                   label: translations['MENU.SUBJECT'],
-                  visible: this.userHasPermission(["CRIAR_PLURI"]),
+                  visible: this.userHasPermission(["GERENCIAR_ASSUNTOS"]),
                   items: [
                     {
                       label: translations['MENU.CREATE_SUBJECT'],
@@ -188,7 +188,7 @@ export class HeaderComponent {
             },
             {
               label: translations['MENU.ADJUSTER'],
-              visible: this.userHasPermission(["AJUNTAR_QUESTOES"]),
+              visible: this.userHasPermission(["INDICAR_DOCENTES"]),
               items: [
                 {
                   label: translations['MENU.ASSIGN_DOCENT'],
@@ -196,7 +196,7 @@ export class HeaderComponent {
                 },
               ]
             },
-            {
+            /* {
               label: translations['MENU.DESIGNER'],
               visible: this.userHasPermission(["DIAGRAMADOR_QUESTOES"]),
               items: [
@@ -209,7 +209,7 @@ export class HeaderComponent {
                   routerLink: '/listar-pluris-diagramador',
                 },
               ]
-            }
+            } OCULTADO POR HORA, ATÉ COMEÇARMOS A TRABALHAR NOVAMENTE NESSE PERFIL */
           ];
         });
       });
