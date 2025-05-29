@@ -66,7 +66,7 @@ export const routes: Routes = [
   // Pluri
   { path: 'criar-pluri', component: CreatePluriComponent, title: 'Criar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PLURI'] } },
   { path: 'pesquisar-pluri', component: SearchPluriComponent, title: 'Pesquisar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PLURI'] } },
-  { path: 'editar-pluri/:id', component: UpdatePluriComponent, title: 'Editar Pluri - Pluri', canActivate: [authGuard] },
+  { path: 'editar-pluri/:id', component: UpdatePluriComponent, title: 'Editar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PLURI'] } },
 
   // Professor
   { path: 'criar-questao', component: CreateQuestionsComponent, title: 'Criar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
@@ -85,19 +85,19 @@ export const routes: Routes = [
   { path: 'overview-pluri/:id', component: OverviewComponent, title: 'Overview - Pluri', canActivate: [authGuard] },
 
   // Admin
-  { path: 'pesquisar-usuarios', component: SearchUsersComponent, title: 'Pesquisar Usuários - Pluri', canActivate: [authGuard] },
+  { path: 'pesquisar-usuarios', component: SearchUsersComponent, title: 'Pesquisar Usuários - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_USUARIOS'] } },
   { path: 'criar-perfil', component: CreateRoleComponent, title: 'Criar Perfil - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
   { path: 'pesquisar-perfis', component: SearchRolesComponent, title: 'Pesquisar Perfis - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
   { path: 'pesquisar-areas', component: SearchAreasComponent, title: 'Pesquisar Áreas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
   { path: 'criar-area', component: CreateAreaComponent, title: 'Criar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
-  { path: 'criar-turmas', component: CreateTurmaComponent, title: 'Criar Turma - Pluri', canActivate: [authGuard] },
-  { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard] },
-  { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
-  { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard] },
-  { path: 'editar-disciplina/:id', component: EditDisciplinaComponent, title: 'Editar - Disciplina', canActivate: [authGuard] },
-  { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },
-  { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar - Assunto', canActivate: [authGuard] },
-  { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar - Assuntos', canActivate: [authGuard] },
+  { path: 'criar-turmas', component: CreateTurmaComponent, title: 'Criar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
+  { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
+  { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
+  { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
+  { path: 'editar-disciplina/:id', component: EditDisciplinaComponent, title: 'Editar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
+  { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Pesquisar Disciplinas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
+  { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar Assunto - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
+  { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar Assuntos - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
 
   // Error
   { path: 'acesso-negado', component: DeniedAcessComponent, title: 'Acesso Negado - Pluri', canActivate: [authGuard] },
