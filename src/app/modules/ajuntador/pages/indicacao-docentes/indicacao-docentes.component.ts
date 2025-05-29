@@ -185,8 +185,9 @@ export class IndicacaoDocentesComponent {
         this.toastService.success("Docente indicado com sucesso!");
       },
       error: (e) => {
-        this.toastService.error(e.error.mensagem);
-      },
+        const mensagemFormatada = e.error.mensagem.replace(/\n/g, '<br>');
+        this.toastService.error(mensagemFormatada, 'Erro', { enableHtml: true , timeOut: 5000,  });
+      }
     });
   }
   fechar(){

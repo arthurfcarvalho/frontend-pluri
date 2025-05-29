@@ -33,7 +33,7 @@ export class RoleAssignComponent implements OnChanges {
       this.loadRoles();
     }
   }
-  
+
   clearRoles() {
     this.availableRoles = [];
     this.selectedRoles = [];
@@ -66,6 +66,7 @@ export class RoleAssignComponent implements OnChanges {
   }
 
   saveRoles() {
+    console.log("Aq")
     this.userService.assignRoles(this.selectedUser.id, this.selectedRoles).subscribe({
       next: () => {
         this.toastService.success("Perfis atualizados com sucesso!");
