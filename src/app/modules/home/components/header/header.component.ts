@@ -43,7 +43,6 @@ export class HeaderComponent {
         this.userService.returnUserByLogin(login?.sub).subscribe((user) => {
           this.user = user;
           this.userService.returnUserNotifications(user.id).subscribe((data) => {
-            console.log(data)
             this.notifications = data || [];
           });
           this.translate.get([
@@ -84,7 +83,7 @@ export class HeaderComponent {
               },
               {
                 label: translations['MENU.PLURI'],
-                visible: this.userHasPermission(["CRIAR_PLURI"]),
+                visible: this.userHasPermission(["GERENCIAR_PLURI"]),
                 items: [
                   {
                     label: translations['MENU.CREATE_PLURI'],
@@ -98,11 +97,11 @@ export class HeaderComponent {
               },
               {
                 label: translations['MENU.ADMINISTRATION'],
-                visible: this.userHasPermission(["CRIAR_PLURI"]),
+                visible: this.userHasPermission(["GERENCIAR_PLURI"]),
                 items: [
                   {
                     label: translations['MENU.USERS'],
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                    visible: this.userHasPermission(["GERENCIAR_USUARIOS"]),
                     items: [
                       {
                         label: translations['MENU.CREATE_USER'],
@@ -116,7 +115,7 @@ export class HeaderComponent {
                   },
                   {
                     label: translations['MENU.PROFILES'],
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                    visible: this.userHasPermission(["GERENCIAR_PERFIS"]),
                     items: [
                       {
                         label: translations['MENU.CREATE_PROFILE'],
@@ -130,7 +129,7 @@ export class HeaderComponent {
                   },
                   {
                     label: translations['MENU.AREAS'],
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                    visible: this.userHasPermission(["GERENCIAR_AREAS"]),
                     items: [
                       {
                         label: translations['MENU.CREATE_AREA'],
@@ -144,7 +143,7 @@ export class HeaderComponent {
                   },
                   {
                     label: translations['MENU.DISCIPLINE'],
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                    visible: this.userHasPermission(["GERENCIAR_DISCIPLINAS"]),
                     items: [
                       {
                         label: translations['MENU.CREATE_DISCIPLINE'],
@@ -158,7 +157,7 @@ export class HeaderComponent {
                   },
                   {
                     label: translations['MENU.SUBJECT'],
-                    visible: this.userHasPermission(["CRIAR_PLURI"]),
+                    visible: this.userHasPermission(["GERENCIAR_ASSUNTOS"]),
                     items: [
                       {
                         label: translations['MENU.CREATE_SUBJECT'],

@@ -18,7 +18,7 @@ import {CommonModule} from "@angular/common";
   styleUrl: './notification.component.scss'
 })
 export class NotificationComponent implements OnInit {
-  showNotifications = true
+  showNotifications = false;
   @Input()
   notifications: MessageModel[] = [];
   ngOnInit() {

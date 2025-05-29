@@ -86,10 +86,10 @@ export const routes: Routes = [
 
   // Admin
   { path: 'pesquisar-usuarios', component: SearchUsersComponent, title: 'Pesquisar Usuários - Pluri', canActivate: [authGuard] },
-  { path: 'criar-perfil', component: CreateRoleComponent, title: 'Criar Perfil - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_PERFIL'] } },
-  { path: 'pesquisar-perfis', component: SearchRolesComponent, title: 'Pesquisar Perfis - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_PERFIL'] } },
-  { path: 'pesquisar-areas', component: SearchAreasComponent, title: 'Pesquisar Áreas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_AREA'] } },
-  { path: 'criar-area', component: CreateAreaComponent, title: 'Criar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_AREA'] } },
+  { path: 'criar-perfil', component: CreateRoleComponent, title: 'Criar Perfil - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
+  { path: 'pesquisar-perfis', component: SearchRolesComponent, title: 'Pesquisar Perfis - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
+  { path: 'pesquisar-areas', component: SearchAreasComponent, title: 'Pesquisar Áreas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
+  { path: 'criar-area', component: CreateAreaComponent, title: 'Criar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
   { path: 'criar-turmas', component: CreateTurmaComponent, title: 'Criar Turma - Pluri', canActivate: [authGuard] },
   { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard] },
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard] },

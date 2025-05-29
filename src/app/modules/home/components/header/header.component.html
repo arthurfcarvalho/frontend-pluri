@@ -17,30 +17,7 @@
 
     <div *ngIf="user != undefined" id="p-menubar-end" style="position: relative;">
       <div class="notification-wrapper">
-<!--        <i class="pi pi-bell" (click)="toggleNotifications()"-->
-<!--          style="font-size: 1.5rem; cursor: pointer; position: relative;">-->
-<!--          <p-badge *ngIf="notifications.length >= 0" [value]="notifications.length" severity="danger"-->
-<!--            styleClass="notification-badge"></p-badge>-->
-<!--        </i>-->
         <app-notification class="" [notifications]="notifications"></app-notification>
-<!--        <p-panel *ngIf="showNotifications" styleClass="notification-panel">-->
-<!--          <ng-template pTemplate="header">-->
-<!--            <div class="notification-header">-->
-<!--              <span>Notificações</span>-->
-<!--              <i class="pi pi-times" (click)="toggleNotifications()" style="cursor: pointer;"></i>-->
-<!--            </div>-->
-<!--          </ng-template>-->
-<!--          <ng-container *ngIf="notifications.length > 0; else noNotifications">-->
-<!--            <div *ngFor="let notification of notifications; let i = index">-->
-<!--              <span class="notification-content">{{ notification.assunto }}</span>-->
-<!--              <i><a class="notification-content">{{ notification.assunto }}</a></i>-->
-<!--              <a class="notification-content">{{ notification.assunto }}</a>-->
-<!--            </div>-->
-<!--          </ng-container>-->
-<!--          <ng-template #noNotifications>-->
-<!--            <p>Nenhuma notificação no momento.</p>-->
-<!--          </ng-template>-->
-<!--        </p-panel>-->
       </div>
       <span mat-icon-button [matMenuTriggerFor]="menu" class="user-profile">
         <ng-container *ngIf="user != undefined">
