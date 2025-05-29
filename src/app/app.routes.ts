@@ -64,8 +64,8 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'Pluri', canActivate: [authGuard] },
 
   // Pluri
-  { path: 'criar-pluri', component: CreatePluriComponent, title: 'Criar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_PLURI'] } },
-  { path: 'pesquisar-pluri', component: SearchPluriComponent, title: 'Pesquisar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_PLURI'] } },
+  { path: 'criar-pluri', component: CreatePluriComponent, title: 'Criar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PLURI'] } },
+  { path: 'pesquisar-pluri', component: SearchPluriComponent, title: 'Pesquisar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PLURI'] } },
   { path: 'editar-pluri/:id', component: UpdatePluriComponent, title: 'Editar Pluri - Pluri', canActivate: [authGuard] },
 
   // Professor
@@ -77,8 +77,8 @@ export const routes: Routes = [
   { path: 'lista-questoes-para-envio/:idQuestaoAEnviar', component: EnviarQuestaoComponent, canActivate: [authGuard] },
 
   // Ajuntador/Diagramador
-  { path: 'indicar-docentes/:id', component: IndicacaoDocentesComponent, title: 'Indicar Docentes - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['APROVAR_QUESTAO'] } },
-  { path: 'listar-pluri-areas', component: ListarPluriAreasComponent, title: 'Listar Pluri Areas - Ajuntador', canActivate: [authGuard, permGuard], data: { perms: ['APROVAR_QUESTAO'] } },
+  { path: 'indicar-docentes/:id', component: IndicacaoDocentesComponent, title: 'Indicar Docentes - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['INDICAR_DOCENTES'] } },
+  { path: 'listar-pluri-areas', component: ListarPluriAreasComponent, title: 'Listar Pluri Areas - Ajuntador', canActivate: [authGuard, permGuard], data: { perms: ['INDICAR_DOCENTES'] } },
   { path: 'listar-pluris-diagramador', component: ListaProvaComponent, title: 'Listar Pluris - Diagramador', canActivate: [authGuard] },
   { path: 'listar-questoes-aprovadas', component: ListarAreasComponent, title: 'Pesquisar Questões - Pluri', canActivate: [authGuard] },
   { path: 'overview-prova', component: OverviewComponent, title: 'Overview - Pluri', canActivate: [authGuard] },

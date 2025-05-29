@@ -191,7 +191,7 @@ export class HeaderComponent {
               },
               {
                 label: translations['MENU.ADJUSTER'],
-                visible: this.userHasPermission(["AJUNTAR_QUESTOES"]),
+                visible: this.userHasPermission(["INDICAR_DOCENTES"]),
                 items: [
                   {
                     label: translations['MENU.ASSIGN_DOCENT'],

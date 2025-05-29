@@ -22,7 +22,6 @@ export class NotificationComponent implements OnInit {
   @Input()
   notifications: MessageModel[] = [];
   ngOnInit() {
-    console.log("teste", this.notifications)
   }
   get unreadNotifications(): number {
     return this.notifications.filter((n) => !n.lida).length
