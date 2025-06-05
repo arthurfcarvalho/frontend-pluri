@@ -69,7 +69,7 @@ export class CreateDisciplinaComponent {
 
   loadAssuntos() {
     this.assuntoService.listarAssuntos().subscribe(assuntosRecebidos => {
-      this.assuntosList = assuntosRecebidos.content;
+      this.assuntosList = assuntosRecebidos
     })
   }
   onAreaChange(event: any) {

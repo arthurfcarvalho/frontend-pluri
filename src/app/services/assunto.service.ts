@@ -25,7 +25,7 @@ export class AssuntoService {
    */
   listarAssuntos(){
     const url = this.baseUrl + `listar-assuntos`
-    return this.httpClient.get<ApiResponsePageable>(url).pipe(map(
+    return this.httpClient.get<Assunto[]>(url).pipe(map(
       obj => obj
     ));
   }

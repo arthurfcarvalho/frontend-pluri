@@ -135,7 +135,7 @@ export class EditarQuestaoComponent implements  OnInit{
           this.areasRecebidas = areas.content;
         });
         this.assuntoService.listarAssuntos().subscribe(assuntos => {
-          this.assuntosInterdisciplinares = assuntos.content
+          this.assuntosInterdisciplinares = assuntos
           this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
             (assunto: any) => assunto.id !== this.questao.assuntos?.[0]?.id
           );
