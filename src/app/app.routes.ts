@@ -52,6 +52,7 @@ import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assunt
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
 import {EditDisciplinaComponent} from "./modules/disciplina/edit-disciplina/edit-disciplina.component";
 import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
+import {EditAreaComponent} from "./modules/area/edit-area/edit-area.component";
 
 export const routes: Routes = [
     // Antes de autenticar
@@ -90,6 +91,7 @@ export const routes: Routes = [
   { path: 'pesquisar-perfis', component: SearchRolesComponent, title: 'Pesquisar Perfis - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
   { path: 'pesquisar-areas', component: SearchAreasComponent, title: 'Pesquisar Áreas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
   { path: 'criar-area', component: CreateAreaComponent, title: 'Criar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
+  { path: 'editar-area/:id', component: EditAreaComponent, title: 'Editar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
   { path: 'criar-turmas', component: CreateTurmaComponent, title: 'Criar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
   { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },

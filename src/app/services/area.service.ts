@@ -46,5 +46,10 @@ export class AreaService {
   createArea(data: any) {
     const url = this.baseUrl + 'criar-area';
     return this.httpClient.post(url, data);
-  } 
+  }
+
+  editArea(data: any) {
+    const url = this.baseUrl + 'editar-area';
+    return this.httpClient.put(url, data);
+  }
 }
