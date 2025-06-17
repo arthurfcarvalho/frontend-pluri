@@ -16,14 +16,20 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
+                <th pSortableColumn="id">ID<p-sortIcon field="id"/></th>
                 <th pSortableColumn="nome">Nome<p-sortIcon field="nome"/></th>
                 <th pSortableColumn="codigo">Código<p-sortIcon field="codigo"/></th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-area>
             <tr>
+                <td>{{ area.id }}</td>
                 <td>{{ area.nome }}</td>
                 <td>{{ area.codigo }}</td>
+                <td class="box-btns">
+                  <button pButton type="button" label="Editar" routerLink="/editar-area/{{area.id}}"></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
