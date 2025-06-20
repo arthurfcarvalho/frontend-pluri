@@ -113,9 +113,7 @@ export class CreateQuestionsComponent implements OnInit {
       this.areasRecebidas = areas.content
     })
     this.assuntoService.listarAssuntos().subscribe(assuntosInterdisciplinares => {
-      console.log(assuntosInterdisciplinares);
       this.assuntosInterdisciplinares = assuntosInterdisciplinares
-      console.log(this.assuntosInterdisciplinares)
     })
     this.route.paramMap.subscribe(params => {
       const idArea = params.get('id')

@@ -38,7 +38,7 @@ export class DisciplinaService {
   }
 
   listarDisciplinasPorArea(idArea: number) {
-    const url =  this.baseUrl + 'listar-disciplinas-por-area?areaId=' + idArea +'&page=0&size=10&sort=nome';
+    const url =  this.baseUrl + 'listar-disciplinas-por-area?areaId=' + idArea +'&page=0&size=1000&sort=nome';
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
   }
   listById(id: number) {
