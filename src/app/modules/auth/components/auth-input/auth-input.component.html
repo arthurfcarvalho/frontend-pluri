@@ -2,10 +2,15 @@
     <label [for]="inputName">{{ label }}</label>
     <div class="input-content">
         <input
-            [type]="type"
-            [placeholder]="placeholder"
-            [value]="value"
-            (input)="onInput($event)"
+          class="ng-invalid ng-dirty"
+          [type]="type"
+          [placeholder]="placeholder"
+          [value]="value"
+          (input)="onInput($event)"
+          [required]="required"
+          (blur)="onTouched()"
+          [class.ng-invalid]="required"
+          [class.ng-touched]="true"
         />
         <div class="icon">
             <ng-content></ng-content>

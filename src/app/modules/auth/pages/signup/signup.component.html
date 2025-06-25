@@ -14,6 +14,7 @@
             type="text"
             label="Nome"
             placeholder="Nome completo"
+            [required]="true"
         >
         </app-auth-input>
         <app-auth-input
@@ -22,6 +23,7 @@
             type="email"
             label="Email"
             placeholder="usuario@gmail.com"
+            [required]="true"
         >
 
         </app-auth-input>
@@ -31,27 +33,55 @@
             type="text"
             label="Usuário"
             placeholder="Nome de Usuário"
+            [required]="true"
         >
         </app-auth-input>
         <app-auth-input
+            placeholder="Digite sua senha"
             formControlName="senha"
             inputName="senha"
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             label="Senha"
+            [required]="true"
         >
+          <div class="input-container">
+            <fa-icon
+              [icon]="showPassword ? faEye : faEyeSlash"
+              class="toggle-password-icon"
+              (click)="togglePasswordVisibility()"
+            >
+            </fa-icon>
+          </div>
         </app-auth-input>
+      <p *ngIf="signupForm.get('senha')?.hasError('minlength')" class="erro-validacao">
+        A senha deve ter no mínimo 6 caracteres.
+      </p>
         <app-auth-input
+            placeholder="Confirme sua senha"
             formControlName="confirmarSenha"
             inputName="confirmarSenha"
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             label="Confirme sua senha"
+            [required]="true"
         >
+          <div class="input-container">
+            <fa-icon
+              [icon]="showPassword ? faEye : faEyeSlash"
+              class="toggle-password-icon"
+              (click)="togglePasswordVisibility()"
+            >
+            </fa-icon>
+          </div>
         </app-auth-input>
-        <app-auth-input
+      <p *ngIf="signupForm.hasError('senhasDiferentes')" class="erro-validacao">
+        As senhas não coincidem.
+      </p>
+      <app-auth-input
             formControlName="data_nascimento"
             inputName="data_nascimento"
             type="date"
             label="Data de Nascimento"
+            [required]="true"
         >
         </app-auth-input>
     </form>

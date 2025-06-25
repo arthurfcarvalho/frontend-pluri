@@ -22,14 +22,16 @@ export class AuthInputComponent implements ControlValueAccessor{
   @Input() placeholder: string = "";
   @Input() label: string = "";
   @Input() inputName: string = "";
-
+  @Input() required: boolean = false;
   value: string = '';
+
   onChange: any = () => {};
   onTouched: any = () => {};
 
   onInput(event: Event){
     const value = (event.target as HTMLInputElement).value;
     this.onChange(value);
+    this.onTouched();
   }
 
   writeValue(value: any): void {
