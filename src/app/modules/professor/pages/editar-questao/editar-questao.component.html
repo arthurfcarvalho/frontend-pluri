@@ -8,11 +8,11 @@
                      let-index="index">
           <div class="flex flex-column h-12rem">
                 <span
-                  [ngClass]="{'status-pendente': questao.status.label === 'PENDENTE',
-              'status-aprovada': questao.status.label === 'APROVADA',
-              'status-reprovada': questao.status.label === 'REPROVADA',
-              'status-enviada': questao.status.label === 'ENVIADA'}"
-                >Status: {{ questao.status.label }}</span>
+                  [ngClass]="{'status-pendente': questao?.status?.label === 'PENDENTE',
+              'status-aprovada': questao?.status?.label === 'APROVADA',
+              'status-reprovada': questao?.status?.label === 'REPROVADA',
+              'status-enviada': questao?.status?.label === 'ENVIADA'}"
+                >Status: {{ questao?.status?.label }}</span>
             <div
               class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <div class="box-questoes-sup">
@@ -79,7 +79,24 @@
           <p>{{ 'integration_area_text' | translate }}</p>
           <div class="input-container">
             <p-floatLabel>
-              <p-multiSelect [display]="'chip'" [options]="assuntosInterdisciplinares"
+              <p-dropdown [options]="areasFiltroIntegracao"
+                          formControlName="areaInterdisciplinar" optionLabel="nome"
+                          (onChange)="loadFieldsAreaIntegracao($event)"
+                          placeholder="Selecione a area"/>
+              <label class="label-dificuldade">Area</label>
+            </p-floatLabel>
+            <p-floatLabel>
+              <p-dropdown
+                filter="true"
+                [options]="disciplinasFiltroIntegracao" formControlName="disciplinasInterdisciplinares" optionLabel="nome"
+                placeholder="Selecione a disciplina"
+                (onChange)="loadFieldsDisciplinasIntegracao($event)"></p-dropdown>
+              <label class="label-dificuldade">Disciplina</label>
+            </p-floatLabel>
+            <p-floatLabel>
+              <p-multiSelect
+                id="multiselect-assuntos-interdisciplinares"
+                [display]="'chip'" [options]="assuntosInterdisciplinares"
                              formControlName="assuntosInterdisciplinares" optionLabel="nome"
                              placeholder="Selecione os assuntos"></p-multiSelect>
               <label class="label-dificuldade">Assunto</label>

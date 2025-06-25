@@ -43,7 +43,6 @@ import {TranslatePipe} from "@ngx-translate/core";
   selector: 'app-editar-questao',
   standalone: true,
   imports: [
-    HeaderComponent,
     NgxSummernoteModule,
     StepperModule,
     ReactiveFormsModule,
@@ -85,7 +84,6 @@ export class EditarQuestaoComponent implements  OnInit{
   previewContent = '';
   dificuldades = ['Fácil', 'Médio', 'Difícil'];
   assuntos!: Assunto[];
-  assuntosInterdisciplinares!: Assunto[];
   carregamento: boolean = false;
   showPreview = false;
   areasRecebidas!: Area[]
@@ -94,6 +92,11 @@ export class EditarQuestaoComponent implements  OnInit{
   alternativas: Alternativa[] = [];
   disciplinas: Disciplina[] = [];
   areas!: Area[];
+  assuntosInterdisciplinares!: Assunto[];
+  disciplinasFiltroIntegracao: Disciplina[] = [];
+  areasFiltroIntegracao!: Area[];
+  ultimaAreaSelecionadaInterdisciplinar: any = null;
+
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -115,9 +118,11 @@ export class EditarQuestaoComponent implements  OnInit{
       assuntos: new FormControl([], Validators.required),
       assuntosInterdisciplinares: [],
       disciplinas: [],
+      disciplinasInterdisciplinares: [],
       area: new FormControl(),
       alternativaCorreta: new FormControl(),
       alternativas: new FormControl(),
+      areaInterdisciplinar: new FormControl(),
       status: new FormControl(),
     });
   }
@@ -133,6 +138,7 @@ export class EditarQuestaoComponent implements  OnInit{
         }
         this.areaService.returnAllAreas().subscribe(areas => {
           this.areasRecebidas = areas.content;
+          this.areasFiltroIntegracao = areas.content;
         });
         this.assuntoService.listarAssuntos().subscribe(assuntos => {
           this.assuntosInterdisciplinares = assuntos
@@ -488,5 +494,114 @@ export class EditarQuestaoComponent implements  OnInit{
     this.assuntosInterdisciplinares = this.assuntosInterdisciplinares.filter(
       (assunto: any) => assunto.id !== assuntoSelecionado?.value?.id
     );
+  }
+  loadFieldsDisciplinasIntegracao(event: any) {
+    const disciplinasSelecionadas = Array(event.value) || [];
+
+    if (disciplinasSelecionadas.length > 0) {
+      const disciplinaIds = disciplinasSelecionadas.map((d: any) => d.id);
+
+      this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+        const assuntosDaDisciplina = assuntosRecebidos;
+
+        const assuntosSelecionados = this.atualizarQuestaoForm.value?.assuntosInterdisciplinares || [];
+        const todosAssuntos = [
+          ...assuntosDaDisciplina,
+          ...assuntosSelecionados.filter(
+            (asel: any) => !assuntosDaDisciplina.some(a => a.id === asel.id)
+          )
+        ];
+
+        this.assuntosInterdisciplinares = todosAssuntos;
+
+        const assuntosMatch = todosAssuntos.filter(a =>
+          assuntosSelecionados.some((asel: any) => asel.id === a.id)
+        );
+
+        this.atualizarQuestaoForm.patchValue({
+          assuntosInterdisciplinares: assuntosMatch
+        });
+      });
+    } else {
+      this.assuntosInterdisciplinares = [];
+      this.atualizarQuestaoForm.patchValue({
+        assuntosInterdisciplinares: []
+      });
+    }
+  }
+  loadFieldsAreaIntegracao(event: any) {
+    console.log("Aq")
+    const selectedArea = event.value ? event.value : event;
+
+    const areaMudou = this.ultimaAreaSelecionadaInterdisciplinar && this.ultimaAreaSelecionadaInterdisciplinar.id !== selectedArea.id;
+
+    if (areaMudou) {
+      this.atualizarQuestaoForm.patchValue({
+        disciplinasInterdisciplinares: [],
+        assuntosInterdisciplinares: []
+      });
+      this.disciplinasFiltroIntegracao = [];
+      this.assuntosInterdisciplinares = [];
+    }
+
+    this.ultimaAreaSelecionada = selectedArea;
+
+    this.atualizarQuestaoForm.patchValue({areaInterdisciplinares: selectedArea});
+
+    this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
+      console.log("Teste", disciplinasRecebidas);
+      const disciplinasDaArea = disciplinasRecebidas.content;
+
+      const disciplinasSelecionadas = this.atualizarQuestaoForm.get('disciplinasInterdisciplinares')?.value || [];
+
+      const todasDisciplinas = [
+        ...disciplinasDaArea,
+        ...disciplinasSelecionadas.filter(
+          (sel: any) => !disciplinasDaArea.some(d => d.id === sel.id)
+        )
+      ];
+
+      this.disciplinasFiltroIntegracao = todasDisciplinas;
+
+      const disciplinasMatch = todasDisciplinas.filter(d =>
+        disciplinasSelecionadas.some((ds: any) => ds.id === d.id)
+      );
+
+      this.atualizarQuestaoForm.patchValue({
+        disciplinasInterdisciplinares: disciplinasMatch
+      });
+
+      const disciplinaIds = disciplinasMatch.map((d: any) => d.id);
+
+      if (disciplinaIds.length > 0) {
+        this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
+          const assuntosSelecionados = this.atualizarQuestaoForm.get('assuntosInterdisciplinares')?.value || [];
+
+          const selecionadosArray = Array.isArray(assuntosSelecionados)
+            ? assuntosSelecionados
+            : [assuntosSelecionados];
+
+          const todosAssuntos = [
+            ...assuntosRecebidos,
+            ...selecionadosArray.filter(
+              (asel: any) => !assuntosRecebidos.some(a => a.id === asel.id)
+            )
+          ];
+
+          this.assuntosInterdisciplinares = todosAssuntos;
+
+          const assuntosMatch = todosAssuntos.filter(a =>
+            assuntosSelecionados.some((asel: any) => asel.id === a.id)
+          );
+
+          this.atualizarQuestaoForm.patchValue({
+            assuntosInterdisciplinares: assuntosMatch
+          });
+        });
+      } else {
+        this.assuntosInterdisciplinares = [];
+        this.atualizarQuestaoForm.patchValue({assuntosInterdisciplinares: []});
+      }
+    });
   }
 }
