@@ -73,7 +73,25 @@
 
           <div class="input-container">
             <p-floatLabel>
-              <p-multiSelect [display]="'chip'"
+              <p-dropdown
+                filter="true"
+                [options]="areasFiltroIntegracao" formControlName="areaInterdisciplinar" optionLabel="nome"
+                (onChange)="loadFieldsAreaIntegracao($event)"
+                placeholder="Selecione a area"/>
+              <label class="label-area">Area</label>
+            </p-floatLabel>
+            <p-floatLabel>
+              <p-dropdown
+                filter="true"
+                [options]="disciplinasFiltroIntegracao" formControlName="disciplinasInterdisciplinares" optionLabel="nome"
+                placeholder="Selecione a disciplina"
+                (onChange)="loadFieldsDisciplinasIntegracao($event)"></p-dropdown>
+              <label class="label-multi">Disciplina</label>
+            </p-floatLabel>
+            <p-floatLabel>
+              <p-multiSelect
+                id="multiselect-assuntos-interdisciplinares"
+                [display]="'chip'"
                              [options]="assuntosInterdisciplinares" formControlName="assuntosInterdisciplinares" optionLabel="nome"
                           placeholder="Selecione os assuntos"></p-multiSelect>
               <label class="label-dificuldade">Assunto</label>

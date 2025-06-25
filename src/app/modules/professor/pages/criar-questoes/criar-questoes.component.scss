@@ -392,3 +392,7 @@ input[type="radio"] {
   }
 
 }
+
+::ng-deep #multiselect-assuntos-interdisciplinares #multiselect-assuntos-interdisciplinares_list{
+  width: 50rem;
+}
