@@ -1,5 +1,6 @@
 .create-question-form {
   width: 100%;
+  height: 42rem;
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
@@ -16,7 +17,7 @@
 .input-container ::ng-deep .p-dropdown-item {
   white-space: normal !important;
   word-break: break-word;
-  padding-right: 1rem;
+  //padding-right: 1rem;
 }
 
 .input-container ::ng-deep .p-dropdown-label {
@@ -75,176 +76,24 @@ iframe {
 }
 
 .pai-box-questoes-sup {
-  position: relative;
-
-  .box-questoes-sup {
-    margin-bottom: 20px;
+  padding: 0 1rem;
+  .titulo {
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 100%;
     text-align: center;
-
-
-
-    .titulo {
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-
-    .box-inputs {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center; /* <-- centraliza os itens nas linhas */
-      gap: 24px;
-
-      .input-container {
-        flex: 1 1 calc(33.333% - 24px);
-        min-width: 12rem;
-        margin-top: 10px;
-        max-width: 22rem;
-        p-floatLabel {
-          width: 100%;
-          max-width: 5rem;
-          span {
-            max-width: 10px;
-          }
-          p-inputtext {
-            max-width: 22rem;
-          }
-
-          input, p-multiSelect, p-dropdown {
-            width: 100%;
-          }
-
-          label {
-            margin-bottom: 0; /* Remove qualquer margem inferior */
-          }
-
-          .label-multi {
-            margin-left: 65px;
-          }
-
-          .label-areas {
-            margin-left: 50px;
-          }
-
-        }
-      }
-    }
   }
 }
-
-
-@media only screen and (max-width: 507px) {
-  .label-dificuldade{
-    margin-left: 60px;
-  }
-  .label-area{
-    margin-left: 95px;
-  }
-  .prox-info{
-    position: absolute;
-    bottom: -100px;
-    right: 0px;
+.box-inputs-2-step {
+  .box-inputs {
+    display: flex;
+    flex-direction: column;
   }
 }
-
-@media only screen and (min-width: 507px) {
-  .label-dificuldade{
-    margin-left: 60px;
-  }
-  .label-area{
-    margin-left: 95px;
-  }
-  .prox-info{
-    position: absolute;
-    bottom: -100px;
-    right: 0px;
-  }
-  .input-container {
-    margin-right: 30px;
-    margin-left: 30px;
-  }
-}
-
-
-@media only screen and (min-width: 627px) {
-  .label-dificuldade{
-    margin-left: 60px;
-  }
-  .label-area{
-    margin-left: 95px;
-  }
-  .prox-info{
-    position: absolute;
-    bottom: -100px;
-    right: 0px;
-  }
-  .input-container {
-    margin-right: 45px;
-    margin-left: 45px;
-  }
-}
-
-
-@media only screen and (min-width: 687px) {
-  .label-dificuldade{
-    margin-left: 40px;
-  }
-  .label-area{
-    margin-left: 60px;
-  }
-  .prox-info{
-    position: absolute;
-    bottom: -100px;
-    right: 0px;
-  }
-}
-
-
-@media only screen and (min-width: 768px) {
-  .label-dificuldade{
-    margin-left: 55px;
-  }
-  .label-area{
-    margin-left: 90px;
-  }
-  .prox-info{
-    position: absolute;
-    bottom: -100px;
-    right: 10px;
-  }
-}
-
-
-
-@media only screen and (min-width: 914px) {
-  .label-dificuldade{
-    margin-left: 60px;
-  }
-  .label-area{
-    margin-left: 95px;
-  }
-  .prox-info{
-    position: absolute;
-    bottom: -100px;
-    right: 25px;
-  }
-}
-
-
-@media only screen and (min-width: 1200px) {
-  .label-dificuldade{
-    margin-left: 65px;
-  }
-  .label-area{
-    margin-left: 95px;
-  }
-  .prox-info{
-    position: absolute;
-    right: 0px;
-  }
-  .input-container{
-    margin-right: 10px;
-    margin-left: 10px;
-  }
+.box-inputs {
+  display: grid;
+  gap: 1.5rem;
+  height: 23rem;
 }
 
 .box-alternativas {
@@ -278,10 +127,10 @@ iframe {
 
 .action-buttons {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 20px;
-  margin-top: 20px;
+  margin: 20px 0 20px 0;
 }
 
 .btn-enviar {

@@ -3,19 +3,19 @@
     <p-stepper [linear]="true">
       <p-stepperPanel header="Informações">
         <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
-          <div class="flex flex-column h-12rem">
+          <div>
             <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium pai-box-questoes-sup">
-              <div class="box-questoes-sup">
-                <p class="titulo">Informe as informações basicas da questão</p>
+              class="border-2 border-dashed surface-border border-round surface-groundborder-2 border-dashed surface-border border-round surface-ground font-medium pai-box-questoes-sup">
+              <div>
+                <p class="titulo">{{ 'basic_info_question_text' | translate }}</p>
                 <div class="box-inputs">
-                  <div class="input-container">
+                  <div >
                     <p-floatLabel>
                       <input type="text" pInputText formControlName="titulo" id="titulo"/>
-                      <label for="titulo">Titulo</label>
+                      <label for="titulo">{{ 'label_table_title' | translate }}</label>
                     </p-floatLabel>
                   </div>
-                  <div class="input-container">
+                  <div >
                     <p-floatLabel>
                       <p-dropdown
                         [options]="dificuldades"
@@ -24,17 +24,17 @@
                       <label class="label-dificuldade">Dificuldade</label>
                     </p-floatLabel>
                   </div>
-                  <div class="input-container">
+                  <div>
                     <p-floatLabel>
                       <p-dropdown
                         filter="true"
                         [options]="areasRecebidas" formControlName="area" optionLabel="nome"
                                   (onChange)="loadFieldsArea($event)"
                                   placeholder="Selecione a area"/>
-                      <label class="label-area">Area</label>
+                      <label class="">Area</label>
                     </p-floatLabel>
                   </div>
-                  <div class="input-container">
+                  <div>
                     <p-floatLabel>
                       <p-dropdown
                         filter="true"
@@ -44,8 +44,7 @@
                       <label class="label-multi">Disciplina</label>
                     </p-floatLabel>
                   </div>
-
-                  <div class="input-container">
+                  <div>
                     <p-floatLabel>
                       <p-dropdown  [options]="assuntos"
                                   filter="true"
@@ -57,7 +56,6 @@
                     </p-floatLabel>
                   </div>
                 </div>
-
               </div>
               <div class="action-buttons prox-info">
                 <p-button label="Próximo" class="btn-informacoes" icon="pi pi-arrow-right" iconPos="right"
@@ -65,44 +63,6 @@
               </div>
             </div>
           </div>
-        </ng-template>
-      </p-stepperPanel>
-      <p-stepperPanel header="Areas de integração">
-        <ng-template pTemplate="content"  let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-          <p>{{ 'integration_area_text' | translate }}</p>
-
-          <div class="input-container">
-            <p-floatLabel>
-              <p-dropdown
-                filter="true"
-                [options]="areasFiltroIntegracao" formControlName="areaInterdisciplinar" optionLabel="nome"
-                (onChange)="loadFieldsAreaIntegracao($event)"
-                placeholder="Selecione a area"/>
-              <label class="label-area">Area</label>
-            </p-floatLabel>
-            <p-floatLabel>
-              <p-dropdown
-                filter="true"
-                [options]="disciplinasFiltroIntegracao" formControlName="disciplinasInterdisciplinares" optionLabel="nome"
-                placeholder="Selecione a disciplina"
-                (onChange)="loadFieldsDisciplinasIntegracao($event)"></p-dropdown>
-              <label class="label-multi">Disciplina</label>
-            </p-floatLabel>
-            <p-floatLabel>
-              <p-multiSelect
-                id="multiselect-assuntos-interdisciplinares"
-                [display]="'chip'"
-                             [options]="assuntosInterdisciplinares" formControlName="assuntosInterdisciplinares" optionLabel="nome"
-                          placeholder="Selecione os assuntos"></p-multiSelect>
-              <label class="label-dificuldade">Assunto</label>
-            </p-floatLabel>
-          </div>
-          <div class="action-buttons">
-            <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-            <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"
-                      (onClick)="nextCallback.emit()"/>
-          </div>
-
         </ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Corpo">
@@ -266,12 +226,10 @@
                 </div>
               </div>
             </div>
-            <div class="action-buttons">
-              <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <button pButton type="button" class="btn-enviar" (click)="validarAcoes()"
-                      [label]="btnCriarEnviar"></button>
-<!--              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"-->
-<!--                        (onClick)="validarAcoes(nextCallback)"/>-->
+            <div class="action-buttons justify-content-end">
+              <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
+              <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"
+                        (onClick)="validarAcoes(nextCallback)"/>
               <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
                       label="Preview Questão"></button>
             </div>
@@ -287,6 +245,44 @@
                 <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
               </ng-container>
             </div>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Areas de integração">
+        <ng-template pTemplate="content"  let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+          <p>{{ 'integration_area_text' | translate }}</p>
+          <div class="box-inputs-2-step">
+            <div class="box-inputs">
+              <p-floatLabel>
+                <p-dropdown
+                  filter="true"
+                  [options]="areasFiltroIntegracao" formControlName="areaInterdisciplinar" optionLabel="nome"
+                  (onChange)="loadFieldsAreaIntegracao($event)"
+                  placeholder="Selecione a area"/>
+                <label class="label-area">Area</label>
+              </p-floatLabel>
+              <p-floatLabel>
+                <p-dropdown
+                  filter="true"
+                  [options]="disciplinasFiltroIntegracao" formControlName="disciplinasInterdisciplinares" optionLabel="nome"
+                  placeholder="Selecione a disciplina"
+                  (onChange)="loadFieldsDisciplinasIntegracao($event)"></p-dropdown>
+                <label class="label-multi">Disciplina</label>
+              </p-floatLabel>
+              <p-floatLabel>
+                <p-multiSelect
+                  id="multiselect-assuntos-interdisciplinares"
+                  [display]="'chip'"
+                  [options]="assuntosInterdisciplinares" formControlName="assuntosInterdisciplinares" optionLabel="nome"
+                  placeholder="Selecione os assuntos"></p-multiSelect>
+                <label class="label-dificuldade">Assunto</label>
+              </p-floatLabel>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
+            <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()"
+                    [label]="btnCriarEnviar"></button>
           </div>
         </ng-template>
       </p-stepperPanel>

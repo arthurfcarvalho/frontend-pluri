@@ -184,11 +184,11 @@ export class CreateQuestionsComponent implements OnInit {
     });
   }
 
-  validarAcoes() {
-    this.validarAlternativasCorpo();
+  validarAcoes(nextCallback: any) {
+    this.validarAlternativasCorpo(nextCallback);
   }
 
-  verMarcado(): void {
+  verMarcado(nextCallback: any): void {
     let cont = 0;
     this.alternativas.forEach((alternativas, i) => {
       if (!alternativas.correta) {
@@ -199,7 +199,7 @@ export class CreateQuestionsComponent implements OnInit {
     if (cont === 4) {
       this.toastService.error('Escolha uma questão correta.');
     } else {
-      this.submitCriarQuestao();
+      nextCallback.emit();
     }
 
   }
@@ -236,12 +236,12 @@ export class CreateQuestionsComponent implements OnInit {
     }
   }
 
-  validarAlternativasCorpo() {
+  validarAlternativasCorpo(nextCallback: any) {
 
     const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
 
     if (!alternativasVazias) {
-      this.verMarcado();
+      this.verMarcado(nextCallback);
     } else {
       this.toastService.error('Preencha todas as alternativas antes de avançar.');
     }
