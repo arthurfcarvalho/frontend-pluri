@@ -39,6 +39,8 @@ export class SignupComponent {
   signupForm: FormGroup;
   signupData!: SignupUser
   showPassword: boolean = false;
+  passwordEye1: boolean = false;
+  passwordEye2: boolean = false;
 
 
   constructor(
@@ -55,8 +57,12 @@ export class SignupComponent {
       data_nascimento: new FormControl('', Validators.required)
     }, { validators: this.validaSenhaIguais });
   }
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
+  togglePasswordVisibility(field: number) {
+    if(field == 1){
+      this.passwordEye1 = !this.passwordEye1;
+    }else if(field == 2){
+      this.passwordEye2 = !this.passwordEye2;
+    }
   }
 
   validaSenhaIguais(control: AbstractControl): ValidationErrors | null {

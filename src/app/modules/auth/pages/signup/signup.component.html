@@ -5,8 +5,7 @@
     isSignup=true
     (submit)="submit()"
     (navigate)="navigate()"
-    [disablePrimaryBtn]="!signupForm.valid"
->
+    [disablePrimaryBtn]="!signupForm.valid">
     <form [formGroup]="signupForm">
         <app-auth-input
             formControlName="nome"
@@ -40,15 +39,15 @@
             placeholder="Digite sua senha"
             formControlName="senha"
             inputName="senha"
-            [type]="showPassword ? 'text' : 'password'"
+            [type]="passwordEye1 ? 'text' : 'password'"
             label="Senha"
             [required]="true"
         >
           <div class="input-container">
             <fa-icon
-              [icon]="showPassword ? faEye : faEyeSlash"
+              [icon]="passwordEye1 ? faEyeSlash : faEye"
               class="toggle-password-icon"
-              (click)="togglePasswordVisibility()"
+              (click)="togglePasswordVisibility(1)"
             >
             </fa-icon>
           </div>
@@ -60,15 +59,15 @@
             placeholder="Confirme sua senha"
             formControlName="confirmarSenha"
             inputName="confirmarSenha"
-            [type]="showPassword ? 'text' : 'password'"
+            [type]="passwordEye2 ? 'text' : 'password'"
             label="Confirme sua senha"
             [required]="true"
         >
           <div class="input-container">
             <fa-icon
-              [icon]="showPassword ? faEye : faEyeSlash"
+              [icon]="passwordEye2  ? faEyeSlash : faEye"
               class="toggle-password-icon"
-              (click)="togglePasswordVisibility()"
+              (click)="togglePasswordVisibility(2)"
             >
             </fa-icon>
           </div>
