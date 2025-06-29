@@ -19,6 +19,11 @@
   "label_table_quantidade_aprovada": "Quantidade aprovada",
   "label_table_status": "Status",
 
+  "label_information": "Informações",
+  "label_body": "Corpo",
+  "label_choices": "Alternativas",
+  "label_integration_areas": "Areas de integração",
+
   "text_body": "Informe o corpo",
   "text_font": "Digite a referência",
   "MENU": {
