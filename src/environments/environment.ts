@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://pluri.iftm.edu.br/api',
+    apiUrl: 'http://localhost:8080',
     featureToggle: true
   };
 
