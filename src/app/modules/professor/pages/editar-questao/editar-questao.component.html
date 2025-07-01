@@ -1,305 +1,305 @@
-<!--<label *ngIf="passou" class="message-label">O editor está desativado</label>-->
+<!--&lt;!&ndash;<label *ngIf="passou" class="message-label">O editor está desativado</label>&ndash;&gt;-->
 
-<form [formGroup]="atualizarQuestaoForm" class="create-question-form">
-  <div class="card">
-    <p-stepper [linear]="true">
-      <p-stepperPanel header="Informações">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-                     let-index="index">
-          <div class="flex flex-column h-12rem">
-                <span
-                  [ngClass]="{'status-pendente': questao?.status?.label === 'PENDENTE',
-              'status-aprovada': questao?.status?.label === 'APROVADA',
-              'status-reprovada': questao?.status?.label === 'REPROVADA',
-              'status-enviada': questao?.status?.label === 'ENVIADA'}"
-                >Status: {{ questao?.status?.label }}</span>
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              <div class="box-questoes-sup">
-                <p class="titulo">Informe as informações basicas da questão</p>
-                <div class="box-inputs">
-                  <div class="input-container">
-                    <p-floatLabel>
-                      <input type="text" pInputText formControlName="titulo" id="titulo"/>
-                      <label for="titulo">Titulo</label>
-                    </p-floatLabel>
-                  </div>
-                  <div class="input-container">
-                    <p-floatLabel>
-                      <p-dropdown
-                        [options]="dificuldades"
-                        formControlName="dificuldade"
-                        inputId="dificuldade"/>
-                      <label class="label-dificuldade">Dificuldade</label>
-                    </p-floatLabel>
-                  </div>
-                  <div class="input-container">
-                    <p-floatLabel>
-                      <p-dropdown [options]="areasRecebidas" formControlName="area" optionLabel="nome"
-                                  (onChange)="loadFieldsArea($event)"
-                                  placeholder="Selecione a area"/>
-                      <label class="label-dificuldade">Area</label>
-                    </p-floatLabel>
-                  </div>
-                  <div class="input-container">
-                    <p-floatLabel>
-                      <p-dropdown
-                        filter="true"
-                        [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"
-                        placeholder="Selecione a disciplina"
-                        (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
-                      <label class="label-dificuldade">Disciplina</label>
-                    </p-floatLabel>
-                  </div>
-                  <div class="input-container">
-                    <p-floatLabel>
-                      <p-dropdown [options]="assuntos"
-                                  formControlName="assuntos"
-                                  optionLabel="nome"
-                                  filter="true"
-                                  (onChange)="filterAssuntosInterdisciplinares($event)"
-                                  placeholder="Selecione os assuntos"></p-dropdown>
-                      <label class="label-dificuldade">Assunto</label>
-                    </p-floatLabel>
-                  </div>
-                </div>
-              </div>
+<!--<form [formGroup]="atualizarQuestaoForm" class="create-question-form">-->
+<!--  <div class="card">-->
+<!--    <p-stepper [linear]="true">-->
+<!--      <p-stepperPanel header="Informações">-->
+<!--        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"-->
+<!--                     let-index="index">-->
+<!--          <div class="flex flex-column h-12rem">-->
+<!--                <span-->
+<!--                  [ngClass]="{'status-pendente': questao?.status?.label === 'PENDENTE',-->
+<!--              'status-aprovada': questao?.status?.label === 'APROVADA',-->
+<!--              'status-reprovada': questao?.status?.label === 'REPROVADA',-->
+<!--              'status-enviada': questao?.status?.label === 'ENVIADA'}"-->
+<!--                >Status: {{ questao?.status?.label }}</span>-->
+<!--            <div-->
+<!--              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">-->
+<!--              <div class="box-questoes-sup">-->
+<!--                <p class="titulo">Informe as informações basicas da questão</p>-->
+<!--                <div class="box-inputs">-->
+<!--                  <div class="input-container">-->
+<!--                    <p-floatLabel>-->
+<!--                      <input type="text" pInputText formControlName="titulo" id="titulo"/>-->
+<!--                      <label for="titulo">Titulo</label>-->
+<!--                    </p-floatLabel>-->
+<!--                  </div>-->
+<!--                  <div class="input-container">-->
+<!--                    <p-floatLabel>-->
+<!--                      <p-dropdown-->
+<!--                        [options]="dificuldades"-->
+<!--                        formControlName="dificuldade"-->
+<!--                        inputId="dificuldade"/>-->
+<!--                      <label class="label-dificuldade">Dificuldade</label>-->
+<!--                    </p-floatLabel>-->
+<!--                  </div>-->
+<!--                  <div class="input-container">-->
+<!--                    <p-floatLabel>-->
+<!--                      <p-dropdown [options]="areasRecebidas" formControlName="area" optionLabel="nome"-->
+<!--                                  (onChange)="loadFieldsArea($event)"-->
+<!--                                  placeholder="Selecione a area"/>-->
+<!--                      <label class="label-dificuldade">Area</label>-->
+<!--                    </p-floatLabel>-->
+<!--                  </div>-->
+<!--                  <div class="input-container">-->
+<!--                    <p-floatLabel>-->
+<!--                      <p-dropdown-->
+<!--                        filter="true"-->
+<!--                        [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"-->
+<!--                        placeholder="Selecione a disciplina"-->
+<!--                        (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>-->
+<!--                      <label class="label-dificuldade">Disciplina</label>-->
+<!--                    </p-floatLabel>-->
+<!--                  </div>-->
+<!--                  <div class="input-container">-->
+<!--                    <p-floatLabel>-->
+<!--                      <p-dropdown [options]="assuntos"-->
+<!--                                  formControlName="assuntos"-->
+<!--                                  optionLabel="nome"-->
+<!--                                  filter="true"-->
+<!--                                  (onChange)="filterAssuntosInterdisciplinares($event)"-->
+<!--                                  placeholder="Selecione os assuntos"></p-dropdown>-->
+<!--                      <label class="label-dificuldade">Assunto</label>-->
+<!--                    </p-floatLabel>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
 
-            </div>
-          </div>
-          <div class="action-buttons">
-            <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"
-                      (onClick)="validarAntesDeAvancar(nextCallback)"/>
-          </div>
-        </ng-template>
-      </p-stepperPanel>
-      <p-stepperPanel header="Areas de integração">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-                     let-index="index">
-          <p>{{ 'integration_area_text' | translate }}</p>
-          <div class="input-container">
-            <p-floatLabel>
-              <p-dropdown [options]="areasFiltroIntegracao"
-                          formControlName="areaInterdisciplinar" optionLabel="nome"
-                          (onChange)="loadFieldsAreaIntegracao($event)"
-                          placeholder="Selecione a area"/>
-              <label class="label-dificuldade">Area</label>
-            </p-floatLabel>
-            <p-floatLabel>
-              <p-dropdown
-                filter="true"
-                [options]="disciplinasFiltroIntegracao" formControlName="disciplinasInterdisciplinares" optionLabel="nome"
-                placeholder="Selecione a disciplina"
-                (onChange)="loadFieldsDisciplinasIntegracao($event)"></p-dropdown>
-              <label class="label-dificuldade">Disciplina</label>
-            </p-floatLabel>
-            <p-floatLabel>
-              <p-multiSelect
-                id="multiselect-assuntos-interdisciplinares"
-                [display]="'chip'" [options]="assuntosInterdisciplinares"
-                             formControlName="assuntosInterdisciplinares" optionLabel="nome"
-                             placeholder="Selecione os assuntos"></p-multiSelect>
-              <label class="label-dificuldade">Assunto</label>
-            </p-floatLabel>
-          </div>
-          <div class="action-buttons">
-            <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-            <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"
-                      (onClick)="nextCallback.emit()"/>
-          </div>
-        </ng-template>
-      </p-stepperPanel>
-      <p-stepperPanel header="Corpo">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-                     let-index="index">
-          <div class="flex flex-column h-12rem">
-            <div
-              class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              <div class="box-questoes-sup">
-                <p class="titulo">{{ 'text_body' | translate }}</p>
-              </div>
-              <div class="box-corpo">
-                <div class="box-summernote">
-                  <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo" formControlName="corpo"
-                       [(summernoteModel)]="corpo"></div>
-                </div>
-              </div>
-              <div class="box-questoes-sup">
-                <p class="titulo">{{ 'text_font' | translate }}</p>
-              </div>
-              <div class="box-corpo">
-                <div class="box-summernote" >
-                  <div id="summernote-font" formControlName="fonte" [ngxSummernote]="config" [ngxSummernoteView]="fonte"
-                       [(summernoteModel)]="fonte"></div>
-                </div>
-              </div>
-            </div>
-            <div class="action-buttons">
-              <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()"/>
-              <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
-                      label="Preview Questão"></button>
-            </div>
-          </div>
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="action-buttons">-->
+<!--            <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right"-->
+<!--                      (onClick)="validarAntesDeAvancar(nextCallback)"/>-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-stepperPanel>-->
+<!--      <p-stepperPanel header="Areas de integração">-->
+<!--        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"-->
+<!--                     let-index="index">-->
+<!--          <p>{{ 'integration_area_text' | translate }}</p>-->
+<!--          <div class="input-container">-->
+<!--            <p-floatLabel>-->
+<!--              <p-dropdown [options]="areasFiltroIntegracao"-->
+<!--                          formControlName="areaInterdisciplinar" optionLabel="nome"-->
+<!--                          (onChange)="loadFieldsAreaIntegracao($event)"-->
+<!--                          placeholder="Selecione a area"/>-->
+<!--              <label class="label-dificuldade">Area</label>-->
+<!--            </p-floatLabel>-->
+<!--            <p-floatLabel>-->
+<!--              <p-dropdown-->
+<!--                filter="true"-->
+<!--                [options]="disciplinasFiltroIntegracao" formControlName="disciplinasInterdisciplinares" optionLabel="nome"-->
+<!--                placeholder="Selecione a disciplina"-->
+<!--                (onChange)="loadFieldsDisciplinasIntegracao($event)"></p-dropdown>-->
+<!--              <label class="label-dificuldade">Disciplina</label>-->
+<!--            </p-floatLabel>-->
+<!--            <p-floatLabel>-->
+<!--              <p-multiSelect-->
+<!--                id="multiselect-assuntos-interdisciplinares"-->
+<!--                [display]="'chip'" [options]="assuntosInterdisciplinares"-->
+<!--                             formControlName="assuntosInterdisciplinares" optionLabel="nome"-->
+<!--                             placeholder="Selecione os assuntos"></p-multiSelect>-->
+<!--              <label class="label-dificuldade">Assunto</label>-->
+<!--            </p-floatLabel>-->
+<!--          </div>-->
+<!--          <div class="action-buttons">-->
+<!--            <p-button label="Voltar" class="btns-corpos" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>-->
+<!--            <p-button label="Próximo" class="btns-corpos" icon="pi pi-arrow-right" iconPos="right"-->
+<!--                      (onClick)="nextCallback.emit()"/>-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-stepperPanel>-->
+<!--      <p-stepperPanel header="Corpo">-->
+<!--        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"-->
+<!--                     let-index="index">-->
+<!--          <div class="flex flex-column h-12rem">-->
+<!--            <div-->
+<!--              class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">-->
+<!--              <div class="box-questoes-sup">-->
+<!--                <p class="titulo">{{ 'text_body' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div class="box-corpo">-->
+<!--                <div class="box-summernote">-->
+<!--                  <div id="summernote" [ngxSummernote]="config" [ngxSummernoteView]="corpo" formControlName="corpo"-->
+<!--                       [(summernoteModel)]="corpo"></div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="box-questoes-sup">-->
+<!--                <p class="titulo">{{ 'text_font' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div class="box-corpo">-->
+<!--                <div class="box-summernote" >-->
+<!--                  <div id="summernote-font" formControlName="fonte" [ngxSummernote]="config" [ngxSummernoteView]="fonte"-->
+<!--                       [(summernoteModel)]="fonte"></div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="action-buttons">-->
+<!--              <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>-->
+<!--              <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (onClick)="nextCallback.emit()"/>-->
+<!--              <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"-->
+<!--                      label="Preview Questão"></button>-->
+<!--            </div>-->
+<!--          </div>-->
 
-        </ng-template>
-      </p-stepperPanel>
-      <p-stepperPanel header="Alternativas">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
-                     let-index="index">
-          <div class="flex flex-column h-12rem">
-            <div class="box-questoes-sup">
-              <p class="titulo">Informe as alternativas</p>
-            </div>
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium text-align-center">
-              <div class="box-alternativas">
-                <div class="box-summernote">
-                  <div class="button-checkbox-container">
-                    <p-button
-                      type="button"
-                      (click)="toggleEditor(0)"
-                      [class.active]="expandedIndexes[0]"
-                    >
-                      Alternativa A
-                    </p-button>
-                    <div *ngIf="expandedIndexes[0]">
-                      <input
-                        for="alternativa1-cb"
-                        type="radio"
-                        (change)="setCorreta(0)"
-                        [checked]="alternativas[0].correta"
-                        name="alternativa"
-                      />
-                      <label id="alternativa1-cb">Alternativa correta?</label>
-                    </div>
-                  </div>
-                  <div *ngIf="expandedIndexes[0]">
-                    <div
-                      id="summernote1"
-                      [ngxSummernote]="config"
-                      [(summernoteModel)]="this.questao.alternativas[0].corpo"
-                      [ngxSummernoteView]="this.questao.alternativas[0].corpo"
-                    >
-                    </div>
-                  </div>
-                </div>
-                <div class="box-summernote">
-                  <div class="button-checkbox-container">
-                    <p-button
-                      type="button"
-                      (click)="toggleEditor(1)"
-                      [class.active]="expandedIndexes[1]"
-                    >
-                      Alternativa B
-                    </p-button>
-                    <div *ngIf="expandedIndexes[1]">
-                      <input
-                        for="alternativa2-cb"
-                        type="radio"
-                        (change)="setCorreta(1)"
-                        [checked]="alternativas[1].correta"
-                        name="alternativa"
-                      />
-                      <label id="alternativa2-cb">Alternativa correta?</label>
-                    </div>
-                  </div>
-                  <div *ngIf="expandedIndexes[1]">
-                    <div
-                      id="summernote2"
-                      [ngxSummernote]="config"
-                      [(summernoteModel)]="this.questao.alternativas[1].corpo"
-                      [ngxSummernoteView]="this.questao.alternativas[1].corpo"
-                    ></div>
-                  </div>
-                </div>
-                <div class="box-summernote">
-                  <div class="button-checkbox-container">
-                    <p-button
-                      type="button"
-                      (click)="toggleEditor(2)"
-                      [class.active]="expandedIndexes[2]"
-                    >
-                      Alternativa C
-                    </p-button>
-                    <div *ngIf="expandedIndexes[2]">
-                      <input
-                        for="alternativa3-cb"
-                        type="radio"
-                        (change)="setCorreta(2)"
-                        [checked]="alternativas[2].correta"
-                        name="alternativa"
-                      />
-                      <label id="alternativa3-cb">Alternativa correta?</label>
-                    </div>
-                  </div>
-                  <div *ngIf="expandedIndexes[2]">
-                    <div
-                      id="summernote3"
-                      [ngxSummernote]="config"
-                      [(summernoteModel)]="this.questao.alternativas[2].corpo"
-                      [ngxSummernoteView]="this.questao.alternativas[2].corpo"
-                    ></div>
-                  </div>
-                </div>
-                <div class="box-summernote">
-                  <div class="button-checkbox-container">
-                    <p-button
-                      type="button"
-                      (click)="toggleEditor(3)"
-                      [class.active]="expandedIndexes[3]"
-                    >
-                      Alternativa D
-                    </p-button>
-                    <div *ngIf="expandedIndexes[3]">
-                      <input
-                        for="alternativa4-cb"
-                        type="radio"
-                        (change)="setCorreta(3)"
-                        [checked]="alternativas[3].correta"
-                        name="alternativa"
-                      />
-                      <label id="alternativa4-cb">Alternativa correta?</label>
-                    </div>
-                  </div>
-                  <div *ngIf="expandedIndexes[3]">
-                    <div
-                      id="summernote4"
-                      [ngxSummernote]="config"
-                      [(summernoteModel)]="this.questao.alternativas[3].corpo"
-                      [ngxSummernoteView]="this.questao.alternativas[3].corpo"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="action-buttons">
-              <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-              <button pButton type="button" class="btn-enviar" (click)="validarAcoes(nextCallback)"
-                      label="Atualizar"></button>
-              <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"
-                      label="Preview Questão"></button>
-            </div>
-            <div *ngIf="pdfUrl" class="box-preview">
-              <div class="box-btn-fechar">
-                <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe1" (click)="fecharIframe()">Fechar
-                  Preview
-                </button>
-              </div>
-              <!--              <p>Sua questão exemplo e a número 01.</p>-->
-              <!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
-              <ng-container *ngIf="pdfUrl">
-                <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
-              </ng-container>
+<!--        </ng-template>-->
+<!--      </p-stepperPanel>-->
+<!--      <p-stepperPanel header="Alternativas">-->
+<!--        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"-->
+<!--                     let-index="index">-->
+<!--          <div class="flex flex-column h-12rem">-->
+<!--            <div class="box-questoes-sup">-->
+<!--              <p class="titulo">Informe as alternativas</p>-->
+<!--            </div>-->
+<!--            <div-->
+<!--              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium text-align-center">-->
+<!--              <div class="box-alternativas">-->
+<!--                <div class="box-summernote">-->
+<!--                  <div class="button-checkbox-container">-->
+<!--                    <p-button-->
+<!--                      type="button"-->
+<!--                      (click)="toggleEditor(0)"-->
+<!--                      [class.active]="expandedIndexes[0]"-->
+<!--                    >-->
+<!--                      Alternativa A-->
+<!--                    </p-button>-->
+<!--                    <div *ngIf="expandedIndexes[0]">-->
+<!--                      <input-->
+<!--                        for="alternativa1-cb"-->
+<!--                        type="radio"-->
+<!--                        (change)="setCorreta(0)"-->
+<!--                        [checked]="alternativas[0].correta"-->
+<!--                        name="alternativa"-->
+<!--                      />-->
+<!--                      <label id="alternativa1-cb">Alternativa correta?</label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div *ngIf="expandedIndexes[0]">-->
+<!--                    <div-->
+<!--                      id="summernote1"-->
+<!--                      [ngxSummernote]="config"-->
+<!--                      [(summernoteModel)]="this.questao.alternativas[0].corpo"-->
+<!--                      [ngxSummernoteView]="this.questao.alternativas[0].corpo"-->
+<!--                    >-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="box-summernote">-->
+<!--                  <div class="button-checkbox-container">-->
+<!--                    <p-button-->
+<!--                      type="button"-->
+<!--                      (click)="toggleEditor(1)"-->
+<!--                      [class.active]="expandedIndexes[1]"-->
+<!--                    >-->
+<!--                      Alternativa B-->
+<!--                    </p-button>-->
+<!--                    <div *ngIf="expandedIndexes[1]">-->
+<!--                      <input-->
+<!--                        for="alternativa2-cb"-->
+<!--                        type="radio"-->
+<!--                        (change)="setCorreta(1)"-->
+<!--                        [checked]="alternativas[1].correta"-->
+<!--                        name="alternativa"-->
+<!--                      />-->
+<!--                      <label id="alternativa2-cb">Alternativa correta?</label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div *ngIf="expandedIndexes[1]">-->
+<!--                    <div-->
+<!--                      id="summernote2"-->
+<!--                      [ngxSummernote]="config"-->
+<!--                      [(summernoteModel)]="this.questao.alternativas[1].corpo"-->
+<!--                      [ngxSummernoteView]="this.questao.alternativas[1].corpo"-->
+<!--                    ></div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="box-summernote">-->
+<!--                  <div class="button-checkbox-container">-->
+<!--                    <p-button-->
+<!--                      type="button"-->
+<!--                      (click)="toggleEditor(2)"-->
+<!--                      [class.active]="expandedIndexes[2]"-->
+<!--                    >-->
+<!--                      Alternativa C-->
+<!--                    </p-button>-->
+<!--                    <div *ngIf="expandedIndexes[2]">-->
+<!--                      <input-->
+<!--                        for="alternativa3-cb"-->
+<!--                        type="radio"-->
+<!--                        (change)="setCorreta(2)"-->
+<!--                        [checked]="alternativas[2].correta"-->
+<!--                        name="alternativa"-->
+<!--                      />-->
+<!--                      <label id="alternativa3-cb">Alternativa correta?</label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div *ngIf="expandedIndexes[2]">-->
+<!--                    <div-->
+<!--                      id="summernote3"-->
+<!--                      [ngxSummernote]="config"-->
+<!--                      [(summernoteModel)]="this.questao.alternativas[2].corpo"-->
+<!--                      [ngxSummernoteView]="this.questao.alternativas[2].corpo"-->
+<!--                    ></div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="box-summernote">-->
+<!--                  <div class="button-checkbox-container">-->
+<!--                    <p-button-->
+<!--                      type="button"-->
+<!--                      (click)="toggleEditor(3)"-->
+<!--                      [class.active]="expandedIndexes[3]"-->
+<!--                    >-->
+<!--                      Alternativa D-->
+<!--                    </p-button>-->
+<!--                    <div *ngIf="expandedIndexes[3]">-->
+<!--                      <input-->
+<!--                        for="alternativa4-cb"-->
+<!--                        type="radio"-->
+<!--                        (change)="setCorreta(3)"-->
+<!--                        [checked]="alternativas[3].correta"-->
+<!--                        name="alternativa"-->
+<!--                      />-->
+<!--                      <label id="alternativa4-cb">Alternativa correta?</label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div *ngIf="expandedIndexes[3]">-->
+<!--                    <div-->
+<!--                      id="summernote4"-->
+<!--                      [ngxSummernote]="config"-->
+<!--                      [(summernoteModel)]="this.questao.alternativas[3].corpo"-->
+<!--                      [ngxSummernoteView]="this.questao.alternativas[3].corpo"-->
+<!--                    ></div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="action-buttons">-->
+<!--              <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>-->
+<!--              <button pButton type="button" class="btn-enviar" (click)="validarAcoes(nextCallback)"-->
+<!--                      label="Atualizar"></button>-->
+<!--              <button pButton type="button" [disabled]="carregamento" (click)="previewQuestaoNoModelo()"-->
+<!--                      label="Preview Questão"></button>-->
+<!--            </div>-->
+<!--            <div *ngIf="pdfUrl" class="box-preview">-->
+<!--              <div class="box-btn-fechar">-->
+<!--                <button pButton severity="danger" *ngIf="pdfUrl" id="btnDestroiIframe1" (click)="fecharIframe()">Fechar-->
+<!--                  Preview-->
+<!--                </button>-->
+<!--              </div>-->
+<!--              &lt;!&ndash;              <p>Sua questão exemplo e a número 01.</p>&ndash;&gt;-->
+<!--              &lt;!&ndash;              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>&ndash;&gt;-->
+<!--              <ng-container *ngIf="pdfUrl">-->
+<!--                <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
+<!--              </ng-container>-->
 
-            </div>
-          </div>
-        </ng-template>
-      </p-stepperPanel>
-    </p-stepper>
-  </div>
-</form>
-<div *ngIf="carregamento" class="custom-spinner-container">
-  <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
-</div>
-<br>
+<!--            </div>-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-stepperPanel>-->
+<!--    </p-stepper>-->
+<!--  </div>-->
+<!--</form>-->
+<!--<div *ngIf="carregamento" class="custom-spinner-container">-->
+<!--  <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>-->
+<!--</div>-->
+<!--<br>-->
