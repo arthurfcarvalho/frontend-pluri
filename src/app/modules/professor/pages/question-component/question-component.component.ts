@@ -156,6 +156,8 @@ export class QuestionComponent implements OnInit{
         this.areaService.returnAllAreas().subscribe(areas => {
           this.areasRecebidas = areas.content;
           this.areasFiltroIntegracao = areas.content;
+          const areaEncontrada = this.areasRecebidas.find(a => a.id === this.questao.area.id);
+          this.atualizarQuestaoForm.patchValue({ area: areaEncontrada });
         });
         this.assuntoService.listarAssuntos().subscribe(assuntos => {
           this.assuntosInterdisciplinares = assuntos
