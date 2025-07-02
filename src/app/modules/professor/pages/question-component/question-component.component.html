@@ -1,8 +1,9 @@
-<form [formGroup]="criarQuestaoForm" class="create-question-form">
-  <div class="card">
-    <p-stepper [linear]="true">
-      <p-stepperPanel header="Informações">
-        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+<form [formGroup]="isCreate ? criarQuestaoForm : atualizarQuestaoForm">
+  <div>
+    <p-stepper>
+      <p-stepperPanel header="{{ 'label_information' | translate}}">
+        <!--*ngIf="isCreate; else isEdit"-!-->
+        <ng-template pTemplate="content"  let-nextCallback="nextCallback" let-index="index">
           <div>
             <div
               class="border-2 border-dashed surface-border border-round surface-groundborder-2 border-dashed surface-border border-round surface-ground font-medium pai-box-questoes-sup">
@@ -29,8 +30,8 @@
                       <p-dropdown
                         filter="true"
                         [options]="areasRecebidas" formControlName="area" optionLabel="nome"
-                                  (onChange)="loadFieldsArea($event)"
-                                  placeholder="Selecione a area"/>
+                        (onChange)="loadFieldsArea($event)"
+                        placeholder="Selecione a area"/>
                       <label class="">Area</label>
                     </p-floatLabel>
                   </div>
@@ -39,19 +40,19 @@
                       <p-dropdown
                         filter="true"
                         [options]="disciplinas" formControlName="disciplinas" optionLabel="nome"
-                                     placeholder="Selecione a disciplina"
-                                     (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
+                        placeholder="Selecione a disciplina"
+                        (onChange)="loadFieldsDisciplinas($event)"></p-dropdown>
                       <label class="label-multi">Disciplina</label>
                     </p-floatLabel>
                   </div>
                   <div>
                     <p-floatLabel>
                       <p-dropdown  [options]="assuntos"
-                                  filter="true"
-                                  formControlName="assuntos"
-                                  optionLabel="nome"
-                                  (onChange)="filterAssuntosInterdisciplinares($event)"
-                                     placeholder="Selecione os assuntos"></p-dropdown>
+                                   filter="true"
+                                   formControlName="assuntos"
+                                   optionLabel="nome"
+                                   (onChange)="filterAssuntosInterdisciplinares($event)"
+                                   placeholder="Selecione os assuntos"></p-dropdown>
                       <label class="label-dificuldade">Assunto</label>
                     </p-floatLabel>
                   </div>
@@ -65,10 +66,16 @@
           </div>
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="Corpo">
+      <p-stepperPanel header="{{'label_body' | translate}}">
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
                      let-index="index">
           <div class="flex flex-column h-12rem">
+            <span
+              [ngClass]="{'status-pendente': questao?.status?.label === 'PENDENTE',
+              'status-aprovada': questao?.status?.label === 'APROVADA',
+              'status-reprovada': questao?.status?.label === 'REPROVADA',
+              'status-enviada': questao?.status?.label === 'ENVIADA'}"
+            >Status: {{ questao?.status?.label }}</span>
             <div
               class="flex-column border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <div class="box-questoes-sup">
@@ -76,7 +83,9 @@
               </div>
               <div class="box-corpo">
                 <div class="box-summernote" >
-                  <div id="summernote" formControlName="corpo" [ngxSummernote]="config" [ngxSummernoteView]="corpo"
+                  <div id="summernote" formControlName="corpo"
+                       [ngxSummernote]="config"
+                       [ngxSummernoteView]="corpo"
                        [(summernoteModel)]="corpo"></div>
                 </div>
               </div>
@@ -98,7 +107,7 @@
 
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="Alternativas">
+      <p-stepperPanel header="{{'label_choices' | translate}}">
         <ng-template class="flex flex-column" pTemplate="content" let-prevCallback="prevCallback"
                      let-nextCallback="nextCallback" let-index="index">
           <div class="flex flex-column h-12rem">
@@ -239,8 +248,8 @@
                   Preview
                 </button>
               </div>
-<!--              <p>Sua questão exemplo e a número 01.</p>-->
-<!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
+              <!--              <p>Sua questão exemplo e a número 01.</p>-->
+              <!--              <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>-->
               <ng-container *ngIf="pdfUrl">
                 <iframe id="iFramePdf1" [src]="pdfUrl"></iframe>
               </ng-container>
@@ -248,7 +257,7 @@
           </div>
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="Areas de integração">
+      <p-stepperPanel header="{{'label_integration_areas' | translate}}">
         <ng-template pTemplate="content"  let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
           <p>{{ 'integration_area_text' | translate }}</p>
           <div class="box-inputs-2-step">
@@ -281,16 +290,11 @@
           </div>
           <div class="action-buttons">
             <p-button label="Voltar" icon="pi pi-arrow-left" (onClick)="prevCallback.emit()"/>
-            <button pButton type="button" class="btn-enviar" (click)="submitCriarQuestao()"
-                    [label]="btnCriarEnviar"></button>
+            <button pButton type="button" class="btn-enviar" (click)="sendForm()"
+                    [label]="btnCriarAtualizarEnviar"></button>
           </div>
         </ng-template>
       </p-stepperPanel>
     </p-stepper>
   </div>
 </form>
-<div *ngIf="carregamento" class="custom-spinner-container">
-  <p-progressSpinner ariaLabel="carregamento" *ngIf="carregamento" styleClass="custom-spinner"></p-progressSpinner>
-</div>
-<br>
-

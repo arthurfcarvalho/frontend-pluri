@@ -38,15 +38,16 @@ export class DisciplinaService {
   }
 
   listarDisciplinasPorArea(idArea: number) {
-    const url =  this.baseUrl + 'listar-disciplinas-por-area?areaId=' + idArea +'&page=0&size=10&sort=nome';
+    const url =  this.baseUrl + 'listar-disciplinas-por-area?areaId=' + idArea +'&page=0&size=1000&sort=nome';
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
   }
   listById(id: number) {
     const url =  this.baseUrl + 'listar-disciplina/'+id;
     return this.httpClient.get<Disciplina>(url).pipe(map(obj => obj));
   }
-  listarDisciplinasPage(page: number = 0, size: number = 10): Observable<any> {
-    const url = this.baseUrl + `listar-disciplinas-page?page=${page}&size=${size}`;
+  listarDisciplinasPage(page: number = 0, size: number = 10, sortField: string = 'nome', sortDirection: string = 'asc',busca: string = ''): Observable<any> {
+    const encodedBusca = encodeURIComponent(busca); // evita problemas com espaços ou acentos
+    const url = `${this.baseUrl}listar-disciplinas-page?page=${page}&size=${size}&sort=${sortField},${sortDirection}&busca=${encodedBusca}`;
     return this.httpClient.get<any>(url);
   }
   listarDisciplinas() {

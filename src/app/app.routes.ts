@@ -52,6 +52,9 @@ import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assunt
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
 import {EditDisciplinaComponent} from "./modules/disciplina/edit-disciplina/edit-disciplina.component";
 import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
+import {
+  QuestionComponent,
+} from "./modules/professor/pages/question-component/question-component.component";
 import {EditAreaComponent} from "./modules/area/edit-area/edit-area.component";
 
 export const routes: Routes = [
@@ -73,7 +76,7 @@ export const routes: Routes = [
   { path: 'criar-questao', component: CreateQuestionsComponent, title: 'Criar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   { path: 'criar-questao/:id', component: CreateQuestionsComponent, title: 'Criar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   { path: 'minhas-questoes', component: ListaQuestoesUsuarioComponent, title: 'Listar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
-  { path: 'editar-questao/:id', component: EditarQuestaoComponent, title: 'Editar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
+  //{ path: 'editar-questao/:id', component: EditarQuestaoComponent, title: 'Editar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   { path: 'questoes-a-enviar', component: ListarQuestaoAEnviarComponent, title: 'Listar Questoes A Enviar - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   { path: 'lista-questoes-para-envio/:idQuestaoAEnviar', component: EnviarQuestaoComponent, canActivate: [authGuard] },
 
@@ -100,6 +103,10 @@ export const routes: Routes = [
   { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Pesquisar Disciplinas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar Assunto - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
   { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar Assuntos - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
+
+
+  { path: 'question-component', component: QuestionComponent, title: 'question - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
+  { path: 'question-component/:id', component: QuestionComponent, title: 'question - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
 
   // Error
   { path: 'acesso-negado', component: DeniedAcessComponent, title: 'Acesso Negado - Pluri', canActivate: [authGuard] },

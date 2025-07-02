@@ -5,19 +5,20 @@
   [rows]="10"
   [totalRecords]="totalRecords"
   [lazy]="true"
-  (onLazyLoad)="loadDisciplinas(($event.first ?? 0) / ($event.rows ?? 10), $event.rows ?? 10)"
+  (onLazyLoad)="onLazyLoadWrapper($event)"
   [rowsPerPageOptions]="[5,10, 20]"
   [tableStyle]="{'min-width': '50rem'}"
-  sortField="data_inicio_pluri"
+  sortField="nome"
   [sortOrder]="1">
   <ng-template pTemplate="caption">
     <div>
       Disciplinas
     </div>
+    <input type="text" pInputText placeholder="Buscar por nome" aria-label="Buscar por nome" [(ngModel)]="termoBusca" (ngModelChange)="onSearchChange()" />
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th pSortableColumn="id">{{ 'label_table_id' | translate }}<p-sortIcon field="id"/></th>
+      <!--<th pSortableColumn="id">{{ 'label_table_id' | translate }}<p-sortIcon field="id"/></th> Id coluna -->
       <th pSortableColumn="nome">{{ 'label_table_name' | translate }}<p-sortIcon field="nome"/></th>
       <th pSortableColumn="area">{{ 'label_table_area' | translate }}<p-sortIcon field="area"/></th>
       <th></th>
@@ -25,7 +26,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-disciplina>
     <tr>
-      <td>{{ disciplina.id }}</td>
+      <!--<td>{{ disciplina.id }}</td> tirei o id -->
       <td>{{ disciplina.nome}}</td>
       <td>{{ disciplina?.areaNome }}</td>
       <td class="box-btns">
