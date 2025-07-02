@@ -24,11 +24,13 @@
         <ng-template pTemplate="body" let-role>
             <tr>
                 <td>{{ role.nome }}</td>
-                <td style="display: flex; justify-content: flex-end;">
-                    <button pButton type="button" label="Atribuir Permissões" (click)="showModalPermAssignment(role)">
-                        <span class="pi pi-user-edit"></span>
-                    </button>
-                </td>
+
+              <td style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                <button pButton type="button" label="Editar" routerLink="/editar-perfil/{{role.id}}"></button>
+                <button pButton type="button" label="Atribuir Permissões" (click)="showModalPermAssignment(role)"></button>
+
+
+              </td>
             </tr>
         </ng-template>
     </p-table>

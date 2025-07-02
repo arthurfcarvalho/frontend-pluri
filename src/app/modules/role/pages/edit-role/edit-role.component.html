@@ -1,0 +1,24 @@
+<p>edit-role works!</p><div class="container">
+  <p-fieldset legend="Editar Perfil">
+    <form class="form-container" [formGroup]="editRoleForm">
+      <div class="name-element">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" pInputText formControlName="nome" />
+      </div>
+
+      <div class="area-element">
+        <label for="area">Área</label>
+        <p-dropdown
+          [options]="areaOptions"
+          formControlName="id_area"
+          optionLabel="nome"
+          id="area"
+        ></p-dropdown>
+      </div>
+
+      <div class="submit-button">
+        <p-button label="Atualizar" (click)="submit()" />
+      </div>
+    </form>
+  </p-fieldset>
+</div>
