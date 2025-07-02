@@ -128,6 +128,7 @@ export class EditarQuestaoComponent implements  OnInit{
   }
 
   ngOnInit() {
+    console.log("entrou no ngOnInit do EditarQuestao")
     this.idQuestao = Number(this.route.snapshot.paramMap.get('id'));
 
     if (this.idQuestao) {

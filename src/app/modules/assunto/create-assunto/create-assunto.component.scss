@@ -13,6 +13,22 @@
       font-weight: bold;
     }
 
+    .name-element input {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .desc-element ::ng-deep p-dropdown {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .desc-element ::ng-deep .p-dropdown {
+      width: 100%;
+      max-width: 600px;
+    }
+
+
     .desc-element label{
       display: flex;
       font-weight: bold;

@@ -8,8 +8,15 @@
 
 }
 ::ng-deep .p-dropdown {
-  width: 12rem !important;
+  width: 19rem !important;
 }
+
+::ng-deep input[pInputText][formControlName="titulo"] {
+  width: 100% !important;
+  max-width: 305px !important;
+
+}
+
 .input-container ::ng-deep .p-dropdown-panel {
   width: 100% !important;
 }
