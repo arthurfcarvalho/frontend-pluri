@@ -18,6 +18,13 @@
             font-weight: bold;
         }
 
+        .name-element input,
+        .desc-element input {
+          width: 100%;
+          max-width: 600px;
+          box-sizing: border-box;
+        }
+
         .codigo-element label{
             display: flex;
             font-weight: bold;

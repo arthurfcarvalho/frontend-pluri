@@ -11,6 +11,13 @@
             font-weight: bold;
         }
 
+        .name-element input,
+        .area-element ::ng-deep .p-dropdown {
+          width: 100%;
+          max-width: 600px;
+          font-size: 1rem;
+        }
+
         .area-element{
             display: flex;
             flex-direction: column;
