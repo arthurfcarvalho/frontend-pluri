@@ -168,6 +168,8 @@ export class QuestionComponent implements OnInit{
         this.areaService.listarPorId(this.questao.area.id).subscribe(area => {
           this.areaQuestao = area;
           this.loadFieldsArea(area);
+          const areaEncontrada = this.areasRecebidas.find(a => a.id === this.questao.area.id);
+          this.atualizarQuestaoForm.patchValue({ area: areaEncontrada });
           const disciplinaIds = this.questao.disciplinas.map(d => d.id);
           if (disciplinaIds.length > 0) {
             this.assuntoService.listarTodosPorDisciplinas(disciplinaIds).subscribe(assuntosRecebidos => {
