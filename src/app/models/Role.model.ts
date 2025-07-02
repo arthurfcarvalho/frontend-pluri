@@ -1,5 +1,6 @@
 import { Permission } from "./Permission.model";
 import { User } from "./User.model";
+import { Area } from "./Area.model";
 
 
 export interface Role {
@@ -7,4 +8,5 @@ export interface Role {
     nome: string;
     usuarios: User[];
     permissoes: Permission[];
+    area:Area;
 }

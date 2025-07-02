@@ -35,6 +35,11 @@ export class RoleService {
     )
   }
 
+  getById(id: number): Observable<Role> {
+    const url = `${this.baseUrl}buscar-perfil/${id}`;
+    return this.httpClient.get<Role>(url);
+  }
+
   /**
    * Atribui permissões a um perfil existente.
    * @param id ID do perfil (role).

@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../../../home/components/header/header.component';
 import { RoleService } from '../../../../services/role.service';
 import { PermAssignmentComponent } from '../../components/perm-assignment/perm-assignment.component';
+import {RouterLink, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-search-roles',
@@ -15,7 +16,8 @@ import { PermAssignmentComponent } from '../../components/perm-assignment/perm-a
     DialogModule,
     TableModule,
     HeaderComponent,
-    PermAssignmentComponent
+    PermAssignmentComponent,
+    RouterLink
   ],
   providers: [DialogService],
   templateUrl: './search-roles.component.html',

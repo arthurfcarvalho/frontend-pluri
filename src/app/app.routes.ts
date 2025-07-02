@@ -32,6 +32,7 @@ import { ListaProvaComponent } from './modules/prova/lista-prova/lista-prova.com
 import { SearchUsersComponent } from './modules/user-search/pages/search-users/search-users.component';
 import { CreateRoleComponent } from './modules/role/pages/create-role/create-role.component';
 import { SearchRolesComponent } from './modules/role/pages/search-roles/search-roles.component';
+import { EditRoleComponent } from './modules/role/pages/edit-role/edit-role.component';
 import { SearchAreasComponent } from './modules/area/search-areas/search-areas.component';
 import { CreateAreaComponent } from './modules/area/create-area/create-area.component';
 import { CreateTurmaComponent } from './modules/turma/pages/create-turma/create-turma.component';
@@ -92,6 +93,8 @@ export const routes: Routes = [
   { path: 'pesquisar-usuarios', component: SearchUsersComponent, title: 'Pesquisar Usuários - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_USUARIOS'] } },
   { path: 'criar-perfil', component: CreateRoleComponent, title: 'Criar Perfil - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
   { path: 'pesquisar-perfis', component: SearchRolesComponent, title: 'Pesquisar Perfis - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
+  { path: 'editar-perfil/:id', component: EditRoleComponent, title: 'Editar Perfil - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PERFIS'] } },
+
   { path: 'pesquisar-areas', component: SearchAreasComponent, title: 'Pesquisar Áreas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
   { path: 'criar-area', component: CreateAreaComponent, title: 'Criar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },
   { path: 'editar-area/:id', component: EditAreaComponent, title: 'Editar Área - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_AREAS'] } },

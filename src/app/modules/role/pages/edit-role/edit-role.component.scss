@@ -1,0 +1,27 @@
+.container {
+  margin: 15px;
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .name-element label{
+      display: flex;
+      font-weight: bold;
+    }
+
+    .area-element{
+      display: flex;
+      flex-direction: column;
+
+      label{
+        font-weight: bold;
+      }
+    }
+
+    .submit-button{
+      margin-left: auto;
+    }
+  }
+}
