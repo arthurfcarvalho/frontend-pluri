@@ -1,0 +1,26 @@
+<script src="edit-assunto.component.ts"></script>
+<div class="container">
+  <p-fieldset legend="Criar Assunto">
+    <form class="form-container" [formGroup]="updateAssuntoForm">
+      <div class="name-element">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" pInputText formControlName="nome"/>
+      </div>
+
+      <div class="desc-element">
+        <label for="disciplina">Disciplinas</label>
+        <p-dropdown
+          id="disciplina"
+          [options]="areaList"
+          optionLabel="nome"
+          (onChange)="onAreaChange($event)"
+          formControlName="Disciplina"
+        >
+        </p-dropdown>
+      </div>
+      <div class="submit-button">
+        <p-button label="Salvar" (click)="submit()"/>
+      </div>
+    </form>
+  </p-fieldset>
+</div>

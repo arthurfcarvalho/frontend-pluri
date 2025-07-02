@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import {catchError, forkJoin, map, Observable, of, switchMap, throwError} from "rxjs";
 
@@ -7,6 +7,7 @@ import { ApiResponsePageable } from "../types/api-response-pageable.type";
 import { environment } from "../../environments/environment";
 import {Pluri} from "../models/Pluri/Pluri.model";
 import Assunto from "../models/Assunto.model";
+import {Disciplina} from "../modules/disciplina/models/disciplina";
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,25 @@ export class AssuntoService {
   createAssunto(data: Assunto): Observable<Assunto> {
     const url = this.baseUrl + 'criar-assunto';
     return this.httpClient.post<Pluri>(url, data);
+  }
+
+  editAssunto(data: Assunto): Observable<Assunto> {
+    const url = this.baseUrl + 'editar-assunto/';
+    return this.httpClient.put<Assunto>(url, data, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    });
+  }
+
+  /*findById(id: number): Observable<Assunto> {
+    const url = this.baseUrl + buscar-por-id/${id};
+    return this.httpClient.get<Assunto>(url);
+  }*/
+
+  findById(id: number): Observable<Assunto>{
+    const url = this.baseUrl + `buscar-por-id/${id}`;
+    return this.httpClient.get<Assunto>(url).pipe(map(
+      obj => obj
+    ));
   }
 
   listarPorDisciplina(id: any) {
