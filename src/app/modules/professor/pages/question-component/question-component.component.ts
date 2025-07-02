@@ -274,7 +274,7 @@ export class QuestionComponent implements OnInit{
         ['custom', ['imageAttributes']],
       ]
     },
-    uploadImagePath: `${environment.apiUrl}/controle-de-arquivos/enviar/`,
+    uploadImagePath: `${environment.apiUrl}/api/controle-de-arquivos/enviar/`,
     buttons: {}
 
   };
