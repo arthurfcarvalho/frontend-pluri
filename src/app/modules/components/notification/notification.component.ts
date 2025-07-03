@@ -37,7 +37,6 @@ export class NotificationComponent implements OnInit {
 
   verMais(notification: MessageModel): void {
     // Implementar lógica para ver mais detalhes
-    console.log("Ver mais detalhes da notificação:", notification)
     // Aqui você pode abrir um modal, navegar para outra página, etc.
   }
 

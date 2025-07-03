@@ -267,7 +267,6 @@ export class CreateQuestionsComponent implements OnInit {
     formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
-        console.log(value)
         const plainQuestion: PlainQuestion = {
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),

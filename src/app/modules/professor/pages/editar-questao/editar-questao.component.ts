@@ -128,7 +128,6 @@ export class EditarQuestaoComponent implements  OnInit{
   }
 
   ngOnInit() {
-    console.log("entrou no ngOnInit do EditarQuestao")
     this.idQuestao = Number(this.route.snapshot.paramMap.get('id'));
 
     if (this.idQuestao) {
@@ -268,7 +267,6 @@ export class EditarQuestaoComponent implements  OnInit{
       timeout(20000),
       map(response => response),
       catchError(error => {
-        console.error('Error while previewing question:', error);
         this.toastService.error("Erro ao gerar preview! Tente novamente mais tarde.! Evite deixar espaços em branco e quebras de linha");
         this.carregamento = false;
         return throwError(error);
@@ -531,7 +529,6 @@ export class EditarQuestaoComponent implements  OnInit{
     }
   }
   loadFieldsAreaIntegracao(event: any) {
-    console.log("Aq")
     const selectedArea = event.value ? event.value : event;
 
     const areaMudou = this.ultimaAreaSelecionadaInterdisciplinar && this.ultimaAreaSelecionadaInterdisciplinar.id !== selectedArea.id;
@@ -550,7 +547,6 @@ export class EditarQuestaoComponent implements  OnInit{
     this.atualizarQuestaoForm.patchValue({areaInterdisciplinares: selectedArea});
 
     this.disciplinaService.listarDisciplinasPorArea(selectedArea.id).subscribe(disciplinasRecebidas => {
-      console.log("Teste", disciplinasRecebidas);
       const disciplinasDaArea = disciplinasRecebidas.content;
 
       const disciplinasSelecionadas = this.atualizarQuestaoForm.get('disciplinasInterdisciplinares')?.value || [];

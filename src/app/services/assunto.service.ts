@@ -50,16 +50,30 @@ export class AssuntoService {
     return this.httpClient.get<ApiResponsePageable>(url).pipe(map(obj => obj));
   }
 
+  // listarTodosPorDisciplinas(disciplinaIds: (number | null)[]): Observable<any[]> {
+  //   console.log(disciplinaIds)
+  //   const requests = disciplinaIds.map(id => this.listarTodosPorDisciplina(id));
+  //   return forkJoin(requests).pipe(
+  //     map(resultados => resultados.flat()) // junta todas as listas em uma só
+  //   );
+  // }
   listarTodosPorDisciplinas(disciplinaIds: (number | null)[]): Observable<any[]> {
-    const requests = disciplinaIds.map(id => this.listarTodosPorDisciplina(id));
-    return forkJoin(requests).pipe(
-      map(resultados => resultados.flat()) // junta todas as listas em uma só
-    );
+    const idsFiltrados = disciplinaIds.filter((id): id is number => id !== null);
+
+    if (idsFiltrados.length === 0) {
+      return of([]);
+    }
+
+    const idsParam = idsFiltrados.join(',');
+    const url = `${this.baseUrl}listar-assuntos-por-disciplinas?ids=${idsParam}&sort=nome`;
+
+    return this.httpClient.get<any[]>(url); // supondo que a resposta seja uma lista direta
   }
+
 
   private listarTodosPorDisciplina(disciplinaId: number | null): Observable<any[]> {
     const pageSize = 10;
-    let page = 0;
+    let page = 10000;
     let todosAssuntos: any[] = [];
 
     const fetchPage = (): Observable<any[]> => {
@@ -77,7 +91,6 @@ export class AssuntoService {
         })
       );
     };
-
     return fetchPage();
   }
 

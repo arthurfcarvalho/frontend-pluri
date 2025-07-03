@@ -51,7 +51,6 @@ export class EditAreaComponent {
     if (this.areaId) {
       this.areaService.listarPorId(this.areaId).subscribe(areaRecebida => {
         this.area = areaRecebida;
-        console.log(this.area);
 
         this.updateAreaForm = this.formBuilder.group({
           id: new FormControl(this.area.id, Validators.required),
