@@ -24,6 +24,11 @@ export class RoleService {
     return this.httpClient.post(url, data);
   }
 
+  update(role: any) {
+    const url = this.baseUrl + 'atualizar-perfil-permissao';
+    return this.httpClient.put(url, role);
+  }
+
   /**
    * Retorna todos os perfis cadastrados.
    * @returns Observable contendo a lista de roles.
