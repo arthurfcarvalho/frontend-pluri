@@ -63,9 +63,10 @@ export class LoginGoogleComponent implements OnInit {
       console.log(this.signupData)
       this.loginService.login(this.signupData.login, this.signupData.senha).subscribe({
         next: () => {
-          console.log("login")
           this.toastService.success(response.mensagem);
+          console.log("login")
           this.router.navigate(["/home"]);
+
         },
         error: () => {
           this.userService.signup(this.signupData).subscribe({

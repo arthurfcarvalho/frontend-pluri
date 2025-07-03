@@ -6,6 +6,8 @@ import {HttpClient} from "@angular/common/http";
 import {TranslateConfigModule} from "./services/translate.service";
 import {HeaderComponent} from "./modules/home/components/header/header.component";
 import {NgIf} from "@angular/common";
+import {LoginLayoutComponent} from "./modules/auth/components/login-layout/login-layout.component";
+import {LoginComponent} from "./modules/auth/pages/login/login.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -20,10 +22,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateConfigModule,
     HeaderComponent,
     NgIf,
+    LoginLayoutComponent,
+    LoginComponent,
   ],
   template: `
+    <app-login *ngIf="isRouterLogin()"></app-login>
     <app-header *ngIf="!isRouterLogin()"></app-header>
-    <router-outlet></router-outlet>
+    <router-outlet *ngIf="!isRouterLogin()"></router-outlet>
   `})
 export class AppComponent {
   constructor(private router: Router, private translate: TranslateService) {

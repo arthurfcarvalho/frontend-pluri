@@ -49,6 +49,7 @@ export class LoginComponent {
     }
     this.loginService.login(this.loginForm.value.login, this.loginForm.value.senha).subscribe({
       next: () => {
+        console.log("aq")
         this.router.navigate(["/home"]);
       },
       error: () => this.toastService.error("Erro ao realizar login! Verifique seu usuário e sua senha e tente novamente.")
