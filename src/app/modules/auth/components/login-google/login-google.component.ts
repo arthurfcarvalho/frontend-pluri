@@ -28,6 +28,7 @@ export class LoginGoogleComponent implements OnInit {
     google.accounts.id.initialize({
       client_id: '1033319843386-jtmj1srffr4bdkf129thnm1u356tn1k3.apps.googleusercontent.com',
       callback: (resp: any) => this.handleLogin(resp),
+      auto_select: false,
     });
 
     google.accounts.id.renderButton(document.getElementById("google-btn"),
@@ -50,29 +51,31 @@ export class LoginGoogleComponent implements OnInit {
     if (response){
       //decode the token
       const informationgoogle = this.decodeToken(response.credential);
-
+      console.log("Information google", informationgoogle);
       this.signupData = {
         nome: informationgoogle["given_name"] + " " + informationgoogle["family_name"],
         email: informationgoogle["email"],
-        login: informationgoogle["aud"],
-        senha: informationgoogle["aud"],
+        login: informationgoogle["sub"],
+        senha: informationgoogle["sub"],
         data_nascimento: new Date(),
         isGoogle: true
       }
-
-
+      console.log(this.signupData)
       this.loginService.login(this.signupData.login, this.signupData.senha).subscribe({
         next: () => {
+          console.log("login")
           this.toastService.success(response.mensagem);
           this.router.navigate(["/home"]);
         },
         error: () => {
           this.userService.signup(this.signupData).subscribe({
             next: (response: ApiResponse) => {
+              console.log("Error")
               this.toastService.success(response.mensagem);
               //this.router.navigate(['/home']);
               this.loginService.login(this.signupData.login, this.signupData.senha).subscribe({
                 next: () => {
+                  console.log("Login google")
                   this.router.navigate(["/home"]);
                 }
               })
