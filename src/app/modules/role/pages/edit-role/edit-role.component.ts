@@ -43,7 +43,6 @@ export class EditRoleComponent implements OnInit {
   ) {
     this.editRoleForm = new FormGroup({
       nome: new FormControl('', Validators.required),
-      codigo_permissoes: new FormControl([], Validators.required),
       id_area: new FormControl('', Validators.required)
     });
   }
@@ -67,25 +66,25 @@ export class EditRoleComponent implements OnInit {
   }
 
   submit() {
+
     if (this.editRoleForm.invalid) {
       this.editRoleForm.markAllAsTouched();
       return;
     }
 
-    const formValue = {
-      ...this.editRoleForm.value,
-      id_area: this.editRoleForm.value.id_area.id || this.editRoleForm.value.id_area
-    };
+    // Atualiza os campos da role com os novos valores do formulário
+    this.role.nome = this.editRoleForm.value.nome;
+    this.role.area = this.editRoleForm.value.id_area;
 
-    // this.roleService.update(this.roleId, formValue).subscribe({
-    //   next: () => {
-    //     this.toastService.success('Perfil atualizado com sucesso!');
-    //     this.router.navigate(['/roles']);
-    //   },
-    //   error: () => {
-    //     this.toastService.error('Erro ao atualizar perfil!');
-    //   }
-    // });
+    this.roleService.update(this.role).subscribe({
+
+      next: () => {
+        this.toastService.success('Perfil atualizado com sucesso!');
+        this.router.navigate(['/pesquisar-perfis']);
+      },
+      error: () => {
+        this.toastService.error('Erro ao atualizar perfil!');
+      }
+    });
   }
-
 }
