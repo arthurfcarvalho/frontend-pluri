@@ -52,6 +52,7 @@ import {CreateAssuntoComponent} from "./modules/assunto/create-assunto/create-as
 import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assuntos.component";
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
 import {EditDisciplinaComponent} from "./modules/disciplina/edit-disciplina/edit-disciplina.component";
+import {EditAssuntoComponent} from "./modules/assunto/edit-assunto/edit-assunto.component";
 import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
 import {
   QuestionComponent,
@@ -103,10 +104,10 @@ export const routes: Routes = [
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
   { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'editar-disciplina/:id', component: EditDisciplinaComponent, title: 'Editar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
-  { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Pesquisar Disciplinas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
+  { path: 'pesq6plinas', component: ListDisciplinasComponent, title: 'Pesquisar Disciplinas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar Assunto - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
   { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar Assuntos - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
-
+  { path: 'editar-assunto/:id', component: EditAssuntoComponent, title: 'Editar - Assunto', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
 
   { path: 'question-component', component: QuestionComponent, title: 'question - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
   { path: 'question-component/:id', component: QuestionComponent, title: 'question - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
