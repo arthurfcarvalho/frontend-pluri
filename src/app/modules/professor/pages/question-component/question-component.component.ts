@@ -249,7 +249,7 @@ export class QuestionComponent implements OnInit{
       next: (value) => {
 
         const plainQuestion: PlainQuestion = {
-          id:this.idQuestao,
+          id: this.idQuestao,
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),
           corpoMarkdown: this.getMarkdownFromHtml(formValue.corpo),
