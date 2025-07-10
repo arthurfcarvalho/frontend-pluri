@@ -45,7 +45,7 @@ export class EditAssuntoComponent {
     this.updateAssuntoForm = this.formBuilder.group({
       id: new FormControl(0, Validators.required),
       nome: new FormControl('', Validators.required),
-      area: new FormControl(null, Validators.required)
+      disciplina: new FormControl(null, Validators.required)
     });
   }
 
@@ -56,9 +56,12 @@ export class EditAssuntoComponent {
     if (this.idAssunto) {
       this.assuntoService.findById(this.idAssunto).subscribe(assuntoRecebido => {
         this.assunto = assuntoRecebido;
+        console.log(this.assunto);
+
         this.updateAssuntoForm.patchValue({
-          id: this.assunto.id,
-          nome: this.assunto.nome
+          id: this.assunto?.id,
+          nome: this.assunto?.nome,
+          disciplina: this.assunto?.disciplina
         });
       });
     }
@@ -67,15 +70,24 @@ export class EditAssuntoComponent {
   loadDisciplinas(): void {
     this.disciplinaService.listarDisciplinas().subscribe(response => {
       this.disciplinaList = response.content;
+
+      const disciplinaSelecionada = this.disciplinaList.find(
+        d => d.id === this.assunto.disciplina.id
+      );
+
+      this.updateAssuntoForm.patchValue({disciplina: disciplinaSelecionada});
+
     });
   }
 
-  onAreaChange(event: any): void {
-    this.updateAssuntoForm.patchValue({ area: event.value });
+  onDisicplinaChange(event: any): void {
+    this.updateAssuntoForm.patchValue({ disicplina: event.value });
   }
 
   submit(): void {
     const data = this.updateAssuntoForm.value;
+
+    console.log(data);
 
     this.assuntoService.editAssunto(data).subscribe(
         () => {

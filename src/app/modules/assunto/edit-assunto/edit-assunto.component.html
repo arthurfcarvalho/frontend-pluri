@@ -3,18 +3,19 @@
   <p-fieldset legend="Criar Assunto">
     <form class="form-container" [formGroup]="updateAssuntoForm">
       <div class="name-element">
-        <label for="nome">Nome</label>
-        <input id="nome" type="text" pInputText formControlName="nome"/>
+        <label for="nome">Assunto</label>
+        <input style="width: 100%" id="nome" type="text" pInputText formControlName="nome"/>
       </div>
 
       <div class="desc-element">
         <label for="disciplina">Disciplinas</label>
         <p-dropdown
           id="disciplina"
-          [options]="areaList"
+          [options]="disciplinaList"
           optionLabel="nome"
-          (onChange)="onAreaChange($event)"
-          formControlName="Disciplina"
+          (onChange)="onDisicplinaChange($event)"
+          formControlName="disciplina"
+
         >
         </p-dropdown>
       </div>

@@ -43,14 +43,12 @@ export class AssuntoService {
   }
   createAssunto(data: Assunto): Observable<Assunto> {
     const url = this.baseUrl + 'criar-assunto';
-    return this.httpClient.post<Pluri>(url, data);
+    return this.httpClient.post<Assunto>(url, data);
   }
 
   editAssunto(data: Assunto): Observable<Assunto> {
-    const url = this.baseUrl + 'editar-assunto/';
-    return this.httpClient.put<Assunto>(url, data, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    });
+    const url = this.baseUrl + 'editar-assunto';
+    return this.httpClient.put<Assunto>(url, data);
   }
 
   /*findById(id: number): Observable<Assunto> {
