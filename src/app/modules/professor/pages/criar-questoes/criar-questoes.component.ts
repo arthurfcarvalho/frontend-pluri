@@ -37,6 +37,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import TurndownService from "turndown";
 import {PlainAlternative} from "../../models/PlainAlternative.model";
 import {PlainQuestion} from "../../models/PlainQuestion.model";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'app-criar-questoes',
@@ -95,9 +96,12 @@ export class CreateQuestionsComponent implements OnInit {
   ultimaAreaSelecionada: any = null;
   ultimaAreaSelecionadaInterdisciplinar: any = null;
   questao!: DadosAtualizarQuestao;
+  rascunhoId: number | null = null;
+
 
 
   constructor(
+    private userService: UserService,
     private relatoriosService: RelatoriosService,
     private disciplinaService: DisciplinaService,
     private areaService: AreaService,
@@ -172,7 +176,57 @@ export class CreateQuestionsComponent implements OnInit {
   };
 
   ngOnInit(): void {
+
   }
+
+  salvarRascunho(): void {
+    const formValue = this.criarQuestaoForm.value;
+    const usuarioId = this.userService.getUsuarioId();
+
+    const payload = {
+      ...formValue,
+      corpo: this.corpo,
+      fonte: this.fonte,
+      alternativas: this.alternativas,
+      area: formValue.area?.id ?? formValue.area ?? null,
+      disciplinas: Array.isArray(formValue.disciplinas)
+        ? formValue.disciplinas.map((d: any) => d?.id ?? d)
+        : formValue.disciplinas
+          ? [formValue.disciplinas?.id ?? formValue.disciplinas]
+          : [],
+      assuntos: Array.isArray(formValue.assuntos)
+        ? formValue.assuntos.map((a: any) => a?.id ?? a)
+        : formValue.assuntos
+          ? [formValue.assuntos?.id ?? formValue.assuntos]
+          : [],
+      assuntosInterdisciplinares: Array.isArray(formValue.assuntosInterdisciplinares)
+        ? formValue.assuntosInterdisciplinares.map((a: any) => a?.id ?? a)
+        : formValue.assuntosInterdisciplinares
+          ? [formValue.assuntosInterdisciplinares?.id ?? formValue.assuntosInterdisciplinares]
+          : [],
+      usuarioId: usuarioId,
+      status: 'rascunho'
+    };
+
+    if (this.rascunhoId) {
+      // aqui e pra atualizar rascunho existente
+      this.questaoService.atualizarRascunho(this.rascunhoId, payload).subscribe({
+        next: () => console.log("rascunho atualizado"),
+        error: (err: any) => console.error("erro ao atualizar rascunho", err)
+      });
+    } else {
+      // cria o novo rascunho
+      this.questaoService.salvarRascunho(payload).subscribe({
+        next: (resp: any) => {
+          console.log("rascunho criado");
+          this.rascunhoId = resp.id; // pega o id do rascunho criado para futuras atualizações
+        },
+        error: (err: any) => console.error("erro ao salvar rascunho", err)
+      });
+    }
+  }
+
+
 
   toggleEditor(index: number) {
     this.expandedIndexes[index] = this.expandedIndexes[index];
@@ -208,9 +262,10 @@ export class CreateQuestionsComponent implements OnInit {
     const formValue = this.criarQuestaoForm.value;
 
     const assuntosValidos = this.isValidValue(formValue.assuntos);
-    const disciplinasValidas = this.isValidValue(formValue.disciplinas); // mesma lógica se necessário
+    const disciplinasValidas = this.isValidValue(formValue.disciplinas);
 
     if (this.criarQuestaoForm.valid && assuntosValidos && disciplinasValidas) {
+      this.salvarRascunho();
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios antes de avançar.');
@@ -230,6 +285,7 @@ export class CreateQuestionsComponent implements OnInit {
     const corpoLimpo = doc.body.textContent?.trim() || "";/*se o doc tiver tags html, doc.body.textContent?.trim() || "" vai tirar as tags como <br> <p>
                                                                  e o trim() remove os espaços*/
     if (corpoLimpo.length > 0) {
+      this.salvarRascunho();
       nextCallback.emit();
     } else {
       this.toastService.error('Preencha o corpo antes de avançar.');
@@ -241,6 +297,7 @@ export class CreateQuestionsComponent implements OnInit {
     const alternativasVazias = this.alternativas.some(alt => !alt.corpo.trim() || alt.corpo.trim() === "" || alt.corpo.trim() === " " || alt.corpo.trim() === "<br>");
 
     if (!alternativasVazias) {
+      this.salvarRascunho();
       this.verMarcado(nextCallback);
     } else {
       this.toastService.error('Preencha todas as alternativas antes de avançar.');

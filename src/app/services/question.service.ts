@@ -157,4 +157,14 @@ export class QuestionService {
     const url = this.baseUrl + 'atualizar-questao-plana';
     return this.httpClient.put(url, plainQuestion);
   }
+
+
+  salvarRascunho(payload: any): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}rascunho`, payload);
+  }
+
+  atualizarRascunho(id: number, payload: any): Observable<any> {
+    return this.httpClient.put(`${this.baseUrl}rascunho/${id}`, payload);
+  }
+
 }
