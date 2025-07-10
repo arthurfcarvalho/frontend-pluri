@@ -230,22 +230,46 @@ export class QuestionComponent implements OnInit{
     formValue.alternativas = this.atualizarQuestaoForm.value.alternativas;
     formValue.id = this.idQuestao;
     formValue.area = this.atualizarQuestaoForm.value.area.id;
-    this.atualizarQuestaoForm.value.disciplinas = Array(this.atualizarQuestaoForm.value.disciplinas)
-    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any)=> d.id);
+
+    this.atualizarQuestaoForm.value.disciplinas = Array(this.atualizarQuestaoForm.value.disciplinas);
+    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas.map((d: any) => d.id);
+
     const assuntosValue = this.atualizarQuestaoForm.value?.assuntos;
     formValue.assuntos = Array.isArray(assuntosValue)
       ? assuntosValue.map((a: any) => a?.id)
       : [assuntosValue?.id];
 
-    if(this.atualizarQuestaoForm.value.assuntosInterdisciplinares?.length > 0){
+    if (this.atualizarQuestaoForm.value.assuntosInterdisciplinares?.length > 0) {
       formValue.assuntosInterdisciplinares = this.atualizarQuestaoForm.value.assuntosInterdisciplinares.map((a: any) => a.id);
     }
 
-    formValue.disciplinas = this.atualizarQuestaoForm.value.disciplinas
-    formValue.status = this.atualizarQuestaoForm.value.status
+    formValue.status = this.atualizarQuestaoForm.value.status;
 
     this.questaoService.updateQuestion(formValue).subscribe({
       next: (value) => {
+
+        const plainQuestion: PlainQuestion = {
+          id:this.idQuestao,
+          titulo: formValue.titulo,
+          corpoPlano: this.getTextPlain(formValue.corpo),
+          corpoMarkdown: this.getMarkdownFromHtml(formValue.corpo),
+          fonteMarkdown: formValue?.fonte ? this.getMarkdownFromHtml(formValue.fonte) : null,
+          fontePlana: formValue?.fonte ? this.getTextPlain(formValue.fonte) : null,
+          alternativasPlanas: formValue.alternativas.map((a: any) => ({
+            corpoPlano: this.getTextPlain(a.corpo),
+            corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
+          }))
+        };
+
+        this.questaoService.updatePlainQuestion(plainQuestion).subscribe({
+          next: () => {
+            this.toastService.success("Questão plana atualizada com sucesso!");
+          },
+          error: () => {
+            this.toastService.error("Erro ao atualizar a questão plana!");
+          }
+        });
+
         this.toastService.success("Questao atualizada com sucesso!");
         this.router.navigate(['/minhas-questoes', value]);
       },

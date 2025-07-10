@@ -152,4 +152,9 @@ export class QuestionService {
     const url = this.baseUrl + 'criar-questao-plana';
     return this.httpClient.post(url, plainQuestion);
   }
+
+  updatePlainQuestion(plainQuestion: PlainQuestion) {
+    const url = this.baseUrl + 'atualizar-questao-plana';
+    return this.httpClient.put(url, plainQuestion);
+  }
 }
