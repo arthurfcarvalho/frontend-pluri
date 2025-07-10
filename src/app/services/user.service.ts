@@ -38,6 +38,13 @@ export class UserService {
     }
   }
 
+  getUsuarioId(): number | null {
+    const user = this.userSubject.getValue();
+    return user?.id || null;
+  }
+
+
+
   /**
    * Retorna o usuário logado como um Observable.
    * @returns Observable contendo o usuário logado ou `null`.
