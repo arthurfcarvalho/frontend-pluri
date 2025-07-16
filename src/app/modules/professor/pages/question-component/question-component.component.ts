@@ -245,13 +245,14 @@ export class QuestionComponent implements OnInit{
 
     formValue.status = this.atualizarQuestaoForm.value.status;
     console.log("Questao para atualizar: " + formValue)
-    this.questaoService.updateQuestion(formValue).subscribe({
-      next: (value) => {
+    this.questaoService.updateQuestion(formValue).subscribe(
+      response => {
 
-        console.log("Questao plana value: " + value)
+        console.log("Questao plana value: " + response.value)
+
 
         const plainQuestion: PlainQuestion = {
-          id: this.questao.plainQuestion.id,
+          id: response.plainQuestion.id,
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),
           corpoMarkdown: this.getMarkdownFromHtml(formValue.corpo),
@@ -275,12 +276,12 @@ export class QuestionComponent implements OnInit{
         });
 
         this.toastService.success("Questao atualizada com sucesso!");
-        this.router.navigate(['/minhas-questoes', value]);
+        this.router.navigate(['/minhas-questoes', response]);
       },
-      error: (e) => {
-        this.toastService.error("Erro ao atualizar o Questão!", e);
+      error => {
+        this.toastService.error("Erro ao atualizar o Questão!", error);
       }
-    });
+    );
   }
 
   setCorreta(index: number) {

@@ -59,7 +59,7 @@ export class QuestionService {
    * @param questao Dados atualizados da questão.
    * @returns Observable indicando o sucesso ou falha da operação.
    */
-  updateQuestion(questao: DadosAtualizarQuestao){
+  updateQuestion(questao: DadosAtualizarQuestao): Observable<any>{
     const url = this.baseUrl + `atualizar-questao`
     return this.httpClient.put(url,questao);
   }
