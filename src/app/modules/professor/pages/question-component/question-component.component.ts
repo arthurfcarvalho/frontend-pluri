@@ -249,7 +249,7 @@ export class QuestionComponent implements OnInit{
       next: (value) => {
 
         const plainQuestion: PlainQuestion = {
-          id: this.idQuestao,
+          id: this.questao.plainQuestion.id,
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),
           corpoMarkdown: this.getMarkdownFromHtml(formValue.corpo),
@@ -718,8 +718,10 @@ export class QuestionComponent implements OnInit{
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
+
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
+
         const plainQuestion: PlainQuestion = {
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),
@@ -729,8 +731,11 @@ export class QuestionComponent implements OnInit{
           alternativasPlanas: this.alternativas.map(a => ({
             corpoPlano: this.getTextPlain(a.corpo),
             corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
-          }))
+          })),
+          questaoId: value.id
+
         };
+
         this.questaoService.createPlainQuestion(plainQuestion).subscribe({
           next: () => {
             this.toastService.success("Questao plana criada com sucesso!");

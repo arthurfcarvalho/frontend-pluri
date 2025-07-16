@@ -3,6 +3,7 @@ import { Alternativa } from "./Alternativa.model";
 import {Disciplina} from "../../disciplina/models/disciplina";
 import {Area} from "../../../models/Area.model";
 import {Classificacao} from "./Classificacao.model";
+import {PlainQuestion} from "./PlainQuestion.model";
 
 export interface DadosAtualizarQuestao{
     id: number;
@@ -19,5 +20,6 @@ export interface DadosAtualizarQuestao{
     codigoAssuntos: Assunto[];
     area: Area;
     status: Classificacao;
+    plainQuestion: PlainQuestion;
 
 }
