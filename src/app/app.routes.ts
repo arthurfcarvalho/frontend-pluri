@@ -75,7 +75,7 @@ export const routes: Routes = [
   { path: 'editar-pluri/:id', component: UpdatePluriComponent, title: 'Editar Pluri - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_PLURI'] } },
 
   // Professor
-  { path: 'criar-questao', component: CreateQuestionsComponent, title: 'Criar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
+  //{ path: 'criar-questao', component: CreateQuestionsComponent, title: 'Criar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   { path: 'criar-questao/:id', component: CreateQuestionsComponent, title: 'Criar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   { path: 'minhas-questoes', component: ListaQuestoesUsuarioComponent, title: 'Listar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },
   //{ path: 'editar-questao/:id', component: EditarQuestaoComponent, title: 'Editar Questao - Questao', canActivate: [authGuard, permGuard], data: { perms: ['CRIAR_QUESTAO'] } },

@@ -244,9 +244,11 @@ export class QuestionComponent implements OnInit{
     }
 
     formValue.status = this.atualizarQuestaoForm.value.status;
-
+    console.log("Questao para atualizar: " + formValue)
     this.questaoService.updateQuestion(formValue).subscribe({
       next: (value) => {
+
+        console.log("Questao plana value: " + value)
 
         const plainQuestion: PlainQuestion = {
           id: this.questao.plainQuestion.id,
@@ -260,6 +262,8 @@ export class QuestionComponent implements OnInit{
             corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
           }))
         };
+
+        console.log("Questao plana form: " + plainQuestion);
 
         this.questaoService.updatePlainQuestion(plainQuestion).subscribe({
           next: () => {
@@ -702,7 +706,7 @@ export class QuestionComponent implements OnInit{
   }
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
-
+    console.log("cuienfaciasiucsaniucnasuicjn")
     formValue.corpo = this.corpo;
     formValue.alternativas = this.alternativas;
     // formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
