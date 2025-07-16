@@ -244,13 +244,8 @@ export class QuestionComponent implements OnInit{
     }
 
     formValue.status = this.atualizarQuestaoForm.value.status;
-    console.log("Questao para atualizar: " + formValue)
     this.questaoService.updateQuestion(formValue).subscribe(
       response => {
-
-        console.log("Questao plana value: " + response.value)
-
-
         const plainQuestion: PlainQuestion = {
           id: response.plainQuestion.id,
           titulo: formValue.titulo,
@@ -260,11 +255,11 @@ export class QuestionComponent implements OnInit{
           fontePlana: formValue?.fonte ? this.getTextPlain(formValue.fonte) : null,
           alternativasPlanas: formValue.alternativas.map((a: any) => ({
             corpoPlano: this.getTextPlain(a.corpo),
-            corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
+            corpoMarkdown: this.getMarkdownFromHtml(a.corpo),
+            posicao: a.posicao,
+            correta: a.correta
           }))
         };
-
-        console.log("Questao plana form: " + plainQuestion);
 
         this.questaoService.updatePlainQuestion(plainQuestion).subscribe({
           next: () => {
@@ -735,7 +730,9 @@ export class QuestionComponent implements OnInit{
           fontePlana: formValue?.fonte ? this.getTextPlain(formValue.fonte) : null,
           alternativasPlanas: this.alternativas.map(a => ({
             corpoPlano: this.getTextPlain(a.corpo),
-            corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
+            corpoMarkdown: this.getMarkdownFromHtml(a.corpo),
+            posicao: a.posicao,
+            correta: a.correta
           })),
           questaoId: value.id
 
