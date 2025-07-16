@@ -244,12 +244,10 @@ export class QuestionComponent implements OnInit{
     }
 
     formValue.status = this.atualizarQuestaoForm.value.status;
-
-    this.questaoService.updateQuestion(formValue).subscribe({
-      next: (value) => {
-
+    this.questaoService.updateQuestion(formValue).subscribe(
+      response => {
         const plainQuestion: PlainQuestion = {
-          id: this.idQuestao,
+          id: response.plainQuestion.id,
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),
           corpoMarkdown: this.getMarkdownFromHtml(formValue.corpo),
@@ -257,7 +255,9 @@ export class QuestionComponent implements OnInit{
           fontePlana: formValue?.fonte ? this.getTextPlain(formValue.fonte) : null,
           alternativasPlanas: formValue.alternativas.map((a: any) => ({
             corpoPlano: this.getTextPlain(a.corpo),
-            corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
+            corpoMarkdown: this.getMarkdownFromHtml(a.corpo),
+            posicao: a.posicao,
+            correta: a.correta
           }))
         };
 
@@ -271,12 +271,12 @@ export class QuestionComponent implements OnInit{
         });
 
         this.toastService.success("Questao atualizada com sucesso!");
-        this.router.navigate(['/minhas-questoes', value]);
+        this.router.navigate(['/minhas-questoes', response]);
       },
-      error: (e) => {
-        this.toastService.error("Erro ao atualizar o Questão!", e);
+      error => {
+        this.toastService.error("Erro ao atualizar o Questão!", error);
       }
-    });
+    );
   }
 
   setCorreta(index: number) {
@@ -702,7 +702,7 @@ export class QuestionComponent implements OnInit{
   }
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
-
+    console.log("cuienfaciasiucsaniucnasuicjn")
     formValue.corpo = this.corpo;
     formValue.alternativas = this.alternativas;
     // formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
@@ -718,8 +718,10 @@ export class QuestionComponent implements OnInit{
     formValue.disciplinas = this.criarQuestaoForm.value.disciplinas.map((d: any) => d.id);
     formValue.area = this.criarQuestaoForm.value.area?.id ?? this.criarQuestaoForm.value.area;
     formValue.alternativaCorreta = this.criarQuestaoForm.value?.alternativaCorreta?.id
+
     this.questaoService.createQuestion(formValue).subscribe({
       next: (value) => {
+
         const plainQuestion: PlainQuestion = {
           titulo: formValue.titulo,
           corpoPlano: this.getTextPlain(formValue.corpo),
@@ -728,9 +730,14 @@ export class QuestionComponent implements OnInit{
           fontePlana: formValue?.fonte ? this.getTextPlain(formValue.fonte) : null,
           alternativasPlanas: this.alternativas.map(a => ({
             corpoPlano: this.getTextPlain(a.corpo),
-            corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
-          }))
+            corpoMarkdown: this.getMarkdownFromHtml(a.corpo),
+            posicao: a.posicao,
+            correta: a.correta
+          })),
+          questaoId: value.id
+
         };
+
         this.questaoService.createPlainQuestion(plainQuestion).subscribe({
           next: () => {
             this.toastService.success("Questao plana criada com sucesso!");

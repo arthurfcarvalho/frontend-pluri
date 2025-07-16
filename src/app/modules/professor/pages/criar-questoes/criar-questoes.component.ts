@@ -306,7 +306,7 @@ export class CreateQuestionsComponent implements OnInit {
 
   submitCriarQuestao() {
     const formValue = this.criarQuestaoForm.value;
-
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
     formValue.corpo = this.corpo;
     formValue.alternativas = this.alternativas;
     // formValue.assuntos = this.criarQuestaoForm.value.assuntos.map((a: any) => a.id);
@@ -333,7 +333,8 @@ export class CreateQuestionsComponent implements OnInit {
           alternativasPlanas: this.alternativas.map(a => ({
             corpoPlano: this.getTextPlain(a.corpo),
             corpoMarkdown: this.getMarkdownFromHtml(a.corpo)
-          }))
+          })),
+          questaoId: value.id
         };
         this.questaoService.createPlainQuestion(plainQuestion).subscribe({
           next: () => {

@@ -177,7 +177,7 @@ export class HeaderComponent {
                 items: [
                   {
                     label: translations['MENU.CREATE_QUESTION'],
-                    routerLink: '/criar-questao',
+                    routerLink: '/question-component',
                   },
                   {
                     label: translations['MENU.MY_QUESTIONS'],

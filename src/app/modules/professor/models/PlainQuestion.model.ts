@@ -7,5 +7,6 @@ export interface PlainQuestion {
   fonteMarkdown?: string | null,
   fontePlana?: string | null,
   titulo: string,
-  alternativasPlanas: PlainAlternative[];
+  alternativasPlanas: PlainAlternative[],
+  questaoId?: number;
 }
