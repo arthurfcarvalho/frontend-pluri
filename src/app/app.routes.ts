@@ -38,6 +38,7 @@ import { CreateTurmaComponent } from './modules/turma/pages/create-turma/create-
 import { SearchTurmasComponent } from './modules/turma/pages/search-turmas/search-turmas.component';
 import { AreaFormComponent } from './modules/area/area-form/area-form.component';
 import { AssuntoFormComponent } from './modules/assunto/assunto-form/assunto-form.component';
+import { DisciplinaFormComponent } from './modules/disciplina/disciplina-form/disciplina-form.component';
 
 // Guards
 
@@ -48,14 +49,13 @@ import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 // Error
 
 import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
-import {CreateDisciplinaComponent} from "./modules/disciplina/create-disciplina/create-disciplina.component";
 import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assuntos.component";
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
-import {EditDisciplinaComponent} from "./modules/disciplina/edit-disciplina/edit-disciplina.component";
-import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
+//import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
 import {
   QuestionComponent,
 } from "./modules/professor/pages/question-component/question-component.component";
+
 
 
 export const routes: Routes = [
@@ -63,7 +63,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full', title: 'Login - Pluri' },
   { path: 'login', component: LoginComponent, title: 'Login - Pluri', canActivate: [redirectIfAuthenticatedGuard] },
   { path: 'cadastrar', component: SignupComponent, title: 'Cadastrar - Pluri' },
-  { path: 'logingoogle', component: LoginGoogleComponent, title: 'Login - Google'},
+  //{ path: 'logingoogle', component: LoginGoogleComponent, title: 'Login - Google'}, Verificar com Flamarion se é necessário pro componente funcionar, provavelmente não
 
   // Home
   { path: 'home', component: HomeComponent, title: 'Pluri', canActivate: [authGuard] },
@@ -101,8 +101,8 @@ export const routes: Routes = [
   { path: 'criar-turmas', component: CreateTurmaComponent, title: 'Criar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
   { path: 'listar-turmas', component: SearchTurmasComponent, title: 'Listar Turmas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
   { path: 'editar-turma/:codigo', component: CreateTurmaComponent, title: 'Editar Turma - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_TURMAS'] } },
-  { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
-  { path: 'editar-disciplina/:id', component: EditDisciplinaComponent, title: 'Editar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
+  { path: 'criar-disciplina', component: DisciplinaFormComponent, title: 'Criar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
+  { path: 'editar-disciplina/:id', component: DisciplinaFormComponent, title: 'Editar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Pesquisar Disciplinas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'criar-assunto', component: AssuntoFormComponent, title: 'Criar Assunto - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
   { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar Assuntos - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },

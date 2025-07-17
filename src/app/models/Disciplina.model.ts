@@ -1,4 +1,4 @@
-export default interface Disicplina {
+export default interface Disciplina {
   id: number,
   nome: string,
 }
