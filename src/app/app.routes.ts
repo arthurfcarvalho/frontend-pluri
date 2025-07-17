@@ -37,6 +37,7 @@ import { SearchAreasComponent } from './modules/area/search-areas/search-areas.c
 import { CreateTurmaComponent } from './modules/turma/pages/create-turma/create-turma.component';
 import { SearchTurmasComponent } from './modules/turma/pages/search-turmas/search-turmas.component';
 import { AreaFormComponent } from './modules/area/area-form/area-form.component';
+import { AssuntoFormComponent } from './modules/assunto/assunto-form/assunto-form.component';
 
 // Guards
 
@@ -48,15 +49,14 @@ import { redirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 
 import { DeniedAcessComponent } from './modules/error/pages/denied-acess/denied-acess.component';
 import {CreateDisciplinaComponent} from "./modules/disciplina/create-disciplina/create-disciplina.component";
-import {CreateAssuntoComponent} from "./modules/assunto/create-assunto/create-assunto.component";
 import {ListAssuntosComponent} from "./modules/assunto/list-assuntos/list-assuntos.component";
 import {ListDisciplinasComponent} from "./modules/disciplina/list-disciplinas/list-disciplinas.component";
 import {EditDisciplinaComponent} from "./modules/disciplina/edit-disciplina/edit-disciplina.component";
-import {EditAssuntoComponent} from "./modules/assunto/edit-assunto/edit-assunto.component";
 import {LoginGoogleComponent} from "./modules/auth/components/login-google/login-google.component";
 import {
   QuestionComponent,
 } from "./modules/professor/pages/question-component/question-component.component";
+
 
 export const routes: Routes = [
     // Antes de autenticar
@@ -104,9 +104,9 @@ export const routes: Routes = [
   { path: 'criar-disciplina', component: CreateDisciplinaComponent, title: 'Criar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'editar-disciplina/:id', component: EditDisciplinaComponent, title: 'Editar - Disciplina', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
   { path: 'pesquisar-disciplinas', component: ListDisciplinasComponent, title: 'Pesquisar Disciplinas - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_DISCIPLINAS'] } },
-  { path: 'criar-assunto', component: CreateAssuntoComponent, title: 'Criar Assunto - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
+  { path: 'criar-assunto', component: AssuntoFormComponent, title: 'Criar Assunto - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
   { path: 'pesquisar-assuntos', component: ListAssuntosComponent, title: 'Pesquisar Assuntos - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
-  { path: 'editar-assunto/:id', component: EditAssuntoComponent, title: 'Editar - Assunto', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
+  { path: 'editar-assunto/:id', component: AssuntoFormComponent, title: 'Editar - Assunto', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
 
   { path: 'question-component', component: QuestionComponent, title: 'question - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },
   { path: 'question-component/:id', component: QuestionComponent, title: 'question - Pluri', canActivate: [authGuard, permGuard], data: { perms: ['GERENCIAR_ASSUNTOS'] } },

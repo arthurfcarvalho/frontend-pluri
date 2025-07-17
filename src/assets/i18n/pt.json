@@ -65,6 +65,16 @@
     "error": "Erro ao salvar a área."
   },
 
+    "assunto": {
+    "createTitle": "Criar Assunto",
+    "editTitle": "Editar Assunto",
+    "nameLabel": "Nome",
+    "disciplineLabel": "Disciplina",
+    "successCreate": "Assunto criado com sucesso!",
+    "successEdit": "Assunto atualizado com sucesso!",
+    "error": "Erro ao salvar o assunto."
+  },
+
   "form": {
     "save": "Salvar",
     "cancel": "Cancelar"

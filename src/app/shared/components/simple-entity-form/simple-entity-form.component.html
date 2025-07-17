@@ -3,7 +3,7 @@
         <form class="form-container" [formGroup]="form">
 
             @for (field of fields; track field.name) {
-                @if (field.type === 'text' || field.type === 'textarea') {
+                @if (field.type === 'text' || field.type === 'textarea' || field.type === 'dropdown') {
                     <p-floatLabel>
                         @if (field.type === 'text') {
                             <input [id]="field.id || field.name" type="text" pInputText [formControlName]="field.formControlName" />
@@ -12,20 +12,14 @@
                             <textarea [id]="field.id || field.name" pInputTextarea [formControlName]="field.formControlName"
                                 rows="3" autoResize="true"></textarea>
                         }
+                        @if (field.type === 'dropdown') {
+                            <p-dropdown [id]="field.id || field.name" [options]="field.options" [optionLabel]="field.optionLabel"
+                                [formControlName]="field.formControlName" [dataKey]="'id'"></p-dropdown>
+                        }
                         <label [for]="field.id || field.name">
                             {{ field.labelKey | translate }}
                         </label>
                     </p-floatLabel>
-                }
-
-                @if (field.type === 'dropdown') {
-                    <div class="dropdown-field">
-                        <label [for]="field.id || field.name">
-                            {{ field.labelKey | translate }}
-                        </label>
-                        <p-dropdown [id]="field.id || field.name" [options]="field.options" [optionLabel]="field.optionLabel"
-                            [formControlName]="field.formControlName"></p-dropdown>
-                    </div>
                 }
             }
 

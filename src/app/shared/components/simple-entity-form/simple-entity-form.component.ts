@@ -37,6 +37,7 @@ export class SimpleEntityFormComponent {
 
   @Output() submitForm = new EventEmitter<void>();
   @Output() cancelForm = new EventEmitter<void>();
+  
 
   constructor(private router: Router) {}
   onSubmit(): void {
