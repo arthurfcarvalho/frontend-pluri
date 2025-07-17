@@ -1,0 +1,47 @@
+<div class="container">
+    <p-fieldset [legend]="titleKey | translate">
+        <form class="form-container" [formGroup]="form">
+
+            @for (field of fields; track field.name) {
+                @if (field.type === 'text' || field.type === 'textarea') {
+                    <p-floatLabel>
+                        @if (field.type === 'text') {
+                            <input [id]="field.id || field.name" type="text" pInputText [formControlName]="field.formControlName" />
+                        }
+                        @if (field.type === 'textarea') {
+                            <textarea [id]="field.id || field.name" pInputTextarea [formControlName]="field.formControlName"
+                                rows="3" autoResize="true"></textarea>
+                        }
+                        <label [for]="field.id || field.name">
+                            {{ field.labelKey | translate }}
+                        </label>
+                    </p-floatLabel>
+                }
+
+                @if (field.type === 'dropdown') {
+                    <div class="dropdown-field">
+                        <label [for]="field.id || field.name">
+                            {{ field.labelKey | translate }}
+                        </label>
+                        <p-dropdown [id]="field.id || field.name" [options]="field.options" [optionLabel]="field.optionLabel"
+                            [formControlName]="field.formControlName"></p-dropdown>
+                    </div>
+                }
+            }
+
+            <div class="buttons">
+                <p-button label="{{ 'form.cancel' | translate }}" icon="pi pi-times" class="p-button-secondary"
+                    (click)="onCancel()" [disabled]="loading"></p-button>
+
+                <p-button label="{{ 'form.save' | translate }}" icon="pi pi-check" (click)="onSubmit()"
+                    [disabled]="loading || form.invalid"></p-button>
+            </div>
+        </form>
+    </p-fieldset>
+</div>
+
+@if (loading) {
+    <div class="spinner-overlay">
+        <p-progressSpinner styleClass="custom-spinner" strokeWidth="4"></p-progressSpinner>
+    </div>
+}

@@ -60,10 +60,13 @@
     "nameLabel": "Nome",
     "descriptionLabel": "Descrição",
     "codeLabel": "Código",
-    "cancelButton": "Cancelar",
-    "saveButton": "Salvar",
     "successCreate": "Área criada com sucesso!",
     "successEdit": "Área atualizada com sucesso!",
     "error": "Erro ao salvar a área."
+  },
+
+  "form": {
+    "save": "Salvar",
+    "cancel": "Cancelar"
   }
 }

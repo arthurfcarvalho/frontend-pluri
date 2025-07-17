@@ -1,46 +1,34 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FieldConfig } from '../../../shared/components/simple-entity-form/field-config-model';
+import { SimpleEntityFormComponent } from '../../../shared/components/simple-entity-form/simple-entity-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AreaService } from '../../../services/area.service';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { FieldsetModule } from 'primeng/fieldset';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { CommonModule } from '@angular/common';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { AreaService } from '../../../services/area.service';
 
 @Component({
   selector: 'app-area-form',
   standalone: true,
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FieldsetModule,
-    InputTextModule,
-    ButtonModule,
-    ProgressSpinnerModule,
-    FloatLabelModule,
-    InputTextareaModule,
-    TranslateModule
+    SimpleEntityFormComponent
   ],
   templateUrl: './area-form.component.html',
   styleUrl: './area-form.component.scss',
 })
 export class AreaFormComponent implements OnInit {
-  areaForm!: FormGroup;
-  areaId: number | null = null;
+  form!: FormGroup;
+  fields: FieldConfig[] = [];
   isEditMode = false;
+  areaId: number | null = null;
   loading = false;
 
   constructor(
+    private fb: FormBuilder,
+    private areaService: AreaService,
     private route: ActivatedRoute,
     private router: Router,
-    private areaService: AreaService,
     private toastr: ToastrService,
-    private fb: FormBuilder,
     private translate: TranslateService
   ) { }
 
@@ -48,26 +36,31 @@ export class AreaFormComponent implements OnInit {
     this.areaId = Number(this.route.snapshot.paramMap.get('id'));
     this.isEditMode = !!this.areaId;
 
-    this.areaForm = this.fb.group({
+    this.form = this.fb.group({
       nome: ['', Validators.required],
       descricao: ['', Validators.required],
-      codigo: ['', Validators.required],
+      codigo: ['', Validators.required]
     });
+
+    this.fields = [
+      { name: 'nome', labelKey: 'area.nameLabel', type: 'text', formControlName: 'nome' },
+      { name: 'descricao', labelKey: 'area.descriptionLabel', type: 'textarea', formControlName: 'descricao' },
+      { name: 'codigo', labelKey: 'area.codeLabel', type: 'text', formControlName: 'codigo' }
+    ];
 
     if (this.isEditMode) {
       this.loading = true;
       this.areaService.listarPorId(this.areaId!).subscribe(area => {
-        this.areaForm.patchValue(area);
+        this.form.patchValue(area);
         this.loading = false;
       });
     }
   }
 
   submit(): void {
-    if (this.areaForm.invalid) return;
-
+    if (this.form.invalid) return;
     this.loading = true;
-    const area = this.areaForm.value;
+    const area = this.form.value;
 
     const req = this.isEditMode
       ? this.areaService.editArea({ ...area, id: this.areaId })
@@ -75,19 +68,14 @@ export class AreaFormComponent implements OnInit {
 
     req.subscribe({
       next: () => {
-        const msgKey = this.isEditMode ? 'area.successEdit' : 'area.successCreate';
-        this.toastr.success(this.translate.instant(msgKey));
+        const msg = this.isEditMode ? 'area.successEdit' : 'area.successCreate';
+        this.toastr.success(this.translate.instant(msg));
         this.router.navigate(['/pesquisar-areas']);
       },
       error: () => {
         this.toastr.error(this.translate.instant('area.error'));
         this.loading = false;
-      },
+      }
     });
-  }
-
-  cancel(): void {
-    const destination = this.isEditMode ? '/pesquisar-areas' : '/';
-    this.router.navigate([destination]);
   }
 }
