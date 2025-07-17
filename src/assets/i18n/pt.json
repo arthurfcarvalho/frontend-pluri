@@ -1,11 +1,9 @@
 {
   "integration_area_text": "Professor nesse momento você deve selecionar assuntos que sua questão faz interdisciplinariedade",
   "basic_info_question_text": "Informe as informações basicas da questão",
-
   "label_table_title": "Título",
   "label_table_approved": "Aprovada",
   "label_table_area": "Área",
-
   "label_table_id": "Id",
   "label_table_code": "Código",
   "label_table_pluri_name": "Nome do Pluri",
@@ -18,12 +16,10 @@
   "label_table_quantidade_enviada": "Quantidade enviada",
   "label_table_quantidade_aprovada": "Quantidade aprovada",
   "label_table_status": "Status",
-
   "label_information": "Informações",
   "label_body": "Corpo",
   "label_choices": "Alternativas",
   "label_integration_areas": "Areas de integração",
-
   "text_body": "Informe o corpo",
   "text_font": "Digite a referência",
   "MENU": {
@@ -56,5 +52,18 @@
     "DESIGNER": "Diagramador",
     "LIST_QUESTIONS": "Listar Questões",
     "SEARCH_PLURI_OVERVIEW": "Pesquisar Pluri Overview"
+  },
+
+  "area": {
+    "createTitle": "Criar Nova Área",
+    "editTitle": "Editar Área",
+    "nameLabel": "Nome",
+    "descriptionLabel": "Descrição",
+    "codeLabel": "Código",
+    "cancelButton": "Cancelar",
+    "saveButton": "Salvar",
+    "successCreate": "Área criada com sucesso!",
+    "successEdit": "Área atualizada com sucesso!",
+    "error": "Erro ao salvar a área."
   }
 }
