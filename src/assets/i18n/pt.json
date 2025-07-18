@@ -53,7 +53,6 @@
     "LIST_QUESTIONS": "Listar Questões",
     "SEARCH_PLURI_OVERVIEW": "Pesquisar Pluri Overview"
   },
-
   "area": {
     "createTitle": "Criar Nova Área",
     "editTitle": "Editar Área",
@@ -64,7 +63,6 @@
     "successEdit": "Área atualizada com sucesso!",
     "error": "Erro ao salvar a área."
   },
-
   "assunto": {
     "createTitle": "Criar Assunto",
     "editTitle": "Editar Assunto",
@@ -74,7 +72,7 @@
     "successEdit": "Assunto atualizado com sucesso!",
     "error": "Erro ao salvar o assunto."
   },
-
+  
   "disciplina": {
     "createTitle": "Criar Disciplina",
     "editTitle": "Editar Disciplina",
@@ -85,8 +83,21 @@
     "error": "Erro ao salvar a disciplina."
   },
 
+  "role": {
+    "createTitle": "Criar Perfil",
+    "editTitle": "Editar Perfil",
+    "nameLabel": "Nome",
+    "areaLabel": "Área",
+    "permissionsLabel": "Permissões",
+    "successCreate": "Perfil criado com sucesso!",
+    "successEdit": "Perfil atualizado com sucesso!",
+    "error": "Erro ao salvar o perfil."
+  },
+
   "form": {
     "save": "Salvar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "available": "Disponíveis",
+    "selected": "Selecionados"
   }
 }

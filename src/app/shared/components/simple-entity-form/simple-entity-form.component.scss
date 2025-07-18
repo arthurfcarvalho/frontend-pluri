@@ -41,6 +41,21 @@
         }
     }
 
+    .picklist-field {
+        margin: 1.5rem 20px 0;
+
+        ::ng-deep .p-picklist {
+            width: 100%;
+
+            .p-picklist-transfer-buttons {
+                button {
+                    background-color: $primary-color;
+                    border-color: $primary-color;
+                }
+            }
+        }
+    }
+
     .buttons {
         display: flex;
         justify-content: flex-end;

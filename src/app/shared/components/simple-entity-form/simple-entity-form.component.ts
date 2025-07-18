@@ -10,6 +10,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldConfig } from './field-config-model';
 import { Router } from '@angular/router';
+import { PickListModule } from 'primeng/picklist';
 
 @Component({
   selector: 'app-simple-entity-form',
@@ -23,7 +24,8 @@ import { Router } from '@angular/router';
     ButtonModule,
     FieldsetModule,
     FloatLabelModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    PickListModule
   ],
   templateUrl: './simple-entity-form.component.html',
   styleUrl: './simple-entity-form.component.scss'
@@ -37,9 +39,9 @@ export class SimpleEntityFormComponent {
 
   @Output() submitForm = new EventEmitter<void>();
   @Output() cancelForm = new EventEmitter<void>();
-  
 
-  constructor(private router: Router) {}
+
+  constructor(private router: Router) { }
   onSubmit(): void {
     this.submitForm.emit();
   }
@@ -51,5 +53,32 @@ export class SimpleEntityFormComponent {
       history.back();
     }
     this.cancelForm.emit();
+  }
+
+  getPicklistTarget(field: FieldConfig): any[] {
+    const values = this.form.get(field.formControlName)?.value || [];
+    return field.options?.filter(opt =>
+      values.includes(opt[field.optionValue || 'id'])
+    ) || [];
+  }
+
+  getPicklistSource(field: FieldConfig): any[] {
+    const values = this.form.get(field.formControlName)?.value || [];
+    return field.options?.filter(opt =>
+      !values.includes(opt[field.optionValue || 'id'])
+    ) || [];
+  }
+
+  onMoveToTarget(controlName: string, movedItems: any[], optionValue = 'id'): void {
+    const current = this.form.get(controlName)?.value || [];
+    const added = movedItems.map(item => item[optionValue]);
+    this.form.get(controlName)?.setValue([...current, ...added]);
+  }
+
+  onMoveToSource(controlName: string, movedItems: any[], optionValue = 'id'): void {
+    const current = this.form.get(controlName)?.value || [];
+    const removed = movedItems.map(item => item[optionValue]);
+    const updated = current.filter((val: any) => !removed.includes(val));
+    this.form.get(controlName)?.setValue(updated);
   }
 }

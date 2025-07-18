@@ -1,11 +1,12 @@
-export type FieldType = 'text' | 'textarea' | 'dropdown';
-
 export interface FieldConfig {
     name: string;
-    type: FieldType;
     labelKey: string;
-    options?: any[];           // usado em dropdown
-    optionLabel?: string;      // campo a ser mostrado no dropdown
+    type: 'text' | 'textarea' | 'dropdown' | 'picklist';
     formControlName: string;
-    id?: string;               // se não informado, usa o name
+    options?: any[];
+    optionLabel?: string;
+    optionValue?: string;
+    displayTemplate?: (item: any) => string;
+    filterBy?: string;
+    id?: string;
 }

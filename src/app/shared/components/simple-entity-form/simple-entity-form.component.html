@@ -21,6 +21,38 @@
                         </label>
                     </p-floatLabel>
                 }
+                @if (field.type === 'picklist') {
+                    <div class="picklist-field">
+                        <label class="mb-2 block font-bold">{{ field.labelKey | translate }}</label>
+                        <p-pickList
+                        [source]="getPicklistSource(field)"
+                        [target]="getPicklistTarget(field)"
+                        sourceHeader="{{ 'form.available' | translate }}"
+                        targetHeader="{{ 'form.selected' | translate }}"
+                        [showSourceControls]="false"
+                        [showTargetControls]="false"
+                        [filterBy]="field.filterBy || field.optionLabel || 'nome'"
+                        [showSourceFilter]="true"
+                        [showTargetFilter]="true"
+                        [dragdrop]="true"
+                        [responsive]="true"
+                        [stripedRows]="true"
+                        (onMoveToTarget)="onMoveToTarget(field.formControlName, $event.items, field.optionValue)"
+                        (onMoveToSource)="onMoveToSource(field.formControlName, $event.items, field.optionValue)"
+                        (onMoveAllToTarget)="onMoveToTarget(field.formControlName, $event.items, field.optionValue)"
+                        (onMoveAllToSource)="onMoveToSource(field.formControlName, $event.items, field.optionValue)"
+                        >
+                            <ng-template let-item pTemplate="item">
+                                <div class="flex flex-column">
+                                    <span class="font-bold">{{ item.nome }}</span>
+                                    @if (item.descricao) {
+                                        <small class="text-sm text-color-secondary">{{ item.descricao }}</small>
+                                    }
+                                </div>
+                            </ng-template>
+                        </p-pickList>
+                    </div>
+                }
             }
 
             <div class="buttons">
